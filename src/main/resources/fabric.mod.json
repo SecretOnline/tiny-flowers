@@ -3,15 +3,21 @@
 	"id": "tiny-flowers",
 	"version": "${version}",
 	"name": "Tiny Flowers",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Adds stackable tiny variants of all Vanilla flowers.",
 	"authors": [
-		"Me!"
+    {
+      "name": "secret_online",
+      "contact": {
+        "homepage": "https://secretonline.co"
+      }
+    }
 	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
-	"license": "CC0-1.0",
+  "contact": {
+    "homepage": "https://secretonline.co/mods/tiny-flowers",
+    "sources": "https://github.com/SecretOnline/tiny-flowers",
+    "issues": "https://github.com/SecretOnline/tiny-flowers/issues"
+  },
+  "license": "MPL-2.0",
 	"icon": "assets/tiny-flowers/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -20,7 +26,10 @@
 		],
 		"client": [
 			"co.secretonline.tinyflowers.TinyFlowersClient"
-		]
+		],
+    "fabric-datagen": [
+      "co.secretonline.tinyflowers.datagen.DataGenerator"
+    ]
 	},
 	"mixins": [
 		"tiny-flowers.mixins.json",
@@ -29,13 +38,25 @@
 			"environment": "client"
 		}
 	],
-	"depends": {
-		"fabricloader": ">=0.16.10",
-		"minecraft": "~1.21.4",
-		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+  "depends": {
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "recommends": {
+    "fabricloader": ">=0.16.9",
+    "minecraft": "~1.21.2"
+  },
+  "custom": {
+    "mc-publish": {
+      "modrinth": "TODO",
+      "curseforge": 0
+    },
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/xnDeRSuk8r",
+        "modmenu.modrinth": "https://modrinth.com/mod/tiny-flowers",
+        "modmenu.curseforge": "https://legacy.curseforge.com/minecraft/mc-mods/tiny-flowers"
+      }
+    }
+  }
 }
