@@ -2,7 +2,8 @@
   "multipart": [
     {
       "apply": {
-        "model": "tiny-flowers:block/test_flower_1"
+        "model": "tiny-flowers:block/test_flower_1",
+        "y": 0
       },
       "when": {
         "facing": "north",
@@ -41,7 +42,8 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/test_flower_2"
+        "model": "tiny-flowers:block/test_flower_2",
+        "y": 0
       },
       "when": {
         "facing": "north",
@@ -80,7 +82,8 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/test_flower_3"
+        "model": "tiny-flowers:block/test_flower_3",
+        "y": 0
       },
       "when": {
         "facing": "north",
@@ -119,7 +122,8 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/test_flower_4"
+        "model": "tiny-flowers:block/test_flower_4",
+        "y": 0
       },
       "when": {
         "facing": "north",
