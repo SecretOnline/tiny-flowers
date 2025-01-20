@@ -1,7 +1,7 @@
 {
-  "name": "accessible-step",
+  "name": "tiny-flowers",
   "version": "1.0.0",
-  "description": "Walk up full-height blocks without having to press jump!",
+  "description": "Adds stackable tiny variants of all Vanilla flowers.",
   "type": "module",
   "main": "index.js",
   "scripts": {
