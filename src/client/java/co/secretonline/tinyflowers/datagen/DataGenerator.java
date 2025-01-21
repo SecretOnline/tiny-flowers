@@ -10,6 +10,7 @@ public class DataGenerator implements DataGeneratorEntrypoint {
 
 		pack.addProvider(BlockModelProvider::new);
 		pack.addProvider(BlockTagProvider::new);
+		pack.addProvider(BlockLootTableProvider::new);
 		pack.addProvider(ItemTagProvider::new);
 	}
 
