@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.BlockStateVariant;
 import net.minecraft.client.data.ItemModelGenerator;
+import net.minecraft.client.data.Models;
 import net.minecraft.client.data.MultipartBlockStateSupplier;
 import net.minecraft.client.data.VariantSettings;
 import net.minecraft.client.data.When;
@@ -45,7 +46,13 @@ public class BlockModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-		// TODO: Add item models when there are more types
+		for (FlowerVariant variant : FlowerVariant.values()) {
+			if (!variant.shouldGenerateItemModel) {
+				continue;
+			}
+
+			itemModelGenerator.register(variant.item, Models.GENERATED);
+		}
 	}
 
 	private void registerPartInAllDirections(MultipartBlockStateSupplier supplier, FlowerVariant variant,

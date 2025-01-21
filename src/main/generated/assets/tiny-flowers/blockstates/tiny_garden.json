@@ -159,6 +159,166 @@
         "facing": "west",
         "flower_variant_4": "minecraft_pink_petals"
       }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_1",
+        "y": 0
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_1": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_1",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_1": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_1",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_1": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_1",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_1": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_2",
+        "y": 0
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_2": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_2",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_2": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_2",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_2": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_2",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_2": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_3",
+        "y": 0
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_3": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_3",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_3": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_3",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_3": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_3",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_3": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_4",
+        "y": 0
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_4": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_4",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_4": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_4",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_4": "tiny_flowers_tiny_red_tulip"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_red_tulip_4",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_4": "tiny_flowers_tiny_red_tulip"
+      }
     }
   ]
 }
