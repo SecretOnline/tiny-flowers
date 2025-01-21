@@ -17,19 +17,19 @@ import net.minecraft.sound.BlockSoundGroup;
 
 public class ModBlocks {
 
-	public static final RegistryKey<Block> TEST_FLOWER_KEY = RegistryKey.of(
+	public static final RegistryKey<Block> TINY_GARDEN_KEY = RegistryKey.of(
 			RegistryKeys.BLOCK,
-			TinyFlowers.id("test_flower"));
+			TinyFlowers.id("tiny_garden"));
 
-	public static final Block TEST_FLOWER = register(
+	public static final Block TINY_GARDEN = register(
 			new FlowerbedBlock(
 					AbstractBlock.Settings.create()
-							.registryKey(TEST_FLOWER_KEY)
+							.registryKey(TINY_GARDEN_KEY)
 							.mapColor(MapColor.DARK_GREEN)
 							.noCollision()
 							.sounds(BlockSoundGroup.PINK_PETALS)
 							.pistonBehavior(PistonBehavior.DESTROY)),
-			TEST_FLOWER_KEY);
+			TINY_GARDEN_KEY);
 
 	public static Block register(Block block, RegistryKey<Block> blockKey) {
 		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, blockKey.getValue());
@@ -42,7 +42,8 @@ public class ModBlocks {
 
 	static void initialize() {
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register((itemGroup) -> {
-			itemGroup.add(ModBlocks.TEST_FLOWER.asItem());
+			// TODO: register items for all of the item types
+			// itemGroup.add(ModBlocks.TEST_FLOWER.asItem());
 		});
 	}
 }

@@ -1,28 +1,25 @@
 package co.secretonline.tinyflowers.datagen;
 
 import co.secretonline.tinyflowers.ModBlocks;
+import co.secretonline.tinyflowers.blocks.FlowerVariant;
+import co.secretonline.tinyflowers.blocks.GardenBlock;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.block.Block;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.BlockStateVariant;
 import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
 import net.minecraft.client.data.MultipartBlockStateSupplier;
-import net.minecraft.client.data.TexturedModel;
 import net.minecraft.client.data.VariantSettings;
 import net.minecraft.client.data.When;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 public class BlockModelProvider extends FabricModelProvider {
-	private static int MAX_FLOWER_AMOUNT = 4;
 	private static Direction[] DIRECTIONS = new Direction[] {
 			Direction.NORTH, Direction.EAST,
 			Direction.SOUTH, Direction.WEST, };
-
-	private static Block[] BLOCKS = new Block[] { ModBlocks.TEST_FLOWER };
 
 	public BlockModelProvider(FabricDataOutput generator) {
 		super(generator);
@@ -30,51 +27,48 @@ public class BlockModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-		for (Block block : BLOCKS) {
-			MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(block);
+		MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(ModBlocks.TINY_GARDEN);
 
-			Identifier identifier = TexturedModel.FLOWERBED_1.upload(block, blockStateModelGenerator.modelCollector);
-			Identifier identifier2 = TexturedModel.FLOWERBED_2.upload(block, blockStateModelGenerator.modelCollector);
-			Identifier identifier3 = TexturedModel.FLOWERBED_3.upload(block, blockStateModelGenerator.modelCollector);
-			Identifier identifier4 = TexturedModel.FLOWERBED_4.upload(block, blockStateModelGenerator.modelCollector);
+		for (FlowerVariant variant : FlowerVariant.values()) {
+			if (variant == FlowerVariant.EMPTY) {
+				continue;
+			}
 
-			registerVariant(supplier, identifier, 1);
-			registerVariant(supplier, identifier2, 2);
-			registerVariant(supplier, identifier3, 3);
-			registerVariant(supplier, identifier4, 4);
-
-			blockStateModelGenerator.blockStateCollector.accept(supplier);
+			registerVariant(supplier, variant);
 		}
+
+		blockStateModelGenerator.blockStateCollector.accept(supplier);
 	}
 
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-		for (Block block : BLOCKS) {
-			itemModelGenerator.register(block.asItem(), Models.GENERATED);
-		}
+		// TODO: Add item models when there are more types
 	}
 
-	private void registerVariant(MultipartBlockStateSupplier supplier, Identifier modelIdentifier, int flowerAmount) {
+	private void registerVariant(MultipartBlockStateSupplier supplier, FlowerVariant variant) {
 		for (Direction direction : DIRECTIONS) {
 			supplier.with(
-					getWhen(flowerAmount, direction),
-					getVariant(modelIdentifier, direction));
+					getWhen(direction, GardenBlock.FLOWER_VARIANT_1, variant),
+					getModelVariant(direction, variant.models.model1));
+			supplier.with(
+					getWhen(direction, GardenBlock.FLOWER_VARIANT_2, variant),
+					getModelVariant(direction, variant.models.model2));
+			supplier.with(
+					getWhen(direction, GardenBlock.FLOWER_VARIANT_3, variant),
+					getModelVariant(direction, variant.models.model3));
+			supplier.with(
+					getWhen(direction, GardenBlock.FLOWER_VARIANT_4, variant),
+					getModelVariant(direction, variant.models.model4));
 		}
 	}
 
-	private When getWhen(int flowerAmount, Direction direction) {
-		int otherValuesLength = MAX_FLOWER_AMOUNT - flowerAmount;
-		Integer[] otherValues = new Integer[otherValuesLength];
-		for (int i = 0; i < otherValues.length; i++) {
-			otherValues[i] = flowerAmount + i + 1;
-		}
-
+	private When getWhen(Direction direction, EnumProperty<FlowerVariant> property, FlowerVariant variant) {
 		return When.create()
-				.set(Properties.FLOWER_AMOUNT, flowerAmount, otherValues)
-				.set(Properties.HORIZONTAL_FACING, direction);
+				.set(Properties.HORIZONTAL_FACING, direction)
+				.set(property, variant);
 	}
 
-	private BlockStateVariant getVariant(Identifier modelIdentifier, Direction direction) {
+	private BlockStateVariant getModelVariant(Direction direction, Identifier modelIdentifier) {
 		VariantSettings.Rotation rotation;
 		switch (direction) {
 			case Direction.NORTH:
