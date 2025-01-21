@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
 
 public class ItemTagProvider extends FabricTagProvider<Item> {
 	public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
@@ -27,5 +28,7 @@ public class ItemTagProvider extends FabricTagProvider<Item> {
 
 			builder.add(variant.identifier);
 		}
+
+		getOrCreateTagBuilder(ItemTags.BEE_FOOD).addTag(ModItemTags.TINY_FLOWERS);
 	}
 }
