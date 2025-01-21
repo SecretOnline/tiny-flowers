@@ -3,7 +3,7 @@ package co.secretonline.tinyflowers.datagen;
 import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
-import co.secretonline.tinyflowers.items.ModItemTags;
+import co.secretonline.tinyflowers.blocks.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Item;

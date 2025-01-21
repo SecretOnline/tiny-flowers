@@ -4,7 +4,6 @@ import java.util.function.BiFunction;
 
 import com.mojang.serialization.MapCodec;
 
-import co.secretonline.tinyflowers.items.ModItemTags;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,12 +13,14 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -103,7 +104,8 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		BlockState blockState = ctx.getWorld().getBlockState(ctx.getBlockPos());
 
-		FlowerVariant flowerVariant = FlowerVariant.fromItem(ctx.getStack().getItem());
+		Item item = ctx.getStack().getItem();
+		FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
 		if (flowerVariant == FlowerVariant.EMPTY) {
 			// Is this the correct thing to do?
 			return blockState;
@@ -150,7 +152,8 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		int numFlowers = this.getNumFlowers(state);
 		int randomPosition = random.nextInt(numFlowers);
 
-		Item item = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]).item;
+		Identifier itemId = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]).identifier;
+		Item item = Registries.ITEM.get(itemId);
 
 		if (this.hasFreeSpace(state)) {
 			// Add flower to gerden based on existing flower variants
@@ -162,7 +165,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 			world.setBlockState(
 					pos,
-					state.with(FLOWER_VARIANT_PROPERTIES[this.getNumFlowers(state) + 1], flowerVariant),
+					state.with(FLOWER_VARIANT_PROPERTIES[this.getNumFlowers(state)], flowerVariant),
 					Block.NOTIFY_LISTENERS);
 		} else {
 			// Drop an item based on the variants in the garden. At this stage we can assume

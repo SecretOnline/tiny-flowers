@@ -12,6 +12,7 @@ import net.minecraft.client.data.Models;
 import net.minecraft.client.data.MultipartBlockStateSupplier;
 import net.minecraft.client.data.VariantSettings;
 import net.minecraft.client.data.When;
+import net.minecraft.registry.Registries;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
@@ -51,7 +52,7 @@ public class BlockModelProvider extends FabricModelProvider {
 				continue;
 			}
 
-			itemModelGenerator.register(variant.item, Models.GENERATED);
+			itemModelGenerator.register(Registries.ITEM.get(variant.identifier), Models.GENERATED);
 		}
 	}
 

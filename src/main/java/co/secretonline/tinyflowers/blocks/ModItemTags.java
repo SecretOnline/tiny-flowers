@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.items;
+package co.secretonline.tinyflowers.blocks;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.item.Item;
