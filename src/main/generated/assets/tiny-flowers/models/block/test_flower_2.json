@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/flowerbed_2",
-  "textures": {
-    "flowerbed": "tiny-flowers:block/test_flower",
-    "stem": "tiny-flowers:block/test_flower_stem"
-  }
-}

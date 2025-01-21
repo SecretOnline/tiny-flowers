@@ -1,13 +1,11 @@
 package co.secretonline.tinyflowers;
 
+import co.secretonline.tinyflowers.blocks.GardenBlock;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -21,8 +19,8 @@ public class ModBlocks {
 			RegistryKeys.BLOCK,
 			TinyFlowers.id("tiny_garden"));
 
-	public static final Block TINY_GARDEN = register(
-			new FlowerbedBlock(
+	public static final Block TINY_GARDEN = registerBlockOnly(
+			new GardenBlock(
 					AbstractBlock.Settings.create()
 							.registryKey(TINY_GARDEN_KEY)
 							.mapColor(MapColor.DARK_GREEN)
@@ -31,12 +29,7 @@ public class ModBlocks {
 							.pistonBehavior(PistonBehavior.DESTROY)),
 			TINY_GARDEN_KEY);
 
-	public static Block register(Block block, RegistryKey<Block> blockKey) {
-		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, blockKey.getValue());
-
-		BlockItem blockItem = new BlockItem(block, new Item.Settings().registryKey(itemKey));
-		Registry.register(Registries.ITEM, itemKey, blockItem);
-
+	public static Block registerBlockOnly(Block block, RegistryKey<Block> blockKey) {
 		return Registry.register(Registries.BLOCK, blockKey, block);
 	}
 

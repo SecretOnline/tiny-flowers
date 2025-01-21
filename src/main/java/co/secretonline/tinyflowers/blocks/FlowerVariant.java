@@ -1,27 +1,59 @@
 package co.secretonline.tinyflowers.blocks;
 
+import org.jetbrains.annotations.Nullable;
+
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 
 public enum FlowerVariant implements StringIdentifiable {
-	EMPTY(TinyFlowers.id("empty"), Models.ofBlock(Blocks.AIR)),
-	PINK_PETALS(Registries.BLOCK.getId(Blocks.PINK_PETALS), Models.ofBlock(Blocks.PINK_PETALS));
+	EMPTY(TinyFlowers.id("empty")),
+	PINK_PETALS(Registries.BLOCK.getId(Blocks.PINK_PETALS), Blocks.PINK_PETALS);
 
-	private final String name;
+	public final Identifier identifier;
+	@Nullable
+	public final Item item;
 	public final Models models;
 
-	private FlowerVariant(Identifier identifier, Models models) {
-		this.name = identifier.toString().replaceAll("\\W", "_");
-		this.models = models;
+	private FlowerVariant(Identifier identifier) {
+		this.identifier = identifier;
+		this.item = null;
+		this.models = Models.ofEmpty();
+	}
+
+	private FlowerVariant(Identifier identifier, Block block) {
+		this.identifier = identifier;
+		this.item = block.asItem();
+		this.models = Models.ofBlock(block);
 	}
 
 	@Override
 	public String asString() {
-		return this.name.toString();
+		return this.identifier.toString().replaceAll("\\W", "_");
+	}
+
+	public static FlowerVariant fromIdentifier(Identifier identifier) {
+		for (FlowerVariant variant : values()) {
+			if (variant.identifier.equals(identifier)) {
+				return variant;
+			}
+		}
+
+		return EMPTY;
+	}
+
+	public static FlowerVariant fromItem(Item item) {
+		for (FlowerVariant variant : values()) {
+			if (variant.item == item) {
+				return variant;
+			}
+		}
+
+		return EMPTY;
 	}
 
 	public static class Models {
@@ -49,7 +81,7 @@ public enum FlowerVariant implements StringIdentifiable {
 					blockId.withPath(path -> "block/" + path + "_4"));
 		}
 
-		public Models ofEmpty() {
+		public static Models ofEmpty() {
 			Identifier airId = Registries.BLOCK.getId(Blocks.AIR);
 			Identifier modelId = airId.withPath(path -> "block/" + path);
 

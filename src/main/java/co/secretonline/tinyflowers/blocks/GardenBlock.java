@@ -4,13 +4,14 @@ import java.util.function.BiFunction;
 
 import com.mojang.serialization.MapCodec;
 
+import co.secretonline.tinyflowers.items.ModItemTags;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
-import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.block.PlantBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -37,6 +38,10 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_2 = ModBlockProperties.FLOWER_VARIANT_2;
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_3 = ModBlockProperties.FLOWER_VARIANT_3;
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_4 = ModBlockProperties.FLOWER_VARIANT_4;
+
+	@SuppressWarnings("unchecked")
+	private static final EnumProperty<FlowerVariant>[] FLOWER_VARIANT_PROPERTIES = new EnumProperty[] {
+			FLOWER_VARIANT_1, FLOWER_VARIANT_2, FLOWER_VARIANT_3, FLOWER_VARIANT_4 };
 
 	private static final BiFunction<Direction, Integer, VoxelShape> FACING_AND_AMOUNT_TO_SHAPE = Util.memoize(
 			(BiFunction<Direction, Integer, VoxelShape>) ((facing, flowerAmount) -> {
@@ -83,9 +88,10 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 	@Override
 	public boolean canReplace(BlockState state, ItemPlacementContext context) {
-		return !context.shouldCancelInteraction() && context.getStack().isOf(this.asItem()) && this.hasFreeSpace(state)
-				? true
-				: super.canReplace(state, context);
+		return !context.shouldCancelInteraction() && context.getStack().isIn(ModItemTags.TINY_FLOWERS)
+				&& this.hasFreeSpace(state)
+						? true
+						: super.canReplace(state, context);
 	}
 
 	@Override
@@ -96,9 +102,32 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		BlockState blockState = ctx.getWorld().getBlockState(ctx.getBlockPos());
-		return blockState.isOf(this)
-				? blockState.with(FLOWER_AMOUNT, Integer.valueOf(Math.min(4, (Integer) blockState.get(FLOWER_AMOUNT) + 1)))
-				: this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+
+		FlowerVariant flowerVariant = FlowerVariant.fromItem(ctx.getStack().getItem());
+		if (flowerVariant == FlowerVariant.EMPTY) {
+			// Is this the correct thing to do?
+			return blockState;
+		}
+
+		if (blockState.isOf(this)) {
+			// Add flower
+			int numFlowers = this.getNumFlowers(blockState);
+			switch (numFlowers) {
+				case 1:
+					return blockState.with(FLOWER_VARIANT_2, flowerVariant);
+				case 2:
+					return blockState.with(FLOWER_VARIANT_3, flowerVariant);
+				case 3:
+					return blockState.with(FLOWER_VARIANT_4, flowerVariant);
+				default:
+					// Is this the correct thing to do?
+					return blockState;
+			}
+		} else {
+			return this.getDefaultState()
+					.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
+					.with(FLOWER_VARIANT_1, FlowerVariant.fromItem(ctx.getStack().getItem()));
+		}
 	}
 
 	@Override
@@ -118,18 +147,27 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 	@Override
 	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+		int numFlowers = this.getNumFlowers(state);
+		int randomPosition = random.nextInt(numFlowers);
+
+		Item item = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]).item;
+
 		if (this.hasFreeSpace(state)) {
 			// Add flower to gerden based on existing flower variants
+			FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
+			if (flowerVariant == FlowerVariant.EMPTY) {
+				// Is this the correct thing to do?
+				return;
+			}
+
+			world.setBlockState(
+					pos,
+					state.with(FLOWER_VARIANT_PROPERTIES[this.getNumFlowers(state) + 1], flowerVariant),
+					Block.NOTIFY_LISTENERS);
 		} else {
 			// Drop an item based on the variants in the garden. At this stage we can assume
 			// that the garden is full.
-		}
-
-		int i = (Integer) state.get(FLOWER_AMOUNT);
-		if (i < 4) {
-			world.setBlockState(pos, state.with(FLOWER_AMOUNT, Integer.valueOf(i + 1)), Block.NOTIFY_LISTENERS);
-		} else {
-			dropStack(world, pos, new ItemStack(this));
+			dropStack(world, pos, new ItemStack(item));
 		}
 	}
 

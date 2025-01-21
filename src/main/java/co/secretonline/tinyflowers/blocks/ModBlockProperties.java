@@ -5,9 +5,9 @@ import net.minecraft.state.property.EnumProperty;
 public class ModBlockProperties {
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_1 = EnumProperty.of(
 			"flower_variant_1",
-			FlowerVariant.class,
-			// First flower variant must not be empty
-			(variant) -> variant != FlowerVariant.EMPTY);
+			FlowerVariant.class);
+	// First flower variant must not be empty
+	// (variant) -> variant != FlowerVariant.EMPTY);
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_2 = EnumProperty.of(
 			"flower_variant_2",
 			FlowerVariant.class);
