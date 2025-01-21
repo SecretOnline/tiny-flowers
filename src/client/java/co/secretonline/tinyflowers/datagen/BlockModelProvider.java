@@ -1,8 +1,8 @@
 package co.secretonline.tinyflowers.datagen;
 
-import co.secretonline.tinyflowers.ModBlocks;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
+import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
@@ -34,7 +34,10 @@ public class BlockModelProvider extends FabricModelProvider {
 				continue;
 			}
 
-			registerVariant(supplier, variant);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_1, variant.models.model1);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_2, variant.models.model2);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_3, variant.models.model3);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_4, variant.models.model4);
 		}
 
 		blockStateModelGenerator.blockStateCollector.accept(supplier);
@@ -45,51 +48,31 @@ public class BlockModelProvider extends FabricModelProvider {
 		// TODO: Add item models when there are more types
 	}
 
-	private void registerVariant(MultipartBlockStateSupplier supplier, FlowerVariant variant) {
+	private void registerPartInAllDirections(MultipartBlockStateSupplier supplier, FlowerVariant variant,
+			EnumProperty<FlowerVariant> property, Identifier modelIdentifier) {
 		for (Direction direction : DIRECTIONS) {
 			supplier.with(
-					getWhen(direction, GardenBlock.FLOWER_VARIANT_1, variant),
-					getModelVariant(direction, variant.models.model1));
-			supplier.with(
-					getWhen(direction, GardenBlock.FLOWER_VARIANT_2, variant),
-					getModelVariant(direction, variant.models.model2));
-			supplier.with(
-					getWhen(direction, GardenBlock.FLOWER_VARIANT_3, variant),
-					getModelVariant(direction, variant.models.model3));
-			supplier.with(
-					getWhen(direction, GardenBlock.FLOWER_VARIANT_4, variant),
-					getModelVariant(direction, variant.models.model4));
+					When.create()
+							.set(property, variant)
+							.set(Properties.HORIZONTAL_FACING, direction),
+					BlockStateVariant.create()
+							.put(VariantSettings.MODEL, modelIdentifier)
+							.put(VariantSettings.Y, getRotationForDirection(direction)));
 		}
 	}
 
-	private When getWhen(Direction direction, EnumProperty<FlowerVariant> property, FlowerVariant variant) {
-		return When.create()
-				.set(Properties.HORIZONTAL_FACING, direction)
-				.set(property, variant);
-	}
-
-	private BlockStateVariant getModelVariant(Direction direction, Identifier modelIdentifier) {
-		VariantSettings.Rotation rotation;
+	private VariantSettings.Rotation getRotationForDirection(Direction direction) {
 		switch (direction) {
 			case Direction.NORTH:
-				rotation = VariantSettings.Rotation.R0;
-				break;
+				return VariantSettings.Rotation.R0;
 			case Direction.EAST:
-				rotation = VariantSettings.Rotation.R90;
-				break;
+				return VariantSettings.Rotation.R90;
 			case Direction.SOUTH:
-				rotation = VariantSettings.Rotation.R180;
-				break;
+				return VariantSettings.Rotation.R180;
 			case Direction.WEST:
-				rotation = VariantSettings.Rotation.R270;
-				break;
+				return VariantSettings.Rotation.R270;
 			default:
 				throw new IllegalArgumentException("Unknown direction for model");
 		}
-
-		return BlockStateVariant.create()
-				.put(VariantSettings.MODEL, modelIdentifier)
-				.put(VariantSettings.Y, rotation);
 	}
-
 }

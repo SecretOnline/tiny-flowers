@@ -19,6 +19,7 @@ public class ItemTagProvider extends FabricTagProvider<Item> {
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 		FabricTagBuilder builder = getOrCreateTagBuilder(ModItemTags.TINY_FLOWERS);
 
+		// Add all items/blocks that correspond to tiny flower variants to tag
 		for (FlowerVariant variant : FlowerVariant.values()) {
 			if (variant == FlowerVariant.EMPTY) {
 				continue;

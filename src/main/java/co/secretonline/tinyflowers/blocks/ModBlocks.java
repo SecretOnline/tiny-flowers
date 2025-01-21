@@ -1,12 +1,10 @@
-package co.secretonline.tinyflowers;
+package co.secretonline.tinyflowers.blocks;
 
-import co.secretonline.tinyflowers.blocks.GardenBlock;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -33,10 +31,6 @@ public class ModBlocks {
 		return Registry.register(Registries.BLOCK, blockKey, block);
 	}
 
-	static void initialize() {
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register((itemGroup) -> {
-			// TODO: register items for all of the item types
-			// itemGroup.add(ModBlocks.TEST_FLOWER.asItem());
-		});
+	public static void initialize() {
 	}
 }

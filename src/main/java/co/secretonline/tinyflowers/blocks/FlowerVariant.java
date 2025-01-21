@@ -28,7 +28,7 @@ public enum FlowerVariant implements StringIdentifiable {
 	private FlowerVariant(Identifier identifier, Block block) {
 		this.identifier = identifier;
 		this.item = block.asItem();
-		this.models = Models.ofBlock(block);
+		this.models = Models.ofBlockId(Registries.BLOCK.getId(block));
 	}
 
 	@Override
@@ -71,9 +71,7 @@ public enum FlowerVariant implements StringIdentifiable {
 			this.model4 = model4;
 		}
 
-		public static Models ofBlock(Block block) {
-			Identifier blockId = Registries.BLOCK.getId(block);
-
+		public static Models ofBlockId(Identifier blockId) {
 			return new Models(
 					blockId.withPath(path -> "block/" + path + "_1"),
 					blockId.withPath(path -> "block/" + path + "_2"),
