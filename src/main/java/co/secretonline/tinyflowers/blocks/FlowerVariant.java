@@ -2,7 +2,7 @@ package co.secretonline.tinyflowers.blocks;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
@@ -33,8 +33,8 @@ public enum FlowerVariant implements StringIdentifiable {
 		return this.identifier.toString().replaceAll("\\W", "_");
 	}
 
-	public static FlowerVariant fromItem(Item item) {
-		Identifier itemId = Registries.ITEM.getId(item);
+	public static FlowerVariant fromItem(ItemConvertible item) {
+		Identifier itemId = Registries.ITEM.getId(item.asItem());
 
 		for (FlowerVariant variant : values()) {
 			if (variant.identifier.equals(itemId)) {

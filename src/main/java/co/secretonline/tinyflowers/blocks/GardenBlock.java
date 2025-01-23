@@ -90,14 +90,14 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	@Override
 	public boolean canReplace(BlockState state, ItemPlacementContext context) {
 		return !context.shouldCancelInteraction() && context.getStack().isIn(ModItemTags.TINY_FLOWERS)
-				&& this.hasFreeSpace(state)
+				&& hasFreeSpace(state)
 						? true
 						: super.canReplace(state, context);
 	}
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return (VoxelShape) FACING_AND_AMOUNT_TO_SHAPE.apply((Direction) state.get(FACING), this.getNumFlowers(state));
+		return (VoxelShape) FACING_AND_AMOUNT_TO_SHAPE.apply((Direction) state.get(FACING), getNumFlowers(state));
 	}
 
 	@Override
@@ -149,13 +149,13 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 	@Override
 	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		int numFlowers = this.getNumFlowers(state);
+		int numFlowers = getNumFlowers(state);
 		int randomPosition = random.nextInt(numFlowers);
 
 		Identifier itemId = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]).identifier;
 		Item item = Registries.ITEM.get(itemId);
 
-		if (this.hasFreeSpace(state)) {
+		if (hasFreeSpace(state)) {
 			// Add flower to gerden based on existing flower variants
 			FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
 			if (flowerVariant == FlowerVariant.EMPTY) {
@@ -165,7 +165,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 			world.setBlockState(
 					pos,
-					state.with(FLOWER_VARIANT_PROPERTIES[this.getNumFlowers(state)], flowerVariant),
+					state.with(FLOWER_VARIANT_PROPERTIES[getNumFlowers(state)], flowerVariant),
 					Block.NOTIFY_LISTENERS);
 		} else {
 			// Drop an item based on the variants in the garden. At this stage we can assume
@@ -174,11 +174,11 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		}
 	}
 
-	private boolean hasFreeSpace(BlockState state) {
+	public static boolean hasFreeSpace(BlockState state) {
 		return state.get(FLOWER_VARIANT_4).equals(FlowerVariant.EMPTY);
 	}
 
-	private int getNumFlowers(BlockState state) {
+	private static int getNumFlowers(BlockState state) {
 		if (!state.get(FLOWER_VARIANT_4).equals(FlowerVariant.EMPTY)) {
 			return 4;
 		} else if (!state.get(FLOWER_VARIANT_3).equals(FlowerVariant.EMPTY)) {
@@ -187,6 +187,20 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			return 2;
 		} else {
 			return 1;
+		}
+	}
+
+	public static BlockState addFlowerToBlockState(BlockState state, FlowerVariant flowerVariant) {
+		int numFlowers = getNumFlowers(state);
+		switch (numFlowers) {
+			case 1:
+				return state.with(FLOWER_VARIANT_2, flowerVariant);
+			case 2:
+				return state.with(FLOWER_VARIANT_3, flowerVariant);
+			case 3:
+				return state.with(FLOWER_VARIANT_4, flowerVariant);
+			default:
+				return state;
 		}
 	}
 }
