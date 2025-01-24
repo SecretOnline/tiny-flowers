@@ -84,6 +84,386 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_dandelion"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_dandelion"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_dandelion"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_dandelion"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_dandelion"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_dandelion"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_dandelion"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_dandelion"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_poppy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_poppy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_poppy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_poppy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_poppy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_poppy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_poppy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_poppy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_blue_orchid"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_blue_orchid"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_blue_orchid"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_blue_orchid"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_blue_orchid"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_blue_orchid"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_blue_orchid"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_blue_orchid"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_allium"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_allium"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_allium"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_allium"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_allium"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_allium"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_allium"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_allium"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_azure_bluet"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_azure_bluet"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_azure_bluet"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_azure_bluet"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_azure_bluet"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_azure_bluet"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_azure_bluet"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_azure_bluet"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
             "flower_variant_1": "tiny_flowers_tiny_red_tulip"
           }
         }
@@ -149,6 +529,614 @@
         {
           "type": "minecraft:item",
           "name": "tiny-flowers:tiny_red_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_orange_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_orange_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_orange_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_orange_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_orange_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_orange_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_orange_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_orange_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_white_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_white_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_white_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_white_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_white_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_white_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_white_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_white_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_pink_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_pink_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_pink_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_pink_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_pink_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_pink_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_pink_tulip"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_pink_tulip"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_oxeye_daisy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_oxeye_daisy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_oxeye_daisy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_oxeye_daisy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_oxeye_daisy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_oxeye_daisy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_oxeye_daisy"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_oxeye_daisy"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_cornflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cornflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_cornflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cornflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_cornflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cornflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_cornflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cornflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_lily_of_the_valley"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_lily_of_the_valley"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_lily_of_the_valley"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_lily_of_the_valley"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_lily_of_the_valley"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_lily_of_the_valley"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_lily_of_the_valley"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_lily_of_the_valley"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_closed_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_closed_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_closed_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_closed_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_closed_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_closed_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_closed_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_closed_eyeblossom"
         }
       ],
       "rolls": 1.0

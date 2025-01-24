@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tiny-flowers:item/tiny_orange_tulip"
+  }
+}

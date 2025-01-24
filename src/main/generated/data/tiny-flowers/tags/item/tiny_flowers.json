@@ -1,6 +1,19 @@
 {
   "values": [
     "minecraft:pink_petals",
-    "tiny-flowers:tiny_red_tulip"
+    "tiny-flowers:tiny_dandelion",
+    "tiny-flowers:tiny_poppy",
+    "tiny-flowers:tiny_blue_orchid",
+    "tiny-flowers:tiny_allium",
+    "tiny-flowers:tiny_azure_bluet",
+    "tiny-flowers:tiny_red_tulip",
+    "tiny-flowers:tiny_orange_tulip",
+    "tiny-flowers:tiny_white_tulip",
+    "tiny-flowers:tiny_pink_tulip",
+    "tiny-flowers:tiny_oxeye_daisy",
+    "tiny-flowers:tiny_cornflower",
+    "tiny-flowers:tiny_lily_of_the_valley",
+    "tiny-flowers:tiny_open_eyeblossom",
+    "tiny-flowers:tiny_closed_eyeblossom"
   ]
 }
