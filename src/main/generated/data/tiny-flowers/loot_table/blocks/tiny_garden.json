@@ -996,6 +996,82 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_torchflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_torchflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_torchflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_torchflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_torchflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_torchflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_torchflower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_torchflower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
             "flower_variant_1": "tiny_flowers_tiny_open_eyeblossom"
           }
         }
@@ -1137,6 +1213,82 @@
         {
           "type": "minecraft:item",
           "name": "tiny-flowers:tiny_closed_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_wither_rose"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_wither_rose"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_wither_rose"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_wither_rose"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_wither_rose"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_wither_rose"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_wither_rose"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_wither_rose"
         }
       ],
       "rolls": 1.0
