@@ -8,6 +8,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
+import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.block.PlantBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.item.Item;
@@ -112,19 +113,24 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		}
 
 		if (blockState.isOf(this)) {
-			// Add flower
-			int numFlowers = this.getNumFlowers(blockState);
-			switch (numFlowers) {
-				case 1:
-					return blockState.with(FLOWER_VARIANT_2, flowerVariant);
-				case 2:
-					return blockState.with(FLOWER_VARIANT_3, flowerVariant);
-				case 3:
-					return blockState.with(FLOWER_VARIANT_4, flowerVariant);
-				default:
-					// Is this the correct thing to do?
-					return blockState;
+			return addFlowerToBlockState(blockState, flowerVariant);
+		} else if (blockState.getBlock() instanceof FlowerbedBlock) {
+			// Convert FlowerbedBlock to GardenBlock
+			FlowerVariant existingVariant = FlowerVariant.fromItem(blockState.getBlock());
+			if (existingVariant == FlowerVariant.EMPTY) {
+				// Invalid state
+				throw new IllegalStateException("FlowerbedBlock has no valid flower variant");
 			}
+
+			int prevNumFlowers = blockState.get(FlowerbedBlock.FLOWER_AMOUNT);
+			BlockState baseState = this.getDefaultState().with(FACING, blockState.get(FlowerbedBlock.FACING))
+					.with(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
+					.with(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
+					.with(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)
+					.with(FLOWER_VARIANT_4, prevNumFlowers >= 4 ? existingVariant : FlowerVariant.EMPTY);
+
+			// Add the new type in now that we've converted the block.
+			return addFlowerToBlockState(baseState, flowerVariant);
 		} else {
 			return this.getDefaultState()
 					.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
