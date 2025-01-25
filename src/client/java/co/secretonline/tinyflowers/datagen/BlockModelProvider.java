@@ -102,7 +102,7 @@ public class BlockModelProvider extends FabricModelProvider {
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
 		for (FlowerVariant variant : VARIANTS_TO_GENERATE_MODELS_FOR) {
-			itemModelGenerator.register(variant.getItem(), Models.GENERATED);
+			itemModelGenerator.register(variant.asItem(), Models.GENERATED);
 		}
 	}
 

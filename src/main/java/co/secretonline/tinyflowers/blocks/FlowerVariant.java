@@ -1,16 +1,16 @@
 package co.secretonline.tinyflowers.blocks;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 
-public enum FlowerVariant implements StringIdentifiable {
+public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 	EMPTY("empty", null),
-	PINK_PETALS("pink_petals", Registries.BLOCK.getId(Blocks.PINK_PETALS)),
+	PINK_PETALS("pink_petals", Registries.ITEM.getId(Items.PINK_PETALS)),
 	DANDELION("dandelion", TinyFlowers.id("tiny_dandelion")),
 	POPPY("poppy", TinyFlowers.id("tiny_poppy")),
 	BLUE_ORCHID("blue_orchid", TinyFlowers.id("tiny_blue_orchid")),
@@ -43,7 +43,7 @@ public enum FlowerVariant implements StringIdentifiable {
 		return this.name;
 	}
 
-	public Item getItem() {
+	public Item asItem() {
 		if (this.itemId == null) {
 			throw new IllegalStateException("Entry does not have an associated item");
 		}
@@ -67,7 +67,7 @@ public enum FlowerVariant implements StringIdentifiable {
 				continue;
 			}
 
-			if (variant.getItem().equals(item)) {
+			if (variant.asItem().equals(item)) {
 				return variant;
 			}
 		}

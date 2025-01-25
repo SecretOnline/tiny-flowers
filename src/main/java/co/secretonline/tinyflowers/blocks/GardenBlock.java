@@ -4,6 +4,7 @@ import java.util.function.BiFunction;
 
 import com.mojang.serialization.MapCodec;
 
+import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -156,16 +157,16 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		int numFlowers = getNumFlowers(state);
 		int randomPosition = random.nextInt(numFlowers);
 
-		Item item = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]).getItem();
+		FlowerVariant flowerVariant = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]);
+		if (flowerVariant.isEmpty()) {
+			// Backup in case the block has holes.
+			// This will consume bonemeal for no effect. Might fix this later.
+			TinyFlowers.LOGGER.warn("Tried to grow empty space in garden block");
+			return;
+		}
 
 		if (hasFreeSpace(state)) {
-			// Add flower to gerden based on existing flower variants
-			FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
-			if (flowerVariant.isEmpty()) {
-				// Is this the correct thing to do?
-				return;
-			}
-
+			// Add flower to gerden
 			world.setBlockState(
 					pos,
 					state.with(FLOWER_VARIANT_PROPERTIES[getNumFlowers(state)], flowerVariant),
@@ -173,7 +174,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		} else {
 			// Drop an item based on the variants in the garden. At this stage we can assume
 			// that the garden is full.
-			dropStack(world, pos, new ItemStack(item));
+			dropStack(world, pos, new ItemStack(flowerVariant));
 		}
 	}
 

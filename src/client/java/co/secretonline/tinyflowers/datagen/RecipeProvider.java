@@ -43,7 +43,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 			@Override
 			public void generate() {
 				for (Map.Entry<FlowerVariant, Item> entry : RECIPE_ITEMS.entrySet()) {
-					createShapeless(RecipeCategory.DECORATIONS, entry.getKey().getItem(), 4)
+					createShapeless(RecipeCategory.DECORATIONS, entry.getKey(), 4)
 							.input(Items.SHEARS).input(entry.getValue())
 							.criterion(hasItem(Items.SHEARS), conditionsFromItem(Items.SHEARS))
 							.offerTo(exporter);

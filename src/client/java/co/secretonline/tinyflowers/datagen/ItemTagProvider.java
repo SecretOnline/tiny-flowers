@@ -26,7 +26,7 @@ public class ItemTagProvider extends FabricTagProvider<Item> {
 				continue;
 			}
 
-			builder.add(variant.getItem());
+			builder.add(variant.asItem());
 		}
 
 		getOrCreateTagBuilder(ItemTags.BEE_FOOD).addTag(ModItemTags.TINY_FLOWERS);
