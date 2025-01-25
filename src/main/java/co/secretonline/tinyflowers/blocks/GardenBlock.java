@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.blocks;
 
+import java.util.List;
 import java.util.function.BiFunction;
 
 import com.mojang.serialization.MapCodec;
@@ -15,12 +16,15 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Util;
@@ -112,19 +116,27 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			if (!blockState.isOf(this) && Block.getBlockFromItem(item) == this) {
 				// The item is a GardenBlock block item, but not any of the variants.
 				// At this point we assume that the item is a pre-formed garden item.
-				BlockStateComponent itemBlockState = ctx.getStack().get(DataComponentTypes.BLOCK_STATE);
+				BlockStateComponent itemBlockState = ctx.getStack().getOrDefault(DataComponentTypes.BLOCK_STATE, null);
+				if (itemBlockState == null) {
+					// Item doesn't have any blockstate set, so do nothing.
+					return blockState;
+				}
 
 				FlowerVariant variant1 = itemBlockState.getValue(FLOWER_VARIANT_1);
 				FlowerVariant variant2 = itemBlockState.getValue(FLOWER_VARIANT_2);
 				FlowerVariant variant3 = itemBlockState.getValue(FLOWER_VARIANT_3);
 				FlowerVariant variant4 = itemBlockState.getValue(FLOWER_VARIANT_4);
+				variant1 = variant1 == null ? FlowerVariant.EMPTY : variant1;
+				variant2 = variant2 == null ? FlowerVariant.EMPTY : variant2;
+				variant3 = variant3 == null ? FlowerVariant.EMPTY : variant3;
+				variant4 = variant4 == null ? FlowerVariant.EMPTY : variant4;
 
 				return this.getDefaultState()
 						.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
-						.with(FLOWER_VARIANT_1, variant1 == null ? FlowerVariant.EMPTY : variant1)
-						.with(FLOWER_VARIANT_2, variant2 == null ? FlowerVariant.EMPTY : variant2)
-						.with(FLOWER_VARIANT_3, variant3 == null ? FlowerVariant.EMPTY : variant3)
-						.with(FLOWER_VARIANT_4, variant4 == null ? FlowerVariant.EMPTY : variant4);
+						.with(FLOWER_VARIANT_1, variant1)
+						.with(FLOWER_VARIANT_2, variant2)
+						.with(FLOWER_VARIANT_3, variant3)
+						.with(FLOWER_VARIANT_4, variant4);
 			}
 
 			// Is this the correct thing to do?
@@ -220,6 +232,30 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		}
 
 		return new ItemStack(firstVariant);
+	}
+
+	@Override
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType options) {
+		super.appendTooltip(stack, context, tooltip, options);
+
+		BlockStateComponent itemBlockState = stack.getOrDefault(DataComponentTypes.BLOCK_STATE, null);
+		if (itemBlockState == null) {
+			return;
+		}
+
+		FlowerVariant variant1 = itemBlockState.getValue(FLOWER_VARIANT_1);
+		FlowerVariant variant2 = itemBlockState.getValue(FLOWER_VARIANT_2);
+		FlowerVariant variant3 = itemBlockState.getValue(FLOWER_VARIANT_3);
+		FlowerVariant variant4 = itemBlockState.getValue(FLOWER_VARIANT_4);
+		variant1 = variant1 == null ? FlowerVariant.EMPTY : variant1;
+		variant2 = variant2 == null ? FlowerVariant.EMPTY : variant2;
+		variant3 = variant3 == null ? FlowerVariant.EMPTY : variant3;
+		variant4 = variant4 == null ? FlowerVariant.EMPTY : variant4;
+
+		tooltip.add(Text.translatable(variant1.getTranslationKey()));
+		tooltip.add(Text.translatable(variant2.getTranslationKey()));
+		tooltip.add(Text.translatable(variant3.getTranslationKey()));
+		tooltip.add(Text.translatable(variant4.getTranslationKey()));
 	}
 
 	public static boolean hasFreeSpace(BlockState state) {

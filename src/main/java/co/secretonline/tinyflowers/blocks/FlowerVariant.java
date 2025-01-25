@@ -59,6 +59,14 @@ public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 		return this.itemId;
 	}
 
+	public String getTranslationKey() {
+		if (this.isEmpty()) {
+			return "item.tiny-flowers.tiny_garden.empty";
+		}
+
+		return this.asItem().getTranslationKey();
+	}
+
 	public static FlowerVariant fromItem(ItemConvertible itemConvertible) {
 		Item item = itemConvertible.asItem();
 
