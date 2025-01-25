@@ -42,8 +42,8 @@ public class ModBlocks {
 	public static final Item TINY_PINK_TULIP = registerBlockItem("tiny_pink_tulip");
 	public static final Item TINY_OXEYE_DAISY = registerBlockItem("tiny_oxeye_daisy");
 	public static final Item TINY_CORNFLOWER = registerBlockItem("tiny_cornflower");
-	public static final Item TINY_TORCHFLOWER = registerBlockItem("tiny_torchflower");
 	public static final Item TINY_LILY_OF_THE_VALLEY = registerBlockItem("tiny_lily_of_the_valley");
+	public static final Item TINY_TORCHFLOWER = registerBlockItem("tiny_torchflower");
 	public static final Item TINY_OPEN_EYEBLOSSOM = registerBlockItem("tiny_open_eyeblossom");
 	public static final Item TINY_CLOSED_EYEBLOSSOM = registerBlockItem("tiny_closed_eyeblossom");
 	public static final Item TINY_WITHER_ROSE = registerBlockItem("tiny_wither_rose");

@@ -30,7 +30,7 @@ public class FlowerbedBlockMixin extends PlantBlock {
 
 			Item item = context.getStack().getItem();
 			FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
-			if (flowerVariant == FlowerVariant.EMPTY) {
+			if (flowerVariant.isEmpty()) {
 				// The item is not a valid flower variant, so we don't need to do anything.
 				return;
 			}
@@ -59,7 +59,7 @@ public class FlowerbedBlockMixin extends PlantBlock {
 			// There's space in the garden, so add a flower.
 			// That double cast is nasty.
 			FlowerVariant flowerVariant = FlowerVariant.fromItem((FlowerbedBlock) (Object) this);
-			if (flowerVariant == FlowerVariant.EMPTY) {
+			if (flowerVariant.isEmpty()) {
 				// Is this the correct thing to do?
 				// Do we need to do anything to prevent the item from being consumed?
 				info.setReturnValue(blockState);

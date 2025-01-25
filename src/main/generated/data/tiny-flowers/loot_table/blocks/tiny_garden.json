@@ -8,7 +8,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "minecraft_pink_petals"
+            "flower_variant_1": "pink_petals"
           }
         }
       ],
@@ -27,7 +27,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "minecraft_pink_petals"
+            "flower_variant_2": "pink_petals"
           }
         }
       ],
@@ -46,7 +46,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "minecraft_pink_petals"
+            "flower_variant_3": "pink_petals"
           }
         }
       ],
@@ -65,7 +65,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "minecraft_pink_petals"
+            "flower_variant_4": "pink_petals"
           }
         }
       ],
@@ -84,7 +84,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_dandelion"
+            "flower_variant_1": "dandelion"
           }
         }
       ],
@@ -103,7 +103,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_dandelion"
+            "flower_variant_2": "dandelion"
           }
         }
       ],
@@ -122,7 +122,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_dandelion"
+            "flower_variant_3": "dandelion"
           }
         }
       ],
@@ -141,7 +141,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_dandelion"
+            "flower_variant_4": "dandelion"
           }
         }
       ],
@@ -160,7 +160,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_poppy"
+            "flower_variant_1": "poppy"
           }
         }
       ],
@@ -179,7 +179,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_poppy"
+            "flower_variant_2": "poppy"
           }
         }
       ],
@@ -198,7 +198,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_poppy"
+            "flower_variant_3": "poppy"
           }
         }
       ],
@@ -217,7 +217,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_poppy"
+            "flower_variant_4": "poppy"
           }
         }
       ],
@@ -236,7 +236,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_blue_orchid"
+            "flower_variant_1": "blue_orchid"
           }
         }
       ],
@@ -255,7 +255,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_blue_orchid"
+            "flower_variant_2": "blue_orchid"
           }
         }
       ],
@@ -274,7 +274,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_blue_orchid"
+            "flower_variant_3": "blue_orchid"
           }
         }
       ],
@@ -293,7 +293,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_blue_orchid"
+            "flower_variant_4": "blue_orchid"
           }
         }
       ],
@@ -312,7 +312,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_allium"
+            "flower_variant_1": "allium"
           }
         }
       ],
@@ -331,7 +331,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_allium"
+            "flower_variant_2": "allium"
           }
         }
       ],
@@ -350,7 +350,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_allium"
+            "flower_variant_3": "allium"
           }
         }
       ],
@@ -369,7 +369,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_allium"
+            "flower_variant_4": "allium"
           }
         }
       ],
@@ -388,7 +388,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_azure_bluet"
+            "flower_variant_1": "azure_bluet"
           }
         }
       ],
@@ -407,7 +407,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_azure_bluet"
+            "flower_variant_2": "azure_bluet"
           }
         }
       ],
@@ -426,7 +426,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_azure_bluet"
+            "flower_variant_3": "azure_bluet"
           }
         }
       ],
@@ -445,7 +445,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_azure_bluet"
+            "flower_variant_4": "azure_bluet"
           }
         }
       ],
@@ -464,7 +464,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_red_tulip"
+            "flower_variant_1": "red_tulip"
           }
         }
       ],
@@ -483,7 +483,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_red_tulip"
+            "flower_variant_2": "red_tulip"
           }
         }
       ],
@@ -502,7 +502,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_red_tulip"
+            "flower_variant_3": "red_tulip"
           }
         }
       ],
@@ -521,7 +521,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_red_tulip"
+            "flower_variant_4": "red_tulip"
           }
         }
       ],
@@ -540,7 +540,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_orange_tulip"
+            "flower_variant_1": "orange_tulip"
           }
         }
       ],
@@ -559,7 +559,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_orange_tulip"
+            "flower_variant_2": "orange_tulip"
           }
         }
       ],
@@ -578,7 +578,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_orange_tulip"
+            "flower_variant_3": "orange_tulip"
           }
         }
       ],
@@ -597,7 +597,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_orange_tulip"
+            "flower_variant_4": "orange_tulip"
           }
         }
       ],
@@ -616,7 +616,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_white_tulip"
+            "flower_variant_1": "white_tulip"
           }
         }
       ],
@@ -635,7 +635,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_white_tulip"
+            "flower_variant_2": "white_tulip"
           }
         }
       ],
@@ -654,7 +654,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_white_tulip"
+            "flower_variant_3": "white_tulip"
           }
         }
       ],
@@ -673,7 +673,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_white_tulip"
+            "flower_variant_4": "white_tulip"
           }
         }
       ],
@@ -692,7 +692,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_pink_tulip"
+            "flower_variant_1": "pink_tulip"
           }
         }
       ],
@@ -711,7 +711,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_pink_tulip"
+            "flower_variant_2": "pink_tulip"
           }
         }
       ],
@@ -730,7 +730,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_pink_tulip"
+            "flower_variant_3": "pink_tulip"
           }
         }
       ],
@@ -749,7 +749,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_pink_tulip"
+            "flower_variant_4": "pink_tulip"
           }
         }
       ],
@@ -768,7 +768,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_oxeye_daisy"
+            "flower_variant_1": "oxeye_daisy"
           }
         }
       ],
@@ -787,7 +787,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_oxeye_daisy"
+            "flower_variant_2": "oxeye_daisy"
           }
         }
       ],
@@ -806,7 +806,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_oxeye_daisy"
+            "flower_variant_3": "oxeye_daisy"
           }
         }
       ],
@@ -825,7 +825,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_oxeye_daisy"
+            "flower_variant_4": "oxeye_daisy"
           }
         }
       ],
@@ -844,7 +844,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_cornflower"
+            "flower_variant_1": "cornflower"
           }
         }
       ],
@@ -863,7 +863,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_cornflower"
+            "flower_variant_2": "cornflower"
           }
         }
       ],
@@ -882,7 +882,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_cornflower"
+            "flower_variant_3": "cornflower"
           }
         }
       ],
@@ -901,7 +901,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_cornflower"
+            "flower_variant_4": "cornflower"
           }
         }
       ],
@@ -920,7 +920,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_lily_of_the_valley"
+            "flower_variant_1": "lily_of_the_valley"
           }
         }
       ],
@@ -939,7 +939,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_lily_of_the_valley"
+            "flower_variant_2": "lily_of_the_valley"
           }
         }
       ],
@@ -958,7 +958,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_lily_of_the_valley"
+            "flower_variant_3": "lily_of_the_valley"
           }
         }
       ],
@@ -977,7 +977,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_lily_of_the_valley"
+            "flower_variant_4": "lily_of_the_valley"
           }
         }
       ],
@@ -996,7 +996,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_torchflower"
+            "flower_variant_1": "torchflower"
           }
         }
       ],
@@ -1015,7 +1015,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_torchflower"
+            "flower_variant_2": "torchflower"
           }
         }
       ],
@@ -1034,7 +1034,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_torchflower"
+            "flower_variant_3": "torchflower"
           }
         }
       ],
@@ -1053,7 +1053,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_torchflower"
+            "flower_variant_4": "torchflower"
           }
         }
       ],
@@ -1072,7 +1072,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_closed_eyeblossom"
+            "flower_variant_1": "closed_eyeblossom"
           }
         }
       ],
@@ -1091,7 +1091,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_closed_eyeblossom"
+            "flower_variant_2": "closed_eyeblossom"
           }
         }
       ],
@@ -1110,7 +1110,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_closed_eyeblossom"
+            "flower_variant_3": "closed_eyeblossom"
           }
         }
       ],
@@ -1129,7 +1129,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_closed_eyeblossom"
+            "flower_variant_4": "closed_eyeblossom"
           }
         }
       ],
@@ -1148,7 +1148,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_open_eyeblossom"
+            "flower_variant_1": "open_eyeblossom"
           }
         }
       ],
@@ -1167,7 +1167,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_open_eyeblossom"
+            "flower_variant_2": "open_eyeblossom"
           }
         }
       ],
@@ -1186,7 +1186,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_open_eyeblossom"
+            "flower_variant_3": "open_eyeblossom"
           }
         }
       ],
@@ -1205,7 +1205,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_open_eyeblossom"
+            "flower_variant_4": "open_eyeblossom"
           }
         }
       ],
@@ -1224,7 +1224,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_wither_rose"
+            "flower_variant_1": "wither_rose"
           }
         }
       ],
@@ -1243,7 +1243,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_wither_rose"
+            "flower_variant_2": "wither_rose"
           }
         }
       ],
@@ -1262,7 +1262,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_wither_rose"
+            "flower_variant_3": "wither_rose"
           }
         }
       ],
@@ -1281,7 +1281,7 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_wither_rose"
+            "flower_variant_4": "wither_rose"
           }
         }
       ],

@@ -22,11 +22,11 @@ public class ItemTagProvider extends FabricTagProvider<Item> {
 
 		// Add all items/blocks that correspond to tiny flower variants to tag
 		for (FlowerVariant variant : FlowerVariant.values()) {
-			if (variant == FlowerVariant.EMPTY) {
+			if (variant.isEmpty()) {
 				continue;
 			}
 
-			builder.add(variant.identifier);
+			builder.add(variant.getItem());
 		}
 
 		getOrCreateTagBuilder(ItemTags.BEE_FOOD).addTag(ModItemTags.TINY_FLOWERS);

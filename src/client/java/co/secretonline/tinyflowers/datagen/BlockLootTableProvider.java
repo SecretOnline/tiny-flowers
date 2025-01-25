@@ -13,7 +13,6 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.predicate.StatePredicate;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 
 public class BlockLootTableProvider extends FabricBlockLootTableProvider {
@@ -27,11 +26,11 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 		LootTable.Builder lootTableBuilder = LootTable.builder();
 
 		for (FlowerVariant variant : FlowerVariant.values()) {
-			if (variant == FlowerVariant.EMPTY) {
+			if (variant.isEmpty()) {
 				continue;
 			}
 
-			Item item = Registries.ITEM.get(variant.identifier);
+			Item item = variant.getItem();
 
 			for (var property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
 				lootTableBuilder.pool(LootPool.builder()

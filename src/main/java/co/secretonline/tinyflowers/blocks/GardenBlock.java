@@ -14,14 +14,12 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -107,7 +105,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 		Item item = ctx.getStack().getItem();
 		FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
-		if (flowerVariant == FlowerVariant.EMPTY) {
+		if (flowerVariant.isEmpty()) {
 			// Is this the correct thing to do?
 			return blockState;
 		}
@@ -117,7 +115,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		} else if (blockState.getBlock() instanceof FlowerbedBlock) {
 			// Convert FlowerbedBlock to GardenBlock
 			FlowerVariant existingVariant = FlowerVariant.fromItem(blockState.getBlock());
-			if (existingVariant == FlowerVariant.EMPTY) {
+			if (existingVariant.isEmpty()) {
 				// Invalid state
 				throw new IllegalStateException("FlowerbedBlock has no valid flower variant");
 			}
@@ -158,13 +156,12 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		int numFlowers = getNumFlowers(state);
 		int randomPosition = random.nextInt(numFlowers);
 
-		Identifier itemId = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]).identifier;
-		Item item = Registries.ITEM.get(itemId);
+		Item item = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]).getItem();
 
 		if (hasFreeSpace(state)) {
 			// Add flower to gerden based on existing flower variants
 			FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
-			if (flowerVariant == FlowerVariant.EMPTY) {
+			if (flowerVariant.isEmpty()) {
 				// Is this the correct thing to do?
 				return;
 			}
@@ -181,15 +178,15 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	}
 
 	public static boolean hasFreeSpace(BlockState state) {
-		return state.get(FLOWER_VARIANT_4).equals(FlowerVariant.EMPTY);
+		return state.get(FLOWER_VARIANT_4).isEmpty();
 	}
 
 	private static int getNumFlowers(BlockState state) {
-		if (!state.get(FLOWER_VARIANT_4).equals(FlowerVariant.EMPTY)) {
+		if (!state.get(FLOWER_VARIANT_4).isEmpty()) {
 			return 4;
-		} else if (!state.get(FLOWER_VARIANT_3).equals(FlowerVariant.EMPTY)) {
+		} else if (!state.get(FLOWER_VARIANT_3).isEmpty()) {
 			return 3;
-		} else if (!state.get(FLOWER_VARIANT_2).equals(FlowerVariant.EMPTY)) {
+		} else if (!state.get(FLOWER_VARIANT_2).isEmpty()) {
 			return 2;
 		} else {
 			return 1;
