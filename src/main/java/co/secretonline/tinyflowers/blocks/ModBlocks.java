@@ -75,10 +75,10 @@ public class ModBlocks {
 			itemGroup.add(TINY_PINK_TULIP);
 			itemGroup.add(TINY_OXEYE_DAISY);
 			itemGroup.add(TINY_CORNFLOWER);
-			itemGroup.add(TINY_TORCHFLOWER);
 			itemGroup.add(TINY_LILY_OF_THE_VALLEY);
-			itemGroup.add(TINY_OPEN_EYEBLOSSOM);
+			itemGroup.add(TINY_TORCHFLOWER);
 			itemGroup.add(TINY_CLOSED_EYEBLOSSOM);
+			itemGroup.add(TINY_OPEN_EYEBLOSSOM);
 			itemGroup.add(TINY_WITHER_ROSE);
 		});
 	}

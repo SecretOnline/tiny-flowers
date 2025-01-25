@@ -23,8 +23,8 @@ public enum FlowerVariant implements StringIdentifiable {
 	CORNFLOWER(TinyFlowers.id("tiny_cornflower")),
 	LILY_OF_THE_VALLEY(TinyFlowers.id("tiny_lily_of_the_valley")),
 	TORCHFLOWER(TinyFlowers.id("tiny_torchflower")),
-	OPEN_EYEBLOSSOM(TinyFlowers.id("tiny_open_eyeblossom")),
 	CLOSED_EYEBLOSSOM(TinyFlowers.id("tiny_closed_eyeblossom")),
+	OPEN_EYEBLOSSOM(TinyFlowers.id("tiny_open_eyeblossom")),
 	WITHER_ROSE(TinyFlowers.id("tiny_wither_rose"));
 
 	public final Identifier identifier;

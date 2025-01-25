@@ -14,8 +14,8 @@
     "tiny-flowers:tiny_cornflower",
     "tiny-flowers:tiny_lily_of_the_valley",
     "tiny-flowers:tiny_torchflower",
-    "tiny-flowers:tiny_open_eyeblossom",
     "tiny-flowers:tiny_closed_eyeblossom",
+    "tiny-flowers:tiny_open_eyeblossom",
     "tiny-flowers:tiny_wither_rose"
   ]
 }

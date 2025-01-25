@@ -1072,82 +1072,6 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "flower_variant_1": "tiny_flowers_tiny_open_eyeblossom"
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "tiny-flowers:tiny_open_eyeblossom"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "tiny-flowers:tiny_garden",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "flower_variant_2": "tiny_flowers_tiny_open_eyeblossom"
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "tiny-flowers:tiny_open_eyeblossom"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "tiny-flowers:tiny_garden",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "flower_variant_3": "tiny_flowers_tiny_open_eyeblossom"
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "tiny-flowers:tiny_open_eyeblossom"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "tiny-flowers:tiny_garden",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "flower_variant_4": "tiny_flowers_tiny_open_eyeblossom"
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "tiny-flowers:tiny_open_eyeblossom"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "tiny-flowers:tiny_garden",
-          "condition": "minecraft:block_state_property",
-          "properties": {
             "flower_variant_1": "tiny_flowers_tiny_closed_eyeblossom"
           }
         }
@@ -1213,6 +1137,82 @@
         {
           "type": "minecraft:item",
           "name": "tiny-flowers:tiny_closed_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "tiny_flowers_tiny_open_eyeblossom"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_open_eyeblossom"
         }
       ],
       "rolls": 1.0
