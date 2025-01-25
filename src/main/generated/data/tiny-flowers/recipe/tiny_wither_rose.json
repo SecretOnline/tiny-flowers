@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:shears",
+    "minecraft:wither_rose"
+  ],
+  "result": {
+    "count": 4,
+    "id": "tiny-flowers:tiny_wither_rose"
+  }
+}

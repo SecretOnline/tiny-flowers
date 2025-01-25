@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:shears",
+    "minecraft:lily_of_the_valley"
+  ],
+  "result": {
+    "count": 4,
+    "id": "tiny-flowers:tiny_lily_of_the_valley"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:shears",
+    "minecraft:blue_orchid"
+  ],
+  "result": {
+    "count": 4,
+    "id": "tiny-flowers:tiny_blue_orchid"
+  }
+}
