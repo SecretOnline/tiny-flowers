@@ -12,6 +12,8 @@ import net.minecraft.block.Fertilizable;
 import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.block.PlantBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -107,6 +109,24 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		Item item = ctx.getStack().getItem();
 		FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
 		if (flowerVariant.isEmpty()) {
+			if (!blockState.isOf(this) && Block.getBlockFromItem(item) == this) {
+				// The item is a GardenBlock block item, but not any of the variants.
+				// At this point we assume that the item is a pre-formed garden item.
+				BlockStateComponent itemBlockState = ctx.getStack().get(DataComponentTypes.BLOCK_STATE);
+
+				FlowerVariant variant1 = itemBlockState.getValue(FLOWER_VARIANT_1);
+				FlowerVariant variant2 = itemBlockState.getValue(FLOWER_VARIANT_2);
+				FlowerVariant variant3 = itemBlockState.getValue(FLOWER_VARIANT_3);
+				FlowerVariant variant4 = itemBlockState.getValue(FLOWER_VARIANT_4);
+
+				return this.getDefaultState()
+						.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
+						.with(FLOWER_VARIANT_1, variant1 == null ? FlowerVariant.EMPTY : variant1)
+						.with(FLOWER_VARIANT_2, variant2 == null ? FlowerVariant.EMPTY : variant2)
+						.with(FLOWER_VARIANT_3, variant3 == null ? FlowerVariant.EMPTY : variant3)
+						.with(FLOWER_VARIANT_4, variant4 == null ? FlowerVariant.EMPTY : variant4);
+			}
+
 			// Is this the correct thing to do?
 			return blockState;
 		}
@@ -176,6 +196,30 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			// that the garden is full.
 			dropStack(world, pos, new ItemStack(flowerVariant));
 		}
+	}
+
+	@Override
+	protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+		if (includeData) {
+			BlockStateComponent blockStateComponent = BlockStateComponent.DEFAULT
+					.with(FLOWER_VARIANT_1, state.get(FLOWER_VARIANT_1))
+					.with(FLOWER_VARIANT_2, state.get(FLOWER_VARIANT_2))
+					.with(FLOWER_VARIANT_3, state.get(FLOWER_VARIANT_3))
+					.with(FLOWER_VARIANT_4, state.get(FLOWER_VARIANT_4));
+
+			ItemStack stack = new ItemStack(this.asItem());
+			stack.set(DataComponentTypes.BLOCK_STATE, blockStateComponent);
+
+			return stack;
+		}
+
+		FlowerVariant firstVariant = state.get(FLOWER_VARIANT_1);
+		if (firstVariant.isEmpty()) {
+			TinyFlowers.LOGGER.warn("Tried to pick flower from empty garden");
+			return ItemStack.EMPTY;
+		}
+
+		return new ItemStack(firstVariant);
 	}
 
 	public static boolean hasFreeSpace(BlockState state) {

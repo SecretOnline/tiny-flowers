@@ -101,6 +101,8 @@ public class BlockModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+		itemModelGenerator.register(ModBlocks.TINY_GARDEN.asItem(), Models.GENERATED);
+
 		for (FlowerVariant variant : VARIANTS_TO_GENERATE_MODELS_FOR) {
 			itemModelGenerator.register(variant.asItem(), Models.GENERATED);
 		}

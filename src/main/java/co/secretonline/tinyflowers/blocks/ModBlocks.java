@@ -30,6 +30,9 @@ public class ModBlocks {
 							.sounds(BlockSoundGroup.PINK_PETALS)
 							.pistonBehavior(PistonBehavior.DESTROY)),
 			TINY_GARDEN_KEY);
+	public static final RegistryKey<Item> TINY_GARDEN_ITEM_KEY = RegistryKey.of(
+			RegistryKeys.ITEM,
+			TINY_GARDEN_KEY.getValue());
 
 	public static final Item TINY_DANDELION = registerBlockItem("tiny_dandelion");
 	public static final Item TINY_POPPY = registerBlockItem("tiny_poppy");
@@ -48,6 +51,9 @@ public class ModBlocks {
 	public static final Item TINY_CLOSED_EYEBLOSSOM = registerBlockItem("tiny_closed_eyeblossom");
 	public static final Item TINY_WITHER_ROSE = registerBlockItem("tiny_wither_rose");
 
+	// This declaration MUST be last to keep the Block/Item mappings correct.
+	public static final Item TINY_GARDEN_ITEM = registerBlockItem("tiny_garden");
+
 	public static Block registerBlockOnly(Block block, RegistryKey<Block> blockKey) {
 		return Registry.register(Registries.BLOCK, blockKey, block);
 	}
@@ -56,10 +62,6 @@ public class ModBlocks {
 		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, TinyFlowers.id(path));
 		return Registry.register(Registries.ITEM, itemKey,
 				new BlockItem(TINY_GARDEN, new Item.Settings().registryKey(itemKey)));
-	}
-
-	public static Item registerItem(Item item, RegistryKey<Item> registryKey) {
-		return Registry.register(Registries.ITEM, registryKey.getValue(), item);
 	}
 
 	public static void initialize() {
