@@ -1,26 +1,30 @@
 package co.secretonline.tinyflowers.datagen.data;
 
+import java.util.function.Function;
+
 import net.minecraft.client.data.TextureKey;
 import net.minecraft.client.data.TextureMap;
 import net.minecraft.util.Identifier;
 
 public class ModTextureMap {
-	public static TextureMap flowerbed(Identifier itemId) {
-		return new TextureMap()
-				.put(TextureKey.FLOWERBED, itemId.withPath(path -> "block/" + path))
-				.put(TextureKey.STEM, Identifier.ofVanilla("block/pink_petals_stem"));
+	public static Function<Identifier, TextureMap> flowerbed() {
+		return flowerbed(Identifier.ofVanilla("block/pink_petals_stem"));
 	}
 
-	public static TextureMap flowerbedStem(Identifier itemId) {
-		return new TextureMap()
+	public static Function<Identifier, TextureMap> flowerbed(Identifier stemIdentifier) {
+		return (itemId) -> new TextureMap()
 				.put(TextureKey.FLOWERBED, itemId.withPath(path -> "block/" + path))
-				.put(TextureKey.STEM, itemId.withPath(path -> "block/" + path + "_stem"));
+				.put(TextureKey.STEM, stemIdentifier);
 	}
 
-	public static TextureMap flowerbedDouble(Identifier itemId) {
-		return new TextureMap()
+	public static Function<Identifier, TextureMap> flowerbedDouble() {
+		return flowerbedDouble(Identifier.ofVanilla("block/pink_petals_stem"));
+	}
+
+	public static Function<Identifier, TextureMap> flowerbedDouble(Identifier stemIdentifier) {
+		return (itemId) -> new TextureMap()
 				.put(TextureKey.FLOWERBED, itemId.withPath(path -> "block/" + path))
-				.put(TextureKey.STEM, itemId.withPath(path -> "block/" + path + "_stem"))
+				.put(TextureKey.STEM, stemIdentifier)
 				.put(ModTextureKey.FLOWERBED_UPPER, itemId.withPath(path -> "block/" + path + "_upper"));
 	}
 }

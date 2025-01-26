@@ -3,6 +3,7 @@ package co.secretonline.tinyflowers.datagen;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
@@ -31,7 +32,7 @@ public class BlockModelProvider extends FabricModelProvider {
 
 	private final static ModelGroup[] MODEL_GROUPS = new ModelGroup[] {
 			new ModelGroup(ModModels.Quartet.FLOWERBED,
-					ModTextureMap::flowerbed,
+					ModTextureMap.flowerbed(),
 					new FlowerVariant[] {
 							FlowerVariant.DANDELION,
 							FlowerVariant.POPPY,
@@ -46,12 +47,16 @@ public class BlockModelProvider extends FabricModelProvider {
 							FlowerVariant.CORNFLOWER,
 							FlowerVariant.LILY_OF_THE_VALLEY,
 							FlowerVariant.TORCHFLOWER,
-							FlowerVariant.CLOSED_EYEBLOSSOM,
 					}),
-			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM, ModTextureMap::flowerbedStem,
+			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM,
+					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_wither_rose_stem")),
 					new FlowerVariant[] { FlowerVariant.WITHER_ROSE, }),
-			new ModelGroup(ModModels.Quartet.FLOWERBED_DOUBLE_GLOW, ModTextureMap::flowerbedDouble,
+			new ModelGroup(ModModels.Quartet.FLOWERBED_DOUBLE_GLOW,
+					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tiny_eyeblossom_stem")),
 					new FlowerVariant[] { FlowerVariant.OPEN_EYEBLOSSOM, }),
+			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM,
+					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_eyeblossom_stem")),
+					new FlowerVariant[] { FlowerVariant.CLOSED_EYEBLOSSOM, }),
 	};
 
 	public BlockModelProvider(FabricDataOutput generator) {

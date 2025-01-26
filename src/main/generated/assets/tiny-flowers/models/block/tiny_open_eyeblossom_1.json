@@ -3,6 +3,6 @@
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_open_eyeblossom",
     "flowerbed_upper": "tiny-flowers:block/tiny_open_eyeblossom_upper",
-    "stem": "tiny-flowers:block/tiny_open_eyeblossom_stem"
+    "stem": "tiny-flowers:block/tiny_eyeblossom_stem"
   }
 }
