@@ -39,24 +39,38 @@ public class BlockModelProvider extends FabricModelProvider {
 							FlowerVariant.BLUE_ORCHID,
 							FlowerVariant.ALLIUM,
 							FlowerVariant.AZURE_BLUET,
-							FlowerVariant.RED_TULIP,
-							FlowerVariant.ORANGE_TULIP,
-							FlowerVariant.WHITE_TULIP,
-							FlowerVariant.PINK_TULIP,
 							FlowerVariant.OXEYE_DAISY,
 							FlowerVariant.CORNFLOWER,
-							FlowerVariant.LILY_OF_THE_VALLEY,
 							FlowerVariant.TORCHFLOWER,
 					}),
 			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM,
 					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_wither_rose_stem")),
-					new FlowerVariant[] { FlowerVariant.WITHER_ROSE, }),
+					new FlowerVariant[] {
+							FlowerVariant.WITHER_ROSE,
+					}),
+			new ModelGroup(ModModels.Quartet.FLOWERBED_TULIP,
+					ModTextureMap.flowerbed(),
+					new FlowerVariant[] {
+							FlowerVariant.RED_TULIP,
+							FlowerVariant.ORANGE_TULIP,
+							FlowerVariant.WHITE_TULIP,
+							FlowerVariant.PINK_TULIP,
+					}),
+			new ModelGroup(ModModels.Quartet.FLOWERBED_DOUBLE,
+					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tall_tiny_flower_stem")),
+					new FlowerVariant[] {
+							FlowerVariant.LILY_OF_THE_VALLEY,
+					}),
 			new ModelGroup(ModModels.Quartet.FLOWERBED_DOUBLE_GLOW,
 					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tiny_eyeblossom_stem")),
-					new FlowerVariant[] { FlowerVariant.OPEN_EYEBLOSSOM, }),
+					new FlowerVariant[] {
+							FlowerVariant.OPEN_EYEBLOSSOM,
+					}),
 			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM,
 					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_eyeblossom_stem")),
-					new FlowerVariant[] { FlowerVariant.CLOSED_EYEBLOSSOM, }),
+					new FlowerVariant[] {
+							FlowerVariant.CLOSED_EYEBLOSSOM,
+					}),
 	};
 
 	public BlockModelProvider(FabricDataOutput generator) {

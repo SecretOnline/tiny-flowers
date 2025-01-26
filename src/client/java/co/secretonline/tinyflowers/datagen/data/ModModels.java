@@ -21,6 +21,19 @@ public class ModModels {
 			"flowerbed_stem_4", "_4",
 			TextureKey.FLOWERBED, TextureKey.STEM);
 
+	public static final Model FLOWERBED_TULIP_1 = block(
+			"flowerbed_tulip_1", "_1",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model FLOWERBED_TULIP_2 = block(
+			"flowerbed_tulip_2", "_2",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model FLOWERBED_TULIP_3 = block(
+			"flowerbed_tulip_3", "_3",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model FLOWERBED_TULIP_4 = block(
+			"flowerbed_tulip_4", "_4",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+
 	public static final Model FLOWERBED_DOUBLE_1 = block(
 			"flowerbed_double_1", "_1",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
@@ -59,6 +72,10 @@ public class ModModels {
 		public static Quartet FLOWERBED_STEM = new Quartet(
 				FLOWERBED_STEM_1, FLOWERBED_STEM_2,
 				FLOWERBED_STEM_3, FLOWERBED_STEM_4);
+
+		public static Quartet FLOWERBED_TULIP = new Quartet(
+				FLOWERBED_TULIP_1, FLOWERBED_TULIP_2,
+				FLOWERBED_TULIP_3, FLOWERBED_TULIP_4);
 
 		public static Quartet FLOWERBED_DOUBLE = new Quartet(
 				FLOWERBED_DOUBLE_1, FLOWERBED_DOUBLE_2,
