@@ -1,18 +1,22 @@
 package co.secretonline.tinyflowers.datagen;
 
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
+import co.secretonline.tinyflowers.datagen.data.ModModels;
+import co.secretonline.tinyflowers.datagen.data.ModTextureMap;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.BlockStateVariant;
 import net.minecraft.client.data.ItemModelGenerator;
+import net.minecraft.client.data.ModelSupplier;
 import net.minecraft.client.data.Models;
 import net.minecraft.client.data.MultipartBlockStateSupplier;
-import net.minecraft.client.data.TextureKey;
 import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.TexturedModel;
 import net.minecraft.client.data.VariantSettings;
 import net.minecraft.client.data.When;
 import net.minecraft.state.property.EnumProperty;
@@ -25,23 +29,29 @@ public class BlockModelProvider extends FabricModelProvider {
 			Direction.NORTH, Direction.EAST,
 			Direction.SOUTH, Direction.WEST, };
 
-	private final static FlowerVariant[] VARIANTS_TO_GENERATE_MODELS_FOR = new FlowerVariant[] {
-			FlowerVariant.DANDELION,
-			FlowerVariant.POPPY,
-			FlowerVariant.BLUE_ORCHID,
-			FlowerVariant.ALLIUM,
-			FlowerVariant.AZURE_BLUET,
-			FlowerVariant.RED_TULIP,
-			FlowerVariant.ORANGE_TULIP,
-			FlowerVariant.WHITE_TULIP,
-			FlowerVariant.PINK_TULIP,
-			FlowerVariant.OXEYE_DAISY,
-			FlowerVariant.CORNFLOWER,
-			FlowerVariant.LILY_OF_THE_VALLEY,
-			FlowerVariant.TORCHFLOWER,
-			FlowerVariant.CLOSED_EYEBLOSSOM,
-			FlowerVariant.OPEN_EYEBLOSSOM,
-			FlowerVariant.WITHER_ROSE,
+	private final static ModelGroup[] MODEL_GROUPS = new ModelGroup[] {
+			new ModelGroup(ModModels.Quartet.FLOWERBED,
+					ModTextureMap::flowerbed,
+					new FlowerVariant[] {
+							FlowerVariant.DANDELION,
+							FlowerVariant.POPPY,
+							FlowerVariant.BLUE_ORCHID,
+							FlowerVariant.ALLIUM,
+							FlowerVariant.AZURE_BLUET,
+							FlowerVariant.RED_TULIP,
+							FlowerVariant.ORANGE_TULIP,
+							FlowerVariant.WHITE_TULIP,
+							FlowerVariant.PINK_TULIP,
+							FlowerVariant.OXEYE_DAISY,
+							FlowerVariant.CORNFLOWER,
+							FlowerVariant.LILY_OF_THE_VALLEY,
+							FlowerVariant.TORCHFLOWER,
+							FlowerVariant.CLOSED_EYEBLOSSOM,
+					}),
+			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM, ModTextureMap::flowerbedStem,
+					new FlowerVariant[] { FlowerVariant.WITHER_ROSE, }),
+			new ModelGroup(ModModels.Quartet.FLOWERBED_DOUBLE_GLOW, ModTextureMap::flowerbedDouble,
+					new FlowerVariant[] { FlowerVariant.OPEN_EYEBLOSSOM, }),
 	};
 
 	public BlockModelProvider(FabricDataOutput generator) {
@@ -71,29 +81,9 @@ public class BlockModelProvider extends FabricModelProvider {
 			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_4, model4);
 		}
 
-		// Generate models temorarily.
-		// This will likely be replaced once I know what models I'll be creating.
-		var texturedModel1 = TexturedModel.FLOWERBED_1.get(ModBlocks.TINY_GARDEN);
-		var texturedModel2 = TexturedModel.FLOWERBED_2.get(ModBlocks.TINY_GARDEN);
-		var texturedModel3 = TexturedModel.FLOWERBED_3.get(ModBlocks.TINY_GARDEN);
-		var texturedModel4 = TexturedModel.FLOWERBED_4.get(ModBlocks.TINY_GARDEN);
-
-		for (FlowerVariant variant : VARIANTS_TO_GENERATE_MODELS_FOR) {
-			Identifier itemId = variant.getItemIdentifier();
-
-			Identifier model1 = itemId.withPath(path -> "block/" + path + "_1");
-			Identifier model2 = itemId.withPath(path -> "block/" + path + "_2");
-			Identifier model3 = itemId.withPath(path -> "block/" + path + "_3");
-			Identifier model4 = itemId.withPath(path -> "block/" + path + "_4");
-
-			TextureMap textureMap = new TextureMap()
-					.put(TextureKey.FLOWERBED, itemId.withPath(path -> "block/" + path))
-					.put(TextureKey.STEM, Identifier.ofVanilla("block/pink_petals_stem"));
-
-			texturedModel1.getModel().upload(model1, textureMap, blockStateModelGenerator.modelCollector);
-			texturedModel2.getModel().upload(model2, textureMap, blockStateModelGenerator.modelCollector);
-			texturedModel3.getModel().upload(model3, textureMap, blockStateModelGenerator.modelCollector);
-			texturedModel4.getModel().upload(model4, textureMap, blockStateModelGenerator.modelCollector);
+		// Generate all block model definitions.
+		for (ModelGroup group : MODEL_GROUPS) {
+			group.upload(blockStateModelGenerator.modelCollector);
 		}
 
 		blockStateModelGenerator.blockStateCollector.accept(supplier);
@@ -103,8 +93,10 @@ public class BlockModelProvider extends FabricModelProvider {
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
 		itemModelGenerator.register(ModBlocks.TINY_GARDEN.asItem(), Models.GENERATED);
 
-		for (FlowerVariant variant : VARIANTS_TO_GENERATE_MODELS_FOR) {
-			itemModelGenerator.register(variant.asItem(), Models.GENERATED);
+		for (FlowerVariant variant : FlowerVariant.values()) {
+			if (variant.shouldCreateItemModel()) {
+				itemModelGenerator.register(variant.asItem(), Models.GENERATED);
+			}
 		}
 	}
 
@@ -133,6 +125,28 @@ public class BlockModelProvider extends FabricModelProvider {
 				return VariantSettings.Rotation.R270;
 			default:
 				throw new IllegalArgumentException("Unknown direction for model");
+		}
+	}
+
+	private record ModelGroup(ModModels.Quartet models,
+			Function<Identifier, TextureMap> texturesGetter, FlowerVariant[] variants) {
+
+		public void upload(BiConsumer<Identifier, ModelSupplier> modelCollector) {
+			for (FlowerVariant variant : this.variants) {
+				Identifier itemId = variant.getItemIdentifier();
+
+				Identifier modelId1 = itemId.withPath(path -> "block/" + path + "_1");
+				Identifier modelId2 = itemId.withPath(path -> "block/" + path + "_2");
+				Identifier modelId3 = itemId.withPath(path -> "block/" + path + "_3");
+				Identifier modelId4 = itemId.withPath(path -> "block/" + path + "_4");
+
+				TextureMap textureMap = this.texturesGetter.apply(itemId);
+
+				this.models.model1().upload(modelId1, textureMap, modelCollector);
+				this.models.model2().upload(modelId2, textureMap, modelCollector);
+				this.models.model3().upload(modelId3, textureMap, modelCollector);
+				this.models.model4().upload(modelId4, textureMap, modelCollector);
+			}
 		}
 	}
 }

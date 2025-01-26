@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/flowerbed_2",
+  "parent": "tiny-flowers:block/flowerbed_stem_2",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_wither_rose",
-    "stem": "minecraft:block/pink_petals_stem"
+    "stem": "tiny-flowers:block/tiny_wither_rose_stem"
   }
 }
