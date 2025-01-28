@@ -7,3 +7,5 @@
 # These are Windows script files and should use crlf
 *.bat           text eol=crlf
 
+# While BlockBench files are actually JSON, they're minified so don't diff well.
+*.bbmodel       binary
