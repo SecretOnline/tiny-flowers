@@ -4,14 +4,26 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
+import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.component.ComponentChanges;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
 
 public class RecipeProvider extends FabricRecipeProvider {
 
@@ -42,11 +54,36 @@ public class RecipeProvider extends FabricRecipeProvider {
 		return new RecipeGenerator(registryLookup, exporter) {
 			@Override
 			public void generate() {
+				// Generate recipes for each flower variant
 				for (Map.Entry<FlowerVariant, Item> entry : RECIPE_ITEMS.entrySet()) {
 					createShapeless(RecipeCategory.DECORATIONS, entry.getKey(), 4)
-							.input(Items.SHEARS).input(entry.getValue())
-							.criterion(hasItem(Items.SHEARS), conditionsFromItem(Items.SHEARS))
+							.input(ModItems.FLORISTS_SHEARS_ITEM).input(entry.getValue())
+							.group("tiny_flowers")
+							.criterion(hasItem(ModItems.FLORISTS_SHEARS_ITEM), conditionsFromItem(ModItems.FLORISTS_SHEARS_ITEM))
 							.offerTo(exporter);
+				}
+
+				// Generate recipes for each colour of shears.
+				Identifier shearsId = Registries.ITEM.getId(ModItems.FLORISTS_SHEARS_ITEM);
+				for (DyeColor color : DyeColor.values()) {
+					ItemStack stack = new ItemStack(
+							Registries.ITEM.getEntry(ModItems.FLORISTS_SHEARS_ITEM),
+							1,
+							ComponentChanges.builder()
+									.add(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getEntityColor(), false))
+									.build());
+
+					RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(
+							RegistryKeys.RECIPE,
+							shearsId.withPath((path) -> path + "_" + color.asString()));
+
+					// No method for creating ItemStack of shaped?
+					createShapeless(RecipeCategory.TOOLS, stack)
+							.input(Items.SHEARS)
+							.input(DyeItem.byColor(color))
+							.group("florists_shears")
+							.criterion(hasItem(Items.SHEARS), conditionsFromItem(Items.SHEARS))
+							.offerTo(exporter, recipeKey);
 				}
 			}
 		};

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shears": {
+    "has_florists_shears": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:shears"
+            "items": "tiny-flowers:florists_shears"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shears"
+      "has_florists_shears"
     ]
   ],
   "rewards": {

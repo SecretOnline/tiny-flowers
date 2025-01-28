@@ -9,6 +9,7 @@ import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.datagen.data.ModModels;
 import co.secretonline.tinyflowers.datagen.data.ModTextureMap;
+import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
@@ -20,8 +21,10 @@ import net.minecraft.client.data.MultipartBlockStateSupplier;
 import net.minecraft.client.data.TextureMap;
 import net.minecraft.client.data.VariantSettings;
 import net.minecraft.client.data.When;
+import net.minecraft.client.render.item.tint.DyeTintSource;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
@@ -111,6 +114,10 @@ public class BlockModelProvider extends FabricModelProvider {
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
 		itemModelGenerator.register(ModBlocks.TINY_GARDEN.asItem(), Models.GENERATED);
+		itemModelGenerator.registerWithTintedLayer(
+				ModItems.FLORISTS_SHEARS_ITEM,
+				"_handle",
+				new DyeTintSource(DyeColor.RED.getEntityColor()));
 
 		for (FlowerVariant variant : FlowerVariant.values()) {
 			if (variant.shouldCreateItemModel()) {

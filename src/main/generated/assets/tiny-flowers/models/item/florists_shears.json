@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tiny-flowers:item/florists_shears",
+    "layer1": "tiny-flowers:item/florists_shears_handle"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "group": "florists_shears",
+  "ingredients": [
+    "minecraft:shears",
+    "minecraft:red_dye"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tiny-flowers:florists_shears"
+  }
+}

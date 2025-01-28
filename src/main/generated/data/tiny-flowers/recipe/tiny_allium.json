@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "tiny_flowers",
   "ingredients": [
-    "minecraft:shears",
+    "tiny-flowers:florists_shears",
     "minecraft:allium"
   ],
   "result": {
