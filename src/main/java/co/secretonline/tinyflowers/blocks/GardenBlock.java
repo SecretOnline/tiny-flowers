@@ -51,7 +51,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			FLOWER_VARIANT_1, FLOWER_VARIANT_2, FLOWER_VARIANT_3, FLOWER_VARIANT_4 };
 
 	private static final BiFunction<Direction, Integer, VoxelShape> FACING_AND_AMOUNT_TO_SHAPE = Util.memoize(
-			(BiFunction<Direction, Integer, VoxelShape>) ((facing, flowerAmount) -> {
+			(BiFunction<Direction, Integer, VoxelShape>) ((facing, bitmap) -> {
 				VoxelShape[] voxelShapes = new VoxelShape[] {
 						Block.createCuboidShape(8.0, 0.0, 8.0, 16.0, 3.0, 16.0),
 						Block.createCuboidShape(8.0, 0.0, 0.0, 16.0, 3.0, 8.0),
@@ -60,9 +60,11 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 				};
 				VoxelShape voxelShape = VoxelShapes.empty();
 
-				for (int i = 0; i < flowerAmount; i++) {
-					int j = Math.floorMod(i - facing.getHorizontalQuarterTurns(), 4);
-					voxelShape = VoxelShapes.union(voxelShape, voxelShapes[j]);
+				for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
+					if ((bitmap & (1 << i)) > 0) {
+						int j = Math.floorMod(i - facing.getHorizontalQuarterTurns(), 4);
+						voxelShape = VoxelShapes.union(voxelShape, voxelShapes[j]);
+					}
 				}
 
 				return voxelShape.asCuboid();
@@ -103,7 +105,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return (VoxelShape) FACING_AND_AMOUNT_TO_SHAPE.apply((Direction) state.get(FACING), getNumFlowers(state));
+		return (VoxelShape) FACING_AND_AMOUNT_TO_SHAPE.apply((Direction) state.get(FACING), getFlowerBitmap(state));
 	}
 
 	@Override
@@ -122,21 +124,17 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 					return blockState;
 				}
 
-				FlowerVariant variant1 = itemBlockState.getValue(FLOWER_VARIANT_1);
-				FlowerVariant variant2 = itemBlockState.getValue(FLOWER_VARIANT_2);
-				FlowerVariant variant3 = itemBlockState.getValue(FLOWER_VARIANT_3);
-				FlowerVariant variant4 = itemBlockState.getValue(FLOWER_VARIANT_4);
-				variant1 = variant1 == null ? FlowerVariant.EMPTY : variant1;
-				variant2 = variant2 == null ? FlowerVariant.EMPTY : variant2;
-				variant3 = variant3 == null ? FlowerVariant.EMPTY : variant3;
-				variant4 = variant4 == null ? FlowerVariant.EMPTY : variant4;
+				BlockState newBlockState = this.getDefaultState()
+						.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
 
-				return this.getDefaultState()
-						.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
-						.with(FLOWER_VARIANT_1, variant1)
-						.with(FLOWER_VARIANT_2, variant2)
-						.with(FLOWER_VARIANT_3, variant3)
-						.with(FLOWER_VARIANT_4, variant4);
+				for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+					FlowerVariant variant = itemBlockState.getValue(property);
+					variant = variant == null ? FlowerVariant.EMPTY : variant;
+
+					newBlockState = newBlockState.with(property, variant);
+				}
+
+				return newBlockState;
 			}
 
 			// Is this the correct thing to do?
@@ -201,7 +199,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			// Add flower to gerden
 			world.setBlockState(
 					pos,
-					state.with(FLOWER_VARIANT_PROPERTIES[getNumFlowers(state)], flowerVariant),
+					addFlowerToBlockState(state, flowerVariant),
 					Block.NOTIFY_LISTENERS);
 		} else {
 			// Drop an item based on the variants in the garden. At this stage we can assume
@@ -243,48 +241,60 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			return;
 		}
 
-		FlowerVariant variant1 = itemBlockState.getValue(FLOWER_VARIANT_1);
-		FlowerVariant variant2 = itemBlockState.getValue(FLOWER_VARIANT_2);
-		FlowerVariant variant3 = itemBlockState.getValue(FLOWER_VARIANT_3);
-		FlowerVariant variant4 = itemBlockState.getValue(FLOWER_VARIANT_4);
-		variant1 = variant1 == null ? FlowerVariant.EMPTY : variant1;
-		variant2 = variant2 == null ? FlowerVariant.EMPTY : variant2;
-		variant3 = variant3 == null ? FlowerVariant.EMPTY : variant3;
-		variant4 = variant4 == null ? FlowerVariant.EMPTY : variant4;
+		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+			FlowerVariant variant = itemBlockState.getValue(property);
+			variant = variant == null ? FlowerVariant.EMPTY : variant;
 
-		tooltip.add(Text.translatable(variant1.getTranslationKey()));
-		tooltip.add(Text.translatable(variant2.getTranslationKey()));
-		tooltip.add(Text.translatable(variant3.getTranslationKey()));
-		tooltip.add(Text.translatable(variant4.getTranslationKey()));
+			tooltip.add(Text.translatable(variant.getTranslationKey()));
+		}
 	}
 
 	public static boolean hasFreeSpace(BlockState state) {
-		return state.get(FLOWER_VARIANT_4).isEmpty();
+		return getNumFlowers(state) < FLOWER_VARIANT_PROPERTIES.length;
+	}
+
+	public static boolean isEmpty(BlockState state) {
+		return getNumFlowers(state) == 0;
 	}
 
 	private static int getNumFlowers(BlockState state) {
-		if (!state.get(FLOWER_VARIANT_4).isEmpty()) {
-			return 4;
-		} else if (!state.get(FLOWER_VARIANT_3).isEmpty()) {
-			return 3;
-		} else if (!state.get(FLOWER_VARIANT_2).isEmpty()) {
-			return 2;
-		} else {
-			return 1;
+		int numFlowers = 0;
+		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+			if (!state.get(property).isEmpty()) {
+				numFlowers++;
+			}
 		}
+
+		return numFlowers;
+	}
+
+	/**
+	 * Since there can be "holes" in the variants, this creates a tiny bitmap of
+	 * which positions has flowers. The reason this is useful is for the memoisation
+	 * during hitbox creation, as keeping the number of cache entries down for that
+	 * is important.
+	 */
+	private static int getFlowerBitmap(BlockState state) {
+		int bitmap = 0;
+		for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
+			EnumProperty<FlowerVariant> property = FLOWER_VARIANT_PROPERTIES[i];
+			if (state.get(property).isEmpty()) {
+				continue;
+			}
+
+			bitmap = bitmap | (1 << i);
+		}
+
+		return bitmap;
 	}
 
 	public static BlockState addFlowerToBlockState(BlockState state, FlowerVariant flowerVariant) {
-		int numFlowers = getNumFlowers(state);
-		switch (numFlowers) {
-			case 1:
-				return state.with(FLOWER_VARIANT_2, flowerVariant);
-			case 2:
-				return state.with(FLOWER_VARIANT_3, flowerVariant);
-			case 3:
-				return state.with(FLOWER_VARIANT_4, flowerVariant);
-			default:
-				return state;
+		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+			if (state.get(property).isEmpty()) {
+				return state.with(property, flowerVariant);
+			}
 		}
+
+		return state;
 	}
 }
