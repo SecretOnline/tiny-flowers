@@ -4,7 +4,7 @@
   "group": "florists_shears",
   "ingredients": [
     "minecraft:shears",
-    "minecraft:white_dye"
+    "#c:dyes/white"
   ],
   "result": {
     "components": {

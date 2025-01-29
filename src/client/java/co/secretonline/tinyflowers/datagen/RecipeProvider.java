@@ -7,12 +7,12 @@ import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -22,10 +22,29 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 public class RecipeProvider extends FabricRecipeProvider {
+
+	private static Map<DyeColor, TagKey<Item>> COLOR_TAGS = Map.ofEntries(
+			Map.entry(DyeColor.WHITE, ConventionalItemTags.WHITE_DYES),
+			Map.entry(DyeColor.ORANGE, ConventionalItemTags.ORANGE_DYES),
+			Map.entry(DyeColor.MAGENTA, ConventionalItemTags.MAGENTA_DYES),
+			Map.entry(DyeColor.LIGHT_BLUE, ConventionalItemTags.LIGHT_BLUE_DYES),
+			Map.entry(DyeColor.YELLOW, ConventionalItemTags.YELLOW_DYES),
+			Map.entry(DyeColor.LIME, ConventionalItemTags.LIME_DYES),
+			Map.entry(DyeColor.PINK, ConventionalItemTags.PINK_DYES),
+			Map.entry(DyeColor.GRAY, ConventionalItemTags.GRAY_DYES),
+			Map.entry(DyeColor.LIGHT_GRAY, ConventionalItemTags.LIGHT_GRAY_DYES),
+			Map.entry(DyeColor.CYAN, ConventionalItemTags.CYAN_DYES),
+			Map.entry(DyeColor.PURPLE, ConventionalItemTags.PURPLE_DYES),
+			Map.entry(DyeColor.BLUE, ConventionalItemTags.BLUE_DYES),
+			Map.entry(DyeColor.BROWN, ConventionalItemTags.BROWN_DYES),
+			Map.entry(DyeColor.GREEN, ConventionalItemTags.GREEN_DYES),
+			Map.entry(DyeColor.RED, ConventionalItemTags.RED_DYES),
+			Map.entry(DyeColor.BLACK, ConventionalItemTags.BLACK_DYES));
 
 	private static Map<FlowerVariant, Item> RECIPE_ITEMS = Map.ofEntries(
 			Map.entry(FlowerVariant.DANDELION, Items.DANDELION),
@@ -65,7 +84,9 @@ public class RecipeProvider extends FabricRecipeProvider {
 
 				// Generate recipes for each colour of shears.
 				Identifier shearsId = Registries.ITEM.getId(ModItems.FLORISTS_SHEARS_ITEM);
-				for (DyeColor color : DyeColor.values()) {
+				for (var entry : COLOR_TAGS.entrySet()) {
+					DyeColor color = entry.getKey();
+					TagKey<Item> tagKey = entry.getValue();
 					ItemStack stack = new ItemStack(
 							Registries.ITEM.getEntry(ModItems.FLORISTS_SHEARS_ITEM),
 							1,
@@ -80,7 +101,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 					// No method for creating ItemStack of shaped?
 					createShapeless(RecipeCategory.TOOLS, stack)
 							.input(Items.SHEARS)
-							.input(DyeItem.byColor(color))
+							.input(tagKey)
 							.group("florists_shears")
 							.criterion(hasItem(Items.SHEARS), conditionsFromItem(Items.SHEARS))
 							.offerTo(exporter, recipeKey);

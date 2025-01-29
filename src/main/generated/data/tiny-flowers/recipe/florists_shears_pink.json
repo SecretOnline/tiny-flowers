@@ -4,7 +4,7 @@
   "group": "florists_shears",
   "ingredients": [
     "minecraft:shears",
-    "minecraft:pink_dye"
+    "#c:dyes/pink"
   ],
   "result": {
     "components": {

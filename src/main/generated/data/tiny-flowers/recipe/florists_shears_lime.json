@@ -4,7 +4,7 @@
   "group": "florists_shears",
   "ingredients": [
     "minecraft:shears",
-    "minecraft:lime_dye"
+    "#c:dyes/lime"
   ],
   "result": {
     "components": {
