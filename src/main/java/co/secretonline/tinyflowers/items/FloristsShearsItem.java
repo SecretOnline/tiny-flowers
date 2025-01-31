@@ -7,6 +7,7 @@ import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ShearsItem;
@@ -44,9 +45,7 @@ public class FloristsShearsItem extends ShearsItem {
 		BlockState blockState = world.getBlockState(pos);
 
 		if (blockState.isOf(ModBlocks.TINY_GARDEN)) {
-			// Remove flower at certain part of flower.
-			// TODO: update placement and flower counting logic to account for holes
-			// i am defeinitely avoiding modelling new flowers
+			// Remove flower at certain part of garden.
 			Vec3d positionInBlock = ctx.getHitPos().subtract(Vec3d.of(pos));
 			boolean isEast = positionInBlock.x >= 0.5;
 			boolean isSouth = positionInBlock.z >= 0.5;
@@ -67,7 +66,7 @@ public class FloristsShearsItem extends ShearsItem {
 
 			// TODO: Figure out if there's a scenario where the player is null
 			if (ctx.getPlayer() != null) {
-				ctx.getStack().damage(1, ctx.getPlayer());
+				ctx.getStack().damage(1, ctx.getPlayer(), LivingEntity.getSlotForHand(ctx.getHand()));
 			}
 
 			BlockState newBlockState = blockState.with(property, FlowerVariant.EMPTY);
