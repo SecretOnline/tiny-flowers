@@ -144,19 +144,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		if (blockState.isOf(this)) {
 			return addFlowerToBlockState(blockState, flowerVariant);
 		} else if (blockState.getBlock() instanceof FlowerbedBlock) {
-			// Convert FlowerbedBlock to GardenBlock
-			FlowerVariant existingVariant = FlowerVariant.fromItem(blockState.getBlock());
-			if (existingVariant.isEmpty()) {
-				// Invalid state
-				throw new IllegalStateException("FlowerbedBlock has no valid flower variant");
-			}
-
-			int prevNumFlowers = blockState.get(FlowerbedBlock.FLOWER_AMOUNT);
-			BlockState baseState = this.getDefaultState().with(FACING, blockState.get(FlowerbedBlock.FACING))
-					.with(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
-					.with(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
-					.with(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)
-					.with(FLOWER_VARIANT_4, prevNumFlowers >= 4 ? existingVariant : FlowerVariant.EMPTY);
+			BlockState baseState = getStateFromFlowerbed(blockState);
 
 			// Add the new type in now that we've converted the block.
 			return addFlowerToBlockState(baseState, flowerVariant);
@@ -296,5 +284,22 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		}
 
 		return state;
+	}
+
+	public BlockState getStateFromFlowerbed(BlockState blockState) {
+		// Convert FlowerbedBlock to GardenBlock
+		FlowerVariant existingVariant = FlowerVariant.fromItem(blockState.getBlock());
+		if (existingVariant.isEmpty()) {
+			// Invalid state
+			throw new IllegalStateException("FlowerbedBlock has no valid flower variant");
+		}
+
+		int prevNumFlowers = blockState.get(FlowerbedBlock.FLOWER_AMOUNT);
+		BlockState baseState = this.getDefaultState().with(FACING, blockState.get(FlowerbedBlock.FACING))
+				.with(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
+				.with(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
+				.with(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)
+				.with(FLOWER_VARIANT_4, prevNumFlowers >= 4 ? existingVariant : FlowerVariant.EMPTY);
+		return baseState;
 	}
 }

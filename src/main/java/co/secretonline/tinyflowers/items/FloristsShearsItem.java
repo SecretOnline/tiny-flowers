@@ -2,11 +2,13 @@ package co.secretonline.tinyflowers.items;
 
 import java.util.Arrays;
 
+import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -44,6 +46,19 @@ public class FloristsShearsItem extends ShearsItem {
 		BlockPos pos = ctx.getBlockPos();
 		BlockState blockState = world.getBlockState(pos);
 
+		if (blockState.getBlock() instanceof FlowerbedBlock) {
+			// Try convert flowerbeds to gardens so that shears can remove flowers from
+			// them.
+			try {
+				blockState = ((GardenBlock) ModBlocks.TINY_GARDEN).getStateFromFlowerbed(blockState);
+			} catch (IllegalStateException ex) {
+				// Flowerbed could not be converted to garden.
+				TinyFlowers.LOGGER.warn("Could not convert flowerbed to garden. Ignoring action.");
+
+				return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
+			}
+		}
+
 		if (blockState.isOf(ModBlocks.TINY_GARDEN)) {
 			// Remove flower at certain part of garden.
 			Vec3d positionInBlock = ctx.getHitPos().subtract(Vec3d.of(pos));
@@ -78,9 +93,6 @@ public class FloristsShearsItem extends ShearsItem {
 
 			return ActionResult.SUCCESS;
 		}
-
-		// TODO: remove flowers from Flowerbed blocks, convert to garden if creating
-		// holes
 
 		return super.useOnBlock(ctx);
 	}
