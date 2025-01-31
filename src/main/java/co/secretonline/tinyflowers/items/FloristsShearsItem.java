@@ -10,9 +10,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ShearsItem;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -81,7 +84,10 @@ public class FloristsShearsItem extends ShearsItem {
 
 			// TODO: Figure out if there's a scenario where the player is null
 			if (ctx.getPlayer() != null) {
-				ctx.getStack().damage(1, ctx.getPlayer(), LivingEntity.getSlotForHand(ctx.getHand()));
+				PlayerEntity player = ctx.getPlayer();
+				ctx.getStack().damage(1, player, LivingEntity.getSlotForHand(ctx.getHand()));
+
+				world.playSound(player, pos, SoundEvents.BLOCK_GROWING_PLANT_CROP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
 			BlockState newBlockState = blockState.with(property, FlowerVariant.EMPTY);
