@@ -32,11 +32,7 @@
     ]
 	},
 	"mixins": [
-		"tiny-flowers.mixins.json",
-		{
-			"config": "tiny-flowers.client.mixins.json",
-			"environment": "client"
-		}
+		"tiny-flowers.mixins.json"
 	],
   "depends": {
     "java": ">=21",
