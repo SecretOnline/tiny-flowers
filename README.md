@@ -1,6 +1,8 @@
 # [Tiny Flowers](https://secretonline.co/mods/tiny-flowers)
 
-A mod to add more small flower variants to Minecraft.
+Add tiny variants of all Vanilla flowers, much like Pink Petals.
+
+![A flowerbed outside a window.](https://cdn.modrinth.com/data/S0Lqneqb/images/2c5785e8cafdd0e74ab54e612d8b070497f54eb4.png)
 
 If you're looking for a more thorough description of the mod and its features, check out [the mod's description](./MODRINTH.md).
 

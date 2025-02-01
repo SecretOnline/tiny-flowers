@@ -3,7 +3,7 @@
 	"id": "tiny-flowers",
 	"version": "${version}",
 	"name": "Tiny Flowers",
-	"description": "Adds stackable tiny variants of all Vanilla flowers.",
+	"description": "Add tiny variants of all Vanilla flowers.",
 	"authors": [
     {
       "name": "secret_online",
@@ -40,7 +40,7 @@
   },
   "recommends": {
     "fabricloader": ">=0.16.9",
-    "minecraft": "~1.21.2"
+    "minecraft": "~1.21.4"
   },
   "custom": {
     "mc-publish": {
