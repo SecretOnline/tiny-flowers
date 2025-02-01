@@ -27,4 +27,16 @@ public class ModTextureMap {
 				.put(TextureKey.STEM, stemIdentifier)
 				.put(ModTextureKey.FLOWERBED_UPPER, itemId.withPath(path -> "block/" + path + "_upper"));
 	}
+
+	public static Function<Identifier, TextureMap> flowerbedTriple() {
+		return flowerbedTriple(Identifier.ofVanilla("block/pink_petals_stem"));
+	}
+
+	public static Function<Identifier, TextureMap> flowerbedTriple(Identifier stemIdentifier) {
+		return (itemId) -> new TextureMap()
+				.put(TextureKey.FLOWERBED, itemId.withPath(path -> "block/" + path))
+				.put(TextureKey.STEM, stemIdentifier)
+				.put(ModTextureKey.FLOWERBED_MIDDLE, itemId.withPath(path -> "block/" + path + "_middle"))
+				.put(ModTextureKey.FLOWERBED_UPPER, itemId.withPath(path -> "block/" + path + "_upper"));
+	}
 }

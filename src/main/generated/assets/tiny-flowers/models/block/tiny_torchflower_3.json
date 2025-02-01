@@ -1,7 +1,8 @@
 {
-  "parent": "tiny-flowers:block/garden_double_untinted_3",
+  "parent": "tiny-flowers:block/garden_triple_untinted_3",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_torchflower",
+    "flowerbed_middle": "tiny-flowers:block/tiny_torchflower_middle",
     "flowerbed_upper": "tiny-flowers:block/tiny_torchflower_upper",
     "stem": "tiny-flowers:block/tiny_torchflower_stem"
   }

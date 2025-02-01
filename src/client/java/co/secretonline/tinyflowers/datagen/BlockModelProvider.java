@@ -39,7 +39,6 @@ public class BlockModelProvider extends FabricModelProvider {
 					ModTextureMap.flowerbed(),
 					new FlowerVariant[] {
 							FlowerVariant.DANDELION,
-							FlowerVariant.POPPY,
 							FlowerVariant.ALLIUM,
 							FlowerVariant.AZURE_BLUET,
 							FlowerVariant.RED_TULIP,
@@ -61,6 +60,12 @@ public class BlockModelProvider extends FabricModelProvider {
 					new FlowerVariant[] {
 							FlowerVariant.CLOSED_EYEBLOSSOM,
 					}),
+			// Single layer (tall), tinted stem
+			new ModelGroup(ModModels.Quartet.GARDEN_TALL,
+					ModTextureMap.flowerbed(TinyFlowers.id("block/tall_tiny_flower_stem")),
+					new FlowerVariant[] {
+							FlowerVariant.POPPY,
+					}),
 			// Double layer, tinted stem
 			new ModelGroup(ModModels.Quartet.GARDEN_DOUBLE,
 					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tall_tiny_flower_stem")),
@@ -68,17 +73,17 @@ public class BlockModelProvider extends FabricModelProvider {
 							FlowerVariant.BLUE_ORCHID,
 							FlowerVariant.LILY_OF_THE_VALLEY,
 					}),
-			// Double layer, torchflower stem
-			new ModelGroup(ModModels.Quartet.GARDEN_DOUBLE_UNTINTED,
-					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tiny_torchflower_stem")),
-					new FlowerVariant[] {
-							FlowerVariant.TORCHFLOWER,
-					}),
 			// Double layer (glow on top), eyeblossom stem
 			new ModelGroup(ModModels.Quartet.GARDEN_DOUBLE_UNTINTED_GLOW,
 					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tiny_eyeblossom_stem")),
 					new FlowerVariant[] {
 							FlowerVariant.OPEN_EYEBLOSSOM,
+					}),
+			// Triple layer, torchflower stem
+			new ModelGroup(ModModels.Quartet.GARDEN_TRIPLE_UNTINTED,
+					ModTextureMap.flowerbedTriple(TinyFlowers.id("block/tiny_torchflower_stem")),
+					new FlowerVariant[] {
+							FlowerVariant.TORCHFLOWER,
 					}),
 	};
 

@@ -1,7 +1,7 @@
 {
-  "parent": "tiny-flowers:block/garden_4",
+  "parent": "tiny-flowers:block/garden_tall_4",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_poppy",
-    "stem": "minecraft:block/pink_petals_stem"
+    "stem": "tiny-flowers:block/tall_tiny_flower_stem"
   }
 }

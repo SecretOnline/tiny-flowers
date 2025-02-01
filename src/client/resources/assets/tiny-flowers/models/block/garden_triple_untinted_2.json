@@ -1,0 +1,92 @@
+{
+	"ambientocclusion": false,
+	"elements": [
+		{
+			"name": "flower_upper",
+			"from": [0, 3, 8],
+			"to": [8, 3, 16],
+			"faces": {
+				"up": {"uv": [0, 8, 8, 16], "texture": "#flowerbed_upper"},
+				"down": {"uv": [0, 16, 8, 8], "texture": "#flowerbed_upper"}
+			}
+		},
+		{
+			"name": "flower_middle",
+			"from": [0, 2, 8],
+			"to": [8, 2, 16],
+			"faces": {
+				"up": {"uv": [0, 8, 8, 16], "texture": "#flowerbed_middle"},
+				"down": {"uv": [0, 16, 8, 8], "texture": "#flowerbed_middle"}
+			}
+		},
+		{
+			"name": "flower_lower",
+			"from": [0, 1, 8],
+			"to": [8, 1, 16],
+			"faces": {
+				"up": {"uv": [0, 8, 8, 16], "texture": "#flowerbed"},
+				"down": {"uv": [0, 16, 8, 8], "texture": "#flowerbed"}
+			}
+		},
+		{
+			"name": "stem1_ns",
+			"from": [11.15, 0, 3.25],
+			"to": [12.15, 3, 3.25],
+			"rotation": {"angle": -45, "axis": "y", "origin": [1, 0, -1]},
+			"faces": {
+				"north": {"uv": [0, 2, 1, 5], "texture": "#stem"},
+				"south": {"uv": [0, 2, 1, 5], "texture": "#stem"}
+			}
+		},
+		{
+			"name": "stem1_ew",
+			"from": [11.65, 0, 2.75],
+			"to": [11.65, 3, 3.75],
+			"rotation": {"angle": -45, "axis": "y", "origin": [1, 0, -1]},
+			"faces": {
+				"east": {"uv": [0, 2, 1, 5], "texture": "#stem"},
+				"west": {"uv": [0, 2, 1, 5], "texture": "#stem"}
+			}
+		},
+		{
+			"name": "stem2_ns",
+			"from": [8.15, 0, 5.25],
+			"to": [9.15, 3, 5.25],
+			"rotation": {"angle": -45, "axis": "y", "origin": [-2, 0, 1]},
+			"faces": {
+				"north": {"uv": [0, 2, 1, 5], "texture": "#stem"},
+				"south": {"uv": [0, 2, 1, 5], "texture": "#stem"}
+			}
+		},
+		{
+			"name": "stem2_ew",
+			"from": [8.65, 0, 4.75],
+			"to": [8.65, 3, 5.75],
+			"rotation": {"angle": -45, "axis": "y", "origin": [-2, 0, 1]},
+			"faces": {
+				"east": {"uv": [0, 2, 1, 5], "texture": "#stem"},
+				"west": {"uv": [0, 2, 1, 5], "texture": "#stem"}
+			}
+		},
+		{
+			"name": "stem3_ns",
+			"from": [10.15, 0, 8.25],
+			"to": [11.15, 3, 8.25],
+			"rotation": {"angle": -45, "axis": "y", "origin": [0, 0, 4]},
+			"faces": {
+				"north": {"uv": [0, 2, 1, 5], "texture": "#stem"},
+				"south": {"uv": [0, 2, 1, 5], "texture": "#stem"}
+			}
+		},
+		{
+			"name": "stem3_ew",
+			"from": [10.65, 0, 7.75],
+			"to": [10.65, 3, 8.75],
+			"rotation": {"angle": -45, "axis": "y", "origin": [0, 0, 4]},
+			"faces": {
+				"east": {"uv": [0, 2, 1, 5], "texture": "#stem"},
+				"west": {"uv": [0, 2, 1, 5], "texture": "#stem"}
+			}
+		}
+	]
+}
