@@ -34,45 +34,51 @@ public class BlockModelProvider extends FabricModelProvider {
 			Direction.SOUTH, Direction.WEST, };
 
 	private final static ModelGroup[] MODEL_GROUPS = new ModelGroup[] {
-			new ModelGroup(ModModels.Quartet.FLOWERBED,
+			// Single layer, tinted stem
+			new ModelGroup(ModModels.Quartet.GARDEN,
 					ModTextureMap.flowerbed(),
 					new FlowerVariant[] {
 							FlowerVariant.DANDELION,
 							FlowerVariant.POPPY,
-							FlowerVariant.BLUE_ORCHID,
 							FlowerVariant.ALLIUM,
 							FlowerVariant.AZURE_BLUET,
-							FlowerVariant.OXEYE_DAISY,
-							FlowerVariant.CORNFLOWER,
-							FlowerVariant.TORCHFLOWER,
-					}),
-			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM,
-					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_wither_rose_stem")),
-					new FlowerVariant[] {
-							FlowerVariant.WITHER_ROSE,
-					}),
-			new ModelGroup(ModModels.Quartet.FLOWERBED_TULIP,
-					ModTextureMap.flowerbed(),
-					new FlowerVariant[] {
 							FlowerVariant.RED_TULIP,
 							FlowerVariant.ORANGE_TULIP,
 							FlowerVariant.WHITE_TULIP,
 							FlowerVariant.PINK_TULIP,
+							FlowerVariant.OXEYE_DAISY,
+							FlowerVariant.CORNFLOWER,
 					}),
-			new ModelGroup(ModModels.Quartet.FLOWERBED_DOUBLE,
-					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tall_tiny_flower_stem")),
+			// Single layer, wither rose stem
+			new ModelGroup(ModModels.Quartet.GARDEN_UNTINTED,
+					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_wither_rose_stem")),
 					new FlowerVariant[] {
-							FlowerVariant.LILY_OF_THE_VALLEY,
+							FlowerVariant.WITHER_ROSE,
 					}),
-			new ModelGroup(ModModels.Quartet.FLOWERBED_DOUBLE_GLOW,
-					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tiny_eyeblossom_stem")),
-					new FlowerVariant[] {
-							FlowerVariant.OPEN_EYEBLOSSOM,
-					}),
-			new ModelGroup(ModModels.Quartet.FLOWERBED_STEM,
+			// Single layer, eyeblossom stem
+			new ModelGroup(ModModels.Quartet.GARDEN_UNTINTED,
 					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_eyeblossom_stem")),
 					new FlowerVariant[] {
 							FlowerVariant.CLOSED_EYEBLOSSOM,
+					}),
+			// Double layer, tinted stem
+			new ModelGroup(ModModels.Quartet.GARDEN_DOUBLE,
+					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tall_tiny_flower_stem")),
+					new FlowerVariant[] {
+							FlowerVariant.BLUE_ORCHID,
+							FlowerVariant.LILY_OF_THE_VALLEY,
+					}),
+			// Double layer, torchflower stem
+			new ModelGroup(ModModels.Quartet.GARDEN_DOUBLE_UNTINTED,
+					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tiny_torchflower_stem")),
+					new FlowerVariant[] {
+							FlowerVariant.TORCHFLOWER,
+					}),
+			// Double layer (glow on top), eyeblossom stem
+			new ModelGroup(ModModels.Quartet.GARDEN_DOUBLE_UNTINTED_GLOW,
+					ModTextureMap.flowerbedDouble(TinyFlowers.id("block/tiny_eyeblossom_stem")),
+					new FlowerVariant[] {
+							FlowerVariant.OPEN_EYEBLOSSOM,
 					}),
 	};
 

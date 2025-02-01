@@ -1,5 +1,5 @@
 {
-  "parent": "tiny-flowers:block/flowerbed_tulip_2",
+  "parent": "tiny-flowers:block/garden_2",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_red_tulip",
     "stem": "minecraft:block/pink_petals_stem"

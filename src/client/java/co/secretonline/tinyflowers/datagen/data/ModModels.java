@@ -4,60 +4,72 @@ import java.util.Optional;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.client.data.Model;
-import net.minecraft.client.data.Models;
 import net.minecraft.client.data.TextureKey;
 
 public class ModModels {
-	public static final Model FLOWERBED_STEM_1 = block(
-			"flowerbed_stem_1", "_1",
+	public static final Model GARDEN_1 = block(
+			"garden_1", "_1",
 			TextureKey.FLOWERBED, TextureKey.STEM);
-	public static final Model FLOWERBED_STEM_2 = block(
-			"flowerbed_stem_2", "_2",
+	public static final Model GARDEN_2 = block(
+			"garden_2", "_2",
 			TextureKey.FLOWERBED, TextureKey.STEM);
-	public static final Model FLOWERBED_STEM_3 = block(
-			"flowerbed_stem_3", "_3",
+	public static final Model GARDEN_3 = block(
+			"garden_3", "_3",
 			TextureKey.FLOWERBED, TextureKey.STEM);
-	public static final Model FLOWERBED_STEM_4 = block(
-			"flowerbed_stem_4", "_4",
-			TextureKey.FLOWERBED, TextureKey.STEM);
-
-	public static final Model FLOWERBED_TULIP_1 = block(
-			"flowerbed_tulip_1", "_1",
-			TextureKey.FLOWERBED, TextureKey.STEM);
-	public static final Model FLOWERBED_TULIP_2 = block(
-			"flowerbed_tulip_2", "_2",
-			TextureKey.FLOWERBED, TextureKey.STEM);
-	public static final Model FLOWERBED_TULIP_3 = block(
-			"flowerbed_tulip_3", "_3",
-			TextureKey.FLOWERBED, TextureKey.STEM);
-	public static final Model FLOWERBED_TULIP_4 = block(
-			"flowerbed_tulip_4", "_4",
+	public static final Model GARDEN_4 = block(
+			"garden_4", "_4",
 			TextureKey.FLOWERBED, TextureKey.STEM);
 
-	public static final Model FLOWERBED_DOUBLE_1 = block(
-			"flowerbed_double_1", "_1",
+	public static final Model GARDEN_UNTINTED_1 = block(
+			"garden_untinted_1", "_1",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model GARDEN_UNTINTED_2 = block(
+			"garden_untinted_2", "_2",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model GARDEN_UNTINTED_3 = block(
+			"garden_untinted_3", "_3",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model GARDEN_UNTINTED_4 = block(
+			"garden_untinted_4", "_4",
+			TextureKey.FLOWERBED, TextureKey.STEM);
+
+	public static final Model GARDEN_DOUBLE_1 = block(
+			"garden_double_1", "_1",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
-	public static final Model FLOWERBED_DOUBLE_2 = block(
-			"flowerbed_double_2", "_2",
+	public static final Model GARDEN_DOUBLE_2 = block(
+			"garden_double_2", "_2",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
-	public static final Model FLOWERBED_DOUBLE_3 = block(
-			"flowerbed_double_3", "_3",
+	public static final Model GARDEN_DOUBLE_3 = block(
+			"garden_double_3", "_3",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
-	public static final Model FLOWERBED_DOUBLE_4 = block(
-			"flowerbed_double_4", "_4",
+	public static final Model GARDEN_DOUBLE_4 = block(
+			"garden_double_4", "_4",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
 
-	public static final Model FLOWERBED_DOUBLE_GLOW_1 = block(
-			"flowerbed_double_glow_1", "_1",
+	public static final Model GARDEN_DOUBLE_UNTINTED_1 = block(
+			"garden_double_untinted_1", "_1",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
-	public static final Model FLOWERBED_DOUBLE_GLOW_2 = block(
-			"flowerbed_double_glow_2", "_2",
+	public static final Model GARDEN_DOUBLE_UNTINTED_2 = block(
+			"garden_double_untinted_2", "_2",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
-	public static final Model FLOWERBED_DOUBLE_GLOW_3 = block(
-			"flowerbed_double_glow_3", "_3",
+	public static final Model GARDEN_DOUBLE_UNTINTED_3 = block(
+			"garden_double_untinted_3", "_3",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
-	public static final Model FLOWERBED_DOUBLE_GLOW_4 = block(
-			"flowerbed_double_glow_4", "_4",
+	public static final Model GARDEN_DOUBLE_UNTINTED_4 = block(
+			"garden_double_untinted_4", "_4",
+			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
+
+	public static final Model GARDEN_DOUBLE_UNTINTED_GLOW_1 = block(
+			"garden_double_untinted_glow_1", "_1",
+			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
+	public static final Model GARDEN_DOUBLE_UNTINTED_GLOW_2 = block(
+			"garden_double_untinted_glow_2", "_2",
+			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
+	public static final Model GARDEN_DOUBLE_UNTINTED_GLOW_3 = block(
+			"garden_double_untinted_glow_3", "_3",
+			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
+	public static final Model GARDEN_DOUBLE_UNTINTED_GLOW_4 = block(
+			"garden_double_untinted_glow_4", "_4",
 			TextureKey.FLOWERBED, TextureKey.STEM, ModTextureKey.FLOWERBED_UPPER);
 
 	private static Model block(String parent, String variant, TextureKey... requiredTextureKeys) {
@@ -65,24 +77,24 @@ public class ModModels {
 	}
 
 	public record Quartet(Model model1, Model model2, Model model3, Model model4) {
-		public static Quartet FLOWERBED = new Quartet(
-				Models.FLOWERBED_1, Models.FLOWERBED_2,
-				Models.FLOWERBED_3, Models.FLOWERBED_4);
+		public static Quartet GARDEN = new Quartet(
+				GARDEN_1, GARDEN_2,
+				GARDEN_3, GARDEN_4);
 
-		public static Quartet FLOWERBED_STEM = new Quartet(
-				FLOWERBED_STEM_1, FLOWERBED_STEM_2,
-				FLOWERBED_STEM_3, FLOWERBED_STEM_4);
+		public static Quartet GARDEN_UNTINTED = new Quartet(
+				GARDEN_UNTINTED_1, GARDEN_UNTINTED_2,
+				GARDEN_UNTINTED_3, GARDEN_UNTINTED_4);
 
-		public static Quartet FLOWERBED_TULIP = new Quartet(
-				FLOWERBED_TULIP_1, FLOWERBED_TULIP_2,
-				FLOWERBED_TULIP_3, FLOWERBED_TULIP_4);
+		public static Quartet GARDEN_DOUBLE = new Quartet(
+				GARDEN_DOUBLE_1, GARDEN_DOUBLE_2,
+				GARDEN_DOUBLE_3, GARDEN_DOUBLE_4);
 
-		public static Quartet FLOWERBED_DOUBLE = new Quartet(
-				FLOWERBED_DOUBLE_1, FLOWERBED_DOUBLE_2,
-				FLOWERBED_DOUBLE_3, FLOWERBED_DOUBLE_4);
+		public static Quartet GARDEN_DOUBLE_UNTINTED = new Quartet(
+				GARDEN_DOUBLE_UNTINTED_1, GARDEN_DOUBLE_UNTINTED_2,
+				GARDEN_DOUBLE_UNTINTED_3, GARDEN_DOUBLE_UNTINTED_4);
 
-		public static Quartet FLOWERBED_DOUBLE_GLOW = new Quartet(
-				FLOWERBED_DOUBLE_GLOW_1, FLOWERBED_DOUBLE_GLOW_2,
-				FLOWERBED_DOUBLE_GLOW_3, FLOWERBED_DOUBLE_GLOW_4);
+		public static Quartet GARDEN_DOUBLE_UNTINTED_GLOW = new Quartet(
+				GARDEN_DOUBLE_UNTINTED_GLOW_1, GARDEN_DOUBLE_UNTINTED_GLOW_2,
+				GARDEN_DOUBLE_UNTINTED_GLOW_3, GARDEN_DOUBLE_UNTINTED_GLOW_4);
 	}
 }

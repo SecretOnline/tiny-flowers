@@ -1,5 +1,5 @@
 {
-  "parent": "tiny-flowers:block/flowerbed_double_glow_2",
+  "parent": "tiny-flowers:block/garden_double_untinted_glow_2",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_open_eyeblossom",
     "flowerbed_upper": "tiny-flowers:block/tiny_open_eyeblossom_upper",

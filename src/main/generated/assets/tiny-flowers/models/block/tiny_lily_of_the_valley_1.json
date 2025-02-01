@@ -1,5 +1,5 @@
 {
-  "parent": "tiny-flowers:block/flowerbed_double_1",
+  "parent": "tiny-flowers:block/garden_double_1",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_lily_of_the_valley",
     "flowerbed_upper": "tiny-flowers:block/tiny_lily_of_the_valley_upper",
