@@ -22,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.event.GameEvent.Emitter;
 
 public class FloristsShearsItem extends ShearsItem {
 	private final static Direction[] DIRECTIONS = new Direction[] {
@@ -96,6 +98,8 @@ public class FloristsShearsItem extends ShearsItem {
 			} else {
 				world.setBlockState(pos, newBlockState);
 			}
+
+			world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, Emitter.of(ctx.getPlayer(), newBlockState));
 
 			return ActionResult.SUCCESS;
 		}
