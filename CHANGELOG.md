@@ -16,6 +16,12 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+Thanks to [haykam821](https://github.com/haykam821) for your help with this one, both with code and bug hunting.
+
+### Fixed
+
+- Tiny Garden block breaking particles now match the flowers in the garden.
+
 ## v1.0.0 - 2025-02-02
 
 First release!

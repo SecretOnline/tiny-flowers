@@ -1,39 +1,47 @@
 {
-	"schemaVersion": 1,
-	"id": "tiny-flowers",
-	"version": "${version}",
-	"name": "Tiny Flowers",
-	"description": "Add tiny variants of all Vanilla flowers.",
-	"authors": [
+  "schemaVersion": 1,
+  "id": "tiny-flowers",
+  "version": "${version}",
+  "name": "Tiny Flowers",
+  "description": "Add tiny variants of all Vanilla flowers.",
+  "authors": [
     {
       "name": "secret_online",
       "contact": {
         "homepage": "https://secretonline.co"
       }
     }
-	],
+  ],
+  "contributors": [
+    {
+      "name": "haykam821",
+      "contact": {
+        "homepage": "https://github.com/haykam821"
+      }
+    }
+  ],
   "contact": {
     "homepage": "https://secretonline.co/mods/tiny-flowers",
     "sources": "https://github.com/SecretOnline/tiny-flowers",
     "issues": "https://github.com/SecretOnline/tiny-flowers/issues"
   },
   "license": "MPL-2.0",
-	"icon": "assets/tiny-flowers/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"co.secretonline.tinyflowers.TinyFlowers"
-		],
-		"client": [
-			"co.secretonline.tinyflowers.TinyFlowersClient"
-		],
+  "icon": "assets/tiny-flowers/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "co.secretonline.tinyflowers.TinyFlowers"
+    ],
+    "client": [
+      "co.secretonline.tinyflowers.TinyFlowersClient"
+    ],
     "fabric-datagen": [
       "co.secretonline.tinyflowers.datagen.DataGenerator"
     ]
-	},
-	"mixins": [
-		"tiny-flowers.mixins.json"
-	],
+  },
+  "mixins": [
+    "tiny-flowers.mixins.json"
+  ],
   "depends": {
     "java": ">=21",
     "fabric-api": "*"
