@@ -5,6 +5,9 @@
 	"mixins": [
 		"FlowerbedBlockMixin"
 	],
+	"client": [
+		"BlockModelsMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	}
