@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -254,6 +255,20 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		}
 
 		return numFlowers;
+	}
+
+	public static List<FlowerVariant> getFlowers(BlockState state) {
+		List<FlowerVariant> flowers = new ArrayList<>(GardenBlock.FLOWER_VARIANT_PROPERTIES.length);
+
+		for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
+			FlowerVariant variant = state.get(property);
+
+			if (!variant.isEmpty()) {
+				flowers.add(variant);
+			}
+		}
+
+		return flowers;
 	}
 
 	/**
