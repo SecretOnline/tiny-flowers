@@ -6,6 +6,18 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
+sourceSets {
+	testmod {
+		compileClasspath += main.compileClasspath
+		runtimeClasspath += main.runtimeClasspath
+	}
+}
+
+configurations {
+	testmodImplementation.extendsFrom implementation
+	testmodRuntimeOnly.extendsFrom runtimeOnly
+}
+
 base {
 	archivesName = project.archives_base_name + '-mc' + project.minecraft_version
 }
@@ -26,8 +38,23 @@ loom {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
+
+		"tiny-flowers-test" {
+			sourceSet sourceSets.testmod
+		}
 	}
 
+	runs {
+		gametest {
+			server()
+			name "Game Test"
+			vmArg "-Dfabric-api.gametest"
+			vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
+			runDir "build/gametest"
+
+			source sourceSets.testmod
+		}
+ 	}
 }
 
 fabricApi {
@@ -45,6 +72,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	testmodImplementation sourceSets.main.output
 }
 
 processResources {
@@ -74,6 +102,8 @@ jar {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}
 }
+
+test.dependsOn runGametest
 
 // configure the maven publication
 publishing {

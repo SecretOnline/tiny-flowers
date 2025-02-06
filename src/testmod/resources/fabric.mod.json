@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "tiny-flowers-test",
+  "version": "0.0.0",
+  "name": "Tiny Flowers Test",
+  "description": "Test mod for Tiny Flowers",
+  "license": "MPL-2.0",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "co.secretonline.tinyflowers.gametest.blocks.GardenBlockTest"
+    ]
+  }
+}
