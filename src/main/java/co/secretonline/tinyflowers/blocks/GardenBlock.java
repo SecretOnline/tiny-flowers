@@ -7,6 +7,7 @@ import java.util.function.BiFunction;
 import com.mojang.serialization.MapCodec;
 
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.helper.EyeblossomHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -37,6 +38,8 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.event.GameEvent.Emitter;
 
 public class GardenBlock extends PlantBlock implements Fertilizable {
 	public static final MapCodec<GardenBlock> CODEC = createCodec(GardenBlock::new);
@@ -199,6 +202,68 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			// that the garden is full.
 			dropStack(world, pos, new ItemStack(flowerVariant));
 		}
+	}
+
+	@Override
+	protected boolean hasRandomTicks(BlockState state) {
+		// Block should receive ticks if there is an eyeblossom present.
+		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+			FlowerVariant variant = state.get(property);
+			if (variant == FlowerVariant.OPEN_EYEBLOSSOM || variant == FlowerVariant.CLOSED_EYEBLOSSOM) {
+				return true;
+			}
+		}
+
+		return super.hasRandomTicks(state);
+	}
+
+	@Override
+	protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (doEyeblossomTick(state, world, pos, random)) {
+			EyeblossomHelper.playSound(world, pos, world.isDay(), true);
+		}
+
+		super.randomTick(state, world, pos, random);
+	}
+
+	@Override
+	protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (doEyeblossomTick(state, world, pos, random)) {
+			EyeblossomHelper.playSound(world, pos, world.isDay(), false);
+		}
+
+		super.scheduledTick(state, world, pos, random);
+	}
+
+	private static boolean doEyeblossomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (!world.getDimension().natural()) {
+			return false;
+		}
+
+		boolean isDay = world.isDay();
+		FlowerVariant correctVariant = EyeblossomHelper.getFlowerVariant(isDay);
+		FlowerVariant incorrectVariant = EyeblossomHelper.getFlowerVariant(!isDay);
+
+		BlockState currentState = state;
+		boolean didChange = false;
+		for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
+			FlowerVariant variant = currentState.get(property);
+			if (variant == incorrectVariant) {
+				currentState = currentState.with(property, correctVariant);
+				didChange = true;
+			}
+		}
+
+		if (didChange) {
+			world.setBlockState(pos, currentState, Block.NOTIFY_LISTENERS);
+			world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, Emitter.of(state));
+
+			EyeblossomHelper.getState(isDay).spawnTrailParticle(world, pos, random);
+
+			EyeblossomHelper.notifyNearbyEyeblossoms(state, world, pos, random);
+		}
+
+		return didChange;
 	}
 
 	@Override

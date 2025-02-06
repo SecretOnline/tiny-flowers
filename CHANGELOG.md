@@ -18,6 +18,10 @@ The versioning scheme is listed in the README.
 
 Thanks to [haykam821](https://github.com/haykam821) for your help with this one, both with code and bug hunting.
 
+### Added
+
+- Tiny Eyeblossoms will now open and close based on the time of day.
+
 ### Fixed
 
 - Tiny Garden block breaking particles now match the flowers in the garden.

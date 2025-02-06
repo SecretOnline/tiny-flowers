@@ -3,6 +3,8 @@
 	"package": "co.secretonline.tinyflowers.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"EyeblossomBlockMixin",
+		"EyeblossomStateAccessor",
 		"FlowerbedBlockMixin"
 	],
 	"client": [
