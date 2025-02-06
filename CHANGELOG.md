@@ -23,6 +23,7 @@ Thanks to [haykam821](https://github.com/haykam821) for your help with this one,
 - Tiny Garden block breaking particles now match the flowers in the garden.
 - Using Florists' Shears on a Tiny Garden or Pink Petals is now picked up by Skulk Sensors.
   - This is a Block Change event, which creates a vibration of frequency 11.
+- Completely empty gardens now have a hitbox that can be targeted.
 
 ## v1.0.0 - 2025-02-02
 

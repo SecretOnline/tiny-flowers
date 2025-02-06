@@ -53,6 +53,10 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 	private static final BiFunction<Direction, Integer, VoxelShape> FACING_AND_AMOUNT_TO_SHAPE = Util.memoize(
 			(BiFunction<Direction, Integer, VoxelShape>) ((facing, bitmap) -> {
+				if (bitmap == 0) {
+					return Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
+				}
+
 				VoxelShape[] voxelShapes = new VoxelShape[] {
 						Block.createCuboidShape(8.0, 0.0, 8.0, 16.0, 3.0, 16.0),
 						Block.createCuboidShape(8.0, 0.0, 0.0, 16.0, 3.0, 8.0),
