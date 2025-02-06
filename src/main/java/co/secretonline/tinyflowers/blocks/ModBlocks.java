@@ -32,5 +32,6 @@ public class ModBlocks {
 	}
 
 	public static void initialize() {
+		Registry.register(Registries.BLOCK_TYPE, TinyFlowers.id("tiny_garden"), GardenBlock.CODEC);
 	}
 }
