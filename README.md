@@ -13,6 +13,7 @@ Contributions to this project are welcome. I'm still very must in the process of
 Thanks to the following people for their contributions to this mod:
 
 - [haykam821](https://github.com/haykam821)
+- [Lucanoria](https://github.com/Lucanoria)
 
 ## License
 

@@ -21,6 +21,8 @@ Thanks to [haykam821](https://github.com/haykam821) for your help with this one,
 ### Added
 
 - Tiny Eyeblossoms will now open and close based on the time of day.
+- Translations
+  - German (German, Austrian, and Swiss). Thanks [Lucanoria](https://github.com/Lucanoria)!
 
 ### Fixed
 

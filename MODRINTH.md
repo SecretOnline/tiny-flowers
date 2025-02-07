@@ -40,6 +40,14 @@ Florists' Shears can be used on a Tiny Garden to pick a flower up. By using the 
 
 Using `Ctrl` (or `Cmd`) + Pick Block (i.e. Middle Click) on a Tiny Garden in Creative Mode will give you a copy of that garden to place down. It will be placed down facing the same direction as you, so you can easily rotate it.
 
+## Translation
+
+A big thank you to the following people for their work:
+
+- [Lucanoria](https://github.com/Lucanoria) - German (German, Austrian, and Swiss)
+
+If you want to help make this mod easier to use for everyone, then please don't hesitate to create a pull request adding/updating [the language files](https://github.com/SecretOnline/tiny-flowers/tree/main/src/main/resources/assets/tiny-flowers/lang) on GitHub.
+
 ## License
 
 This mod is licensed under the Mozilla Public License 2.0. You may use this mod in your mod packs.
