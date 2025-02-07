@@ -58,7 +58,7 @@
   },
   "recommends": {
     "fabricloader": ">=0.16.10",
-    "minecraft": "~1.21.4"
+    "minecraft": "~1.21.1"
   },
   "custom": {
     "mc-publish": {
