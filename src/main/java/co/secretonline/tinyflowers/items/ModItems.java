@@ -34,8 +34,6 @@ public class ModItems {
 	public static final Item TINY_CORNFLOWER = registerGardenBlockItem("tiny_cornflower");
 	public static final Item TINY_LILY_OF_THE_VALLEY = registerGardenBlockItem("tiny_lily_of_the_valley");
 	public static final Item TINY_TORCHFLOWER = registerGardenBlockItem("tiny_torchflower");
-	public static final Item TINY_OPEN_EYEBLOSSOM = registerGardenBlockItem("tiny_open_eyeblossom");
-	public static final Item TINY_CLOSED_EYEBLOSSOM = registerGardenBlockItem("tiny_closed_eyeblossom");
 	public static final Item TINY_WITHER_ROSE = registerGardenBlockItem("tiny_wither_rose");
 	// This declaration MUST be last to keep the Block/Item mappings correct.
 	public static final Item TINY_GARDEN_ITEM = registerGardenBlockItem("tiny_garden");
@@ -45,7 +43,6 @@ public class ModItems {
 	public static final Item FLORISTS_SHEARS_ITEM = Registry.register(Registries.ITEM, FLORISTS_SHEARS_ITEM_KEY,
 			new FloristsShearsItem(
 					new Item.Settings()
-							.registryKey(FLORISTS_SHEARS_ITEM_KEY)
 							.maxCount(1)
 							.maxDamage(238)
 							.component(DataComponentTypes.TOOL, ShearsItem.createToolComponent())
@@ -55,7 +52,7 @@ public class ModItems {
 	public static Item registerGardenBlockItem(String path) {
 		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, TinyFlowers.id(path));
 		return Registry.register(Registries.ITEM, itemKey,
-				new BlockItem(ModBlocks.TINY_GARDEN, new Item.Settings().registryKey(itemKey)));
+				new BlockItem(ModBlocks.TINY_GARDEN, new Item.Settings()));
 	}
 
 	public static void initialize() {
@@ -73,8 +70,6 @@ public class ModItems {
 			itemGroup.add(TINY_CORNFLOWER);
 			itemGroup.add(TINY_LILY_OF_THE_VALLEY);
 			itemGroup.add(TINY_TORCHFLOWER);
-			itemGroup.add(TINY_CLOSED_EYEBLOSSOM);
-			itemGroup.add(TINY_OPEN_EYEBLOSSOM);
 			itemGroup.add(TINY_WITHER_ROSE);
 		});
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register((itemGroup) -> {

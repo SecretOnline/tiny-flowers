@@ -26,6 +26,15 @@ The versioning scheme is listed in the README.
 
 Thanks to [haykam821](https://github.com/haykam821) for your help with this one, both with code and bug hunting.
 
+### Known Issues
+
+This version of the mod for 1.21.1 is a port from 1.21.4. Mojang changed a few things between those versions, which made this port difficult. I've tried to fit everything in,
+
+The following differences from the 1.21.4 version of the mod are known:
+
+- Using `ctrl`/`cmd` + Pick Block on a Tiny Garden does not give a copy of the garden.
+  - Since this was only available in Creative mode, an alternative is to use the `/give` command to give yourself a Garden with the `flower_variant_X` properties set.
+
 ### Added
 
 - Tiny Eyeblossoms will now open and close based on the time of day.
