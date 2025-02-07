@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "tiny_flowers",
+  "ingredients": [
+    { "item": "tiny-flowers:florists_shears" },
+    { "item": "minecraft:orange_tulip" }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tiny-flowers:tiny_orange_tulip"
+  }
+}

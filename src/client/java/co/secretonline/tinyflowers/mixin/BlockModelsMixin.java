@@ -15,7 +15,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.block.BlockModels;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.util.Util;
 
 @Mixin(BlockModels.class)
@@ -30,8 +29,7 @@ public class BlockModelsMixin {
 			MinecraftClient client = MinecraftClient.getInstance();
 			ItemStack stack = new ItemStack(variant.asItem());
 
-			client.getItemModelManager().update(TinyFlowersClient.ITEM_RENDER_STATE, stack, ModelTransformationMode.GROUND, false, client.world, null, 0);
-			info.setReturnValue(TinyFlowersClient.ITEM_RENDER_STATE.getParticleSprite(TinyFlowersClient.RANDOM));
+			info.setReturnValue(client.getItemRenderer().getModel(stack, client.world, null, 0).getParticleSprite());
 		}
 	}
 }

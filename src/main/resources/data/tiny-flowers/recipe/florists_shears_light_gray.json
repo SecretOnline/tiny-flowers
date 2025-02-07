@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "group": "florists_shears",
+  "ingredients": [
+    { "item": "minecraft:shears" },
+    { "tag": "c:dyes/light_gray" }
+  ],
+  "result": {
+    "components": {
+      "minecraft:dyed_color": {
+        "rgb": -6447721,
+        "show_in_tooltip": false
+      }
+    },
+    "count": 1,
+    "id": "tiny-flowers:florists_shears"
+  }
+}
