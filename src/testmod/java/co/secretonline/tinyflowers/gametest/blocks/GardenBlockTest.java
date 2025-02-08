@@ -7,6 +7,8 @@ import co.secretonline.tinyflowers.gametest.TinyFlowersTest;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -98,6 +100,47 @@ public class GardenBlockTest implements FabricGameTest {
 		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_3, FlowerVariant.EMPTY);
 		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_4, FlowerVariant.EMPTY);
 		context.assertTrue(stack.isEmpty(), "Expected item stack to be used");
+
+		context.complete();
+	}
+
+	@GameTest(templateName = TinyFlowersTest.STRUCTURE_0_FLOWERS)
+	public void placingGardenItem(TestContext context) {
+		PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
+
+		BlockStateComponent blockStateComponent = BlockStateComponent.DEFAULT
+				.with(GardenBlock.FLOWER_VARIANT_1, FlowerVariant.DANDELION)
+				.with(GardenBlock.FLOWER_VARIANT_2, FlowerVariant.ALLIUM)
+				.with(GardenBlock.FLOWER_VARIANT_3, FlowerVariant.WITHER_ROSE)
+				.with(GardenBlock.FLOWER_VARIANT_4, FlowerVariant.PINK_PETALS);
+
+		ItemStack stack = new ItemStack(ModItems.TINY_GARDEN_ITEM);
+		stack.set(DataComponentTypes.BLOCK_STATE, blockStateComponent);
+
+		player.setStackInHand(Hand.MAIN_HAND, stack);
+		context.useBlock(GARDEN_POS, player);
+
+		context.expectBlock(ModBlocks.TINY_GARDEN, GARDEN_POS);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_1, FlowerVariant.DANDELION);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_2, FlowerVariant.ALLIUM);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_3, FlowerVariant.WITHER_ROSE);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_4, FlowerVariant.PINK_PETALS);
+		context.assertTrue(stack.isEmpty(), "Expected item stack to be used");
+
+		context.complete();
+	}
+
+	@GameTest(templateName = TinyFlowersTest.STRUCTURE_0_FLOWERS)
+	public void placingEmptyGardenItem(TestContext context) {
+		PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
+
+		ItemStack stack = new ItemStack(ModItems.TINY_GARDEN_ITEM);
+		// No block state component
+
+		player.setStackInHand(Hand.MAIN_HAND, stack);
+		context.useBlock(GARDEN_POS, player);
+
+		context.expectBlock(Blocks.AIR, GARDEN_POS);
 
 		context.complete();
 	}
