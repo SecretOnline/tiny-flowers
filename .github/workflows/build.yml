@@ -50,6 +50,13 @@ jobs:
           name: build
           path: build/libs/
 
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit
+          path: build/junit.xml
+
   check-datagen:
     name: Check data generation
     runs-on: ubuntu-latest
