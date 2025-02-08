@@ -24,12 +24,16 @@ Thanks to [haykam821](https://github.com/haykam821) for your help with this one,
 - Translations
   - German (German, Austrian, and Swiss). Thanks [Lucanoria](https://github.com/Lucanoria)!
 
+### Changed
+
+- The eyes of Tiny Open Eyeblossoms are updated match the color of regular Eyeblossoms.
+- Completely empty gardens now have a hitbox that can be targeted.
+
 ### Fixed
 
 - Tiny Garden block breaking particles now match the flowers in the garden.
 - Using Florists' Shears on a Tiny Garden or Pink Petals is now picked up by Skulk Sensors.
   - This is a Block Change event, which creates a vibration of frequency 11.
-- Completely empty gardens now have a hitbox that can be targeted.
 - Bonemeal is no longer consumed with no effect when empty spaces had been made in a Tiny Garden using Florists' Shears.
 
 ## v1.0.0 - 2025-02-02
