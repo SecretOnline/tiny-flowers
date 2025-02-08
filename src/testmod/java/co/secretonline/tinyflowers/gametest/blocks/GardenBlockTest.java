@@ -2,6 +2,7 @@ package co.secretonline.tinyflowers.gametest.blocks;
 
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
+import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.gametest.TinyFlowersTest;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
@@ -37,7 +38,7 @@ public class GardenBlockTest implements FabricGameTest {
 	}
 
 	@GameTest(templateName = TinyFlowersTest.STRUCTURE_0_FLOWERS)
-	public void addTinyFlowersToGarden(TestContext context) {
+	public void addsTinyFlowersToGarden(TestContext context) {
 		PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
 
 		ItemStack stack = new ItemStack(ModItems.TINY_DANDELION);
@@ -78,6 +79,24 @@ public class GardenBlockTest implements FabricGameTest {
 		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_2, FlowerVariant.ALLIUM);
 		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_3, FlowerVariant.WITHER_ROSE);
 		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_4, FlowerVariant.PINK_PETALS);
+		context.assertTrue(stack.isEmpty(), "Expected item stack to be used");
+
+		context.complete();
+	}
+
+	@GameTest(templateName = TinyFlowersTest.STRUCTURE_1_PETAL)
+	public void addsTinyFlowersToPinkPetals(TestContext context) {
+		PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
+
+		ItemStack stack = new ItemStack(ModItems.TINY_DANDELION);
+		player.setStackInHand(Hand.MAIN_HAND, stack);
+		context.useBlock(GARDEN_POS, player);
+
+		context.expectBlock(ModBlocks.TINY_GARDEN, GARDEN_POS);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_1, FlowerVariant.PINK_PETALS);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_2, FlowerVariant.DANDELION);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_3, FlowerVariant.EMPTY);
+		context.expectBlockProperty(GARDEN_POS, GardenBlock.FLOWER_VARIANT_4, FlowerVariant.EMPTY);
 		context.assertTrue(stack.isEmpty(), "Expected item stack to be used");
 
 		context.complete();
