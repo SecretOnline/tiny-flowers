@@ -180,16 +180,13 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 	@Override
 	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		int numFlowers = getNumFlowers(state);
-		int randomPosition = random.nextInt(numFlowers);
-
-		FlowerVariant flowerVariant = state.get(FLOWER_VARIANT_PROPERTIES[randomPosition]);
-		if (flowerVariant.isEmpty()) {
-			// Backup in case the block has holes.
-			// This will consume bonemeal for no effect. Might fix this later.
+		List<FlowerVariant> flowers = getFlowers(state);
+		if (flowers.isEmpty()) {
 			TinyFlowers.LOGGER.warn("Tried to grow empty space in garden block");
 			return;
 		}
+
+		FlowerVariant flowerVariant = Util.getRandom(flowers, random);
 
 		if (hasFreeSpace(state)) {
 			// Add flower to gerden
