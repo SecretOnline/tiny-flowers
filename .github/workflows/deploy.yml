@@ -88,10 +88,11 @@ jobs:
           echo "changelog: ${{ steps.changelog.outputs.release-notes }}"
           echo "icon-url: ${{ steps.deploy-info.outputs.icon-url }}"
 
-      - uses: actions/attest-build-provenance@v2
-        if: inputs.is-release
-        with:
-          subject-path: "build/libs/*.jar"
+      # Broken due to an error with URL encoding in some parameters
+      # - uses: actions/attest-build-provenance@v2
+      #   if: inputs.is-release
+      #   with:
+      #     subject-path: "build/libs/*.jar"
 
       - name: Create GitHub release
         if: inputs.is-release
