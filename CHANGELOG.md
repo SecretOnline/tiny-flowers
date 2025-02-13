@@ -16,6 +16,12 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.1.1 - 2025-02-13
+
+### Fixed
+
+- Crash on startup.
+
 ## v1.1.0 - 2025-02-11
 
 Thanks to [haykam821](https://github.com/haykam821) for your help with this one, both with code and bug hunting.
