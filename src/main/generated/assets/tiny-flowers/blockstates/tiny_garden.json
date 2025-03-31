@@ -2,8 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "minecraft:block/pink_petals_1",
-        "y": 0
+        "model": "minecraft:block/pink_petals_1"
       },
       "when": {
         "facing": "north",
@@ -42,8 +41,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/pink_petals_2",
-        "y": 0
+        "model": "minecraft:block/pink_petals_2"
       },
       "when": {
         "facing": "north",
@@ -82,8 +80,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/pink_petals_3",
-        "y": 0
+        "model": "minecraft:block/pink_petals_3"
       },
       "when": {
         "facing": "north",
@@ -122,8 +119,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/pink_petals_4",
-        "y": 0
+        "model": "minecraft:block/pink_petals_4"
       },
       "when": {
         "facing": "north",
@@ -162,8 +158,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_dandelion_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_dandelion_1"
       },
       "when": {
         "facing": "north",
@@ -202,8 +197,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_dandelion_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_dandelion_2"
       },
       "when": {
         "facing": "north",
@@ -242,8 +236,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_dandelion_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_dandelion_3"
       },
       "when": {
         "facing": "north",
@@ -282,8 +275,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_dandelion_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_dandelion_4"
       },
       "when": {
         "facing": "north",
@@ -322,8 +314,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_poppy_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_poppy_1"
       },
       "when": {
         "facing": "north",
@@ -362,8 +353,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_poppy_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_poppy_2"
       },
       "when": {
         "facing": "north",
@@ -402,8 +392,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_poppy_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_poppy_3"
       },
       "when": {
         "facing": "north",
@@ -442,8 +431,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_poppy_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_poppy_4"
       },
       "when": {
         "facing": "north",
@@ -482,8 +470,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_blue_orchid_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_blue_orchid_1"
       },
       "when": {
         "facing": "north",
@@ -522,8 +509,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_blue_orchid_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_blue_orchid_2"
       },
       "when": {
         "facing": "north",
@@ -562,8 +548,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_blue_orchid_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_blue_orchid_3"
       },
       "when": {
         "facing": "north",
@@ -602,8 +587,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_blue_orchid_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_blue_orchid_4"
       },
       "when": {
         "facing": "north",
@@ -642,8 +626,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_allium_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_allium_1"
       },
       "when": {
         "facing": "north",
@@ -682,8 +665,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_allium_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_allium_2"
       },
       "when": {
         "facing": "north",
@@ -722,8 +704,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_allium_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_allium_3"
       },
       "when": {
         "facing": "north",
@@ -762,8 +743,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_allium_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_allium_4"
       },
       "when": {
         "facing": "north",
@@ -802,8 +782,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_azure_bluet_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_azure_bluet_1"
       },
       "when": {
         "facing": "north",
@@ -842,8 +821,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_azure_bluet_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_azure_bluet_2"
       },
       "when": {
         "facing": "north",
@@ -882,8 +860,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_azure_bluet_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_azure_bluet_3"
       },
       "when": {
         "facing": "north",
@@ -922,8 +899,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_azure_bluet_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_azure_bluet_4"
       },
       "when": {
         "facing": "north",
@@ -962,8 +938,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_red_tulip_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_red_tulip_1"
       },
       "when": {
         "facing": "north",
@@ -1002,8 +977,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_red_tulip_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_red_tulip_2"
       },
       "when": {
         "facing": "north",
@@ -1042,8 +1016,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_red_tulip_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_red_tulip_3"
       },
       "when": {
         "facing": "north",
@@ -1082,8 +1055,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_red_tulip_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_red_tulip_4"
       },
       "when": {
         "facing": "north",
@@ -1122,8 +1094,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_orange_tulip_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_orange_tulip_1"
       },
       "when": {
         "facing": "north",
@@ -1162,8 +1133,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_orange_tulip_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_orange_tulip_2"
       },
       "when": {
         "facing": "north",
@@ -1202,8 +1172,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_orange_tulip_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_orange_tulip_3"
       },
       "when": {
         "facing": "north",
@@ -1242,8 +1211,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_orange_tulip_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_orange_tulip_4"
       },
       "when": {
         "facing": "north",
@@ -1282,8 +1250,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_white_tulip_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_white_tulip_1"
       },
       "when": {
         "facing": "north",
@@ -1322,8 +1289,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_white_tulip_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_white_tulip_2"
       },
       "when": {
         "facing": "north",
@@ -1362,8 +1328,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_white_tulip_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_white_tulip_3"
       },
       "when": {
         "facing": "north",
@@ -1402,8 +1367,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_white_tulip_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_white_tulip_4"
       },
       "when": {
         "facing": "north",
@@ -1442,8 +1406,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_pink_tulip_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_pink_tulip_1"
       },
       "when": {
         "facing": "north",
@@ -1482,8 +1445,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_pink_tulip_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_pink_tulip_2"
       },
       "when": {
         "facing": "north",
@@ -1522,8 +1484,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_pink_tulip_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_pink_tulip_3"
       },
       "when": {
         "facing": "north",
@@ -1562,8 +1523,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_pink_tulip_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_pink_tulip_4"
       },
       "when": {
         "facing": "north",
@@ -1602,8 +1562,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_oxeye_daisy_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_oxeye_daisy_1"
       },
       "when": {
         "facing": "north",
@@ -1642,8 +1601,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_oxeye_daisy_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_oxeye_daisy_2"
       },
       "when": {
         "facing": "north",
@@ -1682,8 +1640,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_oxeye_daisy_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_oxeye_daisy_3"
       },
       "when": {
         "facing": "north",
@@ -1722,8 +1679,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_oxeye_daisy_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_oxeye_daisy_4"
       },
       "when": {
         "facing": "north",
@@ -1762,8 +1718,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_cornflower_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_cornflower_1"
       },
       "when": {
         "facing": "north",
@@ -1802,8 +1757,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_cornflower_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_cornflower_2"
       },
       "when": {
         "facing": "north",
@@ -1842,8 +1796,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_cornflower_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_cornflower_3"
       },
       "when": {
         "facing": "north",
@@ -1882,8 +1835,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_cornflower_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_cornflower_4"
       },
       "when": {
         "facing": "north",
@@ -1922,8 +1874,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_lily_of_the_valley_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_lily_of_the_valley_1"
       },
       "when": {
         "facing": "north",
@@ -1962,8 +1913,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_lily_of_the_valley_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_lily_of_the_valley_2"
       },
       "when": {
         "facing": "north",
@@ -2002,8 +1952,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_lily_of_the_valley_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_lily_of_the_valley_3"
       },
       "when": {
         "facing": "north",
@@ -2042,8 +1991,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_lily_of_the_valley_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_lily_of_the_valley_4"
       },
       "when": {
         "facing": "north",
@@ -2082,8 +2030,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_torchflower_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_torchflower_1"
       },
       "when": {
         "facing": "north",
@@ -2122,8 +2069,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_torchflower_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_torchflower_2"
       },
       "when": {
         "facing": "north",
@@ -2162,8 +2108,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_torchflower_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_torchflower_3"
       },
       "when": {
         "facing": "north",
@@ -2202,8 +2147,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_torchflower_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_torchflower_4"
       },
       "when": {
         "facing": "north",
@@ -2242,8 +2186,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_closed_eyeblossom_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_closed_eyeblossom_1"
       },
       "when": {
         "facing": "north",
@@ -2282,8 +2225,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_closed_eyeblossom_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_closed_eyeblossom_2"
       },
       "when": {
         "facing": "north",
@@ -2322,8 +2264,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_closed_eyeblossom_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_closed_eyeblossom_3"
       },
       "when": {
         "facing": "north",
@@ -2362,8 +2303,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_closed_eyeblossom_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_closed_eyeblossom_4"
       },
       "when": {
         "facing": "north",
@@ -2402,8 +2342,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_open_eyeblossom_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_open_eyeblossom_1"
       },
       "when": {
         "facing": "north",
@@ -2442,8 +2381,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_open_eyeblossom_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_open_eyeblossom_2"
       },
       "when": {
         "facing": "north",
@@ -2482,8 +2420,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_open_eyeblossom_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_open_eyeblossom_3"
       },
       "when": {
         "facing": "north",
@@ -2522,8 +2459,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_open_eyeblossom_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_open_eyeblossom_4"
       },
       "when": {
         "facing": "north",
@@ -2562,8 +2498,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_wither_rose_1",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_wither_rose_1"
       },
       "when": {
         "facing": "north",
@@ -2602,8 +2537,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_wither_rose_2",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_wither_rose_2"
       },
       "when": {
         "facing": "north",
@@ -2642,8 +2576,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_wither_rose_3",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_wither_rose_3"
       },
       "when": {
         "facing": "north",
@@ -2682,8 +2615,7 @@
     },
     {
       "apply": {
-        "model": "tiny-flowers:block/tiny_wither_rose_4",
-        "y": 0
+        "model": "tiny-flowers:block/tiny_wither_rose_4"
       },
       "when": {
         "facing": "north",

@@ -27,9 +27,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 public class BlockModelProvider extends FabricModelProvider {
-	private final static ModelVariantOperator[] DIRECTION_OPERATORS = new ModelVariantOperator[] {
-			BlockStateModelGenerator.NO_OP, BlockStateModelGenerator.ROTATE_Y_90,
-			BlockStateModelGenerator.ROTATE_Y_180, BlockStateModelGenerator.ROTATE_Y_270, };
+	private final static Direction[] DIRECTIONS = new Direction[] {
+			Direction.NORTH, Direction.EAST,
+			Direction.SOUTH, Direction.WEST, };
 
 	private final static ModelGroup[] MODEL_GROUPS = new ModelGroup[] {
 			// Single layer, tinted stem
@@ -139,16 +139,31 @@ public class BlockModelProvider extends FabricModelProvider {
 	private MultipartBlockModelDefinitionCreator registerPartInAllDirections(
 			MultipartBlockModelDefinitionCreator modelDefinitionCreator, FlowerVariant variant,
 			EnumProperty<FlowerVariant> property, Identifier modelIdentifier) {
-		for (ModelVariantOperator operator : DIRECTION_OPERATORS) {
+		for (Direction direction : DIRECTIONS) {
 			modelDefinitionCreator = modelDefinitionCreator.with(
 					BlockStateModelGenerator.createMultipartConditionBuilder()
 							.put(property, variant)
-							.put(Properties.HORIZONTAL_FACING, Direction.EAST),
+							.put(Properties.HORIZONTAL_FACING, direction),
 					BlockStateModelGenerator.createWeightedVariant(modelIdentifier)
-							.apply(operator));
+							.apply(getRotationForDirection(direction)));
 		}
 
 		return modelDefinitionCreator;
+	}
+
+	private ModelVariantOperator getRotationForDirection(Direction direction) {
+		switch (direction) {
+			case Direction.NORTH:
+				return BlockStateModelGenerator.NO_OP;
+			case Direction.EAST:
+				return BlockStateModelGenerator.ROTATE_Y_90;
+			case Direction.SOUTH:
+				return BlockStateModelGenerator.ROTATE_Y_180;
+			case Direction.WEST:
+				return BlockStateModelGenerator.ROTATE_Y_270;
+			default:
+				throw new IllegalArgumentException("Unknown direction for model");
+		}
 	}
 
 	private record ModelGroup(ModModels.Quartet models,
