@@ -91,7 +91,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 							Registries.ITEM.getEntry(ModItems.FLORISTS_SHEARS_ITEM),
 							1,
 							ComponentChanges.builder()
-									.add(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getEntityColor(), false))
+									.add(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getEntityColor()))
 									.build());
 
 					RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(

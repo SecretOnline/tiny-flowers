@@ -23,7 +23,7 @@ public class ModBlocks {
 							.registryKey(TINY_GARDEN_KEY)
 							.mapColor(MapColor.DARK_GREEN)
 							.noCollision()
-							.sounds(BlockSoundGroup.PINK_PETALS)
+							.sounds(BlockSoundGroup.FLOWERBED)
 							.pistonBehavior(PistonBehavior.DESTROY)),
 			TINY_GARDEN_KEY);
 

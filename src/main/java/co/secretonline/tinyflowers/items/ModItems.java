@@ -50,7 +50,7 @@ public class ModItems {
 							.maxDamage(238)
 							.component(DataComponentTypes.TOOL, ShearsItem.createToolComponent())
 							.component(DataComponentTypes.DYED_COLOR,
-									new DyedColorComponent(DyeColor.RED.getEntityColor(), false))));
+									new DyedColorComponent(DyeColor.RED.getEntityColor()))));
 
 	public static Item registerGardenBlockItem(String path) {
 		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, TinyFlowers.id(path));

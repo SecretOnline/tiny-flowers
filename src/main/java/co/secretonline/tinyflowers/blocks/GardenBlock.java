@@ -18,15 +18,12 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.Text;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Util;
@@ -287,22 +284,24 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		return new ItemStack(firstVariant);
 	}
 
-	@Override
-	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType options) {
-		super.appendTooltip(stack, context, tooltip, options);
+	// @Override
+	// public void appendTooltip(ItemStack stack, TooltipContext context, List<Text>
+	// tooltip, TooltipType options) {
+	// super.appendTooltip(stack, context, tooltip, options);
 
-		BlockStateComponent itemBlockState = stack.getOrDefault(DataComponentTypes.BLOCK_STATE, null);
-		if (itemBlockState == null) {
-			return;
-		}
+	// BlockStateComponent itemBlockState =
+	// stack.getOrDefault(DataComponentTypes.BLOCK_STATE, null);
+	// if (itemBlockState == null) {
+	// return;
+	// }
 
-		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-			FlowerVariant variant = itemBlockState.getValue(property);
-			variant = variant == null ? FlowerVariant.EMPTY : variant;
+	// for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+	// FlowerVariant variant = itemBlockState.getValue(property);
+	// variant = variant == null ? FlowerVariant.EMPTY : variant;
 
-			tooltip.add(Text.translatable(variant.getTranslationKey()));
-		}
-	}
+	// tooltip.add(Text.translatable(variant.getTranslationKey()));
+	// }
+	// }
 
 	public static boolean hasFreeSpace(BlockState state) {
 		return getNumFlowers(state) < FLOWER_VARIANT_PROPERTIES.length;
@@ -376,7 +375,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		}
 
 		int prevNumFlowers = blockState.get(FlowerbedBlock.FLOWER_AMOUNT);
-		BlockState baseState = this.getDefaultState().with(FACING, blockState.get(FlowerbedBlock.FACING))
+		BlockState baseState = this.getDefaultState().with(FACING, blockState.get(FlowerbedBlock.HORIZONTAL_FACING))
 				.with(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
 				.with(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
 				.with(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)

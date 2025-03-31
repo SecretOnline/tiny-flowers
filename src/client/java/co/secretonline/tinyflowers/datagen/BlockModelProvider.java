@@ -13,15 +13,13 @@ import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.BlockStateVariant;
 import net.minecraft.client.data.ItemModelGenerator;
 import net.minecraft.client.data.ModelSupplier;
 import net.minecraft.client.data.Models;
-import net.minecraft.client.data.MultipartBlockStateSupplier;
+import net.minecraft.client.data.MultipartBlockModelDefinitionCreator;
 import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.VariantSettings;
-import net.minecraft.client.data.When;
 import net.minecraft.client.render.item.tint.DyeTintSource;
+import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -29,9 +27,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 public class BlockModelProvider extends FabricModelProvider {
-	private final static Direction[] DIRECTIONS = new Direction[] {
-			Direction.NORTH, Direction.EAST,
-			Direction.SOUTH, Direction.WEST, };
+	private final static ModelVariantOperator[] DIRECTION_OPERATORS = new ModelVariantOperator[] {
+			BlockStateModelGenerator.NO_OP, BlockStateModelGenerator.ROTATE_Y_90,
+			BlockStateModelGenerator.ROTATE_Y_180, BlockStateModelGenerator.ROTATE_Y_270, };
 
 	private final static ModelGroup[] MODEL_GROUPS = new ModelGroup[] {
 			// Single layer, tinted stem
@@ -93,7 +91,8 @@ public class BlockModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-		MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(ModBlocks.TINY_GARDEN);
+		MultipartBlockModelDefinitionCreator definitionCreator = MultipartBlockModelDefinitionCreator
+				.create(ModBlocks.TINY_GARDEN);
 
 		// Generate blockstate variants for all flower variants.
 		for (FlowerVariant variant : FlowerVariant.values()) {
@@ -108,10 +107,10 @@ public class BlockModelProvider extends FabricModelProvider {
 			Identifier model3 = itemId.withPath(path -> "block/" + path + "_3");
 			Identifier model4 = itemId.withPath(path -> "block/" + path + "_4");
 
-			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_1, model1);
-			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_2, model2);
-			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_3, model3);
-			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_4, model4);
+			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_1, model1);
+			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_2, model2);
+			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_3, model3);
+			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_4, model4);
 		}
 
 		// Generate all block model definitions.
@@ -119,7 +118,7 @@ public class BlockModelProvider extends FabricModelProvider {
 			group.upload(blockStateModelGenerator.modelCollector);
 		}
 
-		blockStateModelGenerator.blockStateCollector.accept(supplier);
+		blockStateModelGenerator.blockStateCollector.accept(definitionCreator);
 	}
 
 	@Override
@@ -137,32 +136,19 @@ public class BlockModelProvider extends FabricModelProvider {
 		}
 	}
 
-	private void registerPartInAllDirections(MultipartBlockStateSupplier supplier, FlowerVariant variant,
+	private MultipartBlockModelDefinitionCreator registerPartInAllDirections(
+			MultipartBlockModelDefinitionCreator modelDefinitionCreator, FlowerVariant variant,
 			EnumProperty<FlowerVariant> property, Identifier modelIdentifier) {
-		for (Direction direction : DIRECTIONS) {
-			supplier.with(
-					When.create()
-							.set(property, variant)
-							.set(Properties.HORIZONTAL_FACING, direction),
-					BlockStateVariant.create()
-							.put(VariantSettings.MODEL, modelIdentifier)
-							.put(VariantSettings.Y, getRotationForDirection(direction)));
+		for (ModelVariantOperator operator : DIRECTION_OPERATORS) {
+			modelDefinitionCreator = modelDefinitionCreator.with(
+					BlockStateModelGenerator.createMultipartConditionBuilder()
+							.put(property, variant)
+							.put(Properties.HORIZONTAL_FACING, Direction.EAST),
+					BlockStateModelGenerator.createWeightedVariant(modelIdentifier)
+							.apply(operator));
 		}
-	}
 
-	private VariantSettings.Rotation getRotationForDirection(Direction direction) {
-		switch (direction) {
-			case Direction.NORTH:
-				return VariantSettings.Rotation.R0;
-			case Direction.EAST:
-				return VariantSettings.Rotation.R90;
-			case Direction.SOUTH:
-				return VariantSettings.Rotation.R180;
-			case Direction.WEST:
-				return VariantSettings.Rotation.R270;
-			default:
-				throw new IllegalArgumentException("Unknown direction for model");
-		}
+		return modelDefinitionCreator;
 	}
 
 	private record ModelGroup(ModModels.Quartet models,
