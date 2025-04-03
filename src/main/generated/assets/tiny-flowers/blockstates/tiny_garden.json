@@ -2963,6 +2963,162 @@
         "facing": "west",
         "flower_variant_4": "wither_rose"
       }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_1"
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_1": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_1",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_1": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_1",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_1": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_1",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_1": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_2"
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_2": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_2",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_2": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_2",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_2": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_2",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_2": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_3"
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_3": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_3",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_3": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_3",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_3": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_3",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_3": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_4"
+      },
+      "when": {
+        "facing": "north",
+        "flower_variant_4": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_4",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "flower_variant_4": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_4",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "flower_variant_4": "cactus_flower"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny-flowers:block/tiny_cactus_flower_4",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "flower_variant_4": "cactus_flower"
+      }
     }
   ]
 }

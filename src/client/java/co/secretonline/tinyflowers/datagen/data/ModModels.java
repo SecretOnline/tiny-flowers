@@ -102,14 +102,23 @@ public class ModModels {
 			TextureKey.PARTICLE, TextureKey.FLOWERBED, TextureKey.STEM,
 			ModTextureKey.FLOWERBED_MIDDLE, ModTextureKey.FLOWERBED_UPPER);
 
-	public static final Model GARDEN_LOW_1 = block(
-			"garden_low_tinted_2_1", "_1", TextureKey.PARTICLE, TextureKey.FLOWERBED);
-	public static final Model GARDEN_LOW_2 = block(
-			"garden_low_tinted_2_2", "_2", TextureKey.PARTICLE, TextureKey.FLOWERBED);
-	public static final Model GARDEN_LOW_3 = block(
-			"garden_low_tinted_2_3", "_3", TextureKey.PARTICLE, TextureKey.FLOWERBED);
-	public static final Model GARDEN_LOW_4 = block(
-			"garden_low_tinted_2_4", "_4", TextureKey.PARTICLE, TextureKey.FLOWERBED);
+	public static final Model GARDEN_LEAF_LITTER_1 = block(
+			"garden_leaf_litter_1", "_1", TextureKey.PARTICLE, TextureKey.FLOWERBED);
+	public static final Model GARDEN_LEAF_LITTER_2 = block(
+			"garden_leaf_litter_2", "_2", TextureKey.PARTICLE, TextureKey.FLOWERBED);
+	public static final Model GARDEN_LEAF_LITTER_3 = block(
+			"garden_leaf_litter_3", "_3", TextureKey.PARTICLE, TextureKey.FLOWERBED);
+	public static final Model GARDEN_LEAF_LITTER_4 = block(
+			"garden_leaf_litter_4", "_4", TextureKey.PARTICLE, TextureKey.FLOWERBED);
+
+	public static final Model GARDEN_LOW_UNTINTED_1 = block(
+			"garden_low_untinted_1", "_1", TextureKey.PARTICLE, TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model GARDEN_LOW_UNTINTED_2 = block(
+			"garden_low_untinted_2", "_2", TextureKey.PARTICLE, TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model GARDEN_LOW_UNTINTED_3 = block(
+			"garden_low_untinted_3", "_3", TextureKey.PARTICLE, TextureKey.FLOWERBED, TextureKey.STEM);
+	public static final Model GARDEN_LOW_UNTINTED_4 = block(
+			"garden_low_untinted_4", "_4", TextureKey.PARTICLE, TextureKey.FLOWERBED, TextureKey.STEM);
 
 	private static Model block(String parent, String variant, TextureKey... requiredTextureKeys) {
 		return new Model(Optional.of(TinyFlowers.id("block/" + parent)), Optional.of(variant), requiredTextureKeys);
@@ -144,8 +153,12 @@ public class ModModels {
 				GARDEN_TRIPLE_UNTINTED_1, GARDEN_TRIPLE_UNTINTED_2,
 				GARDEN_TRIPLE_UNTINTED_3, GARDEN_TRIPLE_UNTINTED_4);
 
-		public static Quartet GARDEN_LOW_TINTED_2 = new Quartet(
-				GARDEN_LOW_1, GARDEN_LOW_2,
-				GARDEN_LOW_3, GARDEN_LOW_4);
+		public static Quartet GARDEN_LEAF_LITTER = new Quartet(
+				GARDEN_LEAF_LITTER_1, GARDEN_LEAF_LITTER_2,
+				GARDEN_LEAF_LITTER_3, GARDEN_LEAF_LITTER_4);
+
+		public static Quartet GARDEN_LOW_UNTINTED = new Quartet(
+				GARDEN_LOW_UNTINTED_1, GARDEN_LOW_UNTINTED_2,
+				GARDEN_LOW_UNTINTED_3, GARDEN_LOW_UNTINTED_4);
 	}
 }

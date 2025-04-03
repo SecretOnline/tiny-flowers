@@ -1,6 +1,10 @@
 package co.secretonline.tinyflowers.items;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
@@ -21,22 +25,7 @@ public class ModItems {
 	// that placing one of them will always place one. This does get a little weird
 	// in places, as it definitely does not feel intended, but it works so I'm not
 	// complaining.
-	public static final Item TINY_DANDELION = registerGardenBlockItem("tiny_dandelion");
-	public static final Item TINY_POPPY = registerGardenBlockItem("tiny_poppy");
-	public static final Item TINY_BLUE_ORCHID = registerGardenBlockItem("tiny_blue_orchid");
-	public static final Item TINY_ALLIUM = registerGardenBlockItem("tiny_allium");
-	public static final Item TINY_AZURE_BLUET = registerGardenBlockItem("tiny_azure_bluet");
-	public static final Item TINY_RED_TULIP = registerGardenBlockItem("tiny_red_tulip");
-	public static final Item TINY_ORANGE_TULIP = registerGardenBlockItem("tiny_orange_tulip");
-	public static final Item TINY_WHITE_TULIP = registerGardenBlockItem("tiny_white_tulip");
-	public static final Item TINY_PINK_TULIP = registerGardenBlockItem("tiny_pink_tulip");
-	public static final Item TINY_OXEYE_DAISY = registerGardenBlockItem("tiny_oxeye_daisy");
-	public static final Item TINY_CORNFLOWER = registerGardenBlockItem("tiny_cornflower");
-	public static final Item TINY_LILY_OF_THE_VALLEY = registerGardenBlockItem("tiny_lily_of_the_valley");
-	public static final Item TINY_TORCHFLOWER = registerGardenBlockItem("tiny_torchflower");
-	public static final Item TINY_OPEN_EYEBLOSSOM = registerGardenBlockItem("tiny_open_eyeblossom");
-	public static final Item TINY_CLOSED_EYEBLOSSOM = registerGardenBlockItem("tiny_closed_eyeblossom");
-	public static final Item TINY_WITHER_ROSE = registerGardenBlockItem("tiny_wither_rose");
+	private static final Map<FlowerVariant, Item> FLOWER_VARIANT_ITEMS = registerFlowerVariantItems();
 	// This declaration MUST be last to keep the Block/Item mappings correct.
 	public static final Item TINY_GARDEN_ITEM = registerGardenBlockItem("tiny_garden");
 
@@ -52,6 +41,21 @@ public class ModItems {
 							.component(DataComponentTypes.DYED_COLOR,
 									new DyedColorComponent(DyeColor.RED.getEntityColor()))));
 
+	private static Map<FlowerVariant, Item> registerFlowerVariantItems() {
+		Map<FlowerVariant, Item> flowerVariantItems = new HashMap<>();
+
+		for (FlowerVariant variant : FlowerVariant.values()) {
+			if (!variant.shouldCreateItem()) {
+				continue;
+			}
+
+			Item item = registerGardenBlockItem(variant.getItemIdentifier().getPath());
+			flowerVariantItems.put(variant, item);
+		}
+
+		return flowerVariantItems;
+	}
+
 	public static Item registerGardenBlockItem(String path) {
 		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, TinyFlowers.id(path));
 		return Registry.register(Registries.ITEM, itemKey,
@@ -60,22 +64,9 @@ public class ModItems {
 
 	public static void initialize() {
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register((itemGroup) -> {
-			itemGroup.add(TINY_DANDELION);
-			itemGroup.add(TINY_POPPY);
-			itemGroup.add(TINY_BLUE_ORCHID);
-			itemGroup.add(TINY_ALLIUM);
-			itemGroup.add(TINY_AZURE_BLUET);
-			itemGroup.add(TINY_RED_TULIP);
-			itemGroup.add(TINY_ORANGE_TULIP);
-			itemGroup.add(TINY_WHITE_TULIP);
-			itemGroup.add(TINY_PINK_TULIP);
-			itemGroup.add(TINY_OXEYE_DAISY);
-			itemGroup.add(TINY_CORNFLOWER);
-			itemGroup.add(TINY_LILY_OF_THE_VALLEY);
-			itemGroup.add(TINY_TORCHFLOWER);
-			itemGroup.add(TINY_CLOSED_EYEBLOSSOM);
-			itemGroup.add(TINY_OPEN_EYEBLOSSOM);
-			itemGroup.add(TINY_WITHER_ROSE);
+			for (Map.Entry<FlowerVariant, Item> entry : FLOWER_VARIANT_ITEMS.entrySet()) {
+				itemGroup.add(entry.getValue());
+			}
 		});
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register((itemGroup) -> {
 			itemGroup.add(FLORISTS_SHEARS_ITEM);

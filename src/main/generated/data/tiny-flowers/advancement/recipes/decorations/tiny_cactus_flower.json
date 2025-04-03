@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_florists_shears": {
+      "conditions": {
+        "items": [
+          {
+            "items": "tiny-flowers:florists_shears"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tiny-flowers:tiny_cactus_flower"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_florists_shears"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tiny-flowers:tiny_cactus_flower"
+    ]
+  }
+}

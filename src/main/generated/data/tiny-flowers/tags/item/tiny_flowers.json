@@ -18,6 +18,7 @@
     "tiny-flowers:tiny_torchflower",
     "tiny-flowers:tiny_closed_eyeblossom",
     "tiny-flowers:tiny_open_eyeblossom",
-    "tiny-flowers:tiny_wither_rose"
+    "tiny-flowers:tiny_wither_rose",
+    "tiny-flowers:tiny_cactus_flower"
   ]
 }

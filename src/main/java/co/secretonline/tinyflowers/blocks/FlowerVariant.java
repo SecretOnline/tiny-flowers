@@ -28,18 +28,19 @@ public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 	TORCHFLOWER("torchflower", TinyFlowers.id("tiny_torchflower"), true),
 	CLOSED_EYEBLOSSOM("closed_eyeblossom", TinyFlowers.id("tiny_closed_eyeblossom"), true),
 	OPEN_EYEBLOSSOM("open_eyeblossom", TinyFlowers.id("tiny_open_eyeblossom"), true),
-	WITHER_ROSE("wither_rose", TinyFlowers.id("tiny_wither_rose"), true);
+	WITHER_ROSE("wither_rose", TinyFlowers.id("tiny_wither_rose"), true),
+	CACTUS_FLOWER("cactus_flower", TinyFlowers.id("tiny_cactus_flower"), true);
 
 	private final String name;
 	// Unfortunately we can't directly refer to the Item this variant corresponds to
 	// as the items don't get initialised until after this enum.
 	private final Identifier itemId;
-	private final boolean shouldCreateItemModel;
+	private final boolean shouldCreateItem;
 
-	private FlowerVariant(String name, Identifier itemId, boolean shouldCreateItemModel) {
+	private FlowerVariant(String name, Identifier itemId, boolean shouldCreateItem) {
 		this.name = name;
 		this.itemId = itemId;
-		this.shouldCreateItemModel = shouldCreateItemModel;
+		this.shouldCreateItem = shouldCreateItem;
 	}
 
 	@Override
@@ -71,8 +72,8 @@ public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 		return this.asItem().getTranslationKey();
 	}
 
-	public boolean shouldCreateItemModel() {
-		return this.shouldCreateItemModel;
+	public boolean shouldCreateItem() {
+		return this.shouldCreateItem;
 	}
 
 	public static FlowerVariant fromItem(ItemConvertible itemConvertible) {

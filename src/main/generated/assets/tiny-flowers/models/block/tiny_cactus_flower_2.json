@@ -1,0 +1,8 @@
+{
+  "parent": "tiny-flowers:block/garden_low_untinted_2",
+  "textures": {
+    "flowerbed": "tiny-flowers:block/tiny_cactus_flower",
+    "particle": "tiny-flowers:block/tiny_cactus_flower",
+    "stem": "tiny-flowers:block/tiny_cactus_flower_stem"
+  }
+}

@@ -58,6 +58,12 @@ public class BlockModelProvider extends FabricModelProvider {
 					new FlowerVariant[] {
 							FlowerVariant.CLOSED_EYEBLOSSOM,
 					}),
+			// Single layer, cactus flower stem
+			new ModelGroup(ModModels.Quartet.GARDEN_LOW_UNTINTED,
+					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_cactus_flower_stem")),
+					new FlowerVariant[] {
+							FlowerVariant.CACTUS_FLOWER,
+					}),
 			// Single layer (tall), tinted stem
 			new ModelGroup(ModModels.Quartet.GARDEN_TALL,
 					ModTextureMap.flowerbed(TinyFlowers.id("block/tall_tiny_flower_stem")),
@@ -83,8 +89,8 @@ public class BlockModelProvider extends FabricModelProvider {
 					new FlowerVariant[] {
 							FlowerVariant.TORCHFLOWER,
 					}),
-			// Low tinted index 2, no stem
-			new ModelGroup(ModModels.Quartet.GARDEN_LOW_TINTED_2,
+			// Leaf litter, no stem
+			new ModelGroup(ModModels.Quartet.GARDEN_LEAF_LITTER,
 					ModTextureMap.noStem(),
 					new FlowerVariant[] {
 							FlowerVariant.LEAF_LITTER,
@@ -136,7 +142,7 @@ public class BlockModelProvider extends FabricModelProvider {
 				new DyeTintSource(DyeColor.RED.getEntityColor()));
 
 		for (FlowerVariant variant : FlowerVariant.values()) {
-			if (variant.shouldCreateItemModel()) {
+			if (variant.shouldCreateItem()) {
 				itemModelGenerator.register(variant.asItem(), Models.GENERATED);
 			}
 		}

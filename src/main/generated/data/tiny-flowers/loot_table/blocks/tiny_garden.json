@@ -1444,6 +1444,82 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "cactus_flower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cactus_flower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "cactus_flower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cactus_flower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "cactus_flower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cactus_flower"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "cactus_flower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tiny-flowers:tiny_cactus_flower"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }
