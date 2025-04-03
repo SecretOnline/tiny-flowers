@@ -84,6 +84,158 @@
           "block": "tiny-flowers:tiny_garden",
           "condition": "minecraft:block_state_property",
           "properties": {
+            "flower_variant_1": "wildflowers"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wildflowers"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "wildflowers"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wildflowers"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "wildflowers"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wildflowers"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "wildflowers"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wildflowers"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_1": "leaf_litter"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:leaf_litter"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_2": "leaf_litter"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:leaf_litter"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_3": "leaf_litter"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:leaf_litter"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "flower_variant_4": "leaf_litter"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:leaf_litter"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "tiny-flowers:tiny_garden",
+          "condition": "minecraft:block_state_property",
+          "properties": {
             "flower_variant_1": "dandelion"
           }
         }

@@ -12,8 +12,8 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
-import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.block.PlantBlock;
+import net.minecraft.block.Segmented;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -148,8 +149,8 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 		if (blockState.isOf(this)) {
 			return addFlowerToBlockState(blockState, flowerVariant);
-		} else if (blockState.getBlock() instanceof FlowerbedBlock) {
-			BlockState baseState = getStateFromFlowerbed(blockState);
+		} else if (blockState.getBlock() instanceof Segmented) {
+			BlockState baseState = getStateFromSegmented(blockState);
 
 			// Add the new type in now that we've converted the block.
 			return addFlowerToBlockState(baseState, flowerVariant);
@@ -366,20 +367,30 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		return state;
 	}
 
-	public BlockState getStateFromFlowerbed(BlockState blockState) {
-		// Convert FlowerbedBlock to GardenBlock
-		FlowerVariant existingVariant = FlowerVariant.fromItem(blockState.getBlock());
+	public BlockState getStateFromSegmented(BlockState blockState) {
+		// Convert Segmented (e.g. Pink petals, Leaf litter) to GardenBlock
+		Block block = blockState.getBlock();
+		FlowerVariant existingVariant = FlowerVariant.fromItem(block);
 		if (existingVariant.isEmpty()) {
 			// Invalid state
-			throw new IllegalStateException("FlowerbedBlock has no valid flower variant");
+			throw new IllegalStateException("Segmented block has no valid flower variant");
 		}
 
-		int prevNumFlowers = blockState.get(FlowerbedBlock.FLOWER_AMOUNT);
-		BlockState baseState = this.getDefaultState().with(FACING, blockState.get(FlowerbedBlock.HORIZONTAL_FACING))
-				.with(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
-				.with(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
-				.with(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)
-				.with(FLOWER_VARIANT_4, prevNumFlowers >= 4 ? existingVariant : FlowerVariant.EMPTY);
-		return baseState;
+		if (block instanceof Segmented segmentedBlock) {
+			// This exists because FlowerbedBlocks had their own property before Segmented
+			// existed.
+			IntProperty amountProperty = segmentedBlock.getAmountProperty();
+			int prevNumFlowers = blockState.get(amountProperty);
+
+			BlockState baseState = this.getDefaultState().with(FACING, blockState.get(Properties.HORIZONTAL_FACING))
+					.with(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
+					.with(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
+					.with(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)
+					.with(FLOWER_VARIANT_4, prevNumFlowers >= 4 ? existingVariant : FlowerVariant.EMPTY);
+			return baseState;
+
+		} else {
+			throw new IllegalStateException("Block is not a segmented block");
+		}
 	}
 }

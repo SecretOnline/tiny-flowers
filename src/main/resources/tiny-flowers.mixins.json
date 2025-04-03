@@ -5,7 +5,8 @@
 	"mixins": [
 		"EyeblossomBlockMixin",
 		"EyeblossomStateAccessor",
-		"FlowerbedBlockMixin"
+		"FlowerbedBlockMixin",
+		"LeafLitterBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

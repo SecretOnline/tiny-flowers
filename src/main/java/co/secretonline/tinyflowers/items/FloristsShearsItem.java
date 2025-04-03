@@ -8,7 +8,7 @@ import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowerbedBlock;
+import net.minecraft.block.Segmented;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -51,14 +51,14 @@ public class FloristsShearsItem extends ShearsItem {
 		BlockPos pos = ctx.getBlockPos();
 		BlockState blockState = world.getBlockState(pos);
 
-		if (blockState.getBlock() instanceof FlowerbedBlock) {
-			// Try convert flowerbeds to gardens so that shears can remove flowers from
+		if (blockState.getBlock() instanceof Segmented) {
+			// Try convert segmented block to gardens so that shears can remove flowers from
 			// them.
 			try {
-				blockState = ((GardenBlock) ModBlocks.TINY_GARDEN).getStateFromFlowerbed(blockState);
+				blockState = ((GardenBlock) ModBlocks.TINY_GARDEN).getStateFromSegmented(blockState);
 			} catch (IllegalStateException ex) {
-				// Flowerbed could not be converted to garden.
-				TinyFlowers.LOGGER.warn("Could not convert flowerbed to garden. Ignoring action.");
+				// Segmented could not be converted to garden.
+				TinyFlowers.LOGGER.warn("Could not convert segmented block to garden. Ignoring action.");
 
 				return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
 			}

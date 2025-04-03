@@ -8,6 +8,7 @@ import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.item.ItemRenderState;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.biome.DryFoliageColors;
 import net.minecraft.world.biome.GrassColors;
 
 public class TinyFlowersClient implements ClientModInitializer {
@@ -20,14 +21,26 @@ public class TinyFlowersClient implements ClientModInitializer {
 
 		// See Pink Petals in net.minecraft.client.color.block.BlockColors
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-			if (tintIndex != 0) {
-				if (world == null || pos == null) {
-					return GrassColors.getDefaultColor();
-				} else {
-					return BiomeColors.getGrassColor(world, pos);
+			boolean hasWorld = world == null || pos == null;
+
+			switch (tintIndex) {
+				case 1 -> {
+					if (hasWorld) {
+						return GrassColors.getDefaultColor();
+					} else {
+						return BiomeColors.getGrassColor(world, pos);
+					}
 				}
-			} else {
-				return -1;
+				case 2 -> {
+					if (hasWorld) {
+						return DryFoliageColors.getColor(0.5, 1.0);
+					} else {
+						return BiomeColors.getDryFoliageColor(world, pos);
+					}
+				}
+				default -> {
+					return -1;
+				}
 			}
 		}, ModBlocks.TINY_GARDEN);
 	}

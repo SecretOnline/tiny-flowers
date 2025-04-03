@@ -11,6 +11,8 @@ import net.minecraft.util.StringIdentifiable;
 public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 	EMPTY("empty", null, false),
 	PINK_PETALS("pink_petals", Registries.ITEM.getId(Items.PINK_PETALS), false),
+	WILDFLOWERS("wildflowers", Registries.ITEM.getId(Items.WILDFLOWERS), false),
+	LEAF_LITTER("leaf_litter", Registries.ITEM.getId(Items.LEAF_LITTER), false),
 	DANDELION("dandelion", TinyFlowers.id("tiny_dandelion"), true),
 	POPPY("poppy", TinyFlowers.id("tiny_poppy"), true),
 	BLUE_ORCHID("blue_orchid", TinyFlowers.id("tiny_blue_orchid"), true),

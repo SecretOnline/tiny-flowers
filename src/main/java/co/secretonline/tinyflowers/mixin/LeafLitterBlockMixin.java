@@ -7,26 +7,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import co.secretonline.tinyflowers.helper.SegmentedMixinHelper;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowerbedBlock;
+import net.minecraft.block.LeafLitterBlock;
 import net.minecraft.item.ItemPlacementContext;
 
-@Mixin(FlowerbedBlock.class)
-public class FlowerbedBlockMixin {
+@Mixin(LeafLitterBlock.class)
+public class LeafLitterBlockMixin {
 	@Inject(method = "canReplace", at = @At("HEAD"), cancellable = true)
 	public void injectCanReplace(BlockState state, ItemPlacementContext context, CallbackInfoReturnable<Boolean> info) {
-		// Delegate to helper.
-		SegmentedMixinHelper.shouldAddSegment(state, context, FlowerbedBlock.FLOWER_AMOUNT, info);
+		LeafLitterBlock that = (LeafLitterBlock) (Object) this;
+
+		SegmentedMixinHelper.shouldAddSegment(state, context, that.getAmountProperty(), info);
 	}
 
 	@Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
 	public void injectGetPlacementState(ItemPlacementContext context, CallbackInfoReturnable<BlockState> info) {
-		FlowerbedBlock that = (FlowerbedBlock) (Object) this;
+		LeafLitterBlock that = (LeafLitterBlock) (Object) this;
 
 		SegmentedMixinHelper.getPlacementState(
 				context,
 				that,
 				that.getAmountProperty(),
-				FlowerbedBlock.HORIZONTAL_FACING,
+				LeafLitterBlock.HORIZONTAL_FACING,
 				info);
 	}
 }
