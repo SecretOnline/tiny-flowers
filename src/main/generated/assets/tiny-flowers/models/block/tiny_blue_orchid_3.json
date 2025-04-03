@@ -3,6 +3,7 @@
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_blue_orchid",
     "flowerbed_upper": "tiny-flowers:block/tiny_blue_orchid_upper",
+    "particle": "tiny-flowers:block/tiny_blue_orchid",
     "stem": "tiny-flowers:block/tall_tiny_flower_stem"
   }
 }

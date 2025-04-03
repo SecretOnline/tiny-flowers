@@ -1,0 +1,7 @@
+{
+  "parent": "tiny-flowers:block/garden_low_tinted_2_2",
+  "textures": {
+    "flowerbed": "minecraft:block/leaf_litter",
+    "particle": "minecraft:block/leaf_litter"
+  }
+}

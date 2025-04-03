@@ -2,6 +2,7 @@
   "parent": "tiny-flowers:block/garden_tall_1",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_poppy",
+    "particle": "tiny-flowers:block/tiny_poppy",
     "stem": "tiny-flowers:block/tall_tiny_flower_stem"
   }
 }

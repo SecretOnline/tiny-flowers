@@ -83,6 +83,12 @@ public class BlockModelProvider extends FabricModelProvider {
 					new FlowerVariant[] {
 							FlowerVariant.TORCHFLOWER,
 					}),
+			// Low tinted index 2, no stem
+			new ModelGroup(ModModels.Quartet.GARDEN_LOW_TINTED_2,
+					ModTextureMap.noStem(),
+					new FlowerVariant[] {
+							FlowerVariant.LEAF_LITTER,
+					}),
 	};
 
 	public BlockModelProvider(FabricDataOutput generator) {
@@ -100,12 +106,12 @@ public class BlockModelProvider extends FabricModelProvider {
 				continue;
 			}
 
-			Identifier itemId = variant.getItemIdentifier();
+			Identifier baseId = getVariantBaseModelId(variant);
 
-			Identifier model1 = itemId.withPath(path -> "block/" + path + "_1");
-			Identifier model2 = itemId.withPath(path -> "block/" + path + "_2");
-			Identifier model3 = itemId.withPath(path -> "block/" + path + "_3");
-			Identifier model4 = itemId.withPath(path -> "block/" + path + "_4");
+			Identifier model1 = baseId.withPath(path -> "block/" + path + "_1");
+			Identifier model2 = baseId.withPath(path -> "block/" + path + "_2");
+			Identifier model3 = baseId.withPath(path -> "block/" + path + "_3");
+			Identifier model4 = baseId.withPath(path -> "block/" + path + "_4");
 
 			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_1, model1);
 			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_2, model2);
@@ -166,19 +172,36 @@ public class BlockModelProvider extends FabricModelProvider {
 		}
 	}
 
+	private static Identifier getVariantBaseModelId(FlowerVariant variant) {
+		Identifier identifier = variant.getItemIdentifier();
+
+		switch (variant) {
+			case FlowerVariant.LEAF_LITTER:
+				// The base Leaf Litter models utilise a single plane which doesn't quite work
+				// with this mod. As such, we need to override the models for Leaf Litter
+				// specifically.
+				identifier = TinyFlowers.id("leaf_litter");
+				break;
+			default:
+		}
+
+		return identifier;
+	}
+
 	private record ModelGroup(ModModels.Quartet models,
 			Function<Identifier, TextureMap> texturesGetter, FlowerVariant[] variants) {
 
 		public void upload(BiConsumer<Identifier, ModelSupplier> modelCollector) {
 			for (FlowerVariant variant : this.variants) {
-				Identifier itemId = variant.getItemIdentifier();
+				Identifier textureId = variant.getItemIdentifier();
+				Identifier itemId = getVariantBaseModelId(variant);
 
 				Identifier modelId1 = itemId.withPath(path -> "block/" + path + "_1");
 				Identifier modelId2 = itemId.withPath(path -> "block/" + path + "_2");
 				Identifier modelId3 = itemId.withPath(path -> "block/" + path + "_3");
 				Identifier modelId4 = itemId.withPath(path -> "block/" + path + "_4");
 
-				TextureMap textureMap = this.texturesGetter.apply(itemId);
+				TextureMap textureMap = this.texturesGetter.apply(textureId);
 
 				this.models.model1().upload(modelId1, textureMap, modelCollector);
 				this.models.model2().upload(modelId2, textureMap, modelCollector);

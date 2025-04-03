@@ -314,7 +314,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_1"
+        "model": "tiny-flowers:block/leaf_litter_1"
       },
       "when": {
         "facing": "north",
@@ -323,7 +323,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_1",
+        "model": "tiny-flowers:block/leaf_litter_1",
         "y": 90
       },
       "when": {
@@ -333,7 +333,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_1",
+        "model": "tiny-flowers:block/leaf_litter_1",
         "y": 180
       },
       "when": {
@@ -343,7 +343,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_1",
+        "model": "tiny-flowers:block/leaf_litter_1",
         "y": 270
       },
       "when": {
@@ -353,7 +353,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_2"
+        "model": "tiny-flowers:block/leaf_litter_2"
       },
       "when": {
         "facing": "north",
@@ -362,7 +362,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_2",
+        "model": "tiny-flowers:block/leaf_litter_2",
         "y": 90
       },
       "when": {
@@ -372,7 +372,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_2",
+        "model": "tiny-flowers:block/leaf_litter_2",
         "y": 180
       },
       "when": {
@@ -382,7 +382,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_2",
+        "model": "tiny-flowers:block/leaf_litter_2",
         "y": 270
       },
       "when": {
@@ -392,7 +392,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_3"
+        "model": "tiny-flowers:block/leaf_litter_3"
       },
       "when": {
         "facing": "north",
@@ -401,7 +401,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_3",
+        "model": "tiny-flowers:block/leaf_litter_3",
         "y": 90
       },
       "when": {
@@ -411,7 +411,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_3",
+        "model": "tiny-flowers:block/leaf_litter_3",
         "y": 180
       },
       "when": {
@@ -421,7 +421,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_3",
+        "model": "tiny-flowers:block/leaf_litter_3",
         "y": 270
       },
       "when": {
@@ -431,7 +431,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_4"
+        "model": "tiny-flowers:block/leaf_litter_4"
       },
       "when": {
         "facing": "north",
@@ -440,7 +440,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_4",
+        "model": "tiny-flowers:block/leaf_litter_4",
         "y": 90
       },
       "when": {
@@ -450,7 +450,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_4",
+        "model": "tiny-flowers:block/leaf_litter_4",
         "y": 180
       },
       "when": {
@@ -460,7 +460,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/leaf_litter_4",
+        "model": "tiny-flowers:block/leaf_litter_4",
         "y": 270
       },
       "when": {

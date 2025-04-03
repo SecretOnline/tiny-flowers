@@ -2,6 +2,7 @@
   "parent": "tiny-flowers:block/garden_untinted_3",
   "textures": {
     "flowerbed": "tiny-flowers:block/tiny_closed_eyeblossom",
+    "particle": "tiny-flowers:block/tiny_closed_eyeblossom",
     "stem": "tiny-flowers:block/tiny_eyeblossom_stem"
   }
 }
