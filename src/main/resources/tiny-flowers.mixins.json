@@ -6,6 +6,7 @@
 		"EyeblossomBlockMixin",
 		"EyeblossomStateAccessor",
 		"FlowerbedBlockMixin",
+		"ItemStackMixin",
 		"LeafLitterBlockMixin"
 	],
 	"injectors": {

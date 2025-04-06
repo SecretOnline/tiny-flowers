@@ -1,5 +1,7 @@
 package co.secretonline.tinyflowers.blocks;
 
+import com.mojang.serialization.Codec;
+
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -91,4 +93,6 @@ public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 
 		return EMPTY;
 	}
+
+	public static final Codec<FlowerVariant> CODEC = StringIdentifiable.createCodec(FlowerVariant::values);
 }

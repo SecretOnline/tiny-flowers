@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import co.secretonline.tinyflowers.blocks.ModBlocks;
+import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.items.ModItems;
 
 public class TinyFlowers implements ModInitializer {
@@ -20,6 +21,7 @@ public class TinyFlowers implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModComponents.initialize();
 		ModBlocks.initialize();
 		ModItems.initialize();
 	}

@@ -7,6 +7,8 @@ import java.util.function.BiFunction;
 import com.mojang.serialization.MapCodec;
 
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.components.ModComponents;
+import co.secretonline.tinyflowers.components.TinyFlowersComponent;
 import co.secretonline.tinyflowers.helper.EyeblossomHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -118,46 +120,83 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		BlockState blockState = ctx.getWorld().getBlockState(ctx.getBlockPos());
 
-		Item item = ctx.getStack().getItem();
+		ItemStack stack = ctx.getStack();
+		Item item = stack.getItem();
 		FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
 		if (flowerVariant.isEmpty()) {
+			// The item being placed down is not a flower variant in the enum, but is a
+			// GardenBlock block item.
+			// Currently, the only known case for this is a pre-formed garden item.
 			if (!blockState.isOf(this) && Block.getBlockFromItem(item) == this) {
 				// The item is a GardenBlock block item, but not any of the variants.
 				// At this point we assume that the item is a pre-formed garden item.
-				BlockStateComponent itemBlockState = ctx.getStack().getOrDefault(DataComponentTypes.BLOCK_STATE, null);
-				if (itemBlockState == null) {
-					// Item doesn't have any blockstate set, so do nothing.
-					return blockState;
-				}
 
 				BlockState newBlockState = this.getDefaultState()
 						.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
 
-				for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-					FlowerVariant variant = itemBlockState.getValue(property);
-					variant = variant == null ? FlowerVariant.EMPTY : variant;
+				// Newer items (since v1.2.0 of this mod) have a TinyFlowersComponent that
+				// stores which flowers were picked. Older items (before v1.2.0) set this
+				// information on the BlockStateComponent instead. We need to check
+				// both of these in case the item was creted before the new component was
+				// added to the mod.
+				if (stack.contains(ModComponents.TINY_FLOWERS_COMPONENT_TYPE)) {
+					// The item has a TinyFlowersComponent, so we can use that to get the
+					// flower variants.
+					TinyFlowersComponent tinyFlowersComponent = stack.get(
+							ModComponents.TINY_FLOWERS_COMPONENT_TYPE);
 
-					newBlockState = newBlockState.with(property, variant);
+					List<FlowerVariant> flowers = tinyFlowersComponent.flowers();
+
+					for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
+						FlowerVariant variant = flowers.size() >= i
+								? flowers.get(i)
+								: FlowerVariant.EMPTY;
+
+						newBlockState = newBlockState.with(FLOWER_VARIANT_PROPERTIES[i], variant);
+					}
+
+					return newBlockState;
+				} else if (stack.contains(DataComponentTypes.BLOCK_STATE)) {
+					BlockStateComponent itemBlockState = stack.get(DataComponentTypes.BLOCK_STATE);
+
+					for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+						FlowerVariant variant = itemBlockState.getValue(property);
+						variant = variant == null ? FlowerVariant.EMPTY : variant;
+
+						newBlockState = newBlockState.with(property, variant);
+					}
+
+					return newBlockState;
+				} else {
+					// Neither of the components are present, so do nothing.
+					return blockState;
 				}
-
-				return newBlockState;
 			}
 
-			// Is this the correct thing to do?
+			// The item is not a flower variant in the enum, and is not a GardenBlock block
+			// item, so there must be something weird going on. For now I've decided to do
+			// nothing, and just keep the current block state. It might consume an item, but
+			// that's better than a crash.
 			return blockState;
 		}
 
 		if (blockState.isOf(this)) {
+			// Placing a tiny flower on a garden block.
 			return addFlowerToBlockState(blockState, flowerVariant);
 		} else if (blockState.getBlock() instanceof Segmented) {
+			// Placing a tiny flower on a segmented block.
+			// We need to convert the segmented block to a garden block
+			// and then add the flower variant to it.
 			BlockState baseState = getStateFromSegmented(blockState);
 
 			// Add the new type in now that we've converted the block.
 			return addFlowerToBlockState(baseState, flowerVariant);
 		} else {
+			// Item is a valid tiny flower block item, but there's no block yet.
+			// Place a new garden with the flower variant.
 			return this.getDefaultState()
 					.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
-					.with(FLOWER_VARIANT_1, FlowerVariant.fromItem(ctx.getStack().getItem()));
+					.with(FLOWER_VARIANT_1, flowerVariant);
 		}
 	}
 
@@ -264,14 +303,14 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	@Override
 	protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
 		if (includeData) {
-			BlockStateComponent blockStateComponent = BlockStateComponent.DEFAULT
-					.with(FLOWER_VARIANT_1, state.get(FLOWER_VARIANT_1))
-					.with(FLOWER_VARIANT_2, state.get(FLOWER_VARIANT_2))
-					.with(FLOWER_VARIANT_3, state.get(FLOWER_VARIANT_3))
-					.with(FLOWER_VARIANT_4, state.get(FLOWER_VARIANT_4));
+			TinyFlowersComponent tinyFlowersComponent = TinyFlowersComponent.of(List.of(
+					state.get(FLOWER_VARIANT_1),
+					state.get(FLOWER_VARIANT_2),
+					state.get(FLOWER_VARIANT_3),
+					state.get(FLOWER_VARIANT_4)));
 
 			ItemStack stack = new ItemStack(this.asItem());
-			stack.set(DataComponentTypes.BLOCK_STATE, blockStateComponent);
+			stack.set(ModComponents.TINY_FLOWERS_COMPONENT_TYPE, tinyFlowersComponent);
 
 			return stack;
 		}
@@ -284,25 +323,6 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 		return new ItemStack(firstVariant);
 	}
-
-	// @Override
-	// public void appendTooltip(ItemStack stack, TooltipContext context, List<Text>
-	// tooltip, TooltipType options) {
-	// super.appendTooltip(stack, context, tooltip, options);
-
-	// BlockStateComponent itemBlockState =
-	// stack.getOrDefault(DataComponentTypes.BLOCK_STATE, null);
-	// if (itemBlockState == null) {
-	// return;
-	// }
-
-	// for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-	// FlowerVariant variant = itemBlockState.getValue(property);
-	// variant = variant == null ? FlowerVariant.EMPTY : variant;
-
-	// tooltip.add(Text.translatable(variant.getTranslationKey()));
-	// }
-	// }
 
 	public static boolean hasFreeSpace(BlockState state) {
 		return getNumFlowers(state) < FLOWER_VARIANT_PROPERTIES.length;
