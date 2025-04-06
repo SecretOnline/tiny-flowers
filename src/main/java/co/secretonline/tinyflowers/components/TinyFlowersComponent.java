@@ -7,10 +7,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
+import co.secretonline.tinyflowers.blocks.GardenBlock;
 import net.minecraft.component.ComponentsAccess;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.tooltip.TooltipAppender;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -39,10 +43,10 @@ public record TinyFlowersComponent(List<FlowerVariant> flowers) implements Toolt
 	public void appendTooltip(TooltipContext context, Consumer<Text> textConsumer,
 			TooltipType type, ComponentsAccess components) {
 		for (int i = 0; i < Math.min(MAX_FLOWERS_IN_TOOLTIP, flowers.size()); i++) {
-			FlowerVariant flower = flowers.get(i);
-			MutableText text = Text.translatable(flower.getTranslationKey());
+			FlowerVariant variant = flowers.get(i);
 
-			if (flower.isEmpty()) {
+			MutableText text = Text.translatable(variant.getTranslationKey());
+			if (variant.isEmpty()) {
 				text.formatted(Formatting.GRAY);
 			}
 
@@ -52,6 +56,23 @@ public record TinyFlowersComponent(List<FlowerVariant> flowers) implements Toolt
 		if (flowers.size() > MAX_FLOWERS_IN_TOOLTIP) {
 			textConsumer.accept(Text.translatable("item.container.more_items", flowers.size() - MAX_FLOWERS_IN_TOOLTIP)
 					.formatted(Formatting.ITALIC));
+		}
+
+		// Since it's possible that garden items were created before this component was
+		// added to the mod, we also need to check for variants in the block state.
+		BlockStateComponent itemBlockState = components.get(DataComponentTypes.BLOCK_STATE);
+		if (flowers.isEmpty() && itemBlockState != null) {
+			for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
+				FlowerVariant variant = itemBlockState.getValue(property);
+				variant = variant == null ? FlowerVariant.EMPTY : variant;
+
+				MutableText text = Text.translatable(variant.getTranslationKey());
+				if (variant.isEmpty()) {
+					text.formatted(Formatting.GRAY);
+				}
+
+				textConsumer.accept(text);
+			}
 		}
 	}
 }

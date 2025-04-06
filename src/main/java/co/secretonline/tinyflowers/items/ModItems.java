@@ -2,10 +2,13 @@ package co.secretonline.tinyflowers.items;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
+import co.secretonline.tinyflowers.components.ModComponents;
+import co.secretonline.tinyflowers.components.TinyFlowersComponent;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
@@ -27,7 +30,8 @@ public class ModItems {
 	// complaining.
 	private static final Map<FlowerVariant, Item> FLOWER_VARIANT_ITEMS = registerFlowerVariantItems();
 	// This declaration MUST be last to keep the Block/Item mappings correct.
-	public static final Item TINY_GARDEN_ITEM = registerGardenBlockItem("tiny_garden");
+	public static final Item TINY_GARDEN_ITEM = registerGardenBlockItem("tiny_garden",
+			(settings) -> settings.component(ModComponents.TINY_FLOWERS_COMPONENT_TYPE, TinyFlowersComponent.EMPTY));
 
 	public static final RegistryKey<Item> FLORISTS_SHEARS_ITEM_KEY = RegistryKey.of(RegistryKeys.ITEM,
 			TinyFlowers.id("florists_shears"));
@@ -57,9 +61,15 @@ public class ModItems {
 	}
 
 	public static Item registerGardenBlockItem(String path) {
+		return registerGardenBlockItem(path, Function.identity());
+	}
+
+	public static Item registerGardenBlockItem(String path, Function<Item.Settings, Item.Settings> settings) {
 		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, TinyFlowers.id(path));
 		return Registry.register(Registries.ITEM, itemKey,
-				new BlockItem(ModBlocks.TINY_GARDEN, new Item.Settings().registryKey(itemKey)));
+				new BlockItem(
+						ModBlocks.TINY_GARDEN,
+						settings.apply(new Item.Settings().registryKey(itemKey))));
 	}
 
 	public static void initialize() {

@@ -131,9 +131,6 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 				// The item is a GardenBlock block item, but not any of the variants.
 				// At this point we assume that the item is a pre-formed garden item.
 
-				BlockState newBlockState = this.getDefaultState()
-						.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
-
 				// Newer items (since v1.2.0 of this mod) have a TinyFlowersComponent that
 				// stores which flowers were picked. Older items (before v1.2.0) set this
 				// information on the BlockStateComponent instead. We need to check
@@ -147,26 +144,15 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 					List<FlowerVariant> flowers = tinyFlowersComponent.flowers();
 
-					for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
-						FlowerVariant variant = flowers.size() >= i
-								? flowers.get(i)
-								: FlowerVariant.EMPTY;
-
-						newBlockState = newBlockState.with(FLOWER_VARIANT_PROPERTIES[i], variant);
+					// Garden items always have a default component value, so we need to check if
+					// there's an older block state component with data.
+					if (flowers.isEmpty() && stack.contains(DataComponentTypes.BLOCK_STATE)) {
+						return createBlockStateFromBlockStateComponent(ctx, stack.get(DataComponentTypes.BLOCK_STATE));
 					}
 
-					return newBlockState;
+					return createBlockStateFromTinyFlowersComponent(ctx, tinyFlowersComponent);
 				} else if (stack.contains(DataComponentTypes.BLOCK_STATE)) {
-					BlockStateComponent itemBlockState = stack.get(DataComponentTypes.BLOCK_STATE);
-
-					for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-						FlowerVariant variant = itemBlockState.getValue(property);
-						variant = variant == null ? FlowerVariant.EMPTY : variant;
-
-						newBlockState = newBlockState.with(property, variant);
-					}
-
-					return newBlockState;
+					return createBlockStateFromBlockStateComponent(ctx, stack.get(DataComponentTypes.BLOCK_STATE));
 				} else {
 					// Neither of the components are present, so do nothing.
 					return blockState;
@@ -198,6 +184,38 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 					.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
 					.with(FLOWER_VARIANT_1, flowerVariant);
 		}
+	}
+
+	private BlockState createBlockStateFromTinyFlowersComponent(ItemPlacementContext ctx,
+			TinyFlowersComponent tinyFlowersComponent) {
+		BlockState blockState = this.getDefaultState()
+				.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+
+		List<FlowerVariant> flowers = tinyFlowersComponent.flowers();
+		for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
+			FlowerVariant variant = flowers.size() > i
+					? flowers.get(i)
+					: FlowerVariant.EMPTY;
+
+			blockState = blockState.with(FLOWER_VARIANT_PROPERTIES[i], variant);
+		}
+
+		return blockState;
+	}
+
+	private BlockState createBlockStateFromBlockStateComponent(ItemPlacementContext ctx,
+			BlockStateComponent itemBlockState) {
+		BlockState blockState = this.getDefaultState()
+				.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+
+		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+			FlowerVariant variant = itemBlockState.getValue(property);
+			variant = variant == null ? FlowerVariant.EMPTY : variant;
+
+			blockState = blockState.with(property, variant);
+		}
+
+		return blockState;
 	}
 
 	@Override
