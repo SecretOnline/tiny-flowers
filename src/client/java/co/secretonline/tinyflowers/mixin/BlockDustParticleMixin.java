@@ -30,6 +30,11 @@ abstract class BlockDustParticleMixin {
 		if (state.getBlock() instanceof GardenBlock) {
 			// Select a random flower variant to render as the particle
 			List<FlowerVariant> flowers = GardenBlock.getFlowers(state);
+
+			if (flowers.isEmpty()) {
+				return;
+			}
+
 			FlowerVariant variant = Util.getRandom(flowers, TinyFlowersClient.RANDOM);
 
 			MinecraftClient client = MinecraftClient.getInstance();
