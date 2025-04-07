@@ -16,6 +16,23 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.2.0 - 2025-04-07
+
+### Added
+
+- Support for 1.21.5
+- New flowers (and flower-like things) can be used to create tiny gardens
+  - Wildflowers
+  - Leaf litter
+  - Tiny cactus flowers
+
+Technical additions
+
+- New item data component (`tiny-flowers:tiny_flowers`) to store which flowers a garden item has.
+  - This is used by the garden items created with `ctrl + Pick Block`.
+  - This mod still supports items created before this (using the `minecraft:block_state` component), including item tooltips.
+    - This may be removed in the future. This mod doesn't have much use, and I don't think people would have created too many of these items?
+
 ## v1.1.1 - 2025-02-13
 
 ### Fixed
