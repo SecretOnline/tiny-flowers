@@ -31,6 +31,7 @@ public class ModItems {
 	private static final Map<FlowerVariant, Item> FLOWER_VARIANT_ITEMS = registerFlowerVariantItems();
 	// This declaration MUST be last to keep the Block/Item mappings correct.
 	public static final Item TINY_GARDEN_ITEM = registerGardenBlockItem("tiny_garden",
+			// Add a default component so tooltips work for older items
 			(settings) -> settings.component(ModComponents.TINY_FLOWERS_COMPONENT_TYPE, TinyFlowersComponent.EMPTY));
 
 	public static final RegistryKey<Item> FLORISTS_SHEARS_ITEM_KEY = RegistryKey.of(RegistryKeys.ITEM,

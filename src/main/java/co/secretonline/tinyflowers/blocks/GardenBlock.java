@@ -142,17 +142,27 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 					TinyFlowersComponent tinyFlowersComponent = stack.get(
 							ModComponents.TINY_FLOWERS_COMPONENT_TYPE);
 
-					List<FlowerVariant> flowers = tinyFlowersComponent.flowers();
+					return this.getDefaultState()
+							.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
+							.with(FLOWER_VARIANT_1, tinyFlowersComponent.flower1())
+							.with(FLOWER_VARIANT_2, tinyFlowersComponent.flower2())
+							.with(FLOWER_VARIANT_3, tinyFlowersComponent.flower3())
+							.with(FLOWER_VARIANT_4, tinyFlowersComponent.flower4());
+				} else if (stack.contains(DataComponentTypes.BLOCK_STATE)) {
+					BlockStateComponent blockStateComponent = stack.get(
+							DataComponentTypes.BLOCK_STATE);
 
-					// Garden items always have a default component value, so we need to check if
-					// there's an older block state component with data.
-					if (flowers.isEmpty() && stack.contains(DataComponentTypes.BLOCK_STATE)) {
-						return createBlockStateFromBlockStateComponent(ctx, stack.get(DataComponentTypes.BLOCK_STATE));
+					BlockState newBlockState = this.getDefaultState()
+							.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+
+					for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+						FlowerVariant variant = blockStateComponent.getValue(property);
+						variant = variant == null ? FlowerVariant.EMPTY : variant;
+
+						newBlockState = newBlockState.with(property, variant);
 					}
 
-					return createBlockStateFromTinyFlowersComponent(ctx, tinyFlowersComponent);
-				} else if (stack.contains(DataComponentTypes.BLOCK_STATE)) {
-					return createBlockStateFromBlockStateComponent(ctx, stack.get(DataComponentTypes.BLOCK_STATE));
+					return newBlockState;
 				} else {
 					// Neither of the components are present, so do nothing.
 					return blockState;
@@ -184,38 +194,6 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 					.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
 					.with(FLOWER_VARIANT_1, flowerVariant);
 		}
-	}
-
-	private BlockState createBlockStateFromTinyFlowersComponent(ItemPlacementContext ctx,
-			TinyFlowersComponent tinyFlowersComponent) {
-		BlockState blockState = this.getDefaultState()
-				.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
-
-		List<FlowerVariant> flowers = tinyFlowersComponent.flowers();
-		for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
-			FlowerVariant variant = flowers.size() > i
-					? flowers.get(i)
-					: FlowerVariant.EMPTY;
-
-			blockState = blockState.with(FLOWER_VARIANT_PROPERTIES[i], variant);
-		}
-
-		return blockState;
-	}
-
-	private BlockState createBlockStateFromBlockStateComponent(ItemPlacementContext ctx,
-			BlockStateComponent itemBlockState) {
-		BlockState blockState = this.getDefaultState()
-				.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
-
-		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-			FlowerVariant variant = itemBlockState.getValue(property);
-			variant = variant == null ? FlowerVariant.EMPTY : variant;
-
-			blockState = blockState.with(property, variant);
-		}
-
-		return blockState;
 	}
 
 	@Override
@@ -321,11 +299,11 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	@Override
 	protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
 		if (includeData) {
-			TinyFlowersComponent tinyFlowersComponent = TinyFlowersComponent.of(List.of(
+			TinyFlowersComponent tinyFlowersComponent = TinyFlowersComponent.of(
 					state.get(FLOWER_VARIANT_1),
 					state.get(FLOWER_VARIANT_2),
 					state.get(FLOWER_VARIANT_3),
-					state.get(FLOWER_VARIANT_4)));
+					state.get(FLOWER_VARIANT_4));
 
 			ItemStack stack = new ItemStack(this.asItem());
 			stack.set(ModComponents.TINY_FLOWERS_COMPONENT_TYPE, tinyFlowersComponent);

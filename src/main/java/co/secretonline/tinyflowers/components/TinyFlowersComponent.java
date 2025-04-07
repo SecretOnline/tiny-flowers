@@ -1,6 +1,5 @@
 package co.secretonline.tinyflowers.components;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 import com.mojang.serialization.Codec;
@@ -24,26 +23,37 @@ import net.minecraft.util.Formatting;
  * components, so in order to show the flower variants in a tooltip we need a
  * component.
  */
-public record TinyFlowersComponent(List<FlowerVariant> flowers) implements TooltipAppender {
-	private static final int MAX_FLOWERS_IN_TOOLTIP = 4;
+public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2, FlowerVariant flower3,
+		FlowerVariant flower4) implements TooltipAppender {
 
-	public static final TinyFlowersComponent EMPTY = new TinyFlowersComponent(List.of());
+	public static final TinyFlowersComponent EMPTY = of(
+			FlowerVariant.EMPTY, FlowerVariant.EMPTY,
+			FlowerVariant.EMPTY, FlowerVariant.EMPTY);
 
-	public static final TinyFlowersComponent of(List<FlowerVariant> flowers) {
-		return new TinyFlowersComponent(flowers);
+	public static final TinyFlowersComponent of(FlowerVariant flower1, FlowerVariant flower2, FlowerVariant flower3,
+			FlowerVariant flower4) {
+		return new TinyFlowersComponent(
+				flower1 == null ? FlowerVariant.EMPTY : flower1,
+				flower2 == null ? FlowerVariant.EMPTY : flower2,
+				flower3 == null ? FlowerVariant.EMPTY : flower3,
+				flower4 == null ? FlowerVariant.EMPTY : flower4);
 	}
 
 	public static final Codec<TinyFlowersComponent> CODEC = RecordCodecBuilder.create(builder -> {
 		return builder.group(
-				FlowerVariant.CODEC.listOf().fieldOf("flower_variants").forGetter(TinyFlowersComponent::flowers))
+				FlowerVariant.CODEC.fieldOf("flower_variant_1").forGetter(TinyFlowersComponent::flower1),
+				FlowerVariant.CODEC.fieldOf("flower_variant_2").forGetter(TinyFlowersComponent::flower2),
+				FlowerVariant.CODEC.fieldOf("flower_variant_3").forGetter(TinyFlowersComponent::flower3),
+				FlowerVariant.CODEC.fieldOf("flower_variant_4").forGetter(TinyFlowersComponent::flower4))
 				.apply(builder, TinyFlowersComponent::new);
 	});
 
 	@Override
 	public void appendTooltip(TooltipContext context, Consumer<Text> textConsumer,
 			TooltipType type, ComponentsAccess components) {
-		for (int i = 0; i < Math.min(MAX_FLOWERS_IN_TOOLTIP, flowers.size()); i++) {
-			FlowerVariant variant = flowers.get(i);
+		FlowerVariant[] flowers = { flower1, flower2, flower3, flower4 };
+		for (int i = 0; i < flowers.length; i++) {
+			FlowerVariant variant = flowers[i];
 
 			MutableText text = Text.translatable(variant.getTranslationKey());
 			if (variant.isEmpty()) {
@@ -53,15 +63,10 @@ public record TinyFlowersComponent(List<FlowerVariant> flowers) implements Toolt
 			textConsumer.accept(text);
 		}
 
-		if (flowers.size() > MAX_FLOWERS_IN_TOOLTIP) {
-			textConsumer.accept(Text.translatable("item.container.more_items", flowers.size() - MAX_FLOWERS_IN_TOOLTIP)
-					.formatted(Formatting.ITALIC));
-		}
-
 		// Since it's possible that garden items were created before this component was
 		// added to the mod, we also need to check for variants in the block state.
 		BlockStateComponent itemBlockState = components.get(DataComponentTypes.BLOCK_STATE);
-		if (flowers.isEmpty() && itemBlockState != null) {
+		if (flower1.isEmpty() && flower2.isEmpty() && flower3.isEmpty() && flower4.isEmpty() && itemBlockState != null) {
 			for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
 				FlowerVariant variant = itemBlockState.getValue(property);
 				variant = variant == null ? FlowerVariant.EMPTY : variant;
