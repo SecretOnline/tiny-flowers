@@ -3,7 +3,7 @@
 	"package": "co.secretonline.tinyflowers.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"BlockModelsMixin"
+		"BlockDustParticleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
