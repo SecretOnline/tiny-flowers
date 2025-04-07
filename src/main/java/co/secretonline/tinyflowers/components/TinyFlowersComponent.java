@@ -51,6 +51,27 @@ public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2,
 	@Override
 	public void appendTooltip(TooltipContext context, Consumer<Text> textConsumer,
 			TooltipType type, ComponentsAccess components) {
+		if (flower1.isEmpty() && flower2.isEmpty() && flower3.isEmpty() && flower4.isEmpty()) {
+			// Since it's possible that garden items were created before this component was
+			// added to the mod, we also need to check for variants in the block state.
+			BlockStateComponent itemBlockState = components.get(DataComponentTypes.BLOCK_STATE);
+			if (itemBlockState != null) {
+				for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
+					FlowerVariant variant = itemBlockState.getValue(property);
+					variant = variant == null ? FlowerVariant.EMPTY : variant;
+
+					MutableText text = Text.translatable(variant.getTranslationKey());
+					if (variant.isEmpty()) {
+						text.formatted(Formatting.GRAY);
+					}
+
+					textConsumer.accept(text);
+				}
+			}
+
+			return;
+		}
+
 		FlowerVariant[] flowers = { flower1, flower2, flower3, flower4 };
 		for (int i = 0; i < flowers.length; i++) {
 			FlowerVariant variant = flowers[i];
@@ -61,23 +82,6 @@ public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2,
 			}
 
 			textConsumer.accept(text);
-		}
-
-		// Since it's possible that garden items were created before this component was
-		// added to the mod, we also need to check for variants in the block state.
-		BlockStateComponent itemBlockState = components.get(DataComponentTypes.BLOCK_STATE);
-		if (flower1.isEmpty() && flower2.isEmpty() && flower3.isEmpty() && flower4.isEmpty() && itemBlockState != null) {
-			for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-				FlowerVariant variant = itemBlockState.getValue(property);
-				variant = variant == null ? FlowerVariant.EMPTY : variant;
-
-				MutableText text = Text.translatable(variant.getTranslationKey());
-				if (variant.isEmpty()) {
-					text.formatted(Formatting.GRAY);
-				}
-
-				textConsumer.accept(text);
-			}
 		}
 	}
 }
