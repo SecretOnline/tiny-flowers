@@ -333,13 +333,14 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			return stack;
 		}
 
-		FlowerVariant firstVariant = state.get(FLOWER_VARIANT_1);
-		if (firstVariant.isEmpty()) {
-			TinyFlowers.LOGGER.warn("Tried to pick flower from empty garden");
-			return ItemStack.EMPTY;
+		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
+			FlowerVariant variant = state.get(property);
+			if (!variant.isEmpty()) {
+				return new ItemStack(variant);
+			}
 		}
 
-		return new ItemStack(firstVariant);
+		return ItemStack.EMPTY;
 	}
 
 	public static boolean hasFreeSpace(BlockState state) {
