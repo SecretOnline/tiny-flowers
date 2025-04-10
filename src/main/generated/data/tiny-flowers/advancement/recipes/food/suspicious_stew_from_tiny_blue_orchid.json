@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tiny-flowers:suspicious_stew_from_tiny_blue_orchid"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tiny_blue_orchid": {
+      "conditions": {
+        "items": [
+          {
+            "items": "tiny-flowers:tiny_blue_orchid"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tiny_blue_orchid"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tiny-flowers:suspicious_stew_from_tiny_blue_orchid"
+    ]
+  }
+}

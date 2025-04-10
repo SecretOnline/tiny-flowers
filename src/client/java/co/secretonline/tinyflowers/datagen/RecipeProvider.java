@@ -3,6 +3,7 @@ package co.secretonline.tinyflowers.datagen;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -106,6 +107,31 @@ public class RecipeProvider extends FabricRecipeProvider {
 							.group("florists_shears")
 							.criterion(hasItem(Items.SHEARS), conditionsFromItem(Items.SHEARS))
 							.offerTo(exporter, recipeKey);
+				}
+
+				// Generate recipes for Suspicious Stew
+				Identifier stewId = Registries.ITEM.getId(Items.SUSPICIOUS_STEW);
+				for (FlowerVariant flowerVariant : FlowerVariant.values()) {
+					if (flowerVariant.getStewEffects() != null) {
+						ItemStack stack = new ItemStack(
+								Registries.ITEM.getEntry(Items.SUSPICIOUS_STEW),
+								1,
+								ComponentChanges.builder()
+										.add(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, flowerVariant.getStewEffects()).build());
+
+						RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(
+								RegistryKeys.RECIPE,
+								TinyFlowers.id(stewId.getPath() + "_from_" + flowerVariant.getItemIdentifier().getPath()));
+
+						createShapeless(RecipeCategory.FOOD, stack)
+								.input(Items.BOWL)
+								.input(Items.BROWN_MUSHROOM)
+								.input(Items.RED_MUSHROOM)
+								.input(flowerVariant)
+								.group("suspicious_stew")
+								.criterion(hasItem(flowerVariant), this.conditionsFromItem(flowerVariant))
+								.offerTo(exporter, recipeKey);
+					}
 				}
 			}
 		};

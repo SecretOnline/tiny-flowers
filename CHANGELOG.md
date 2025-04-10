@@ -16,6 +16,11 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+### Added
+
+- Suspicious Stew recipes for tiny flowers with vanilla equivalents.
+  - The effects are the same, but the durations are halved.
+
 ## v1.2.0 - 2025-04-07
 
 ### Added
