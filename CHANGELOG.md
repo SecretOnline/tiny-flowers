@@ -20,11 +20,7 @@ The versioning scheme is listed in the README.
 
 ### Added
 
-- Support for 1.21.5
-- New flowers (and flower-like things) can be used to create tiny gardens
-  - Wildflowers
-  - Leaf litter
-  - Tiny cactus flowers
+This is a backport from the 1.21.5 release, which added new flower variants. Since the original blocks don't exist in this version, this is mostly just any technical changes from that release.
 
 Technical additions
 
