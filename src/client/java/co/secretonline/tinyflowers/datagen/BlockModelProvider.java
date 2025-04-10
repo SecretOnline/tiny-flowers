@@ -13,13 +13,15 @@ import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
+import net.minecraft.client.data.BlockStateVariant;
 import net.minecraft.client.data.ItemModelGenerator;
 import net.minecraft.client.data.ModelSupplier;
 import net.minecraft.client.data.Models;
-import net.minecraft.client.data.MultipartBlockModelDefinitionCreator;
+import net.minecraft.client.data.MultipartBlockStateSupplier;
 import net.minecraft.client.data.TextureMap;
+import net.minecraft.client.data.VariantSettings;
+import net.minecraft.client.data.When;
 import net.minecraft.client.render.item.tint.DyeTintSource;
-import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -58,12 +60,6 @@ public class BlockModelProvider extends FabricModelProvider {
 					new FlowerVariant[] {
 							FlowerVariant.CLOSED_EYEBLOSSOM,
 					}),
-			// Single layer, cactus flower stem
-			new ModelGroup(ModModels.Quartet.GARDEN_LOW_UNTINTED,
-					ModTextureMap.flowerbed(TinyFlowers.id("block/tiny_cactus_flower_stem")),
-					new FlowerVariant[] {
-							FlowerVariant.CACTUS_FLOWER,
-					}),
 			// Single layer (tall), tinted stem
 			new ModelGroup(ModModels.Quartet.GARDEN_TALL,
 					ModTextureMap.flowerbed(TinyFlowers.id("block/tall_tiny_flower_stem")),
@@ -89,12 +85,6 @@ public class BlockModelProvider extends FabricModelProvider {
 					new FlowerVariant[] {
 							FlowerVariant.TORCHFLOWER,
 					}),
-			// Leaf litter, no stem
-			new ModelGroup(ModModels.Quartet.GARDEN_LEAF_LITTER,
-					ModTextureMap.noStem(),
-					new FlowerVariant[] {
-							FlowerVariant.LEAF_LITTER,
-					}),
 	};
 
 	public BlockModelProvider(FabricDataOutput generator) {
@@ -103,8 +93,7 @@ public class BlockModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-		MultipartBlockModelDefinitionCreator definitionCreator = MultipartBlockModelDefinitionCreator
-				.create(ModBlocks.TINY_GARDEN);
+		MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(ModBlocks.TINY_GARDEN);
 
 		// Generate blockstate variants for all flower variants.
 		for (FlowerVariant variant : FlowerVariant.values()) {
@@ -119,10 +108,10 @@ public class BlockModelProvider extends FabricModelProvider {
 			Identifier model3 = baseId.withPath(path -> "block/" + path + "_3");
 			Identifier model4 = baseId.withPath(path -> "block/" + path + "_4");
 
-			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_1, model1);
-			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_2, model2);
-			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_3, model3);
-			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_4, model4);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_1, model1);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_2, model2);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_3, model3);
+			registerPartInAllDirections(supplier, variant, GardenBlock.FLOWER_VARIANT_4, model4);
 		}
 
 		// Generate all block model definitions.
@@ -130,7 +119,7 @@ public class BlockModelProvider extends FabricModelProvider {
 			group.upload(blockStateModelGenerator.modelCollector);
 		}
 
-		blockStateModelGenerator.blockStateCollector.accept(definitionCreator);
+		blockStateModelGenerator.blockStateCollector.accept(supplier);
 	}
 
 	@Override
@@ -148,50 +137,39 @@ public class BlockModelProvider extends FabricModelProvider {
 		}
 	}
 
-	private MultipartBlockModelDefinitionCreator registerPartInAllDirections(
-			MultipartBlockModelDefinitionCreator modelDefinitionCreator, FlowerVariant variant,
+	private MultipartBlockStateSupplier registerPartInAllDirections(
+			MultipartBlockStateSupplier modelDefinitionCreator, FlowerVariant variant,
 			EnumProperty<FlowerVariant> property, Identifier modelIdentifier) {
 		for (Direction direction : DIRECTIONS) {
-			modelDefinitionCreator = modelDefinitionCreator.with(
-					BlockStateModelGenerator.createMultipartConditionBuilder()
-							.put(property, variant)
-							.put(Properties.HORIZONTAL_FACING, direction),
-					BlockStateModelGenerator.createWeightedVariant(modelIdentifier)
-							.apply(getRotationForDirection(direction)));
+			modelDefinitionCreator.with(
+					When.create()
+							.set(property, variant)
+							.set(Properties.HORIZONTAL_FACING, direction),
+					BlockStateVariant.create()
+							.put(VariantSettings.MODEL, modelIdentifier)
+							.put(VariantSettings.Y, getRotationForDirection(direction)));
 		}
 
 		return modelDefinitionCreator;
 	}
 
-	private ModelVariantOperator getRotationForDirection(Direction direction) {
+	private VariantSettings.Rotation getRotationForDirection(Direction direction) {
 		switch (direction) {
 			case Direction.NORTH:
-				return BlockStateModelGenerator.NO_OP;
+				return VariantSettings.Rotation.R0;
 			case Direction.EAST:
-				return BlockStateModelGenerator.ROTATE_Y_90;
+				return VariantSettings.Rotation.R90;
 			case Direction.SOUTH:
-				return BlockStateModelGenerator.ROTATE_Y_180;
+				return VariantSettings.Rotation.R180;
 			case Direction.WEST:
-				return BlockStateModelGenerator.ROTATE_Y_270;
+				return VariantSettings.Rotation.R270;
 			default:
 				throw new IllegalArgumentException("Unknown direction for model");
 		}
 	}
 
 	private static Identifier getVariantBaseModelId(FlowerVariant variant) {
-		Identifier identifier = variant.getItemIdentifier();
-
-		switch (variant) {
-			case FlowerVariant.LEAF_LITTER:
-				// The base Leaf Litter models utilise a single plane which doesn't quite work
-				// with this mod. As such, we need to override the models for Leaf Litter
-				// specifically.
-				identifier = TinyFlowers.id("leaf_litter");
-				break;
-			default:
-		}
-
-		return identifier;
+		return variant.getItemIdentifier();
 	}
 
 	private record ModelGroup(ModModels.Quartet models,

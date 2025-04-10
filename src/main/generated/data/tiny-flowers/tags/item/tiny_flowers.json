@@ -1,8 +1,6 @@
 {
   "values": [
     "minecraft:pink_petals",
-    "minecraft:wildflowers",
-    "minecraft:leaf_litter",
     "tiny-flowers:tiny_dandelion",
     "tiny-flowers:tiny_poppy",
     "tiny-flowers:tiny_blue_orchid",
@@ -18,7 +16,6 @@
     "tiny-flowers:tiny_torchflower",
     "tiny-flowers:tiny_closed_eyeblossom",
     "tiny-flowers:tiny_open_eyeblossom",
-    "tiny-flowers:tiny_wither_rose",
-    "tiny-flowers:tiny_cactus_flower"
+    "tiny-flowers:tiny_wither_rose"
   ]
 }

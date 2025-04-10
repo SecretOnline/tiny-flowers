@@ -13,8 +13,6 @@ import net.minecraft.util.StringIdentifiable;
 public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 	EMPTY("empty", null, false),
 	PINK_PETALS("pink_petals", Registries.ITEM.getId(Items.PINK_PETALS), false),
-	WILDFLOWERS("wildflowers", Registries.ITEM.getId(Items.WILDFLOWERS), false),
-	LEAF_LITTER("leaf_litter", Registries.ITEM.getId(Items.LEAF_LITTER), false),
 	DANDELION("dandelion", TinyFlowers.id("tiny_dandelion"), true),
 	POPPY("poppy", TinyFlowers.id("tiny_poppy"), true),
 	BLUE_ORCHID("blue_orchid", TinyFlowers.id("tiny_blue_orchid"), true),
@@ -30,8 +28,7 @@ public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 	TORCHFLOWER("torchflower", TinyFlowers.id("tiny_torchflower"), true),
 	CLOSED_EYEBLOSSOM("closed_eyeblossom", TinyFlowers.id("tiny_closed_eyeblossom"), true),
 	OPEN_EYEBLOSSOM("open_eyeblossom", TinyFlowers.id("tiny_open_eyeblossom"), true),
-	WITHER_ROSE("wither_rose", TinyFlowers.id("tiny_wither_rose"), true),
-	CACTUS_FLOWER("cactus_flower", TinyFlowers.id("tiny_cactus_flower"), true);
+	WITHER_ROSE("wither_rose", TinyFlowers.id("tiny_wither_rose"), true);
 
 	private final String name;
 	// Unfortunately we can't directly refer to the Item this variant corresponds to

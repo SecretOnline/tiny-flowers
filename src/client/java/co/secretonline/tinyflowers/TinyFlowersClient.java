@@ -8,7 +8,6 @@ import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.item.ItemRenderState;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.biome.DryFoliageColors;
 import net.minecraft.world.biome.GrassColors;
 
 public class TinyFlowersClient implements ClientModInitializer {
@@ -29,13 +28,6 @@ public class TinyFlowersClient implements ClientModInitializer {
 						return GrassColors.getDefaultColor();
 					} else {
 						return BiomeColors.getGrassColor(world, pos);
-					}
-				}
-				case 2 -> {
-					if (hasWorld) {
-						return DryFoliageColors.getColor(0.5, 1.0);
-					} else {
-						return BiomeColors.getDryFoliageColor(world, pos);
 					}
 				}
 				default -> {

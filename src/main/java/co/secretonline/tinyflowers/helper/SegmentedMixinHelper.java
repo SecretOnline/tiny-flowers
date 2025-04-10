@@ -8,7 +8,6 @@ import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Segmented;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.EnumProperty;
@@ -26,7 +25,7 @@ public class SegmentedMixinHelper {
 	public static void shouldAddSegment(BlockState state, ItemPlacementContext context,
 			IntProperty property, CallbackInfoReturnable<Boolean> info) {
 		// Early exit for cases where no additional items should be placed.
-		if (context.shouldCancelInteraction() || state.get(property) >= Segmented.MAX_SEGMENTS) {
+		if (context.shouldCancelInteraction() || state.get(property) >= 4) {
 			return;
 		}
 

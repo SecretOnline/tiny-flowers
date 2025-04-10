@@ -6,14 +6,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
-import co.secretonline.tinyflowers.blocks.GardenBlock;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.tooltip.TooltipAppender;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -54,25 +49,8 @@ public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2,
 
 	@Override
 	public void appendTooltip(TooltipContext context, Consumer<Text> textConsumer,
-			TooltipType type, ComponentsAccess components) {
+			TooltipType type) {
 		if (this.isEmpty()) {
-			// Since it's possible that garden items were created before this component was
-			// added to the mod, we also need to check for variants in the block state.
-			BlockStateComponent itemBlockState = components.get(DataComponentTypes.BLOCK_STATE);
-			if (itemBlockState != null) {
-				for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-					FlowerVariant variant = itemBlockState.getValue(property);
-					variant = variant == null ? FlowerVariant.EMPTY : variant;
-
-					MutableText text = Text.translatable(variant.getTranslationKey());
-					if (variant.isEmpty()) {
-						text.formatted(Formatting.GRAY);
-					}
-
-					textConsumer.accept(text);
-				}
-			}
-
 			return;
 		}
 

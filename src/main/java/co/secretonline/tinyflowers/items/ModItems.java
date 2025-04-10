@@ -44,7 +44,7 @@ public class ModItems {
 							.maxDamage(238)
 							.component(DataComponentTypes.TOOL, ShearsItem.createToolComponent())
 							.component(DataComponentTypes.DYED_COLOR,
-									new DyedColorComponent(DyeColor.RED.getEntityColor()))));
+									new DyedColorComponent(DyeColor.RED.getEntityColor(), false))));
 
 	private static Map<FlowerVariant, Item> registerFlowerVariantItems() {
 		Map<FlowerVariant, Item> flowerVariantItems = new HashMap<>();

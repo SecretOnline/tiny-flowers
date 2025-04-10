@@ -8,7 +8,10 @@
   ],
   "result": {
     "components": {
-      "minecraft:dyed_color": -3715395
+      "minecraft:dyed_color": {
+        "rgb": -3715395,
+        "show_in_tooltip": false
+      }
     },
     "count": 1,
     "id": "tiny-flowers:florists_shears"
