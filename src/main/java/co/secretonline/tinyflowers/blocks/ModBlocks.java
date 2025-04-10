@@ -20,7 +20,6 @@ public class ModBlocks {
 	public static final Block TINY_GARDEN = registerBlockOnly(
 			new GardenBlock(
 					AbstractBlock.Settings.create()
-							.registryKey(TINY_GARDEN_KEY)
 							.mapColor(MapColor.DARK_GREEN)
 							.noCollision()
 							.sounds(BlockSoundGroup.PINK_PETALS)

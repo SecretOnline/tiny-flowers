@@ -26,8 +26,6 @@ public enum FlowerVariant implements StringIdentifiable, ItemConvertible {
 	CORNFLOWER("cornflower", TinyFlowers.id("tiny_cornflower"), true),
 	LILY_OF_THE_VALLEY("lily_of_the_valley", TinyFlowers.id("tiny_lily_of_the_valley"), true),
 	TORCHFLOWER("torchflower", TinyFlowers.id("tiny_torchflower"), true),
-	CLOSED_EYEBLOSSOM("closed_eyeblossom", TinyFlowers.id("tiny_closed_eyeblossom"), true),
-	OPEN_EYEBLOSSOM("open_eyeblossom", TinyFlowers.id("tiny_open_eyeblossom"), true),
 	WITHER_ROSE("wither_rose", TinyFlowers.id("tiny_wither_rose"), true);
 
 	private final String name;

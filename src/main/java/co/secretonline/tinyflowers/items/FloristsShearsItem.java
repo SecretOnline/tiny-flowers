@@ -60,7 +60,7 @@ public class FloristsShearsItem extends ShearsItem {
 				// Segmented could not be converted to garden.
 				TinyFlowers.LOGGER.warn("Could not convert segmented block to garden. Ignoring action.");
 
-				return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
+				return ActionResult.PASS;
 			}
 		}
 
@@ -79,7 +79,7 @@ public class FloristsShearsItem extends ShearsItem {
 
 			FlowerVariant variant = blockState.get(property);
 			if (variant.isEmpty()) {
-				return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
+				return ActionResult.PASS;
 			}
 
 			Block.dropStack(world, pos, new ItemStack(variant));
