@@ -48,10 +48,14 @@ public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2,
 				.apply(builder, TinyFlowersComponent::new);
 	});
 
+	public boolean isEmpty() {
+		return flower1.isEmpty() && flower2.isEmpty() && flower3.isEmpty() && flower4.isEmpty();
+	}
+
 	@Override
 	public void appendTooltip(TooltipContext context, Consumer<Text> textConsumer,
 			TooltipType type, ComponentsAccess components) {
-		if (flower1.isEmpty() && flower2.isEmpty() && flower3.isEmpty() && flower4.isEmpty()) {
+		if (this.isEmpty()) {
 			// Since it's possible that garden items were created before this component was
 			// added to the mod, we also need to check for variants in the block state.
 			BlockStateComponent itemBlockState = components.get(DataComponentTypes.BLOCK_STATE);
