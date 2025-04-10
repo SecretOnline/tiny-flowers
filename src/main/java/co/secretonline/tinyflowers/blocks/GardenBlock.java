@@ -14,21 +14,26 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
+import net.minecraft.block.FlowerbedBlock;
 import net.minecraft.block.PlantBlock;
-import net.minecraft.block.Segmented;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -179,8 +184,8 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		if (blockState.isOf(this)) {
 			// Placing a tiny flower on a garden block.
 			return addFlowerToBlockState(blockState, flowerVariant);
-		} else if (blockState.getBlock() instanceof Segmented) {
-			// Placing a tiny flower on a segmented block.
+		} else if (blockState.getBlock() instanceof FlowerbedBlock) {
+			// Placing a tiny flower on a flowerbed block.
 			// We need to convert the segmented block to a garden block
 			// and then add the flower variant to it.
 			BlockState baseState = getStateFromSegmented(blockState);
@@ -321,6 +326,51 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		return ItemStack.EMPTY;
 	}
 
+	@Override
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType options) {
+		super.appendTooltip(stack, context, tooltip, options);
+
+		TinyFlowersComponent tinyFlowersComponent = stack.get(ModComponents.TINY_FLOWERS_COMPONENT_TYPE);
+
+		if (tinyFlowersComponent == null || tinyFlowersComponent.isEmpty()) {
+			// Since it's possible that garden items were created before this component was
+			// added to the mod, we also need to check for variants in the block state.
+			BlockStateComponent itemBlockState = stack.get(DataComponentTypes.BLOCK_STATE);
+			if (itemBlockState != null) {
+				for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
+					FlowerVariant variant = itemBlockState.getValue(property);
+					variant = variant == null ? FlowerVariant.EMPTY : variant;
+
+					MutableText text = Text.translatable(variant.getTranslationKey());
+					if (variant.isEmpty()) {
+						text.formatted(Formatting.GRAY);
+					}
+
+					tooltip.add(text);
+				}
+			}
+
+			return;
+		}
+
+		FlowerVariant flower1 = tinyFlowersComponent.flower1();
+		FlowerVariant flower2 = tinyFlowersComponent.flower2();
+		FlowerVariant flower3 = tinyFlowersComponent.flower3();
+		FlowerVariant flower4 = tinyFlowersComponent.flower4();
+
+		FlowerVariant[] flowers = { flower1, flower2, flower3, flower4 };
+		for (int i = 0; i < flowers.length; i++) {
+			FlowerVariant variant = flowers[i];
+
+			MutableText text = Text.translatable(variant.getTranslationKey());
+			if (variant.isEmpty()) {
+				text.formatted(Formatting.GRAY);
+			}
+
+			tooltip.add(text);
+		}
+	}
+
 	public static boolean hasFreeSpace(BlockState state) {
 		return getNumFlowers(state) < FLOWER_VARIANT_PROPERTIES.length;
 	}
@@ -393,10 +443,10 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			throw new IllegalStateException("Segmented block has no valid flower variant");
 		}
 
-		if (block instanceof Segmented segmentedBlock) {
+		if (block instanceof FlowerbedBlock) {
 			// This exists because FlowerbedBlocks had their own property before Segmented
 			// existed.
-			IntProperty amountProperty = segmentedBlock.getAmountProperty();
+			IntProperty amountProperty = FlowerbedBlock.FLOWER_AMOUNT;
 			int prevNumFlowers = blockState.get(amountProperty);
 
 			BlockState baseState = this.getDefaultState().with(FACING, blockState.get(Properties.HORIZONTAL_FACING))

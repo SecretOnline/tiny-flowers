@@ -62,8 +62,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 			Map.entry(FlowerVariant.TORCHFLOWER, Items.TORCHFLOWER),
 			Map.entry(FlowerVariant.CLOSED_EYEBLOSSOM, Items.CLOSED_EYEBLOSSOM),
 			Map.entry(FlowerVariant.OPEN_EYEBLOSSOM, Items.OPEN_EYEBLOSSOM),
-			Map.entry(FlowerVariant.WITHER_ROSE, Items.WITHER_ROSE),
-			Map.entry(FlowerVariant.CACTUS_FLOWER, Items.CACTUS_FLOWER));
+			Map.entry(FlowerVariant.WITHER_ROSE, Items.WITHER_ROSE));
 
 	public RecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 		super(output, registriesFuture);
@@ -92,7 +91,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 							Registries.ITEM.getEntry(ModItems.FLORISTS_SHEARS_ITEM),
 							1,
 							ComponentChanges.builder()
-									.add(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getEntityColor()))
+									.add(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getEntityColor(), false))
 									.build());
 
 					RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(

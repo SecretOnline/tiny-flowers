@@ -1,15 +1,13 @@
 {
-	"required": true,
-	"package": "co.secretonline.tinyflowers.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"EyeblossomBlockMixin",
-		"EyeblossomStateAccessor",
-		"FlowerbedBlockMixin",
-		"ItemStackMixin",
-		"LeafLitterBlockMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "co.secretonline.tinyflowers.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EyeblossomBlockMixin",
+    "EyeblossomStateAccessor",
+    "FlowerbedBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
