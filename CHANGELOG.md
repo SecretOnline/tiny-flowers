@@ -20,6 +20,8 @@ The versioning scheme is listed in the README.
 
 - Suspicious Stew recipes for tiny flowers with vanilla equivalents.
   - The effects are the same, but the durations are halved.
+- Using Florists' Shears on a flower will convert that flower into a full garden.
+  - This is an alternative way to get tiny flowers without having to open a crafting window.
 
 ## v1.2.0 - 2025-04-07
 

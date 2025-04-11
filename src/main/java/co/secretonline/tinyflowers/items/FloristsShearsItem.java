@@ -104,6 +104,29 @@ public class FloristsShearsItem extends ShearsItem {
 			return ActionResult.SUCCESS;
 		}
 
+		Block block = blockState.getBlock();
+		FlowerVariant variant = FlowerVariant.fromOriginalBlock(block);
+		if (!variant.isEmpty()) {
+			BlockState newBlockState = ((GardenBlock) ModBlocks.TINY_GARDEN).getDefaultState()
+					.with(GardenBlock.FACING, ctx.getHorizontalPlayerFacing().getOpposite())
+					.with(GardenBlock.FLOWER_VARIANT_1, variant)
+					.with(GardenBlock.FLOWER_VARIANT_2, variant)
+					.with(GardenBlock.FLOWER_VARIANT_3, variant)
+					.with(GardenBlock.FLOWER_VARIANT_4, variant);
+
+			if (ctx.getPlayer() != null) {
+				PlayerEntity player = ctx.getPlayer();
+				ctx.getStack().damage(1, player, LivingEntity.getSlotForHand(ctx.getHand()));
+
+				world.playSound(player, pos, SoundEvents.BLOCK_GROWING_PLANT_CROP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			}
+
+			world.setBlockState(pos, newBlockState);
+			world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, Emitter.of(ctx.getPlayer(), newBlockState));
+
+			return ActionResult.SUCCESS;
+		}
+
 		return super.useOnBlock(ctx);
 	}
 }
