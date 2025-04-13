@@ -151,6 +151,11 @@ public enum FlowerVariant implements StringIdentifiable, ItemConvertible, Suspic
 		return this.asItem().getTranslationKey();
 	}
 
+	@Nullable
+	public Block getOriginalBlock() {
+		return this.originalBlock;
+	}
+
 	public boolean shouldCreateItem() {
 		return this.shouldCreateItem;
 	}

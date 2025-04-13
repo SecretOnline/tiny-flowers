@@ -8,7 +8,7 @@ import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Item;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
@@ -33,11 +33,11 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 				continue;
 			}
 
-			ItemConvertible item = variant.asItem();
-			if (Registries.ITEM.getId(item.asItem()).equals(Identifier.of("air"))) {
+			Item item = variant.asItem();
+			if (Registries.ITEM.getId(item).equals(Identifier.of("air"))) {
 				TinyFlowers.LOGGER.error(
 						"Variant {} has an invalid item id: {}",
-						variant.getItemIdentifier(), Registries.ITEM.getId(item.asItem()));
+						variant.getItemIdentifier(), Registries.ITEM.getId(item));
 			}
 
 			for (var property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {

@@ -47,25 +47,6 @@ public class RecipeProvider extends FabricRecipeProvider {
 			Map.entry(DyeColor.RED, ConventionalItemTags.RED_DYES),
 			Map.entry(DyeColor.BLACK, ConventionalItemTags.BLACK_DYES));
 
-	private static Map<FlowerVariant, Item> RECIPE_ITEMS = Map.ofEntries(
-			Map.entry(FlowerVariant.DANDELION, Items.DANDELION),
-			Map.entry(FlowerVariant.POPPY, Items.POPPY),
-			Map.entry(FlowerVariant.BLUE_ORCHID, Items.BLUE_ORCHID),
-			Map.entry(FlowerVariant.ALLIUM, Items.ALLIUM),
-			Map.entry(FlowerVariant.AZURE_BLUET, Items.AZURE_BLUET),
-			Map.entry(FlowerVariant.RED_TULIP, Items.RED_TULIP),
-			Map.entry(FlowerVariant.ORANGE_TULIP, Items.ORANGE_TULIP),
-			Map.entry(FlowerVariant.WHITE_TULIP, Items.WHITE_TULIP),
-			Map.entry(FlowerVariant.PINK_TULIP, Items.PINK_TULIP),
-			Map.entry(FlowerVariant.OXEYE_DAISY, Items.OXEYE_DAISY),
-			Map.entry(FlowerVariant.CORNFLOWER, Items.CORNFLOWER),
-			Map.entry(FlowerVariant.LILY_OF_THE_VALLEY, Items.LILY_OF_THE_VALLEY),
-			Map.entry(FlowerVariant.TORCHFLOWER, Items.TORCHFLOWER),
-			Map.entry(FlowerVariant.CLOSED_EYEBLOSSOM, Items.CLOSED_EYEBLOSSOM),
-			Map.entry(FlowerVariant.OPEN_EYEBLOSSOM, Items.OPEN_EYEBLOSSOM),
-			Map.entry(FlowerVariant.WITHER_ROSE, Items.WITHER_ROSE),
-			Map.entry(FlowerVariant.CACTUS_FLOWER, Items.CACTUS_FLOWER));
-
 	public RecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 		super(output, registriesFuture);
 	}
@@ -75,13 +56,41 @@ public class RecipeProvider extends FabricRecipeProvider {
 		return new RecipeGenerator(registryLookup, exporter) {
 			@Override
 			public void generate() {
+				Identifier stewId = Registries.ITEM.getId(Items.SUSPICIOUS_STEW);
+
 				// Generate recipes for each flower variant
-				for (Map.Entry<FlowerVariant, Item> entry : RECIPE_ITEMS.entrySet()) {
-					createShapeless(RecipeCategory.DECORATIONS, entry.getKey(), 4)
-							.input(ModItems.FLORISTS_SHEARS_ITEM).input(entry.getValue())
-							.group("tiny_flowers")
-							.criterion(hasItem(ModItems.FLORISTS_SHEARS_ITEM), conditionsFromItem(ModItems.FLORISTS_SHEARS_ITEM))
-							.offerTo(exporter);
+				for (FlowerVariant flowerVariant : FlowerVariant.values()) {
+					// Create tiny flower items for variants that need them.
+					if (flowerVariant.shouldCreateItem()) {
+						createShapeless(RecipeCategory.DECORATIONS, flowerVariant, 4)
+								.input(ModItems.FLORISTS_SHEARS_ITEM).input(flowerVariant.getOriginalBlock())
+								.group("tiny_flowers")
+								.criterion(hasItem(ModItems.FLORISTS_SHEARS_ITEM), conditionsFromItem(ModItems.FLORISTS_SHEARS_ITEM))
+								.offerTo(exporter);
+					}
+
+					// Create recipes for the flower variants that can be used in suspicious stew.
+					if (flowerVariant.getStewEffects() != null) {
+						ItemStack stack = new ItemStack(
+								Registries.ITEM.getEntry(Items.SUSPICIOUS_STEW),
+								1,
+								ComponentChanges.builder()
+										.add(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, flowerVariant.getStewEffects())
+										.build());
+
+						RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(
+								RegistryKeys.RECIPE,
+								TinyFlowers.id(stewId.getPath() + "_from_" + flowerVariant.getItemIdentifier().getPath()));
+
+						createShapeless(RecipeCategory.FOOD, stack)
+								.input(Items.BOWL)
+								.input(Items.BROWN_MUSHROOM)
+								.input(Items.RED_MUSHROOM)
+								.input(flowerVariant)
+								.group("suspicious_stew")
+								.criterion(hasItem(flowerVariant), this.conditionsFromItem(flowerVariant))
+								.offerTo(exporter, recipeKey);
+					}
 				}
 
 				// Generate recipes for each colour of shears.
@@ -107,31 +116,6 @@ public class RecipeProvider extends FabricRecipeProvider {
 							.group("florists_shears")
 							.criterion(hasItem(Items.SHEARS), conditionsFromItem(Items.SHEARS))
 							.offerTo(exporter, recipeKey);
-				}
-
-				// Generate recipes for Suspicious Stew
-				Identifier stewId = Registries.ITEM.getId(Items.SUSPICIOUS_STEW);
-				for (FlowerVariant flowerVariant : FlowerVariant.values()) {
-					if (flowerVariant.getStewEffects() != null) {
-						ItemStack stack = new ItemStack(
-								Registries.ITEM.getEntry(Items.SUSPICIOUS_STEW),
-								1,
-								ComponentChanges.builder()
-										.add(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, flowerVariant.getStewEffects()).build());
-
-						RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(
-								RegistryKeys.RECIPE,
-								TinyFlowers.id(stewId.getPath() + "_from_" + flowerVariant.getItemIdentifier().getPath()));
-
-						createShapeless(RecipeCategory.FOOD, stack)
-								.input(Items.BOWL)
-								.input(Items.BROWN_MUSHROOM)
-								.input(Items.RED_MUSHROOM)
-								.input(flowerVariant)
-								.group("suspicious_stew")
-								.criterion(hasItem(flowerVariant), this.conditionsFromItem(flowerVariant))
-								.offerTo(exporter, recipeKey);
-					}
 				}
 			}
 		};
