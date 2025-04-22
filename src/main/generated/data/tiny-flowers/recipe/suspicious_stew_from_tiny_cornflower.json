@@ -6,13 +6,14 @@
     "minecraft:bowl",
     "minecraft:brown_mushroom",
     "minecraft:red_mushroom",
+    "tiny-flowers:tiny_cornflower",
     "tiny-flowers:tiny_cornflower"
   ],
   "result": {
     "components": {
       "minecraft:suspicious_stew_effects": [
         {
-          "duration": 50,
+          "duration": 100,
           "id": "minecraft:jump_boost"
         }
       ]

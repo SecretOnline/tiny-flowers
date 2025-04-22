@@ -87,6 +87,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 								.input(Items.BROWN_MUSHROOM)
 								.input(Items.RED_MUSHROOM)
 								.input(flowerVariant)
+								.input(flowerVariant)
 								.group("suspicious_stew")
 								.criterion(hasItem(flowerVariant), this.conditionsFromItem(flowerVariant))
 								.offerTo(exporter, recipeKey);

@@ -6,13 +6,14 @@
     "minecraft:bowl",
     "minecraft:brown_mushroom",
     "minecraft:red_mushroom",
+    "tiny-flowers:tiny_poppy",
     "tiny-flowers:tiny_poppy"
   ],
   "result": {
     "components": {
       "minecraft:suspicious_stew_effects": [
         {
-          "duration": 50,
+          "duration": 100,
           "id": "minecraft:night_vision"
         }
       ]

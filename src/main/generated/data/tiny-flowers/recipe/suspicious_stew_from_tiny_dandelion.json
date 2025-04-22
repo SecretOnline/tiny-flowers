@@ -6,13 +6,14 @@
     "minecraft:bowl",
     "minecraft:brown_mushroom",
     "minecraft:red_mushroom",
+    "tiny-flowers:tiny_dandelion",
     "tiny-flowers:tiny_dandelion"
   ],
   "result": {
     "components": {
       "minecraft:suspicious_stew_effects": [
         {
-          "duration": 3,
+          "duration": 7,
           "id": "minecraft:saturation"
         }
       ]

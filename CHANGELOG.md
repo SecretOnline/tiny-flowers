@@ -19,7 +19,7 @@ The versioning scheme is listed in the README.
 ### Added
 
 - Suspicious Stew recipes for tiny flowers with vanilla equivalents.
-  - The effects are the same, but the durations are halved.
+  - The effects are the same, but it takes two tiny flowers to make a Stew instead of one.
 - Using Florists' Shears on a flower will convert that flower into a full garden.
   - This is an alternative way to get tiny flowers without having to open a crafting window.
 

@@ -6,13 +6,14 @@
     "minecraft:bowl",
     "minecraft:brown_mushroom",
     "minecraft:red_mushroom",
+    "tiny-flowers:tiny_red_tulip",
     "tiny-flowers:tiny_red_tulip"
   ],
   "result": {
     "components": {
       "minecraft:suspicious_stew_effects": [
         {
-          "duration": 70,
+          "duration": 140,
           "id": "minecraft:weakness"
         }
       ]

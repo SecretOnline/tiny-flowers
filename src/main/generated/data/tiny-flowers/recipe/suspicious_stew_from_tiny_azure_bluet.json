@@ -6,13 +6,14 @@
     "minecraft:bowl",
     "minecraft:brown_mushroom",
     "minecraft:red_mushroom",
+    "tiny-flowers:tiny_azure_bluet",
     "tiny-flowers:tiny_azure_bluet"
   ],
   "result": {
     "components": {
       "minecraft:suspicious_stew_effects": [
         {
-          "duration": 110,
+          "duration": 220,
           "id": "minecraft:blindness"
         }
       ]
