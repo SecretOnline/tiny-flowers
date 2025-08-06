@@ -8,19 +8,20 @@ import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
+import net.minecraft.data.tag.ProvidedTagBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 
-public class ItemTagProvider extends FabricTagProvider<Item> {
+public class ItemTagProvider extends FabricTagProvider.FabricValueLookupTagProvider.ItemTagProvider {
 	public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-		super(output, RegistryKeys.ITEM, registriesFuture);
+		super(output, registriesFuture);
 	}
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		FabricTagBuilder builder = getOrCreateTagBuilder(ModItemTags.TINY_FLOWERS);
+		ProvidedTagBuilder builder = valueLookupBuilder(ModItemTags.TINY_FLOWERS);
 
 		// Add all items/blocks that correspond to tiny flower variants to tag
 		for (FlowerVariant variant : FlowerVariant.values()) {
@@ -31,8 +32,8 @@ public class ItemTagProvider extends FabricTagProvider<Item> {
 			builder.add(variant.asItem());
 		}
 
-		getOrCreateTagBuilder(ItemTags.BEE_FOOD).addTag(ModItemTags.TINY_FLOWERS);
+		valueLookupBuilder(ItemTags.BEE_FOOD).addTag(ModItemTags.TINY_FLOWERS);
 
-		getOrCreateTagBuilder(ConventionalItemTags.SHEAR_TOOLS).add(ModItems.FLORISTS_SHEARS_ITEM);
+		valueLookupBuilder(ConventionalItemTags.SHEAR_TOOLS).add(ModItems.FLORISTS_SHEARS_ITEM);
 	}
 }
