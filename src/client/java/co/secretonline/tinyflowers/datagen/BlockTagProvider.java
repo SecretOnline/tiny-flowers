@@ -10,15 +10,16 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 
-public class BlockTagProvider extends FabricTagProvider<Block> {
+public class BlockTagProvider extends FabricTagProvider.FabricValueLookupTagProvider.BlockTagProvider {
 	public BlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-		super(output, RegistryKeys.BLOCK, registriesFuture);
+		super(output, registriesFuture);
 	}
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		getOrCreateTagBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN);
-		getOrCreateTagBuilder(BlockTags.SWORD_EFFICIENT).add(ModBlocks.TINY_GARDEN);
-		getOrCreateTagBuilder(BlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN);
+
+		valueLookupBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN);
+		valueLookupBuilder(BlockTags.SWORD_EFFICIENT).add(ModBlocks.TINY_GARDEN);
+		valueLookupBuilder(BlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN);
 	}
 }
