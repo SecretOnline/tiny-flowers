@@ -16,12 +16,21 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.3.0 - 2025-08-07
+
+Big thank you to [eSonOfAnder](https://github.com/eSonOfAnder) for doing the 1.21.6+ update for me.
+
 ### Added
 
 - Suspicious Stew recipes for tiny flowers with vanilla equivalents.
-  - The effects are the same, but it takes two tiny flowers to make a Stew instead of one.
+  - The effects are the same, but it takes two tiny flowers to make a Stew instead of one regular flower.
 - Using Florists' Shears on a flower will convert that flower into a full garden.
   - This is an alternative way to get tiny flowers without having to open a crafting window.
+
+### Updated
+
+- Updated to 1.21.8
+  - Also compatible with 1.21.6 and 1.21.7
 
 ## v1.2.0 - 2025-04-07
 
