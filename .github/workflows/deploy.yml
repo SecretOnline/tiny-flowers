@@ -47,7 +47,7 @@ jobs:
           echo "modrinth-project-id=$modrinth_project_id" >> "$GITHUB_OUTPUT"
 
       - name: Setup Java ${{ steps.get-data.outputs.java-version }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ steps.get-data.outputs.java-version }}
           distribution: "zulu"
