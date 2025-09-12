@@ -63,7 +63,7 @@
     "fabric-api": "*"
   },
   "recommends": {
-    "fabricloader": ">=0.16.10",
+    "fabricloader": ">=0.17.2",
     "minecraft": "~1.21.6"
   },
   "custom": {
