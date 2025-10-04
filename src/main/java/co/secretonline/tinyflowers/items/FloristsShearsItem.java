@@ -9,7 +9,6 @@ import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Segmented;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -87,7 +86,7 @@ public class FloristsShearsItem extends ShearsItem {
 			// TODO: Figure out if there's a scenario where the player is null
 			if (ctx.getPlayer() != null) {
 				PlayerEntity player = ctx.getPlayer();
-				ctx.getStack().damage(1, player, LivingEntity.getSlotForHand(ctx.getHand()));
+				ctx.getStack().damage(1, player, ctx.getHand());
 
 				world.playSound(player, pos, SoundEvents.BLOCK_GROWING_PLANT_CROP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
@@ -116,7 +115,7 @@ public class FloristsShearsItem extends ShearsItem {
 
 			if (ctx.getPlayer() != null) {
 				PlayerEntity player = ctx.getPlayer();
-				ctx.getStack().damage(1, player, LivingEntity.getSlotForHand(ctx.getHand()));
+				ctx.getStack().damage(1, player, ctx.getHand());
 
 				world.playSound(player, pos, SoundEvents.BLOCK_GROWING_PLANT_CROP, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}

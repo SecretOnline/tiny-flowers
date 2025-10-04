@@ -16,6 +16,12 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.4.0 - 2025-10-05
+
+### Updated
+
+- Updated to 1.21.9
+
 ## v1.3.0 - 2025-08-07
 
 Big thank you to [eSonOfAnder](https://github.com/eSonOfAnder) for doing the 1.21.6+ update for me.
