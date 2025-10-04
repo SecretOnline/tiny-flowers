@@ -41,15 +41,9 @@
   "icon": "assets/tiny-flowers/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "co.secretonline.tinyflowers.TinyFlowers"
-    ],
-    "client": [
-      "co.secretonline.tinyflowers.TinyFlowersClient"
-    ],
-    "fabric-datagen": [
-      "co.secretonline.tinyflowers.datagen.DataGenerator"
-    ]
+    "main": ["co.secretonline.tinyflowers.TinyFlowers"],
+    "client": ["co.secretonline.tinyflowers.TinyFlowersClient"],
+    "fabric-datagen": ["co.secretonline.tinyflowers.datagen.DataGenerator"]
   },
   "mixins": [
     "tiny-flowers.mixins.json",
@@ -64,7 +58,7 @@
   },
   "recommends": {
     "fabricloader": ">=0.17.2",
-    "minecraft": "~1.21.6"
+    "minecraft": "~1.21.9"
   },
   "custom": {
     "mc-publish": {

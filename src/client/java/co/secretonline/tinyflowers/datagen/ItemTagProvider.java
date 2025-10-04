@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.data.tag.ProvidedTagBuilder;
 import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 
@@ -21,7 +20,7 @@ public class ItemTagProvider extends FabricTagProvider.FabricValueLookupTagProvi
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		ProvidedTagBuilder builder = valueLookupBuilder(ModItemTags.TINY_FLOWERS);
+		ProvidedTagBuilder<Item, Item> builder = valueLookupBuilder(ModItemTags.TINY_FLOWERS);
 
 		// Add all items/blocks that correspond to tiny flower variants to tag
 		for (FlowerVariant variant : FlowerVariant.values()) {
