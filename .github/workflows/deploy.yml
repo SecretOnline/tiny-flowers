@@ -23,13 +23,13 @@ jobs:
       attestations: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Ensure Gradle wrapper is executable
         run: chmod +x ./gradlew
 
       - name: Validate Gradle
-        uses: gradle/actions/wrapper-validation@v4
+        uses: gradle/actions/wrapper-validation@v5
 
       - name: Get Data
         id: get-data
@@ -53,7 +53,7 @@ jobs:
           distribution: "zulu"
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Get deploy info
         id: deploy-info
@@ -120,7 +120,7 @@ jobs:
 
       - name: Update Modrinth decription
         if: inputs.is-release
-        uses: funnyboy-roks/modrinth-auto-desc@v1.6
+        uses: funnyboy-roks/modrinth-auto-desc@v1.7
         with:
           auth-token: ${{ secrets.MODRINTH_TOKEN }}
           slug: ${{ steps.get-data.outputs.modrinth-project-id }}
