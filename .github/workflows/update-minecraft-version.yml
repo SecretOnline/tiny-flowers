@@ -61,7 +61,6 @@ jobs:
 
           sed -i -e '/java_version=/ s/=.*/=${{ steps.update-versions.outputs.java-version }}/' gradle.properties
           sed -i -e '/minecraft_version=/ s/=.*/=${{ steps.update-versions.outputs.minecraft-version }}/' gradle.properties
-          sed -i -e '/yarn_mappings=/ s/=.*/=${{ steps.update-versions.outputs.yarn-mappings-version }}/' gradle.properties
           sed -i -e '/loader_version=/ s/=.*/=${{ steps.update-versions.outputs.loader-version }}/' gradle.properties
           sed -i -e '/fabric_version=/ s/=.*/=${{ steps.update-versions.outputs.fabric-api-version }}/' gradle.properties
           # sed -i -e '/modmenu_version=/ s/=.*/=${{ steps.update-versions.outputs.mod-menu-version }}/' gradle.properties
@@ -90,7 +89,6 @@ jobs:
           |---|---|
           |Minecraft|`${{ steps.update-versions.outputs.minecraft-version }}` (Compatible: `${{ steps.update-versions.outputs.minecraft-version-range }}`)|
           |Java|`${{ steps.update-versions.outputs.java-version }}`|
-          |Yarn Mappings|`${{ steps.update-versions.outputs.yarn-mappings-version }}`|
           |Fabric API|`${{ steps.update-versions.outputs.fabric-api-version }}`|
           |Mod Menu|`${{ steps.update-versions.outputs.mod-menu-version }}`|
           |Fabric Loader|`${{ steps.update-versions.outputs.loader-version }}`|
