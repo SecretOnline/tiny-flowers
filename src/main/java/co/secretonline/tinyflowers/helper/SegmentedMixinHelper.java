@@ -6,14 +6,14 @@ import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Segmented;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SegmentableBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 /**
  * This class contains common logic for mixins targeting Segmented blocks.
@@ -23,19 +23,19 @@ import net.minecraft.util.math.Direction;
  * Segmented and call the methods in this class.
  */
 public class SegmentedMixinHelper {
-	public static void shouldAddSegment(BlockState state, ItemPlacementContext context,
-			IntProperty property, CallbackInfoReturnable<Boolean> info) {
+	public static void shouldAddSegment(BlockState state, BlockPlaceContext context,
+			IntegerProperty property, CallbackInfoReturnable<Boolean> info) {
 		// Early exit for cases where no additional items should be placed.
-		if (context.shouldCancelInteraction() || state.get(property) >= Segmented.MAX_SEGMENTS) {
+		if (context.isSecondaryUseActive() || state.getValue(property) >= SegmentableBlock.MAX_SEGMENT) {
 			return;
 		}
 
-		ItemStack stack = context.getStack();
+		ItemStack stack = context.getItemInHand();
 
 		// If the placement item is the same as the current block, then we don't want to
 		// overwrite it. This keeps more vanilla blocks in the world, which I think is
 		// an admirable goal.
-		if (stack.isOf(state.getBlock().asItem())) {
+		if (stack.is(state.getBlock().asItem())) {
 			return;
 		}
 
@@ -48,11 +48,11 @@ public class SegmentedMixinHelper {
 		info.setReturnValue(true);
 	}
 
-	public static void getPlacementState(ItemPlacementContext context, Block blockBeingUsed, IntProperty amountProperty,
+	public static void getPlacementState(BlockPlaceContext context, Block blockBeingUsed, IntegerProperty amountProperty,
 			EnumProperty<Direction> directionProperty, CallbackInfoReturnable<BlockState> info) {
 		// We need to build a new BlockState if a Segmented block item is being placed
 		// inside a GardenBlock.
-		BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
+		BlockState blockState = context.getLevel().getBlockState(context.getClickedPos());
 		Block currentBlock = blockState.getBlock();
 
 		// Early exit if the block being placed is the same as the current block.

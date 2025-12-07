@@ -10,17 +10,17 @@ import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowersComponent;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.DyedColorComponent;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.ShearsItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.DyeColor;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.component.DyedItemColor;
 
 public class ModItems {
 
@@ -34,17 +34,17 @@ public class ModItems {
 			// Add a default component so tooltips work for older items
 			(settings) -> settings.component(ModComponents.TINY_FLOWERS_COMPONENT_TYPE, TinyFlowersComponent.EMPTY));
 
-	public static final RegistryKey<Item> FLORISTS_SHEARS_ITEM_KEY = RegistryKey.of(RegistryKeys.ITEM,
+	public static final ResourceKey<Item> FLORISTS_SHEARS_ITEM_KEY = ResourceKey.create(Registries.ITEM,
 			TinyFlowers.id("florists_shears"));
-	public static final Item FLORISTS_SHEARS_ITEM = Registry.register(Registries.ITEM, FLORISTS_SHEARS_ITEM_KEY,
+	public static final Item FLORISTS_SHEARS_ITEM = Registry.register(BuiltInRegistries.ITEM, FLORISTS_SHEARS_ITEM_KEY,
 			new FloristsShearsItem(
-					new Item.Settings()
-							.registryKey(FLORISTS_SHEARS_ITEM_KEY)
-							.maxCount(1)
-							.maxDamage(238)
-							.component(DataComponentTypes.TOOL, ShearsItem.createToolComponent())
-							.component(DataComponentTypes.DYED_COLOR,
-									new DyedColorComponent(DyeColor.RED.getEntityColor()))));
+					new Item.Properties()
+							.setId(FLORISTS_SHEARS_ITEM_KEY)
+							.stacksTo(1)
+							.durability(238)
+							.component(DataComponents.TOOL, ShearsItem.createToolProperties())
+							.component(DataComponents.DYED_COLOR,
+									new DyedItemColor(DyeColor.RED.getTextureDiffuseColor()))));
 
 	private static Map<FlowerVariant, Item> registerFlowerVariantItems() {
 		Map<FlowerVariant, Item> flowerVariantItems = new HashMap<>();
@@ -65,22 +65,22 @@ public class ModItems {
 		return registerGardenBlockItem(path, Function.identity());
 	}
 
-	public static Item registerGardenBlockItem(String path, Function<Item.Settings, Item.Settings> settings) {
-		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, TinyFlowers.id(path));
-		return Registry.register(Registries.ITEM, itemKey,
+	public static Item registerGardenBlockItem(String path, Function<Item.Properties, Item.Properties> settings) {
+		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, TinyFlowers.id(path));
+		return Registry.register(BuiltInRegistries.ITEM, itemKey,
 				new BlockItem(
 						ModBlocks.TINY_GARDEN,
-						settings.apply(new Item.Settings().registryKey(itemKey))));
+						settings.apply(new Item.Properties().setId(itemKey))));
 	}
 
 	public static void initialize() {
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register((itemGroup) -> {
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS).register((itemGroup) -> {
 			for (Map.Entry<FlowerVariant, Item> entry : FLOWER_VARIANT_ITEMS.entrySet()) {
-				itemGroup.add(entry.getValue());
+				itemGroup.accept(entry.getValue());
 			}
 		});
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register((itemGroup) -> {
-			itemGroup.add(FLORISTS_SHEARS_ITEM);
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register((itemGroup) -> {
+			itemGroup.accept(FLORISTS_SHEARS_ITEM);
 		});
 	}
 }

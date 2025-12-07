@@ -1,43 +1,42 @@
 package co.secretonline.tinyflowers.items;
 
 import java.util.Arrays;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SegmentableBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.GameEvent.Context;
+import net.minecraft.world.phys.Vec3;
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Segmented;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.ShearsItem;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.event.GameEvent.Emitter;
 
 public class FloristsShearsItem extends ShearsItem {
 	private final static Direction[] DIRECTIONS = new Direction[] {
 			Direction.NORTH, Direction.EAST,
 			Direction.SOUTH, Direction.WEST, };
 
-	public FloristsShearsItem(Settings settings) {
+	public FloristsShearsItem(Properties settings) {
 		super(settings);
 	}
 
 	@Override
 	public ItemStack getRecipeRemainder(ItemStack stack) {
-		if (stack.getDamage() < stack.getMaxDamage() - 1) {
+		if (stack.getDamageValue() < stack.getMaxDamage() - 1) {
 			ItemStack moreDamaged = stack.copy();
-			moreDamaged.setDamage(stack.getDamage() + 1);
+			moreDamaged.setDamageValue(stack.getDamageValue() + 1);
 			return moreDamaged;
 		}
 
@@ -45,12 +44,12 @@ public class FloristsShearsItem extends ShearsItem {
 	}
 
 	@Override
-	public ActionResult useOnBlock(ItemUsageContext ctx) {
-		World world = ctx.getWorld();
-		BlockPos pos = ctx.getBlockPos();
+	public InteractionResult useOn(UseOnContext ctx) {
+		Level world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		BlockState blockState = world.getBlockState(pos);
 
-		if (blockState.getBlock() instanceof Segmented) {
+		if (blockState.getBlock() instanceof SegmentableBlock) {
 			// Try convert segmented block to gardens so that shears can remove flowers from
 			// them.
 			try {
@@ -59,73 +58,73 @@ public class FloristsShearsItem extends ShearsItem {
 				// Segmented could not be converted to garden.
 				TinyFlowers.LOGGER.warn("Could not convert segmented block to garden. Ignoring action.");
 
-				return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
+				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			}
 		}
 
-		if (blockState.isOf(ModBlocks.TINY_GARDEN)) {
+		if (blockState.is(ModBlocks.TINY_GARDEN)) {
 			// Remove flower at certain part of garden.
-			Vec3d positionInBlock = ctx.getHitPos().subtract(Vec3d.of(pos));
+			Vec3 positionInBlock = ctx.getClickLocation().subtract(Vec3.atLowerCornerOf(pos));
 			boolean isEast = positionInBlock.x >= 0.5;
 			boolean isSouth = positionInBlock.z >= 0.5;
 
 			// Convert block quadrant into the correct property.
 			// Writing this was a little bit of trial and a lot of error.
 			int index = isSouth ? (isEast ? 2 : 3) : (isEast ? 1 : 0);
-			index = Arrays.asList(DIRECTIONS).indexOf(blockState.get(GardenBlock.FACING)) - index;
+			index = Arrays.asList(DIRECTIONS).indexOf(blockState.getValue(GardenBlock.FACING)) - index;
 			index = (index + 4) % 4;
 			EnumProperty<FlowerVariant> property = GardenBlock.FLOWER_VARIANT_PROPERTIES[index];
 
-			FlowerVariant variant = blockState.get(property);
+			FlowerVariant variant = blockState.getValue(property);
 			if (variant.isEmpty()) {
-				return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
+				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			}
 
-			Block.dropStack(world, pos, new ItemStack(variant));
+			Block.popResource(world, pos, new ItemStack(variant));
 
 			// TODO: Figure out if there's a scenario where the player is null
 			if (ctx.getPlayer() != null) {
-				PlayerEntity player = ctx.getPlayer();
-				ctx.getStack().damage(1, player, ctx.getHand());
+				Player player = ctx.getPlayer();
+				ctx.getItemInHand().hurtAndBreak(1, player, ctx.getHand());
 
-				world.playSound(player, pos, SoundEvents.BLOCK_GROWING_PLANT_CROP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
 
-			BlockState newBlockState = blockState.with(property, FlowerVariant.EMPTY);
+			BlockState newBlockState = blockState.setValue(property, FlowerVariant.EMPTY);
 			if (GardenBlock.isEmpty(newBlockState)) {
 				world.removeBlock(pos, false);
 			} else {
-				world.setBlockState(pos, newBlockState);
+				world.setBlockAndUpdate(pos, newBlockState);
 			}
 
-			world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, Emitter.of(ctx.getPlayer(), newBlockState));
+			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(ctx.getPlayer(), newBlockState));
 
-			return ActionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		Block block = blockState.getBlock();
 		FlowerVariant variant = FlowerVariant.fromOriginalBlock(block);
 		if (!variant.isEmpty()) {
-			BlockState newBlockState = ((GardenBlock) ModBlocks.TINY_GARDEN).getDefaultState()
-					.with(GardenBlock.FACING, ctx.getHorizontalPlayerFacing().getOpposite())
-					.with(GardenBlock.FLOWER_VARIANT_1, variant)
-					.with(GardenBlock.FLOWER_VARIANT_2, variant)
-					.with(GardenBlock.FLOWER_VARIANT_3, variant)
-					.with(GardenBlock.FLOWER_VARIANT_4, variant);
+			BlockState newBlockState = ((GardenBlock) ModBlocks.TINY_GARDEN).defaultBlockState()
+					.setValue(GardenBlock.FACING, ctx.getHorizontalDirection().getOpposite())
+					.setValue(GardenBlock.FLOWER_VARIANT_1, variant)
+					.setValue(GardenBlock.FLOWER_VARIANT_2, variant)
+					.setValue(GardenBlock.FLOWER_VARIANT_3, variant)
+					.setValue(GardenBlock.FLOWER_VARIANT_4, variant);
 
 			if (ctx.getPlayer() != null) {
-				PlayerEntity player = ctx.getPlayer();
-				ctx.getStack().damage(1, player, ctx.getHand());
+				Player player = ctx.getPlayer();
+				ctx.getItemInHand().hurtAndBreak(1, player, ctx.getHand());
 
-				world.playSound(player, pos, SoundEvents.BLOCK_GROWING_PLANT_CROP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
 
-			world.setBlockState(pos, newBlockState);
-			world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, Emitter.of(ctx.getPlayer(), newBlockState));
+			world.setBlockAndUpdate(pos, newBlockState);
+			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(ctx.getPlayer(), newBlockState));
 
-			return ActionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return super.useOnBlock(ctx);
+		return super.useOn(ctx);
 	}
 }

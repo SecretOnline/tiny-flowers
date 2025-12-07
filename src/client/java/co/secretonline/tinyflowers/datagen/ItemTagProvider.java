@@ -8,19 +8,19 @@ import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
-import net.minecraft.data.tag.ProvidedTagBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.tags.TagAppender;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 
 public class ItemTagProvider extends FabricTagProvider.FabricValueLookupTagProvider.ItemTagProvider {
-	public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+	public ItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 
 	@Override
-	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-		ProvidedTagBuilder<Item, Item> builder = valueLookupBuilder(ModItemTags.TINY_FLOWERS);
+	protected void addTags(HolderLookup.Provider wrapperLookup) {
+		TagAppender<Item, Item> builder = valueLookupBuilder(ModItemTags.TINY_FLOWERS);
 
 		// Add all items/blocks that correspond to tiny flower variants to tag
 		for (FlowerVariant variant : FlowerVariant.values()) {
