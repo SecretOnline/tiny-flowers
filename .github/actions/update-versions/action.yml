@@ -18,8 +18,6 @@ outputs:
     description: Range of Minecraft versions supported
   java-version:
     description: Java version required for this version
-  yarn-mappings-version:
-    description: Version of Yarn mappings for Fabric
   fabric-api-version:
     description: Version of the Fabric API mod used by this project
   mod-menu-version:

@@ -147,32 +147,6 @@ async function getModrinthProjectVersion(projectId) {
 /**
  * @returns {Promise<string>}
  */
-async function getYarnMappingsVersion() {
-  const response = await fetch("https://meta.fabricmc.net/v2/versions/yarn", {
-    headers: {
-      "user-agent": "secret_online/mod-auto-updater (mc@secretonline.co)",
-    },
-  });
-  /** @type {any[]} */
-  const data = await response.json();
-  const entriesForVersion = data.filter(
-    (v) => v.gameVersion === versionToUpdate
-  );
-
-  if (entriesForVersion.length === 0) {
-    throw new Error(
-      `No versions of Yarn mappings for Minecraft ${versionToUpdate}`
-    );
-  }
-
-  info(`Found Yarn mappings: ${entriesForVersion[0].version}`);
-
-  return entriesForVersion[0].version;
-}
-
-/**
- * @returns {Promise<string>}
- */
 async function getFabricLoaderVersion() {
   const response = await fetch("https://meta.fabricmc.net/v2/versions/loader", {
     headers: {
@@ -195,14 +169,12 @@ async function getFabricLoaderVersion() {
 const newVersionRange = await getNewVersionRange();
 const fabricApiVersion = await getModrinthProjectVersion("fabric-api");
 const modMenuVersion = await getModrinthProjectVersion("modmenu");
-const yarnMappingsVersion = await getYarnMappingsVersion();
 const fabricLoaderVersion = await getFabricLoaderVersion();
 
 setOutput("has-updates", true);
 setOutput("minecraft-version", versionToUpdate);
 setOutput("minecraft-version-range", newVersionRange);
 setOutput("java-version", updateVersionInfo.javaVersion.majorVersion);
-setOutput("yarn-mappings-version", yarnMappingsVersion);
 setOutput("fabric-api-version", fabricApiVersion);
 setOutput("mod-menu-version", modMenuVersion);
 setOutput("loader-version", fabricLoaderVersion);
