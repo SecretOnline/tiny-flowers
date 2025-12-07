@@ -6,28 +6,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import co.secretonline.tinyflowers.helper.SegmentedMixinHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeafLitterBlock;
-import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.LeafLitterBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(LeafLitterBlock.class)
 public class LeafLitterBlockMixin {
-	@Inject(method = "canReplace", at = @At("HEAD"), cancellable = true)
-	public void injectCanReplace(BlockState state, ItemPlacementContext context, CallbackInfoReturnable<Boolean> info) {
+	@Inject(method = "canBeReplaced(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/item/context/BlockPlaceContext;)Z", at = @At("HEAD"), cancellable = true)
+	public void injectCanReplace(BlockState state, BlockPlaceContext context, CallbackInfoReturnable<Boolean> info) {
 		LeafLitterBlock that = (LeafLitterBlock) (Object) this;
 
-		SegmentedMixinHelper.shouldAddSegment(state, context, that.getAmountProperty(), info);
+		SegmentedMixinHelper.shouldAddSegment(state, context, that.getSegmentAmountProperty(), info);
 	}
 
-	@Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
-	public void injectGetPlacementState(ItemPlacementContext context, CallbackInfoReturnable<BlockState> info) {
+	@Inject(method = "getStateForPlacement", at = @At("RETURN"), cancellable = true)
+	public void injectGetPlacementState(BlockPlaceContext context, CallbackInfoReturnable<BlockState> info) {
 		LeafLitterBlock that = (LeafLitterBlock) (Object) this;
 
 		SegmentedMixinHelper.getPlacementState(
 				context,
 				that,
-				that.getAmountProperty(),
-				LeafLitterBlock.HORIZONTAL_FACING,
+				that.getSegmentAmountProperty(),
+				LeafLitterBlock.FACING,
 				info);
 	}
 }

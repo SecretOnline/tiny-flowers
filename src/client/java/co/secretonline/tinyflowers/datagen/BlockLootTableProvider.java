@@ -8,25 +8,25 @@ import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.minecraft.item.Item;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.predicate.StatePredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 
 public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 	protected BlockLootTableProvider(FabricDataOutput dataOutput,
-			CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+			CompletableFuture<HolderLookup.Provider> registryLookup) {
 		super(dataOutput, registryLookup);
 	}
 
 	@Override
 	public void generate() {
-		LootTable.Builder lootTableBuilder = LootTable.builder();
+		LootTable.Builder lootTableBuilder = LootTable.lootTable();
 
 		for (FlowerVariant variant : FlowerVariant.values()) {
 			if (variant.isEmpty()) {
@@ -34,21 +34,21 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 			}
 
 			Item item = variant.asItem();
-			if (Registries.ITEM.getId(item).equals(Identifier.of("air"))) {
+			if (BuiltInRegistries.ITEM.getKey(item).equals(ResourceLocation.parse("air"))) {
 				TinyFlowers.LOGGER.error(
 						"Variant {} has an invalid item id: {}",
-						variant.getItemIdentifier(), Registries.ITEM.getId(item));
+						variant.getItemIdentifier(), BuiltInRegistries.ITEM.getKey(item));
 			}
 
 			for (var property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-				lootTableBuilder.pool(LootPool.builder()
-						.with(ItemEntry.builder(item))
-						.conditionally(BlockStatePropertyLootCondition.builder(ModBlocks.TINY_GARDEN)
-								.properties(
-										StatePredicate.Builder.create().exactMatch(property, variant))));
+				lootTableBuilder.withPool(LootPool.lootPool()
+						.add(LootItem.lootTableItem(item))
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.TINY_GARDEN)
+								.setProperties(
+										StatePropertiesPredicate.Builder.properties().hasProperty(property, variant))));
 			}
 		}
 
-		addDrop(ModBlocks.TINY_GARDEN, lootTableBuilder);
+		add(ModBlocks.TINY_GARDEN, lootTableBuilder);
 	}
 }

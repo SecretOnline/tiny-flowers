@@ -1,22 +1,21 @@
 package co.secretonline.tinyflowers.components;
 
 import java.util.function.Consumer;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.Item.TooltipContext;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.item.component.TooltipProvider;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
 import co.secretonline.tinyflowers.blocks.GardenBlock;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.item.Item.TooltipContext;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 /**
  * Since Minecraft 1.21.5, the tooltip system has been changed to use
@@ -24,7 +23,7 @@ import net.minecraft.util.Formatting;
  * component.
  */
 public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2, FlowerVariant flower3,
-		FlowerVariant flower4) implements TooltipAppender {
+		FlowerVariant flower4) implements TooltipProvider {
 
 	public static final TinyFlowersComponent EMPTY = of(
 			FlowerVariant.EMPTY, FlowerVariant.EMPTY,
@@ -53,20 +52,20 @@ public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2,
 	}
 
 	@Override
-	public void appendTooltip(TooltipContext context, Consumer<Text> textConsumer,
-			TooltipType type, ComponentsAccess components) {
+	public void addToTooltip(TooltipContext context, Consumer<Component> textConsumer,
+			TooltipFlag type, DataComponentGetter components) {
 		if (this.isEmpty()) {
 			// Since it's possible that garden items were created before this component was
 			// added to the mod, we also need to check for variants in the block state.
-			BlockStateComponent itemBlockState = components.get(DataComponentTypes.BLOCK_STATE);
+			BlockItemStateProperties itemBlockState = components.get(DataComponents.BLOCK_STATE);
 			if (itemBlockState != null) {
 				for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-					FlowerVariant variant = itemBlockState.getValue(property);
+					FlowerVariant variant = itemBlockState.get(property);
 					variant = variant == null ? FlowerVariant.EMPTY : variant;
 
-					MutableText text = Text.translatable(variant.getTranslationKey());
+					MutableComponent text = Component.translatable(variant.getTranslationKey());
 					if (variant.isEmpty()) {
-						text.formatted(Formatting.GRAY);
+						text.withStyle(ChatFormatting.GRAY);
 					}
 
 					textConsumer.accept(text);
@@ -80,9 +79,9 @@ public record TinyFlowersComponent(FlowerVariant flower1, FlowerVariant flower2,
 		for (int i = 0; i < flowers.length; i++) {
 			FlowerVariant variant = flowers[i];
 
-			MutableText text = Text.translatable(variant.getTranslationKey());
+			MutableComponent text = Component.translatable(variant.getTranslationKey());
 			if (variant.isEmpty()) {
-				text.formatted(Formatting.GRAY);
+				text.withStyle(ChatFormatting.GRAY);
 			}
 
 			textConsumer.accept(text);

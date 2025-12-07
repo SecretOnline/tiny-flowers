@@ -3,48 +3,47 @@ package co.secretonline.tinyflowers.blocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SegmentableBlock;
+import net.minecraft.world.level.block.VegetationBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.GameEvent.Context;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import com.mojang.serialization.MapCodec;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowersComponent;
 import co.secretonline.tinyflowers.helper.EyeblossomHelper;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.block.PlantBlock;
-import net.minecraft.block.Segmented;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.StateManager.Builder;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.event.GameEvent.Emitter;
 
-public class GardenBlock extends PlantBlock implements Fertilizable {
-	public static final MapCodec<GardenBlock> CODEC = createCodec(GardenBlock::new);
+public class GardenBlock extends VegetationBlock implements BonemealableBlock {
+	public static final MapCodec<GardenBlock> CODEC = simpleCodec(GardenBlock::new);
 
-	public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_1 = ModBlockProperties.FLOWER_VARIANT_1;
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_2 = ModBlockProperties.FLOWER_VARIANT_2;
 	public static final EnumProperty<FlowerVariant> FLOWER_VARIANT_3 = ModBlockProperties.FLOWER_VARIANT_3;
@@ -57,77 +56,77 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	private static final BiFunction<Direction, Integer, VoxelShape> FACING_AND_AMOUNT_TO_SHAPE = Util.memoize(
 			(BiFunction<Direction, Integer, VoxelShape>) ((facing, bitmap) -> {
 				if (bitmap == 0) {
-					return Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
+					return Block.box(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
 				}
 
 				VoxelShape[] voxelShapes = new VoxelShape[] {
-						Block.createCuboidShape(8.0, 0.0, 8.0, 16.0, 3.0, 16.0),
-						Block.createCuboidShape(8.0, 0.0, 0.0, 16.0, 3.0, 8.0),
-						Block.createCuboidShape(0.0, 0.0, 0.0, 8.0, 3.0, 8.0),
-						Block.createCuboidShape(0.0, 0.0, 8.0, 8.0, 3.0, 16.0)
+						Block.box(8.0, 0.0, 8.0, 16.0, 3.0, 16.0),
+						Block.box(8.0, 0.0, 0.0, 16.0, 3.0, 8.0),
+						Block.box(0.0, 0.0, 0.0, 8.0, 3.0, 8.0),
+						Block.box(0.0, 0.0, 8.0, 8.0, 3.0, 16.0)
 				};
-				VoxelShape voxelShape = VoxelShapes.empty();
+				VoxelShape voxelShape = Shapes.empty();
 
 				for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
 					if ((bitmap & (1 << i)) > 0) {
-						int j = Math.floorMod(i - facing.getHorizontalQuarterTurns(), 4);
-						voxelShape = VoxelShapes.union(voxelShape, voxelShapes[j]);
+						int j = Math.floorMod(i - facing.get2DDataValue(), 4);
+						voxelShape = Shapes.or(voxelShape, voxelShapes[j]);
 					}
 				}
 
-				return voxelShape.asCuboid();
+				return voxelShape.singleEncompassing();
 			}));
 
-	public GardenBlock(AbstractBlock.Settings settings) {
+	public GardenBlock(BlockBehaviour.Properties settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState()
-				.with(FACING, Direction.NORTH)
-				.with(FLOWER_VARIANT_1, FlowerVariant.EMPTY)
-				.with(FLOWER_VARIANT_2, FlowerVariant.EMPTY)
-				.with(FLOWER_VARIANT_3, FlowerVariant.EMPTY)
-				.with(FLOWER_VARIANT_4, FlowerVariant.EMPTY));
+		this.registerDefaultState(this.stateDefinition.any()
+				.setValue(FACING, Direction.NORTH)
+				.setValue(FLOWER_VARIANT_1, FlowerVariant.EMPTY)
+				.setValue(FLOWER_VARIANT_2, FlowerVariant.EMPTY)
+				.setValue(FLOWER_VARIANT_3, FlowerVariant.EMPTY)
+				.setValue(FLOWER_VARIANT_4, FlowerVariant.EMPTY));
 	}
 
 	@Override
-	public MapCodec<GardenBlock> getCodec() {
+	public MapCodec<GardenBlock> codec() {
 		return CODEC;
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		return state.with(FACING, rotation.rotate(state.get(FACING)));
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, BlockMirror mirror) {
-		return state.rotate(mirror.getRotation(state.get(FACING)));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public boolean canReplace(BlockState state, ItemPlacementContext context) {
-		return !context.shouldCancelInteraction() && context.getStack().isIn(ModItemTags.TINY_FLOWERS)
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+		return !context.isSecondaryUseActive() && context.getItemInHand().is(ModItemTags.TINY_FLOWERS)
 				&& hasFreeSpace(state)
 						? true
-						: super.canReplace(state, context);
+						: super.canBeReplaced(state, context);
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return (VoxelShape) FACING_AND_AMOUNT_TO_SHAPE.apply((Direction) state.get(FACING), getFlowerBitmap(state));
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return (VoxelShape) FACING_AND_AMOUNT_TO_SHAPE.apply((Direction) state.getValue(FACING), getFlowerBitmap(state));
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		BlockState blockState = ctx.getWorld().getBlockState(ctx.getBlockPos());
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		BlockState blockState = ctx.getLevel().getBlockState(ctx.getClickedPos());
 
-		ItemStack stack = ctx.getStack();
+		ItemStack stack = ctx.getItemInHand();
 		Item item = stack.getItem();
 		FlowerVariant flowerVariant = FlowerVariant.fromItem(item);
 		if (flowerVariant.isEmpty()) {
 			// The item being placed down is not a flower variant in the enum, but is a
 			// GardenBlock block item.
 			// Currently, the only known case for this is a pre-formed garden item.
-			if (!blockState.isOf(this) && Block.getBlockFromItem(item) == this) {
+			if (!blockState.is(this) && Block.byItem(item) == this) {
 				// The item is a GardenBlock block item, but not any of the variants.
 				// At this point we assume that the item is a pre-formed garden item.
 
@@ -136,30 +135,30 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 				// information on the BlockStateComponent instead. We need to check
 				// both of these in case the item was creted before the new component was
 				// added to the mod.
-				if (stack.contains(ModComponents.TINY_FLOWERS_COMPONENT_TYPE)) {
+				if (stack.has(ModComponents.TINY_FLOWERS_COMPONENT_TYPE)) {
 					// The item has a TinyFlowersComponent, so we can use that to get the
 					// flower variants.
 					TinyFlowersComponent tinyFlowersComponent = stack.get(
 							ModComponents.TINY_FLOWERS_COMPONENT_TYPE);
 
-					return this.getDefaultState()
-							.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
-							.with(FLOWER_VARIANT_1, tinyFlowersComponent.flower1())
-							.with(FLOWER_VARIANT_2, tinyFlowersComponent.flower2())
-							.with(FLOWER_VARIANT_3, tinyFlowersComponent.flower3())
-							.with(FLOWER_VARIANT_4, tinyFlowersComponent.flower4());
-				} else if (stack.contains(DataComponentTypes.BLOCK_STATE)) {
-					BlockStateComponent blockStateComponent = stack.get(
-							DataComponentTypes.BLOCK_STATE);
+					return this.defaultBlockState()
+							.setValue(FACING, ctx.getHorizontalDirection().getOpposite())
+							.setValue(FLOWER_VARIANT_1, tinyFlowersComponent.flower1())
+							.setValue(FLOWER_VARIANT_2, tinyFlowersComponent.flower2())
+							.setValue(FLOWER_VARIANT_3, tinyFlowersComponent.flower3())
+							.setValue(FLOWER_VARIANT_4, tinyFlowersComponent.flower4());
+				} else if (stack.has(DataComponents.BLOCK_STATE)) {
+					BlockItemStateProperties blockStateComponent = stack.get(
+							DataComponents.BLOCK_STATE);
 
-					BlockState newBlockState = this.getDefaultState()
-							.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+					BlockState newBlockState = this.defaultBlockState()
+							.setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 
 					for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-						FlowerVariant variant = blockStateComponent.getValue(property);
+						FlowerVariant variant = blockStateComponent.get(property);
 						variant = variant == null ? FlowerVariant.EMPTY : variant;
 
-						newBlockState = newBlockState.with(property, variant);
+						newBlockState = newBlockState.setValue(property, variant);
 					}
 
 					return newBlockState;
@@ -176,10 +175,10 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			return blockState;
 		}
 
-		if (blockState.isOf(this)) {
+		if (blockState.is(this)) {
 			// Placing a tiny flower on a garden block.
 			return addFlowerToBlockState(blockState, flowerVariant);
-		} else if (blockState.getBlock() instanceof Segmented) {
+		} else if (blockState.getBlock() instanceof SegmentableBlock) {
 			// Placing a tiny flower on a segmented block.
 			// We need to convert the segmented block to a garden block
 			// and then add the flower variant to it.
@@ -190,29 +189,29 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		} else {
 			// Item is a valid tiny flower block item, but there's no block yet.
 			// Place a new garden with the flower variant.
-			return this.getDefaultState()
-					.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
-					.with(FLOWER_VARIANT_1, flowerVariant);
+			return this.defaultBlockState()
+					.setValue(FACING, ctx.getHorizontalDirection().getOpposite())
+					.setValue(FLOWER_VARIANT_1, flowerVariant);
 		}
 	}
 
 	@Override
-	protected void appendProperties(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, FLOWER_VARIANT_1, FLOWER_VARIANT_2, FLOWER_VARIANT_3, FLOWER_VARIANT_4);
 	}
 
 	@Override
-	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
+	public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
 		List<FlowerVariant> flowers = getFlowers(state);
 		if (flowers.isEmpty()) {
 			TinyFlowers.LOGGER.warn("Tried to grow empty space in garden block");
@@ -223,72 +222,72 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 		if (hasFreeSpace(state)) {
 			// Add flower to gerden
-			world.setBlockState(
+			world.setBlock(
 					pos,
 					addFlowerToBlockState(state, flowerVariant),
-					Block.NOTIFY_LISTENERS);
+					Block.UPDATE_CLIENTS);
 		} else {
 			// Drop an item based on the variants in the garden. At this stage we can assume
 			// that the garden is full.
-			dropStack(world, pos, new ItemStack(flowerVariant));
+			popResource(world, pos, new ItemStack(flowerVariant));
 		}
 	}
 
 	@Override
-	protected boolean hasRandomTicks(BlockState state) {
+	protected boolean isRandomlyTicking(BlockState state) {
 		// Block should receive ticks if there is an eyeblossom present.
 		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-			FlowerVariant variant = state.get(property);
+			FlowerVariant variant = state.getValue(property);
 			if (variant == FlowerVariant.OPEN_EYEBLOSSOM || variant == FlowerVariant.CLOSED_EYEBLOSSOM) {
 				return true;
 			}
 		}
 
-		return super.hasRandomTicks(state);
+		return super.isRandomlyTicking(state);
 	}
 
 	@Override
-	protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	protected void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		if (doEyeblossomTick(state, world, pos, random)) {
-			EyeblossomHelper.playSound(world, pos, world.isDay(), true);
+			EyeblossomHelper.playSound(world, pos, world.isBrightOutside(), true);
 		}
 
 		super.randomTick(state, world, pos, random);
 	}
 
 	@Override
-	protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		if (doEyeblossomTick(state, world, pos, random)) {
-			EyeblossomHelper.playSound(world, pos, world.isDay(), false);
+			EyeblossomHelper.playSound(world, pos, world.isBrightOutside(), false);
 		}
 
-		super.scheduledTick(state, world, pos, random);
+		super.tick(state, world, pos, random);
 	}
 
-	private static boolean doEyeblossomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.getDimension().natural()) {
+	private static boolean doEyeblossomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+		if (!world.dimensionType().natural()) {
 			return false;
 		}
 
-		boolean isDay = world.isDay();
+		boolean isDay = world.isBrightOutside();
 		FlowerVariant correctVariant = EyeblossomHelper.getFlowerVariant(isDay);
 		FlowerVariant incorrectVariant = EyeblossomHelper.getFlowerVariant(!isDay);
 
 		BlockState currentState = state;
 		boolean didChange = false;
 		for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-			FlowerVariant variant = currentState.get(property);
+			FlowerVariant variant = currentState.getValue(property);
 			if (variant == incorrectVariant) {
-				currentState = currentState.with(property, correctVariant);
+				currentState = currentState.setValue(property, correctVariant);
 				didChange = true;
 			}
 		}
 
 		if (didChange) {
-			world.setBlockState(pos, currentState, Block.NOTIFY_LISTENERS);
-			world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, Emitter.of(state));
+			world.setBlock(pos, currentState, Block.UPDATE_CLIENTS);
+			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(state));
 
-			EyeblossomHelper.getState(isDay).spawnTrailParticle(world, pos, random);
+			EyeblossomHelper.getState(isDay).spawnTransformParticle(world, pos, random);
 
 			EyeblossomHelper.notifyNearbyEyeblossoms(state, world, pos, random);
 		}
@@ -297,13 +296,13 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	}
 
 	@Override
-	protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+	protected ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData) {
 		if (includeData) {
 			TinyFlowersComponent tinyFlowersComponent = TinyFlowersComponent.of(
-					state.get(FLOWER_VARIANT_1),
-					state.get(FLOWER_VARIANT_2),
-					state.get(FLOWER_VARIANT_3),
-					state.get(FLOWER_VARIANT_4));
+					state.getValue(FLOWER_VARIANT_1),
+					state.getValue(FLOWER_VARIANT_2),
+					state.getValue(FLOWER_VARIANT_3),
+					state.getValue(FLOWER_VARIANT_4));
 
 			ItemStack stack = new ItemStack(this.asItem());
 			stack.set(ModComponents.TINY_FLOWERS_COMPONENT_TYPE, tinyFlowersComponent);
@@ -312,7 +311,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		}
 
 		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-			FlowerVariant variant = state.get(property);
+			FlowerVariant variant = state.getValue(property);
 			if (!variant.isEmpty()) {
 				return new ItemStack(variant);
 			}
@@ -332,7 +331,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 	private static int getNumFlowers(BlockState state) {
 		int numFlowers = 0;
 		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-			if (!state.get(property).isEmpty()) {
+			if (!state.getValue(property).isEmpty()) {
 				numFlowers++;
 			}
 		}
@@ -344,7 +343,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		List<FlowerVariant> flowers = new ArrayList<>(GardenBlock.FLOWER_VARIANT_PROPERTIES.length);
 
 		for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-			FlowerVariant variant = state.get(property);
+			FlowerVariant variant = state.getValue(property);
 
 			if (!variant.isEmpty()) {
 				flowers.add(variant);
@@ -364,7 +363,7 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 		int bitmap = 0;
 		for (int i = 0; i < FLOWER_VARIANT_PROPERTIES.length; i++) {
 			EnumProperty<FlowerVariant> property = FLOWER_VARIANT_PROPERTIES[i];
-			if (state.get(property).isEmpty()) {
+			if (state.getValue(property).isEmpty()) {
 				continue;
 			}
 
@@ -376,8 +375,8 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 
 	public static BlockState addFlowerToBlockState(BlockState state, FlowerVariant flowerVariant) {
 		for (EnumProperty<FlowerVariant> property : FLOWER_VARIANT_PROPERTIES) {
-			if (state.get(property).isEmpty()) {
-				return state.with(property, flowerVariant);
+			if (state.getValue(property).isEmpty()) {
+				return state.setValue(property, flowerVariant);
 			}
 		}
 
@@ -393,17 +392,17 @@ public class GardenBlock extends PlantBlock implements Fertilizable {
 			throw new IllegalStateException("Segmented block has no valid flower variant");
 		}
 
-		if (block instanceof Segmented segmentedBlock) {
+		if (block instanceof SegmentableBlock segmentedBlock) {
 			// This exists because FlowerbedBlocks had their own property before Segmented
 			// existed.
-			IntProperty amountProperty = segmentedBlock.getAmountProperty();
-			int prevNumFlowers = blockState.get(amountProperty);
+			IntegerProperty amountProperty = segmentedBlock.getSegmentAmountProperty();
+			int prevNumFlowers = blockState.getValue(amountProperty);
 
-			BlockState baseState = this.getDefaultState().with(FACING, blockState.get(Properties.HORIZONTAL_FACING))
-					.with(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
-					.with(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
-					.with(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)
-					.with(FLOWER_VARIANT_4, prevNumFlowers >= 4 ? existingVariant : FlowerVariant.EMPTY);
+			BlockState baseState = this.defaultBlockState().setValue(FACING, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING))
+					.setValue(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
+					.setValue(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
+					.setValue(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)
+					.setValue(FLOWER_VARIANT_4, prevNumFlowers >= 4 ? existingVariant : FlowerVariant.EMPTY);
 			return baseState;
 
 		} else {

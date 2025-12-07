@@ -4,20 +4,20 @@ import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.minecraft.client.color.world.BiomeColors;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.item.ItemRenderState;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.biome.DryFoliageColors;
-import net.minecraft.world.biome.GrassColors;
+import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.DryFoliageColor;
+import net.minecraft.world.level.GrassColor;
 
 public class TinyFlowersClient implements ClientModInitializer {
-	public static final Random RANDOM = Random.create();
-	public static final ItemRenderState ITEM_RENDER_STATE = new ItemRenderState();
+	public static final RandomSource RANDOM = RandomSource.create();
+	public static final ItemStackRenderState ITEM_RENDER_STATE = new ItemStackRenderState();
 
 	@Override
 	public void onInitializeClient() {
-		BlockRenderLayerMap.putBlock(ModBlocks.TINY_GARDEN, BlockRenderLayer.CUTOUT);
+		BlockRenderLayerMap.putBlock(ModBlocks.TINY_GARDEN, ChunkSectionLayer.CUTOUT);
 
 		// See Pink Petals in net.minecraft.client.color.block.BlockColors
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
@@ -26,16 +26,16 @@ public class TinyFlowersClient implements ClientModInitializer {
 			switch (tintIndex) {
 				case 1 -> {
 					if (hasWorld) {
-						return GrassColors.getDefaultColor();
+						return GrassColor.getDefaultColor();
 					} else {
-						return BiomeColors.getGrassColor(world, pos);
+						return BiomeColors.getAverageGrassColor(world, pos);
 					}
 				}
 				case 2 -> {
 					if (hasWorld) {
-						return DryFoliageColors.getColor(0.5, 1.0);
+						return DryFoliageColor.get(0.5, 1.0);
 					} else {
-						return BiomeColors.getDryFoliageColor(world, pos);
+						return BiomeColors.getAverageDryFoliageColor(world, pos);
 					}
 				}
 				default -> {

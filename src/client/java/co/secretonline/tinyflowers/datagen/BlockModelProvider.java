@@ -12,19 +12,19 @@ import co.secretonline.tinyflowers.datagen.data.ModTextureMap;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.ModelSupplier;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.MultipartBlockModelDefinitionCreator;
-import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.render.item.tint.DyeTintSource;
-import net.minecraft.client.render.model.json.ModelVariantOperator;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+import net.minecraft.client.color.item.Dye;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.model.ModelInstance;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class BlockModelProvider extends FabricModelProvider {
 	private final static Direction[] DIRECTIONS = new Direction[] {
@@ -102,9 +102,9 @@ public class BlockModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-		MultipartBlockModelDefinitionCreator definitionCreator = MultipartBlockModelDefinitionCreator
-				.create(ModBlocks.TINY_GARDEN);
+	public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
+		MultiPartGenerator definitionCreator = MultiPartGenerator
+				.multiPart(ModBlocks.TINY_GARDEN);
 
 		// Generate blockstate variants for all flower variants.
 		for (FlowerVariant variant : FlowerVariant.values()) {
@@ -112,12 +112,12 @@ public class BlockModelProvider extends FabricModelProvider {
 				continue;
 			}
 
-			Identifier baseId = getVariantBaseModelId(variant);
+			ResourceLocation baseId = getVariantBaseModelId(variant);
 
-			Identifier model1 = baseId.withPath(path -> "block/" + path + "_1");
-			Identifier model2 = baseId.withPath(path -> "block/" + path + "_2");
-			Identifier model3 = baseId.withPath(path -> "block/" + path + "_3");
-			Identifier model4 = baseId.withPath(path -> "block/" + path + "_4");
+			ResourceLocation model1 = baseId.withPath(path -> "block/" + path + "_1");
+			ResourceLocation model2 = baseId.withPath(path -> "block/" + path + "_2");
+			ResourceLocation model3 = baseId.withPath(path -> "block/" + path + "_3");
+			ResourceLocation model4 = baseId.withPath(path -> "block/" + path + "_4");
 
 			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_1, model1);
 			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_2, model2);
@@ -127,59 +127,59 @@ public class BlockModelProvider extends FabricModelProvider {
 
 		// Generate all block model definitions.
 		for (ModelGroup group : MODEL_GROUPS) {
-			group.upload(blockStateModelGenerator.modelCollector);
+			group.upload(blockStateModelGenerator.modelOutput);
 		}
 
-		blockStateModelGenerator.blockStateCollector.accept(definitionCreator);
+		blockStateModelGenerator.blockStateOutput.accept(definitionCreator);
 	}
 
 	@Override
-	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-		itemModelGenerator.register(ModBlocks.TINY_GARDEN.asItem(), Models.GENERATED);
-		itemModelGenerator.registerWithTintedLayer(
+	public void generateItemModels(ItemModelGenerators itemModelGenerator) {
+		itemModelGenerator.generateFlatItem(ModBlocks.TINY_GARDEN.asItem(), ModelTemplates.FLAT_ITEM);
+		itemModelGenerator.generateItemWithTintedOverlay(
 				ModItems.FLORISTS_SHEARS_ITEM,
 				"_handle",
-				new DyeTintSource(DyeColor.RED.getEntityColor()));
+				new Dye(DyeColor.RED.getTextureDiffuseColor()));
 
 		for (FlowerVariant variant : FlowerVariant.values()) {
 			if (variant.shouldCreateItem()) {
-				itemModelGenerator.register(variant.asItem(), Models.GENERATED);
+				itemModelGenerator.generateFlatItem(variant.asItem(), ModelTemplates.FLAT_ITEM);
 			}
 		}
 	}
 
-	private MultipartBlockModelDefinitionCreator registerPartInAllDirections(
-			MultipartBlockModelDefinitionCreator modelDefinitionCreator, FlowerVariant variant,
-			EnumProperty<FlowerVariant> property, Identifier modelIdentifier) {
+	private MultiPartGenerator registerPartInAllDirections(
+			MultiPartGenerator modelDefinitionCreator, FlowerVariant variant,
+			EnumProperty<FlowerVariant> property, ResourceLocation modelIdentifier) {
 		for (Direction direction : DIRECTIONS) {
 			modelDefinitionCreator = modelDefinitionCreator.with(
-					BlockStateModelGenerator.createMultipartConditionBuilder()
-							.put(property, variant)
-							.put(Properties.HORIZONTAL_FACING, direction),
-					BlockStateModelGenerator.createWeightedVariant(modelIdentifier)
-							.apply(getRotationForDirection(direction)));
+					BlockModelGenerators.condition()
+							.term(property, variant)
+							.term(BlockStateProperties.HORIZONTAL_FACING, direction),
+					BlockModelGenerators.plainVariant(modelIdentifier)
+							.with(getRotationForDirection(direction)));
 		}
 
 		return modelDefinitionCreator;
 	}
 
-	private ModelVariantOperator getRotationForDirection(Direction direction) {
+	private VariantMutator getRotationForDirection(Direction direction) {
 		switch (direction) {
 			case Direction.NORTH:
-				return BlockStateModelGenerator.NO_OP;
+				return BlockModelGenerators.NOP;
 			case Direction.EAST:
-				return BlockStateModelGenerator.ROTATE_Y_90;
+				return BlockModelGenerators.Y_ROT_90;
 			case Direction.SOUTH:
-				return BlockStateModelGenerator.ROTATE_Y_180;
+				return BlockModelGenerators.Y_ROT_180;
 			case Direction.WEST:
-				return BlockStateModelGenerator.ROTATE_Y_270;
+				return BlockModelGenerators.Y_ROT_270;
 			default:
 				throw new IllegalArgumentException("Unknown direction for model");
 		}
 	}
 
-	private static Identifier getVariantBaseModelId(FlowerVariant variant) {
-		Identifier identifier = variant.getItemIdentifier();
+	private static ResourceLocation getVariantBaseModelId(FlowerVariant variant) {
+		ResourceLocation identifier = variant.getItemIdentifier();
 
 		switch (variant) {
 			case FlowerVariant.LEAF_LITTER:
@@ -195,24 +195,24 @@ public class BlockModelProvider extends FabricModelProvider {
 	}
 
 	private record ModelGroup(ModModels.Quartet models,
-			Function<Identifier, TextureMap> texturesGetter, FlowerVariant[] variants) {
+			Function<ResourceLocation, TextureMapping> texturesGetter, FlowerVariant[] variants) {
 
-		public void upload(BiConsumer<Identifier, ModelSupplier> modelCollector) {
+		public void upload(BiConsumer<ResourceLocation, ModelInstance> modelCollector) {
 			for (FlowerVariant variant : this.variants) {
-				Identifier textureId = variant.getItemIdentifier();
-				Identifier itemId = getVariantBaseModelId(variant);
+				ResourceLocation textureId = variant.getItemIdentifier();
+				ResourceLocation itemId = getVariantBaseModelId(variant);
 
-				Identifier modelId1 = itemId.withPath(path -> "block/" + path + "_1");
-				Identifier modelId2 = itemId.withPath(path -> "block/" + path + "_2");
-				Identifier modelId3 = itemId.withPath(path -> "block/" + path + "_3");
-				Identifier modelId4 = itemId.withPath(path -> "block/" + path + "_4");
+				ResourceLocation modelId1 = itemId.withPath(path -> "block/" + path + "_1");
+				ResourceLocation modelId2 = itemId.withPath(path -> "block/" + path + "_2");
+				ResourceLocation modelId3 = itemId.withPath(path -> "block/" + path + "_3");
+				ResourceLocation modelId4 = itemId.withPath(path -> "block/" + path + "_4");
 
-				TextureMap textureMap = this.texturesGetter.apply(textureId);
+				TextureMapping textureMap = this.texturesGetter.apply(textureId);
 
-				this.models.model1().upload(modelId1, textureMap, modelCollector);
-				this.models.model2().upload(modelId2, textureMap, modelCollector);
-				this.models.model3().upload(modelId3, textureMap, modelCollector);
-				this.models.model4().upload(modelId4, textureMap, modelCollector);
+				this.models.model1().create(modelId1, textureMap, modelCollector);
+				this.models.model2().create(modelId2, textureMap, modelCollector);
+				this.models.model3().create(modelId3, textureMap, modelCollector);
+				this.models.model4().create(modelId4, textureMap, modelCollector);
 			}
 		}
 	}

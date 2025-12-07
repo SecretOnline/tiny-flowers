@@ -1,15 +1,15 @@
 package co.secretonline.tinyflowers.components;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import net.minecraft.component.ComponentType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class ModComponents {
-	public static final ComponentType<TinyFlowersComponent> TINY_FLOWERS_COMPONENT_TYPE = Registry.register(
-			Registries.DATA_COMPONENT_TYPE,
+	public static final DataComponentType<TinyFlowersComponent> TINY_FLOWERS_COMPONENT_TYPE = Registry.register(
+			BuiltInRegistries.DATA_COMPONENT_TYPE,
 			TinyFlowers.id("tiny_flowers"),
-			ComponentType.<TinyFlowersComponent>builder().codec(TinyFlowersComponent.CODEC).build());
+			DataComponentType.<TinyFlowersComponent>builder().persistent(TinyFlowersComponent.CODEC).build());
 
 	public static void initialize() {
 	}

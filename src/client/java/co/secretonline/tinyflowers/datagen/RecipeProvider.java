@@ -9,23 +9,22 @@ import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.DyedColorComponent;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.item.crafting.Recipe;
 
 public class RecipeProvider extends FabricRecipeProvider {
 
@@ -47,76 +46,77 @@ public class RecipeProvider extends FabricRecipeProvider {
 			Map.entry(DyeColor.RED, ConventionalItemTags.RED_DYES),
 			Map.entry(DyeColor.BLACK, ConventionalItemTags.BLACK_DYES));
 
-	public RecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+	public RecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 
 	@Override
-	protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup registryLookup, RecipeExporter exporter) {
-		return new RecipeGenerator(registryLookup, exporter) {
+	protected net.minecraft.data.recipes.RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup,
+			RecipeOutput exporter) {
+		return new net.minecraft.data.recipes.RecipeProvider(registryLookup, exporter) {
 			@Override
-			public void generate() {
-				Identifier stewId = Registries.ITEM.getId(Items.SUSPICIOUS_STEW);
+			public void buildRecipes() {
+				ResourceLocation stewId = BuiltInRegistries.ITEM.getKey(Items.SUSPICIOUS_STEW);
 
 				// Generate recipes for each flower variant
 				for (FlowerVariant flowerVariant : FlowerVariant.values()) {
 					// Create tiny flower items for variants that need them.
 					if (flowerVariant.shouldCreateItem()) {
-						createShapeless(RecipeCategory.DECORATIONS, flowerVariant, 4)
-								.input(ModItems.FLORISTS_SHEARS_ITEM).input(flowerVariant.getOriginalBlock())
+						shapeless(RecipeCategory.DECORATIONS, flowerVariant, 4)
+								.requires(ModItems.FLORISTS_SHEARS_ITEM).requires(flowerVariant.getOriginalBlock())
 								.group("tiny_flowers")
-								.criterion(hasItem(ModItems.FLORISTS_SHEARS_ITEM), conditionsFromItem(ModItems.FLORISTS_SHEARS_ITEM))
-								.offerTo(exporter);
+								.unlockedBy(getHasName(ModItems.FLORISTS_SHEARS_ITEM), has(ModItems.FLORISTS_SHEARS_ITEM))
+								.save(output);
 					}
 
 					// Create recipes for the flower variants that can be used in suspicious stew.
-					if (flowerVariant.getStewEffects() != null) {
+					if (flowerVariant.getSuspiciousEffects() != null) {
 						ItemStack stack = new ItemStack(
-								Registries.ITEM.getEntry(Items.SUSPICIOUS_STEW),
+								BuiltInRegistries.ITEM.wrapAsHolder(Items.SUSPICIOUS_STEW),
 								1,
-								ComponentChanges.builder()
-										.add(DataComponentTypes.SUSPICIOUS_STEW_EFFECTS, flowerVariant.getStewEffects())
+								DataComponentPatch.builder()
+										.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, flowerVariant.getSuspiciousEffects())
 										.build());
 
-						RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(
-								RegistryKeys.RECIPE,
+						ResourceKey<Recipe<?>> recipeKey = ResourceKey.create(
+								Registries.RECIPE,
 								TinyFlowers.id(stewId.getPath() + "_from_" + flowerVariant.getItemIdentifier().getPath()));
 
-						createShapeless(RecipeCategory.FOOD, stack)
-								.input(Items.BOWL)
-								.input(Items.BROWN_MUSHROOM)
-								.input(Items.RED_MUSHROOM)
-								.input(flowerVariant)
-								.input(flowerVariant)
+						shapeless(RecipeCategory.FOOD, stack)
+								.requires(Items.BOWL)
+								.requires(Items.BROWN_MUSHROOM)
+								.requires(Items.RED_MUSHROOM)
+								.requires(flowerVariant)
+								.requires(flowerVariant)
 								.group("suspicious_stew")
-								.criterion(hasItem(flowerVariant), this.conditionsFromItem(flowerVariant))
-								.offerTo(exporter, recipeKey);
+								.unlockedBy(getHasName(flowerVariant), this.has(flowerVariant))
+								.save(output, recipeKey);
 					}
 				}
 
 				// Generate recipes for each colour of shears.
-				Identifier shearsId = Registries.ITEM.getId(ModItems.FLORISTS_SHEARS_ITEM);
+				ResourceLocation shearsId = BuiltInRegistries.ITEM.getKey(ModItems.FLORISTS_SHEARS_ITEM);
 				for (var entry : COLOR_TAGS.entrySet()) {
 					DyeColor color = entry.getKey();
 					TagKey<Item> tagKey = entry.getValue();
 					ItemStack stack = new ItemStack(
-							Registries.ITEM.getEntry(ModItems.FLORISTS_SHEARS_ITEM),
+							BuiltInRegistries.ITEM.wrapAsHolder(ModItems.FLORISTS_SHEARS_ITEM),
 							1,
-							ComponentChanges.builder()
-									.add(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getEntityColor()))
+							DataComponentPatch.builder()
+									.set(DataComponents.DYED_COLOR, new DyedItemColor(color.getTextureDiffuseColor()))
 									.build());
 
-					RegistryKey<Recipe<?>> recipeKey = RegistryKey.of(
-							RegistryKeys.RECIPE,
-							shearsId.withPath((path) -> path + "_" + color.asString()));
+					ResourceKey<Recipe<?>> recipeKey = ResourceKey.create(
+							Registries.RECIPE,
+							shearsId.withPath((path) -> path + "_" + color.getSerializedName()));
 
 					// No method for creating ItemStack of shaped?
-					createShapeless(RecipeCategory.TOOLS, stack)
-							.input(Items.SHEARS)
-							.input(tagKey)
+					shapeless(RecipeCategory.TOOLS, stack)
+							.requires(Items.SHEARS)
+							.requires(tagKey)
 							.group("florists_shears")
-							.criterion(hasItem(Items.SHEARS), conditionsFromItem(Items.SHEARS))
-							.offerTo(exporter, recipeKey);
+							.unlockedBy(getHasName(Items.SHEARS), has(Items.SHEARS))
+							.save(output, recipeKey);
 				}
 			}
 		};
