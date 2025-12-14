@@ -16,6 +16,12 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.5.0 - 2025-12-15
+
+### Updated
+
+- Updated to 1.21.11
+
 ### Changed
 
 - Internal changes (no change to functionality).
