@@ -3,31 +3,31 @@ package co.secretonline.tinyflowers.datagen.data;
 import java.util.function.Function;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ModTextureMap {
-	public static Function<ResourceLocation, TextureMapping> noStem() {
+	public static Function<Identifier, TextureMapping> noStem() {
 		return (itemId) -> new TextureMapping()
 				.put(TextureSlot.PARTICLE, itemId.withPath(path -> "block/" + path))
 				.put(TextureSlot.FLOWERBED, itemId.withPath(path -> "block/" + path));
 	}
 
-	public static Function<ResourceLocation, TextureMapping> flowerbed() {
-		return flowerbed(ResourceLocation.withDefaultNamespace("block/pink_petals_stem"));
+	public static Function<Identifier, TextureMapping> flowerbed() {
+		return flowerbed(Identifier.withDefaultNamespace("block/pink_petals_stem"));
 	}
 
-	public static Function<ResourceLocation, TextureMapping> flowerbed(ResourceLocation stemIdentifier) {
+	public static Function<Identifier, TextureMapping> flowerbed(Identifier stemIdentifier) {
 		return (itemId) -> new TextureMapping()
 				.put(TextureSlot.PARTICLE, itemId.withPath(path -> "block/" + path))
 				.put(TextureSlot.FLOWERBED, itemId.withPath(path -> "block/" + path))
 				.put(TextureSlot.STEM, stemIdentifier);
 	}
 
-	public static Function<ResourceLocation, TextureMapping> flowerbedDouble() {
-		return flowerbedDouble(ResourceLocation.withDefaultNamespace("block/pink_petals_stem"));
+	public static Function<Identifier, TextureMapping> flowerbedDouble() {
+		return flowerbedDouble(Identifier.withDefaultNamespace("block/pink_petals_stem"));
 	}
 
-	public static Function<ResourceLocation, TextureMapping> flowerbedDouble(ResourceLocation stemIdentifier) {
+	public static Function<Identifier, TextureMapping> flowerbedDouble(Identifier stemIdentifier) {
 		return (itemId) -> new TextureMapping()
 				.put(TextureSlot.PARTICLE, itemId.withPath(path -> "block/" + path))
 				.put(TextureSlot.FLOWERBED, itemId.withPath(path -> "block/" + path))
@@ -35,11 +35,11 @@ public class ModTextureMap {
 				.put(ModTextureKey.FLOWERBED_UPPER, itemId.withPath(path -> "block/" + path + "_upper"));
 	}
 
-	public static Function<ResourceLocation, TextureMapping> flowerbedTriple() {
-		return flowerbedTriple(ResourceLocation.withDefaultNamespace("block/pink_petals_stem"));
+	public static Function<Identifier, TextureMapping> flowerbedTriple() {
+		return flowerbedTriple(Identifier.withDefaultNamespace("block/pink_petals_stem"));
 	}
 
-	public static Function<ResourceLocation, TextureMapping> flowerbedTriple(ResourceLocation stemIdentifier) {
+	public static Function<Identifier, TextureMapping> flowerbedTriple(Identifier stemIdentifier) {
 		return (itemId) -> new TextureMapping()
 				.put(TextureSlot.PARTICLE, itemId.withPath(path -> "block/" + path))
 				.put(TextureSlot.FLOWERBED, itemId.withPath(path -> "block/" + path))

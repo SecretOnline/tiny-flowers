@@ -3,12 +3,14 @@ package co.secretonline.tinyflowers.blocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.TriState;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlockItemStateProperties;
@@ -265,11 +267,13 @@ public class GardenBlock extends VegetationBlock implements BonemealableBlock {
 	}
 
 	private static boolean doEyeblossomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		if (!world.dimensionType().natural()) {
+		TriState expectedState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
+		//
+		if (expectedState == TriState.DEFAULT) {
 			return false;
 		}
 
-		boolean isDay = world.isBrightOutside();
+		boolean isDay = expectedState.toBoolean(false);
 		FlowerVariant correctVariant = EyeblossomHelper.getFlowerVariant(isDay);
 		FlowerVariant incorrectVariant = EyeblossomHelper.getFlowerVariant(!isDay);
 
@@ -398,7 +402,8 @@ public class GardenBlock extends VegetationBlock implements BonemealableBlock {
 			IntegerProperty amountProperty = segmentedBlock.getSegmentAmountProperty();
 			int prevNumFlowers = blockState.getValue(amountProperty);
 
-			BlockState baseState = this.defaultBlockState().setValue(FACING, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING))
+			BlockState baseState = this.defaultBlockState()
+					.setValue(FACING, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING))
 					.setValue(FLOWER_VARIANT_1, prevNumFlowers >= 1 ? existingVariant : FlowerVariant.EMPTY)
 					.setValue(FLOWER_VARIANT_2, prevNumFlowers >= 2 ? existingVariant : FlowerVariant.EMPTY)
 					.setValue(FLOWER_VARIANT_3, prevNumFlowers >= 3 ? existingVariant : FlowerVariant.EMPTY)

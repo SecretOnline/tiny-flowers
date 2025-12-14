@@ -17,7 +17,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -56,7 +56,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 		return new net.minecraft.data.recipes.RecipeProvider(registryLookup, exporter) {
 			@Override
 			public void buildRecipes() {
-				ResourceLocation stewId = BuiltInRegistries.ITEM.getKey(Items.SUSPICIOUS_STEW);
+				Identifier stewId = BuiltInRegistries.ITEM.getKey(Items.SUSPICIOUS_STEW);
 
 				// Generate recipes for each flower variant
 				for (FlowerVariant flowerVariant : FlowerVariant.values()) {
@@ -95,7 +95,7 @@ public class RecipeProvider extends FabricRecipeProvider {
 				}
 
 				// Generate recipes for each colour of shears.
-				ResourceLocation shearsId = BuiltInRegistries.ITEM.getKey(ModItems.FLORISTS_SHEARS_ITEM);
+				Identifier shearsId = BuiltInRegistries.ITEM.getKey(ModItems.FLORISTS_SHEARS_ITEM);
 				for (var entry : COLOR_TAGS.entrySet()) {
 					DyeColor color = entry.getKey();
 					TagKey<Item> tagKey = entry.getValue();
