@@ -1,7 +1,7 @@
 package co.secretonline.tinyflowers.mixin;
 
 import java.util.List;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;

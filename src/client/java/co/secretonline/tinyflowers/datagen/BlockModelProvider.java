@@ -21,7 +21,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -112,12 +112,12 @@ public class BlockModelProvider extends FabricModelProvider {
 				continue;
 			}
 
-			ResourceLocation baseId = getVariantBaseModelId(variant);
+			Identifier baseId = getVariantBaseModelId(variant);
 
-			ResourceLocation model1 = baseId.withPath(path -> "block/" + path + "_1");
-			ResourceLocation model2 = baseId.withPath(path -> "block/" + path + "_2");
-			ResourceLocation model3 = baseId.withPath(path -> "block/" + path + "_3");
-			ResourceLocation model4 = baseId.withPath(path -> "block/" + path + "_4");
+			Identifier model1 = baseId.withPath(path -> "block/" + path + "_1");
+			Identifier model2 = baseId.withPath(path -> "block/" + path + "_2");
+			Identifier model3 = baseId.withPath(path -> "block/" + path + "_3");
+			Identifier model4 = baseId.withPath(path -> "block/" + path + "_4");
 
 			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_1, model1);
 			registerPartInAllDirections(definitionCreator, variant, GardenBlock.FLOWER_VARIANT_2, model2);
@@ -150,7 +150,7 @@ public class BlockModelProvider extends FabricModelProvider {
 
 	private MultiPartGenerator registerPartInAllDirections(
 			MultiPartGenerator modelDefinitionCreator, FlowerVariant variant,
-			EnumProperty<FlowerVariant> property, ResourceLocation modelIdentifier) {
+			EnumProperty<FlowerVariant> property, Identifier modelIdentifier) {
 		for (Direction direction : DIRECTIONS) {
 			modelDefinitionCreator = modelDefinitionCreator.with(
 					BlockModelGenerators.condition()
@@ -178,8 +178,8 @@ public class BlockModelProvider extends FabricModelProvider {
 		}
 	}
 
-	private static ResourceLocation getVariantBaseModelId(FlowerVariant variant) {
-		ResourceLocation identifier = variant.getItemIdentifier();
+	private static Identifier getVariantBaseModelId(FlowerVariant variant) {
+		Identifier identifier = variant.getItemIdentifier();
 
 		switch (variant) {
 			case FlowerVariant.LEAF_LITTER:
@@ -195,17 +195,17 @@ public class BlockModelProvider extends FabricModelProvider {
 	}
 
 	private record ModelGroup(ModModels.Quartet models,
-			Function<ResourceLocation, TextureMapping> texturesGetter, FlowerVariant[] variants) {
+			Function<Identifier, TextureMapping> texturesGetter, FlowerVariant[] variants) {
 
-		public void upload(BiConsumer<ResourceLocation, ModelInstance> modelCollector) {
+		public void upload(BiConsumer<Identifier, ModelInstance> modelCollector) {
 			for (FlowerVariant variant : this.variants) {
-				ResourceLocation textureId = variant.getItemIdentifier();
-				ResourceLocation itemId = getVariantBaseModelId(variant);
+				Identifier textureId = variant.getItemIdentifier();
+				Identifier itemId = getVariantBaseModelId(variant);
 
-				ResourceLocation modelId1 = itemId.withPath(path -> "block/" + path + "_1");
-				ResourceLocation modelId2 = itemId.withPath(path -> "block/" + path + "_2");
-				ResourceLocation modelId3 = itemId.withPath(path -> "block/" + path + "_3");
-				ResourceLocation modelId4 = itemId.withPath(path -> "block/" + path + "_4");
+				Identifier modelId1 = itemId.withPath(path -> "block/" + path + "_1");
+				Identifier modelId2 = itemId.withPath(path -> "block/" + path + "_2");
+				Identifier modelId3 = itemId.withPath(path -> "block/" + path + "_3");
+				Identifier modelId4 = itemId.withPath(path -> "block/" + path + "_4");
 
 				TextureMapping textureMap = this.texturesGetter.apply(textureId);
 

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffects;
@@ -19,61 +19,61 @@ import co.secretonline.tinyflowers.TinyFlowers;
 public enum FlowerVariant implements StringRepresentable, ItemLike, SuspiciousEffectHolder {
 	EMPTY("empty", false, null, null),
 	PINK_PETALS("pink_petals", false,
-			ResourceLocation.withDefaultNamespace("pink_petals"), ResourceLocation.withDefaultNamespace("pink_petals")),
+			Identifier.withDefaultNamespace("pink_petals"), Identifier.withDefaultNamespace("pink_petals")),
 	WILDFLOWERS("wildflowers", false,
-			ResourceLocation.withDefaultNamespace("wildflowers"), ResourceLocation.withDefaultNamespace("wildflowers")),
+			Identifier.withDefaultNamespace("wildflowers"), Identifier.withDefaultNamespace("wildflowers")),
 	LEAF_LITTER("leaf_litter", false,
-			ResourceLocation.withDefaultNamespace("leaf_litter"), ResourceLocation.withDefaultNamespace("leaf_litter")),
+			Identifier.withDefaultNamespace("leaf_litter"), Identifier.withDefaultNamespace("leaf_litter")),
 	DANDELION("dandelion", true,
-			TinyFlowers.id("tiny_dandelion"), ResourceLocation.withDefaultNamespace("dandelion"),
+			TinyFlowers.id("tiny_dandelion"), Identifier.withDefaultNamespace("dandelion"),
 			new Entry(MobEffects.SATURATION, toTicks(0.35f))),
 	POPPY("poppy", true,
-			TinyFlowers.id("tiny_poppy"), ResourceLocation.withDefaultNamespace("poppy"),
+			TinyFlowers.id("tiny_poppy"), Identifier.withDefaultNamespace("poppy"),
 			new Entry(MobEffects.NIGHT_VISION, toTicks(5.0f))),
 	BLUE_ORCHID("blue_orchid", true,
-			TinyFlowers.id("tiny_blue_orchid"), ResourceLocation.withDefaultNamespace("blue_orchid"),
+			TinyFlowers.id("tiny_blue_orchid"), Identifier.withDefaultNamespace("blue_orchid"),
 			new Entry(MobEffects.SATURATION, toTicks(0.35f))),
 	ALLIUM("allium", true,
-			TinyFlowers.id("tiny_allium"), ResourceLocation.withDefaultNamespace("allium"),
+			TinyFlowers.id("tiny_allium"), Identifier.withDefaultNamespace("allium"),
 			new Entry(MobEffects.FIRE_RESISTANCE, toTicks(3.0f))),
 	AZURE_BLUET("azure_bluet", true,
-			TinyFlowers.id("tiny_azure_bluet"), ResourceLocation.withDefaultNamespace("azure_bluet"),
+			TinyFlowers.id("tiny_azure_bluet"), Identifier.withDefaultNamespace("azure_bluet"),
 			new Entry(MobEffects.BLINDNESS, toTicks(11.0f))),
 	RED_TULIP("red_tulip", true,
-			TinyFlowers.id("tiny_red_tulip"), ResourceLocation.withDefaultNamespace("red_tulip"),
+			TinyFlowers.id("tiny_red_tulip"), Identifier.withDefaultNamespace("red_tulip"),
 			new Entry(MobEffects.WEAKNESS, toTicks(7.0f))),
 	ORANGE_TULIP("orange_tulip", true,
-			TinyFlowers.id("tiny_orange_tulip"), ResourceLocation.withDefaultNamespace("orange_tulip"),
+			TinyFlowers.id("tiny_orange_tulip"), Identifier.withDefaultNamespace("orange_tulip"),
 			new Entry(MobEffects.WEAKNESS, toTicks(7.0f))),
 	WHITE_TULIP("white_tulip", true,
-			TinyFlowers.id("tiny_white_tulip"), ResourceLocation.withDefaultNamespace("white_tulip"),
+			TinyFlowers.id("tiny_white_tulip"), Identifier.withDefaultNamespace("white_tulip"),
 			new Entry(MobEffects.WEAKNESS, toTicks(7.0f))),
 	PINK_TULIP("pink_tulip", true,
-			TinyFlowers.id("tiny_pink_tulip"), ResourceLocation.withDefaultNamespace("pink_tulip"),
+			TinyFlowers.id("tiny_pink_tulip"), Identifier.withDefaultNamespace("pink_tulip"),
 			new Entry(MobEffects.WEAKNESS, toTicks(7.0f))),
 	OXEYE_DAISY("oxeye_daisy", true,
-			TinyFlowers.id("tiny_oxeye_daisy"), ResourceLocation.withDefaultNamespace("oxeye_daisy"),
+			TinyFlowers.id("tiny_oxeye_daisy"), Identifier.withDefaultNamespace("oxeye_daisy"),
 			new Entry(MobEffects.REGENERATION, toTicks(7.0f))),
 	CORNFLOWER("cornflower", true,
-			TinyFlowers.id("tiny_cornflower"), ResourceLocation.withDefaultNamespace("cornflower"),
+			TinyFlowers.id("tiny_cornflower"), Identifier.withDefaultNamespace("cornflower"),
 			new Entry(MobEffects.JUMP_BOOST, toTicks(5.0f))),
 	LILY_OF_THE_VALLEY("lily_of_the_valley", true,
-			TinyFlowers.id("tiny_lily_of_the_valley"), ResourceLocation.withDefaultNamespace("lily_of_the_valley"),
+			TinyFlowers.id("tiny_lily_of_the_valley"), Identifier.withDefaultNamespace("lily_of_the_valley"),
 			new Entry(MobEffects.POISON, toTicks(11.0f))),
 	TORCHFLOWER("torchflower", true,
-			TinyFlowers.id("tiny_torchflower"), ResourceLocation.withDefaultNamespace("torchflower"),
+			TinyFlowers.id("tiny_torchflower"), Identifier.withDefaultNamespace("torchflower"),
 			new Entry(MobEffects.NIGHT_VISION, toTicks(5.0f))),
 	CLOSED_EYEBLOSSOM("closed_eyeblossom", true,
-			TinyFlowers.id("tiny_closed_eyeblossom"), ResourceLocation.withDefaultNamespace("closed_eyeblossom"),
+			TinyFlowers.id("tiny_closed_eyeblossom"), Identifier.withDefaultNamespace("closed_eyeblossom"),
 			new Entry(MobEffects.NAUSEA, toTicks(7.0f))),
 	OPEN_EYEBLOSSOM("open_eyeblossom", true,
-			TinyFlowers.id("tiny_open_eyeblossom"), ResourceLocation.withDefaultNamespace("open_eyeblossom"),
+			TinyFlowers.id("tiny_open_eyeblossom"), Identifier.withDefaultNamespace("open_eyeblossom"),
 			new Entry(MobEffects.BLINDNESS, toTicks(11.0f))),
 	WITHER_ROSE("wither_rose", true,
-			TinyFlowers.id("tiny_wither_rose"), ResourceLocation.withDefaultNamespace("wither_rose"),
+			TinyFlowers.id("tiny_wither_rose"), Identifier.withDefaultNamespace("wither_rose"),
 			new Entry(MobEffects.WITHER, toTicks(7.0f))),
 	CACTUS_FLOWER("cactus_flower", true,
-			TinyFlowers.id("tiny_cactus_flower"), ResourceLocation.withDefaultNamespace("cactus_flower"));
+			TinyFlowers.id("tiny_cactus_flower"), Identifier.withDefaultNamespace("cactus_flower"));
 
 	private final String name;
 	/**
@@ -84,22 +84,22 @@ public enum FlowerVariant implements StringRepresentable, ItemLike, SuspiciousEf
 	 * It would be nice to refer to the RegistryEntry directly, but that causes a
 	 * circular initialisation loop.
 	 */
-	private final ResourceLocation itemId;
+	private final Identifier itemId;
 	/**
 	 * For variants that correspond to non-Segmented blocks, this is the original
 	 * flower type. This gets used when using shears to convert flowers to a tiny
 	 * garden.
 	 */
 	@Nullable
-	private final ResourceLocation originalBlockId;
+	private final Identifier originalBlockId;
 	private final boolean shouldCreateItem;
 	private final SuspiciousStewEffects stewEffectsComponent;
 
-	private FlowerVariant(String name, boolean shouldCreateItem, ResourceLocation itemId, ResourceLocation originalBlockId) {
+	private FlowerVariant(String name, boolean shouldCreateItem, Identifier itemId, Identifier originalBlockId) {
 		this(name, shouldCreateItem, itemId, originalBlockId, null);
 	}
 
-	private FlowerVariant(String name, boolean shouldCreateItem, ResourceLocation itemId, ResourceLocation originalBlockId,
+	private FlowerVariant(String name, boolean shouldCreateItem, Identifier itemId, Identifier originalBlockId,
 			Entry stewEffect) {
 		this.name = name;
 		this.itemId = itemId;
@@ -136,7 +136,7 @@ public enum FlowerVariant implements StringRepresentable, ItemLike, SuspiciousEf
 		return this == EMPTY;
 	}
 
-	public ResourceLocation getItemIdentifier() {
+	public Identifier getItemIdentifier() {
 		return this.itemId;
 	}
 
@@ -179,7 +179,7 @@ public enum FlowerVariant implements StringRepresentable, ItemLike, SuspiciousEf
 				continue;
 			}
 
-			ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(block);
+			Identifier blockId = BuiltInRegistries.BLOCK.getKey(block);
 
 			if (blockId.equals(variant.originalBlockId)) {
 				return variant;

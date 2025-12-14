@@ -8,10 +8,10 @@ import co.secretonline.tinyflowers.blocks.GardenBlock;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -34,7 +34,7 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 			}
 
 			Item item = variant.asItem();
-			if (BuiltInRegistries.ITEM.getKey(item).equals(ResourceLocation.parse("air"))) {
+			if (BuiltInRegistries.ITEM.getKey(item).equals(Identifier.parse("air"))) {
 				TinyFlowers.LOGGER.error(
 						"Variant {} has an invalid item id: {}",
 						variant.getItemIdentifier(), BuiltInRegistries.ITEM.getKey(item));
