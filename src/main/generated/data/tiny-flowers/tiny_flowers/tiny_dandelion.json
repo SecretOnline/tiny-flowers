@@ -1,9 +1,0 @@
-{
-  "id": "tiny-flowers:tiny_dandelion",
-  "original_id": "minecraft:dandelion",
-  "should_create_item": true,
-  "stew_effect": {
-    "duration": 7,
-    "id": "minecraft:saturation"
-  }
-}

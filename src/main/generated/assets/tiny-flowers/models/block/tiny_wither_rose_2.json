@@ -1,8 +1,0 @@
-{
-  "parent": "tiny-flowers:block/garden_untinted_2",
-  "textures": {
-    "flowerbed": "tiny-flowers:block/tiny_wither_rose",
-    "particle": "tiny-flowers:block/tiny_wither_rose",
-    "stem": "tiny-flowers:block/tiny_wither_rose_stem"
-  }
-}

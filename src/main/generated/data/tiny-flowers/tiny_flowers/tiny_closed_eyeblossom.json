@@ -1,9 +1,0 @@
-{
-  "id": "tiny-flowers:tiny_closed_eyeblossom",
-  "original_id": "minecraft:closed_eyeblossom",
-  "should_create_item": true,
-  "stew_effect": {
-    "duration": 140,
-    "id": "minecraft:nausea"
-  }
-}

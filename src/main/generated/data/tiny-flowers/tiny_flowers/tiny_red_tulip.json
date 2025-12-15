@@ -1,9 +1,0 @@
-{
-  "id": "tiny-flowers:tiny_red_tulip",
-  "original_id": "minecraft:red_tulip",
-  "should_create_item": true,
-  "stew_effect": {
-    "duration": 140,
-    "id": "minecraft:weakness"
-  }
-}

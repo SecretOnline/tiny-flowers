@@ -1,9 +1,0 @@
-{
-  "id": "tiny-flowers:tiny_azure_bluet",
-  "original_id": "minecraft:azure_bluet",
-  "should_create_item": true,
-  "stew_effect": {
-    "duration": 220,
-    "id": "minecraft:blindness"
-  }
-}
