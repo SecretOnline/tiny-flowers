@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "tiny_flowers",
+  "ingredients": [
+    "tiny_flowers:florists_shears",
+    "minecraft:cornflower"
+  ],
+  "result": {
+    "count": 4,
+    "id": "tiny_flowers:tiny_cornflower"
+  }
+}

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import co.secretonline.tinyflowers.TinyFlowerData;
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
@@ -17,8 +17,9 @@ public class DefaultTinyFlowerData {
 	public static final List<TinyFlowerData> ALL_VARIANTS = new ArrayList<>();
 
 	private static TinyFlowerData register(Identifier id, Identifier originalId, boolean shouldCreateItem,
-			@Nullable Entry stewEffect) {
-		TinyFlowerData instance = new TinyFlowerData(id, originalId, shouldCreateItem, stewEffect);
+			@Nullable Entry suspiciousStewEffect) {
+		TinyFlowerData instance = new TinyFlowerData(id, originalId, shouldCreateItem,
+				suspiciousStewEffect == null ? List.of() : List.of(suspiciousStewEffect));
 		ALL_VARIANTS.add(instance);
 		return instance;
 	}

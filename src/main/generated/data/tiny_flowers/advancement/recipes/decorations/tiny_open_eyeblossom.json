@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_florists_shears": {
+      "conditions": {
+        "items": [
+          {
+            "items": "tiny_flowers:florists_shears"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "tiny_flowers:tiny_open_eyeblossom"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_florists_shears"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "tiny_flowers:tiny_open_eyeblossom"
+    ]
+  }
+}

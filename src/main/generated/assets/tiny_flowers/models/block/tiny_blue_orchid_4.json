@@ -1,0 +1,9 @@
+{
+  "parent": "tiny_flowers:block/garden_double_4",
+  "textures": {
+    "flowerbed": "tiny_flowers:block/tiny_blue_orchid",
+    "flowerbed_upper": "tiny_flowers:block/tiny_blue_orchid_upper",
+    "particle": "tiny_flowers:block/tiny_blue_orchid",
+    "stem": "tiny_flowers:block/tall_tiny_flower_stem"
+  }
+}

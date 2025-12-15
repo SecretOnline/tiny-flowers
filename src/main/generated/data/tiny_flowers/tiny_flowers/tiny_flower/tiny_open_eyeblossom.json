@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_open_eyeblossom",
+  "original_id": "minecraft:open_eyeblossom",
+  "suspicious_stew_effects": [
+    {
+      "duration": 220,
+      "id": "minecraft:blindness"
+    }
+  ]
+}
