@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_orange_tulip",
+  "original_id": "minecraft:orange_tulip",
+  "suspicious_stew_effects": [
+    {
+      "duration": 140,
+      "id": "minecraft:weakness"
+    }
+  ]
+}

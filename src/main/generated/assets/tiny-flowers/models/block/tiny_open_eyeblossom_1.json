@@ -1,9 +1,0 @@
-{
-  "parent": "tiny-flowers:block/garden_double_untinted_glow_1",
-  "textures": {
-    "flowerbed": "tiny-flowers:block/tiny_open_eyeblossom",
-    "flowerbed_upper": "tiny-flowers:block/tiny_open_eyeblossom_upper",
-    "particle": "tiny-flowers:block/tiny_open_eyeblossom",
-    "stem": "tiny-flowers:block/tiny_eyeblossom_stem"
-  }
-}

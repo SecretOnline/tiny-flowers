@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.components.ModComponents;
+import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.items.ModItems;
 
 public class TinyFlowers implements ModInitializer {
-	public static final String MOD_ID = "tiny-flowers";
+	public static final String MOD_ID = "tiny_flowers";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
@@ -23,5 +24,6 @@ public class TinyFlowers implements ModInitializer {
 		ModComponents.initialize();
 		ModBlocks.initialize();
 		ModItems.initialize();
+		ModRegistries.initialize();
 	}
 }

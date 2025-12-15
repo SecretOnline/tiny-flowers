@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_wither_rose",
+  "original_id": "minecraft:wither_rose",
+  "suspicious_stew_effects": [
+    {
+      "duration": 140,
+      "id": "minecraft:wither"
+    }
+  ]
+}

@@ -1,9 +1,0 @@
-{
-  "id": "tiny-flowers:tiny_lily_of_the_valley",
-  "original_id": "minecraft:lily_of_the_valley",
-  "should_create_item": true,
-  "stew_effect": {
-    "duration": 220,
-    "id": "minecraft:poison"
-  }
-}

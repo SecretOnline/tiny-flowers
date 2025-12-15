@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_poppy",
+  "original_id": "minecraft:poppy",
+  "suspicious_stew_effects": [
+    {
+      "duration": 100,
+      "id": "minecraft:night_vision"
+    }
+  ]
+}

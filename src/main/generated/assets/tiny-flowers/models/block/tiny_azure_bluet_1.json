@@ -1,8 +1,0 @@
-{
-  "parent": "tiny-flowers:block/garden_1",
-  "textures": {
-    "flowerbed": "tiny-flowers:block/tiny_azure_bluet",
-    "particle": "tiny-flowers:block/tiny_azure_bluet",
-    "stem": "minecraft:block/pink_petals_stem"
-  }
-}
