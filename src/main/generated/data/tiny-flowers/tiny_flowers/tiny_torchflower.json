@@ -1,0 +1,9 @@
+{
+  "id": "tiny-flowers:tiny_torchflower",
+  "original_id": "minecraft:torchflower",
+  "should_create_item": true,
+  "stew_effect": {
+    "duration": 100,
+    "id": "minecraft:night_vision"
+  }
+}

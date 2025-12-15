@@ -1,0 +1,9 @@
+{
+  "id": "tiny-flowers:tiny_wither_rose",
+  "original_id": "minecraft:wither_rose",
+  "should_create_item": true,
+  "stew_effect": {
+    "duration": 140,
+    "id": "minecraft:wither"
+  }
+}
