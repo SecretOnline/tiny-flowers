@@ -1,0 +1,9 @@
+{
+  "id": "tiny-flowers:tiny_pink_tulip",
+  "original_id": "minecraft:pink_tulip",
+  "should_create_item": true,
+  "stew_effect": {
+    "duration": 140,
+    "id": "minecraft:weakness"
+  }
+}
