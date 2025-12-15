@@ -1,0 +1,9 @@
+{
+  "id": "tiny-flowers:tiny_blue_orchid",
+  "original_id": "minecraft:blue_orchid",
+  "should_create_item": true,
+  "stew_effect": {
+    "duration": 7,
+    "id": "minecraft:saturation"
+  }
+}

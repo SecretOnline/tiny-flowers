@@ -1,0 +1,9 @@
+{
+  "id": "tiny-flowers:tiny_allium",
+  "original_id": "minecraft:allium",
+  "should_create_item": true,
+  "stew_effect": {
+    "duration": 60,
+    "id": "minecraft:fire_resistance"
+  }
+}
