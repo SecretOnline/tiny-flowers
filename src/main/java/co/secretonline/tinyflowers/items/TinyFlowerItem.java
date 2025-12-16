@@ -17,11 +17,12 @@ public class TinyFlowerItem extends BlockItem {
 
 	@Override
 	public Component getName(ItemStack itemStack) {
-		TinyFlowerComponent tinyFlowerComponent = itemStack.getComponents().get(ModComponents.TINY_FLOWER);
+		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
 		if (tinyFlowerComponent == null) {
 			return super.getName(itemStack);
 		}
 
 		return Component.translatable(tinyFlowerComponent.getTranslationKey());
 	}
+
 }
