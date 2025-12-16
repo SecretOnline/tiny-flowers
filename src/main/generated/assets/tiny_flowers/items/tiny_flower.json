@@ -122,6 +122,10 @@
         "when": "tiny_flowers:tiny_cactus_flower"
       }
     ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "tiny_flowers:item/tiny_garden"
+    },
     "property": "tiny_flowers:tiny_flower"
   }
 }
