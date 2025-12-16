@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.blocks;
+package co.secretonline.tinyflowers.items;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.core.registries.Registries;
