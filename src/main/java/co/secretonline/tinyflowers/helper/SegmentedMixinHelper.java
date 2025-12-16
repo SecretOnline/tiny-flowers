@@ -2,10 +2,10 @@ package co.secretonline.tinyflowers.helper;
 
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import co.secretonline.tinyflowers.TinyFlowers;
+// import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
-import co.secretonline.tinyflowers.blocks.GardenBlock;
-import co.secretonline.tinyflowers.blocks.ModBlocks;
+// import co.secretonline.tinyflowers.blocks.GardenBlock;
+// import co.secretonline.tinyflowers.blocks.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -61,45 +61,52 @@ public class SegmentedMixinHelper {
 			return;
 		}
 
-		// If the current block is not currently a garden but is able to be converted to
-		// a FlowerVariant, then we need to convert the current blockstate to a
-		// GardenBlock to before continuing.
-		if (!(currentBlock instanceof GardenBlock)) {
-			FlowerVariant currentBlockFlowerVariant = FlowerVariant.fromItem(currentBlock.asItem());
-			if (!currentBlockFlowerVariant.isEmpty()) {
-				try {
-					blockState = ((GardenBlock) ModBlocks.TINY_GARDEN).getStateFromSegmented(blockState);
-					currentBlock = blockState.getBlock();
-				} catch (IllegalStateException e) {
-					// This is expected to occur only if there are new Segmented blocks that don't
-					// have tiny flowers. If the base game ever ends up doing this, then it's
-					// probably woth handling this better. For now just spitting out a warning isn't
-					// the worst thing.
-					TinyFlowers.LOGGER.warn("Failed to convert blockstate to garden block. Ignoring", e);
-				}
-			}
-		}
+		// // If the current block is not currently a garden but is able to be converted
+		// to
+		// // a FlowerVariant, then we need to convert the current blockstate to a
+		// // GardenBlock to before continuing.
+		// if (!(currentBlock instanceof GardenBlock)) {
+		// FlowerVariant currentBlockFlowerVariant =
+		// FlowerVariant.fromItem(currentBlock.asItem());
+		// if (!currentBlockFlowerVariant.isEmpty()) {
+		// try {
+		// blockState = ((GardenBlock)
+		// ModBlocks.TINY_GARDEN).getStateFromSegmented(blockState);
+		// currentBlock = blockState.getBlock();
+		// } catch (IllegalStateException e) {
+		// // This is expected to occur only if there are new Segmented blocks that
+		// don't
+		// // have tiny flowers. If the base game ever ends up doing this, then it's
+		// // probably woth handling this better. For now just spitting out a warning
+		// isn't
+		// // the worst thing.
+		// TinyFlowers.LOGGER.warn("Failed to convert blockstate to garden block.
+		// Ignoring", e);
+		// }
+		// }
+		// }
 
-		if (currentBlock instanceof GardenBlock) {
-			if (!GardenBlock.hasFreeSpace(blockState)) {
-				// Can't add flower, so don't replace blockstate.
-				// This case shouldn't ever be hit, as GardenBlock should have prevented
-				// replacement.
-				info.setReturnValue(blockState);
-				return;
-			}
+		// if (currentBlock instanceof GardenBlock) {
+		// if (!GardenBlock.hasFreeSpace(blockState)) {
+		// // Can't add flower, so don't replace blockstate.
+		// // This case shouldn't ever be hit, as GardenBlock should have prevented
+		// // replacement.
+		// info.setReturnValue(blockState);
+		// return;
+		// }
 
-			// There's space in the garden, so add a flower.
-			FlowerVariant flowerVariant = FlowerVariant.fromItem(blockBeingUsed);
-			if (flowerVariant.isEmpty()) {
-				// Is this the correct thing to do?
-				// Do we need to do anything to prevent the item from being consumed?
-				info.setReturnValue(blockState);
-				return;
-			}
+		// // There's space in the garden, so add a flower.
+		// FlowerVariant flowerVariant = FlowerVariant.fromItem(blockBeingUsed);
+		// if (flowerVariant.isEmpty()) {
+		// // Is this the correct thing to do?
+		// // Do we need to do anything to prevent the item from being consumed?
+		// info.setReturnValue(blockState);
+		// return;
+		// }
 
-			BlockState newState = GardenBlock.addFlowerToBlockState(blockState, flowerVariant);
-			info.setReturnValue(newState);
-		}
+		// BlockState newState = GardenBlock.addFlowerToBlockState(blockState,
+		// flowerVariant);
+		// info.setReturnValue(newState);
+		// }
 	}
 }

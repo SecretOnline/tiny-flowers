@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import co.secretonline.tinyflowers.components.ModComponents;
+// import co.secretonline.tinyflowers.components.ModComponents;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -24,11 +24,11 @@ public class ItemStackMixin {
 			TooltipFlag type,
 			Consumer<Component> textConsumer,
 			CallbackInfo ci) {
-		((ItemStack) (Object) this).addToTooltip(
-				ModComponents.TINY_FLOWERS_COMPONENT_TYPE,
-				context,
-				displayComponent,
-				textConsumer,
-				type);
+		// ((ItemStack) (Object) this).addToTooltip(
+		// ModComponents.TINY_FLOWERS_COMPONENT_TYPE,
+		// context,
+		// displayComponent,
+		// textConsumer,
+		// type);
 	}
 }
