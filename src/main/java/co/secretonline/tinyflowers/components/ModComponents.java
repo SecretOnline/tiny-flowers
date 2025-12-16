@@ -11,11 +11,6 @@ public class ModComponents {
 			TinyFlowers.id("tiny_flower"),
 			DataComponentType.<TinyFlowerComponent>builder().persistent(TinyFlowerComponent.CODEC).build());
 
-	public static final DataComponentType<TinyFlowersComponent> TINY_FLOWERS_COMPONENT_TYPE = Registry.register(
-			BuiltInRegistries.DATA_COMPONENT_TYPE,
-			TinyFlowers.id("tiny_flowers"),
-			DataComponentType.<TinyFlowersComponent>builder().persistent(TinyFlowersComponent.CODEC).build());
-
 	public static void initialize() {
 	}
 }

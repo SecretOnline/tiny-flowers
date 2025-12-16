@@ -1,8 +1,8 @@
 package co.secretonline.tinyflowers.helper;
 
 import co.secretonline.tinyflowers.blocks.FlowerVariant;
-import co.secretonline.tinyflowers.blocks.GardenBlock;
-import co.secretonline.tinyflowers.blocks.ModBlocks;
+// import co.secretonline.tinyflowers.blocks.GardenBlock;
+// import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.mixin.EyeblossomStateAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EyeblossomBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+// import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class EyeblossomHelper {
 	public static FlowerVariant getFlowerVariant(boolean isDay) {
@@ -56,17 +56,18 @@ public class EyeblossomHelper {
 				return;
 			}
 
-			// Gardens
-			if (nearbyBlockState.is(ModBlocks.TINY_GARDEN)) {
-				// Tiny Gardens should also recieve updates if they have eyeblossoms.
-				for (EnumProperty<FlowerVariant> property : GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-					FlowerVariant variant = nearbyBlockState.getValue(property);
-					if (variant == incorrectFlowerVariant) {
-						scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN, random);
-						return;
-					}
-				}
-			}
+			// // Gardens
+			// if (nearbyBlockState.is(ModBlocks.TINY_GARDEN)) {
+			// // Tiny Gardens should also recieve updates if they have eyeblossoms.
+			// for (EnumProperty<FlowerVariant> property :
+			// GardenBlock.FLOWER_VARIANT_PROPERTIES) {
+			// FlowerVariant variant = nearbyBlockState.getValue(property);
+			// if (variant == incorrectFlowerVariant) {
+			// scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN, random);
+			// return;
+			// }
+			// }
+			// }
 		});
 	}
 
