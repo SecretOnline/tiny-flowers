@@ -14,6 +14,8 @@ public class DataGenerator implements DataGeneratorEntrypoint {
 		// pack.addProvider(BlockLootTableProvider::new);
 		pack.addProvider(ItemTagProvider::new);
 		pack.addProvider(FloristsShearsRecipeProvider::new);
+		pack.addProvider(FloristsShearsItemModelProvider::new);
+		pack.addProvider(TinyFlowersItemModelProvider.factoryFor(DefaultTinyFlowerData.ALL_VARIANTS));
 		pack.addProvider(TinyFlowersRecipeProvider.factoryFor(DefaultTinyFlowerData.ALL_VARIANTS));
 		pack.addProvider(TinyFlowersProvider.factoryFor(DefaultTinyFlowerData.ALL_VARIANTS));
 	}
