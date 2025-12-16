@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "tiny_flowers:item/tiny_closed_eyeblossom"
-  }
-}

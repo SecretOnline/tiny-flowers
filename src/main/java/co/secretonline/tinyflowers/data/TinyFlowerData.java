@@ -8,7 +8,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
+import net.minecraft.world.level.block.SuspiciousEffectHolder;
 
 /**
  * Data for a tiny flower variant.
@@ -25,7 +27,16 @@ import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
  * @param stewEffect       A potion effect for Suspicious Stew.
  */
 public record TinyFlowerData(Identifier id, Identifier originalId, boolean shouldCreateItem,
-		@Nullable List<Entry> suspiciousStewEffects) {
+		@Nullable List<Entry> suspiciousStewEffects) implements SuspiciousEffectHolder {
+
+	@Override
+	public SuspiciousStewEffects getSuspiciousEffects() {
+		if (this.suspiciousStewEffects() == null) {
+			return new SuspiciousStewEffects(List.of());
+		}
+
+		return new SuspiciousStewEffects(this.suspiciousStewEffects());
+	}
 
 	public static final Codec<TinyFlowerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerData::id),
