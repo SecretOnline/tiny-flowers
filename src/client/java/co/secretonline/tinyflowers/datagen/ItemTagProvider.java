@@ -20,6 +20,7 @@ public class ItemTagProvider extends FabricTagProvider.FabricValueLookupTagProvi
 
 	@Override
 	protected void addTags(HolderLookup.Provider wrapperLookup) {
+		valueLookupBuilder(ModItemTags.TINY_FLOWERS).add(ModItems.TINY_FLOWER_ITEM);
 		TagAppender<Item, Item> builder = valueLookupBuilder(ModItemTags.TINY_FLOWERS);
 
 		// Add all items/blocks that correspond to tiny flower variants to tag

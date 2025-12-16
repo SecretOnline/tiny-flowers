@@ -9,6 +9,7 @@ import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.items.ModItems;
+import co.secretonline.tinyflowers.items.crafting.ModRecipeSerializers;
 
 public class TinyFlowers implements ModInitializer {
 	public static final String MOD_ID = "tiny_flowers";
@@ -25,5 +26,6 @@ public class TinyFlowers implements ModInitializer {
 		ModBlocks.initialize();
 		ModItems.initialize();
 		ModRegistries.initialize();
+		ModRecipeSerializers.initialize();
 	}
 }
