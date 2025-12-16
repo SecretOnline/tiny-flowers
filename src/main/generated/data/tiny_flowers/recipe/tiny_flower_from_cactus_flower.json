@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "tiny_flowers",
+  "ingredients": [
+    "tiny_flowers:florists_shears",
+    "minecraft:cactus_flower"
+  ],
+  "result": {
+    "components": {
+      "tiny_flowers:tiny_flower": {
+        "tiny_flower": "tiny_flowers:tiny_cactus_flower"
+      }
+    },
+    "count": 4,
+    "id": "tiny_flowers:tiny_flower"
+  }
+}

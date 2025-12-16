@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "tiny_flowers",
+  "ingredients": [
+    "tiny_flowers:florists_shears",
+    "minecraft:dandelion"
+  ],
+  "result": {
+    "components": {
+      "tiny_flowers:tiny_flower": {
+        "tiny_flower": "tiny_flowers:tiny_dandelion"
+      }
+    },
+    "count": 4,
+    "id": "tiny_flowers:tiny_flower"
+  }
+}
