@@ -93,7 +93,7 @@ public class TinyFlowerStewRecipe extends CustomRecipe {
 				continue;
 			}
 
-			TinyFlowerComponent tinyFlowerComponent = itemStack.getComponents().get(ModComponents.TINY_FLOWER);
+			TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
 			if (tinyFlowerComponent == null) {
 				continue;
 			}
