@@ -93,6 +93,29 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean shoul
 		return ofPredicate(registryAccess, flowerData -> flowerData.id().equals(id));
 	}
 
+	@Nullable
+	public static TinyFlowerData findByItemStack(RegistryAccess registryAccess, ItemStack itemStack) {
+		var key = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+
+		return ofPredicate(registryAccess, flowerData -> {
+			if (!flowerData.shouldCreateItem()) {
+				// If the block is already segmented, then just check the original block ID.
+				return key.equals(flowerData.originalId());
+			}
+
+			// Ensure the item stack has the right component.
+			// This does mean that items other than this mod's Tiny Flower item will trigger
+			// this, but I think that's fine. If someone has gone out of their way to add
+			// the component to their item, then they probably wanted it to happen.
+			TinyFlowerComponent component = itemStack.get(ModComponents.TINY_FLOWER);
+			if (component == null) {
+				return false;
+			}
+
+			return component.id().equals(flowerData.id());
+		});
+	}
+
 	public static final Codec<TinyFlowerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerData::id),
 			Identifier.CODEC.fieldOf("original_id").forGetter(TinyFlowerData::originalId),

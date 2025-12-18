@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
+import co.secretonline.tinyflowers.components.ModComponents;
+import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -149,6 +152,16 @@ public class TinyGardenBlockEntity extends BlockEntity {
 	@Override
 	public Packet<ClientGamePacketListener> getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	@Override
+	protected void applyImplicitComponents(DataComponentGetter dataComponentGetter) {
+		super.applyImplicitComponents(dataComponentGetter);
+
+		TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER);
+		if (itemComponent != null) {
+			addFlower(itemComponent.id());
+		}
 	}
 
 	private void markUpdated() {

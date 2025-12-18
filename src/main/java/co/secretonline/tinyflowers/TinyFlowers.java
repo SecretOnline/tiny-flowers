@@ -25,9 +25,9 @@ public class TinyFlowers implements ModInitializer {
 	public void onInitialize() {
 		ModRegistries.initialize();
 		ModComponents.initialize();
+		ModItems.initialize();
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();
-		ModItems.initialize();
 		ModRecipeSerializers.initialize();
 	}
 }
