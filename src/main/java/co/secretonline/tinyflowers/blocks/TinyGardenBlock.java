@@ -10,7 +10,7 @@ import com.mojang.serialization.MapCodec;
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
-import co.secretonline.tinyflowers.items.ModItemTags;
+import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -85,7 +85,8 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-		return !context.isSecondaryUseActive() && context.getItemInHand().is(ModItemTags.TINY_FLOWERS)
+		return !context.isSecondaryUseActive()
+				&& (TinyFlowerData.findByItemStack(context.getLevel().registryAccess(), context.getItemInHand()) != null)
 				&& hasFreeSpace(context.getLevel(), context.getClickedPos())
 						? true
 						: super.canBeReplaced(state, context);
