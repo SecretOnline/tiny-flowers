@@ -1,18 +1,27 @@
 package co.secretonline.tinyflowers.items;
 
-// import co.secretonline.tinyflowers.blocks.ModBlocks;S
+import org.jspecify.annotations.Nullable;
+
+import co.secretonline.tinyflowers.blocks.ModBlocks;
+import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TinyFlowerItem extends BlockItem {
 	public TinyFlowerItem(Item.Properties properties) {
-		// super(ModBlocks.TINY_GARDEN, properties);
-		super(Blocks.DIRT, properties);
+		super(ModBlocks.TINY_GARDEN_BLOCK, properties);
+	}
+
+	@Override
+	protected @Nullable BlockState getPlacementState(BlockPlaceContext blockPlaceContext) {
+		return super.getPlacementState(blockPlaceContext)
+				.setValue(TinyGardenBlock.FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
@@ -24,5 +33,4 @@ public class TinyFlowerItem extends BlockItem {
 
 		return Component.translatable(tinyFlowerComponent.getTranslationKey());
 	}
-
 }
