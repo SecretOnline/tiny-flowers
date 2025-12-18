@@ -108,8 +108,9 @@ public class FloristsShearsItem extends ShearsItem {
 			index = Arrays.asList(DIRECTIONS).indexOf(prevBockState.getValue(TinyGardenBlock.FACING)) -
 					index;
 			index = (index + 4) % 4;
+			int oneIndexed = index + 1;
 
-			Identifier idAtIndex = gardenBlockEntity.getFlower(index);
+			Identifier idAtIndex = gardenBlockEntity.getFlower(oneIndexed);
 			TinyFlowerData flowerData = TinyFlowerData.findById(world.registryAccess(), idAtIndex);
 			if (flowerData == null) {
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
@@ -125,7 +126,7 @@ public class FloristsShearsItem extends ShearsItem {
 						SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
 
-			gardenBlockEntity.setFlower(index, null);
+			gardenBlockEntity.setFlower(oneIndexed, null);
 
 			if (gardenBlockEntity.isEmpty()) {
 				world.removeBlock(pos, false);
