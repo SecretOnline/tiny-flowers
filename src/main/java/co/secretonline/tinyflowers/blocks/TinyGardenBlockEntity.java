@@ -10,6 +10,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SegmentableBlock;
@@ -73,36 +76,38 @@ public class TinyGardenBlockEntity extends BlockEntity {
 		switch (index) {
 			case 1:
 				flower1 = id;
-				return;
+				break;
 			case 2:
 				flower2 = id;
-				return;
+				break;
 			case 3:
 				flower3 = id;
-				return;
+				break;
 			case 4:
 				flower4 = id;
-				return;
+				break;
 			default:
 				throw new IndexOutOfBoundsException(index);
 		}
+
+		this.markUpdated();
 	}
 
 	public boolean addFlower(Identifier newId) {
 		if (flower1 == null) {
-			flower1 = newId;
+			setFlower(1, newId);
 			return true;
 		}
 		if (flower2 == null) {
-			flower2 = newId;
+			setFlower(2, newId);
 			return true;
 		}
 		if (flower3 == null) {
-			flower3 = newId;
+			setFlower(3, newId);
 			return true;
 		}
 		if (flower4 == null) {
-			flower4 = newId;
+			setFlower(4, newId);
 			return true;
 		}
 
@@ -118,12 +123,12 @@ public class TinyGardenBlockEntity extends BlockEntity {
 
 	@Override
 	protected void saveAdditional(ValueOutput writeView) {
+		super.saveAdditional(writeView);
+
 		writeView.storeNullable("flower_1", Identifier.CODEC, flower1);
 		writeView.storeNullable("flower_2", Identifier.CODEC, flower2);
 		writeView.storeNullable("flower_3", Identifier.CODEC, flower3);
 		writeView.storeNullable("flower_4", Identifier.CODEC, flower4);
-
-		super.saveAdditional(writeView);
 	}
 
 	@Override
@@ -139,6 +144,16 @@ public class TinyGardenBlockEntity extends BlockEntity {
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider registryLookup) {
 		return saveWithoutMetadata(registryLookup);
+	}
+
+	@Override
+	public Packet<ClientGamePacketListener> getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	private void markUpdated() {
+		this.setChanged();
+		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
 
 	public boolean setFromPreviousBlockState(RegistryAccess registryAccess, BlockState state) {

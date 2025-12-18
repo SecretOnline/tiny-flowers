@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers.data;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
@@ -11,10 +12,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.items.ModItems;
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
@@ -48,6 +51,20 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean shoul
 	}
 
 	public ItemStack getItemStack(int count) {
+		// For existing segmented-like flower types, just pop one of those items
+		// instead.
+		if (!shouldCreateItem()) {
+			Optional<Reference<Item>> item = BuiltInRegistries.ITEM.get(this.originalId);
+			if (item.isEmpty()) {
+				// Since this mod is data driven, it's possible that a garden block or tiny
+				// flower item refers to a flower type that no longer exists (i.e. from a mod
+				// that has been removed). In this case, pop nothing.
+				return ItemStack.EMPTY;
+			}
+
+			return new ItemStack(item.get(), count);
+		}
+
 		return new ItemStack(
 				BuiltInRegistries.ITEM.wrapAsHolder(ModItems.TINY_FLOWER_ITEM),
 				count,
@@ -58,9 +75,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean shoul
 
 	@Nullable
 	private static TinyFlowerData ofPredicate(RegistryAccess registryAccess, Predicate<TinyFlowerData> predicate) {
-		return registryAccess.get(ModRegistries.TINY_FLOWER)
-				.get()
-				.value()
+		return registryAccess.lookupOrThrow(ModRegistries.TINY_FLOWER)
 				.stream()
 				.filter(predicate)
 				.findFirst()
