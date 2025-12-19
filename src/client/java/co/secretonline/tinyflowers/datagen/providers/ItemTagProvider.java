@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.datagen;
+package co.secretonline.tinyflowers.datagen.providers;
 
 import java.util.concurrent.CompletableFuture;
 
