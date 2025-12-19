@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -27,19 +28,29 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
 /**
  * Data for a tiny flower variant.
  *
- * @param id               A unique identifier for this vatiant. Usually matches
- *                         the pack namespace and file name. Used for getting
- *                         textures, models, and other things.
- * @param originalId       The original plant block that is used to create the
- *                         tiny flowers.
- * @param shouldCreateItem Whether an entry should be added into the Creative
- *                         menu for this variant. Defaults to true. Set to false
- *                         if this is already a segmentable block like Pink
- *                         Petals or Wildflowers.
- * @param stewEffect       A potion effect for Suspicious Stew.
+ * @param id            A unique identifier for this vatiant. Usually matches
+ *                      the pack namespace and file name. Used for getting
+ *                      textures, models, and other things.
+ * @param originalId    The original plant block that is used to create the
+ *                      tiny flowers.
+ * @param isSegmentable Whether an entry is for a block that implements
+ *                      {@link net.minecraft.world.level.block.SegmentableBlock
+ *                      SegmentableBlock}. This flag affects the behaviour of
+ *                      the
+ *                      mod in the following ways:
+ *                      <ul>
+ *                      <li>Using Florists' Shears on a Tiny Garden with this
+ *                      variant will pop the original item, rather than a Tiny
+ *                      Flower item.
+ *                      <li>The data generation will not create a crafting
+ *                      recipe
+ *                      for creating Tiny Flowers of this type, as the item
+ *                      already exists.
+ *                      </ul>
+ * @param stewEffect    A potion effect for Suspicious Stew.
  */
-public record TinyFlowerData(Identifier id, Identifier originalId, boolean shouldCreateItem,
-		@Nullable List<Entry> suspiciousStewEffects) implements SuspiciousEffectHolder {
+public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSegmentable,
+		@NonNull List<Entry> suspiciousStewEffects) implements SuspiciousEffectHolder {
 
 	@Override
 	public SuspiciousStewEffects getSuspiciousEffects() {
@@ -53,7 +64,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean shoul
 	public ItemStack getItemStack(int count) {
 		// For existing segmented-like flower types, just pop one of those items
 		// instead.
-		if (!shouldCreateItem()) {
+		if (isSegmentable()) {
 			Optional<Reference<Item>> item = BuiltInRegistries.ITEM.get(this.originalId);
 			if (item.isEmpty()) {
 				// Since this mod is data driven, it's possible that a garden block or tiny
@@ -98,7 +109,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean shoul
 		var key = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
 
 		return ofPredicate(registryAccess, flowerData -> {
-			if (!flowerData.shouldCreateItem()) {
+			if (flowerData.isSegmentable()) {
 				// If the block is already segmented, then just check the original block ID.
 				return key.equals(flowerData.originalId());
 			}
@@ -119,7 +130,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean shoul
 	public static final Codec<TinyFlowerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerData::id),
 			Identifier.CODEC.fieldOf("original_id").forGetter(TinyFlowerData::originalId),
-			Codec.BOOL.optionalFieldOf("should_create_item", true).forGetter(TinyFlowerData::shouldCreateItem),
+			Codec.BOOL.optionalFieldOf("is_segmented", false).forGetter(TinyFlowerData::isSegmentable),
 			Entry.CODEC.listOf().optionalFieldOf("suspicious_stew_effects", List.of())
 					.forGetter(TinyFlowerData::suspiciousStewEffects))
 			.apply(instance, TinyFlowerData::new));
