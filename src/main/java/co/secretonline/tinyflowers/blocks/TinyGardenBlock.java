@@ -143,6 +143,29 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 		}
 	}
 
+	@Override
+	protected ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState,
+			boolean includeData) {
+		if (includeData) {
+			return super.getCloneItemStack(levelReader, blockPos, blockState, includeData);
+		}
+
+		if (!(levelReader.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+			// If there's no block entity, don't pick anything.
+			return ItemStack.EMPTY;
+		}
+
+		List<Identifier> flowers = gardenBlockEntity.getFlowers();
+		for (Identifier id : flowers) {
+			TinyFlowerData flowerData = TinyFlowerData.findById(levelReader.registryAccess(), id);
+			if (flowerData != null) {
+				return flowerData.getItemStack(1);
+			}
+		}
+
+		return ItemStack.EMPTY;
+	}
+
 	private static boolean hasFreeSpace(BlockGetter world, BlockPos pos) {
 		if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 			// If there's no block entity, try prevent anything from trying to write to it

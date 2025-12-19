@@ -8,9 +8,7 @@
   ],
   "result": {
     "components": {
-      "tiny_flowers:tiny_flower": {
-        "tiny_flower": "tiny_flowers:tiny_orange_tulip"
-      }
+      "tiny_flowers:tiny_flower": "tiny_flowers:tiny_orange_tulip"
     },
     "count": 4,
     "id": "tiny_flowers:tiny_flower"
