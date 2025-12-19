@@ -1,7 +1,9 @@
-package co.secretonline.tinyflowers.datagen;
+package co.secretonline.tinyflowers.datagen.providers;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.jspecify.annotations.NonNull;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
@@ -20,31 +22,37 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.resources.Identifier;
 
-public class TinyFlowersItemModelProvider extends FabricModelProvider {
+public class ModModelProvider extends FabricModelProvider {
+	private final String modId;
 	private final List<TinyFlowerData> flowers;
 
-	public TinyFlowersItemModelProvider(List<TinyFlowerData> flowers, FabricDataOutput generator) {
+	public ModModelProvider(String modId, List<TinyFlowerData> flowers, FabricDataOutput generator) {
 		super(generator);
 
+		this.modId = modId;
 		this.flowers = flowers;
 	}
 
-	public static Pack.Factory<TinyFlowersItemModelProvider> factoryFor(List<TinyFlowerData> flowers) {
-		return (FabricDataOutput output) -> new TinyFlowersItemModelProvider(flowers, output);
+	public static Pack.Factory<ModModelProvider> factoryFor(String modName, List<TinyFlowerData> flowers) {
+		return (FabricDataOutput output) -> new ModModelProvider(modName, flowers, output);
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
+	public void generateBlockStateModels(@NonNull BlockModelGenerators blockStateModelGenerator) {
 	}
 
 	@Override
-	public void generateItemModels(ItemModelGenerators itemModelGenerator) {
+	public void generateItemModels(@NonNull ItemModelGenerators itemModelGenerator) {
 		List<SelectItemModel.SwitchCase<TinyFlowerComponent>> list = this.flowers.stream()
-				.filter(flowerData -> flowerData.shouldCreateItem())
+				.filter(flowerData -> !flowerData.isSegmentable())
 				.map(flowerData -> ItemModelUtils.when(
 						new TinyFlowerComponent(flowerData.id()),
 						modelForIdentifier(flowerData.id(), itemModelGenerator)))
 				.collect(Collectors.toList());
+
+		if (list.size() == 0) {
+			return;
+		}
 
 		itemModelGenerator.itemModelOutput.accept(ModItems.TINY_FLOWER_ITEM,
 				ItemModelUtils.select(
@@ -64,6 +72,6 @@ public class TinyFlowersItemModelProvider extends FabricModelProvider {
 
 	@Override
 	public String getName() {
-		return "TinyFlowersItemModelProvider";
+		return "Flowers models (" + this.modId + ")";
 	}
 }

@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.datagen;
+package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.items.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;

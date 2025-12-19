@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.datagen;
+package co.secretonline.tinyflowers.datagen.providers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,29 +7,26 @@ import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput.PathProvider;
 import net.minecraft.resources.Identifier;
 
-public class TinyFlowersProvider implements DataProvider {
+public class ModFlowersProvider implements DataProvider {
 	private final PathProvider tinyFlowersPathProvider;
+	private final String modId;
 	private final List<TinyFlowerData> flowers;
 
-	public TinyFlowersProvider(List<TinyFlowerData> flowers, FabricDataOutput packOutput) {
+	public ModFlowersProvider(String modId, List<TinyFlowerData> flowers, FabricDataOutput packOutput) {
 		this.tinyFlowersPathProvider = packOutput.createRegistryElementsPathProvider(ModRegistries.TINY_FLOWER);
+		this.modId = modId;
 		this.flowers = flowers;
-	}
-
-	public static Pack.Factory<TinyFlowersProvider> factoryFor(List<TinyFlowerData> flowers) {
-		return (FabricDataOutput output) -> new TinyFlowersProvider(flowers, output);
 	}
 
 	@Override
 	public String getName() {
-		return "Tiny Flower Variants";
+		return "Flowers registry data (" + this.modId + ")";
 	}
 
 	@Override
