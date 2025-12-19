@@ -1,10 +1,11 @@
 package co.secretonline.tinyflowers.helper;
 
-import co.secretonline.tinyflowers.blocks.FlowerVariant;
-// import co.secretonline.tinyflowers.blocks.GardenBlock;
-// import co.secretonline.tinyflowers.blocks.ModBlocks;
+import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.blocks.ModBlocks;
+import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.mixin.EyeblossomStateAccessor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -12,13 +13,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EyeblossomBlock;
 import net.minecraft.world.level.block.state.BlockState;
-// import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class EyeblossomHelper {
-	public static FlowerVariant getFlowerVariant(boolean isDay) {
+	private static final Identifier OPEN_EYEBLOSSOM = TinyFlowers.id("tiny_open_eyeblossom");
+	private static final Identifier CLOSED_EYEBLOSSOM = TinyFlowers.id("tiny_closed_eyeblossom");
+
+	public static Identifier getIdentifierForDay(boolean isDay) {
 		return isDay
-				? FlowerVariant.CLOSED_EYEBLOSSOM
-				: FlowerVariant.OPEN_EYEBLOSSOM;
+				? CLOSED_EYEBLOSSOM
+				: OPEN_EYEBLOSSOM;
 	}
 
 	public static Block getBlock(boolean isDay) {
@@ -36,7 +39,7 @@ public class EyeblossomHelper {
 	public static void notifyNearbyEyeblossoms(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		boolean isDay = world.isBrightOutside();
 
-		FlowerVariant incorrectFlowerVariant = getFlowerVariant(!isDay);
+		Identifier incorrectId = getIdentifierForDay(!isDay);
 		Block incorrectEyeblossom = getBlock(!isDay);
 
 		// This is to detect whether the central block of the area is a real Eyeblossom
@@ -56,18 +59,22 @@ public class EyeblossomHelper {
 				return;
 			}
 
-			// // Gardens
-			// if (nearbyBlockState.is(ModBlocks.TINY_GARDEN)) {
-			// // Tiny Gardens should also recieve updates if they have eyeblossoms.
-			// for (EnumProperty<FlowerVariant> property :
-			// GardenBlock.FLOWER_VARIANT_PROPERTIES) {
-			// FlowerVariant variant = nearbyBlockState.getValue(property);
-			// if (variant == incorrectFlowerVariant) {
-			// scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN, random);
-			// return;
-			// }
-			// }
-			// }
+			// Gardens
+			if (nearbyBlockState.is(ModBlocks.TINY_GARDEN_BLOCK)) {
+
+				if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+					// If there's no block entity, don't do anything
+					return;
+				}
+
+				// Tiny Gardens should also recieve updates if they have eyeblossoms.
+				for (Identifier gardenId : gardenBlockEntity.getFlowers()) {
+					if (gardenId.equals(incorrectId)) {
+						scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK, random);
+						return;
+					}
+				}
+			}
 		});
 	}
 
