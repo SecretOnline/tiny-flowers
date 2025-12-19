@@ -8,9 +8,7 @@
   ],
   "result": {
     "components": {
-      "tiny_flowers:tiny_flower": {
-        "tiny_flower": "tiny_flowers:tiny_closed_eyeblossom"
-      }
+      "tiny_flowers:tiny_flower": "tiny_flowers:tiny_closed_eyeblossom"
     },
     "count": 4,
     "id": "tiny_flowers:tiny_flower"

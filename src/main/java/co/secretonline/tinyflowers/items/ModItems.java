@@ -31,7 +31,8 @@ public class ModItems {
 	public static final Item TINY_FLOWER_ITEM = Registry.register(BuiltInRegistries.ITEM, TINY_FLOWER_ITEM_KEY,
 			new TinyFlowerItem(
 					new Item.Properties()
-							.setId(TINY_FLOWER_ITEM_KEY)));
+							.setId(TINY_FLOWER_ITEM_KEY)
+							.useBlockDescriptionPrefix()));
 
 	public static void initialize() {
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register((itemGroup) -> {
