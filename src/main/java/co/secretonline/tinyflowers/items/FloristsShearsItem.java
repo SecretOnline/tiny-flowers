@@ -57,6 +57,7 @@ public class FloristsShearsItem extends ShearsItem {
 
 			BlockState newBlockState = ModBlocks.TINY_GARDEN_BLOCK.defaultBlockState()
 					.setValue(TinyGardenBlock.FACING, ctx.getHorizontalDirection().getOpposite());
+
 			world.setBlockAndUpdate(pos, newBlockState);
 
 			if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {

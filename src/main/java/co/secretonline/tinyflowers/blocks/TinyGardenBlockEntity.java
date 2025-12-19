@@ -126,6 +126,13 @@ public class TinyGardenBlockEntity extends BlockEntity {
 				flower4 == null;
 	}
 
+	public boolean isFull() {
+		return flower1 != null &&
+				flower2 != null &&
+				flower3 != null &&
+				flower4 != null;
+	}
+
 	@Override
 	protected void saveAdditional(ValueOutput writeView) {
 		super.saveAdditional(writeView);
