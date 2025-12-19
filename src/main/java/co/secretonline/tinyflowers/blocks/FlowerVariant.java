@@ -142,7 +142,7 @@ public enum FlowerVariant implements StringRepresentable, ItemLike, SuspiciousEf
 
 	public String getTranslationKey() {
 		if (this.isEmpty()) {
-			return "item.tiny_flowers.tiny_garden.empty";
+			return "block.tiny_flowers.tiny_garden.empty";
 		}
 
 		return this.asItem().getDescriptionId();

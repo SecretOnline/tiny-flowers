@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
+import co.secretonline.tinyflowers.components.GardenContentsComponent;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
@@ -12,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentMap.Builder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -158,10 +160,33 @@ public class TinyGardenBlockEntity extends BlockEntity {
 	protected void applyImplicitComponents(DataComponentGetter dataComponentGetter) {
 		super.applyImplicitComponents(dataComponentGetter);
 
-		TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER);
-		if (itemComponent != null) {
-			addFlower(itemComponent.id());
+		GardenContentsComponent gardenComponent = dataComponentGetter.get(ModComponents.GARDEN_CONTENTS);
+		if (gardenComponent != null) {
+			setFlower(1, gardenComponent.flower1());
+			setFlower(2, gardenComponent.flower2());
+			setFlower(3, gardenComponent.flower3());
+			setFlower(4, gardenComponent.flower4());
+		} else {
+			TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER);
+			if (itemComponent != null) {
+				addFlower(itemComponent.id());
+			}
 		}
+	}
+
+	@Override
+	protected void collectImplicitComponents(Builder builder) {
+		super.collectImplicitComponents(builder);
+
+		builder.set(ModComponents.GARDEN_CONTENTS, new GardenContentsComponent(flower1, flower2, flower3, flower4));
+	}
+
+	@Override
+	public void removeComponentsFromTag(ValueOutput valueOutput) {
+		valueOutput.discard("flower1");
+		valueOutput.discard("flower2");
+		valueOutput.discard("flower3");
+		valueOutput.discard("flower4");
 	}
 
 	private void markUpdated() {

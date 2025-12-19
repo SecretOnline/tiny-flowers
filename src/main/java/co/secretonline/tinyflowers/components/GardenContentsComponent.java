@@ -1,0 +1,51 @@
+package co.secretonline.tinyflowers.components;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
+import net.minecraft.world.item.Item.TooltipContext;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
+
+public record GardenContentsComponent(Identifier flower1, Identifier flower2, Identifier flower3, Identifier flower4)
+		implements TooltipProvider {
+	public static final String GARDEN_TEXT = "block.tiny_flowers.tiny_garden";
+	public static final String EMPTY_TEXT = "block.tiny_flowers.tiny_garden.empty";
+
+	@Override
+	public void addToTooltip(TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag,
+			DataComponentGetter dataComponentGetter) {
+
+		for (Identifier id : new Identifier[] { flower1, flower2, flower3, flower4 }) {
+			if (id == null) {
+				MutableComponent empty = Component.translatable(EMPTY_TEXT);
+				empty.withStyle(ChatFormatting.GRAY);
+				consumer.accept(empty);
+				continue;
+			}
+
+			MutableComponent text = Component.translatable(Util.makeDescriptionId("block", id));
+			consumer.accept(text);
+		}
+	}
+
+	public static final Codec<GardenContentsComponent> CODEC = RecordCodecBuilder.create(builder -> {
+		return builder.group(
+				Identifier.CODEC.optionalFieldOf("flower_1").forGetter((value) -> Optional.ofNullable(value.flower1())),
+				Identifier.CODEC.optionalFieldOf("flower_2").forGetter((value) -> Optional.ofNullable(value.flower2())),
+				Identifier.CODEC.optionalFieldOf("flower_3").forGetter((value) -> Optional.ofNullable(value.flower3())),
+				Identifier.CODEC.optionalFieldOf("flower_4").forGetter((value) -> Optional.ofNullable(value.flower4())))
+				.apply(builder,
+						(optional1, optional2, optional3, optional4) -> new GardenContentsComponent(
+								optional1.orElse(null), optional2.orElse(null), optional3.orElse(null), optional4.orElse(null)));
+	});
+}

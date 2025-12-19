@@ -8,9 +8,7 @@
   ],
   "result": {
     "components": {
-      "tiny_flowers:tiny_flower": {
-        "tiny_flower": "tiny_flowers:tiny_lily_of_the_valley"
-      }
+      "tiny_flowers:tiny_flower": "tiny_flowers:tiny_lily_of_the_valley"
     },
     "count": 4,
     "id": "tiny_flowers:tiny_flower"

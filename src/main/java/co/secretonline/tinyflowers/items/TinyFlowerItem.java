@@ -4,6 +4,7 @@ import org.jspecify.annotations.Nullable;
 
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
+import co.secretonline.tinyflowers.components.GardenContentsComponent;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import net.minecraft.network.chat.Component;
@@ -26,11 +27,16 @@ public class TinyFlowerItem extends BlockItem {
 
 	@Override
 	public Component getName(ItemStack itemStack) {
-		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
-		if (tinyFlowerComponent == null) {
-			return super.getName(itemStack);
+		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS);
+		if (gardenComponent != null) {
+			return Component.translatable(GardenContentsComponent.GARDEN_TEXT);
 		}
 
-		return Component.translatable(tinyFlowerComponent.getTranslationKey());
+		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
+		if (tinyFlowerComponent != null) {
+			return Component.translatable(tinyFlowerComponent.getTranslationKey());
+		}
+
+		return super.getName(itemStack);
 	}
 }
