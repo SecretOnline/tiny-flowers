@@ -21,8 +21,12 @@ public class TinyFlowerItem extends BlockItem {
 
 	@Override
 	protected @Nullable BlockState getPlacementState(BlockPlaceContext blockPlaceContext) {
-		return super.getPlacementState(blockPlaceContext)
-				.setValue(TinyGardenBlock.FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
+		BlockState newBlockState = super.getPlacementState(blockPlaceContext);
+		if (newBlockState == null) {
+			return newBlockState;
+		}
+
+		return newBlockState.setValue(TinyGardenBlock.FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
