@@ -7,10 +7,10 @@ import org.jspecify.annotations.NonNull;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
-import co.secretonline.tinyflowers.data.TinyFlowerData;
+import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenData;
+import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenData.ModelParts;
 import co.secretonline.tinyflowers.items.ModItems;
 import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
-import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -21,13 +21,12 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Tuple;
 
 public class ModModelProvider extends FabricModelProvider {
 	private final String modId;
-	private final List<Tuple<TinyFlowerData, TinyFlowerResources>> flowers;
+	private final List<TinyFlowersDatagenData> flowers;
 
-	public ModModelProvider(String modId, List<Tuple<TinyFlowerData, TinyFlowerResources>> flowers,
+	public ModModelProvider(String modId, List<TinyFlowersDatagenData> flowers,
 			FabricDataOutput generator) {
 		super(generator);
 
@@ -37,28 +36,20 @@ public class ModModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(@NonNull BlockModelGenerators blockStateModelGenerator) {
-		for (Tuple<TinyFlowerData, TinyFlowerResources> tuple : this.flowers) {
-			var flowerResources = tuple.getB();
+		for (TinyFlowersDatagenData tuple : this.flowers) {
+			ModelParts models = tuple.modelParts();
 
-			blockStateModelGenerator.modelOutput.accept(
-					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_1"),
-					flowerResources.part1()::toJsonElement);
-			blockStateModelGenerator.modelOutput.accept(
-					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_2"),
-					flowerResources.part2()::toJsonElement);
-			blockStateModelGenerator.modelOutput.accept(
-					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_3"),
-					flowerResources.part3()::toJsonElement);
-			blockStateModelGenerator.modelOutput.accept(
-					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_4"),
-					flowerResources.part4()::toJsonElement);
+			models.part1().outputModel(blockStateModelGenerator.modelOutput);
+			models.part2().outputModel(blockStateModelGenerator.modelOutput);
+			models.part3().outputModel(blockStateModelGenerator.modelOutput);
+			models.part4().outputModel(blockStateModelGenerator.modelOutput);
 		}
 	}
 
 	@Override
 	public void generateItemModels(@NonNull ItemModelGenerators itemModelGenerator) {
 		List<SelectItemModel.SwitchCase<TinyFlowerComponent>> list = this.flowers.stream()
-				.map(tuple -> tuple.getA())
+				.map(tuple -> tuple.data())
 				.filter(flowerData -> !flowerData.isSegmentable())
 				.map(flowerData -> ItemModelUtils.when(
 						new TinyFlowerComponent(flowerData.id()),

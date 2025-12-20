@@ -1,35 +1,7 @@
 {
   "id": "tiny_flowers:tiny_white_tulip",
-  "part1": {
-    "model": "tiny_flowers:block/garden_1",
-    "textures": {
-      "flowerbed": "tiny_flowers:block/tiny_white_tulip",
-      "particle": "tiny_flowers:block/tiny_white_tulip",
-      "stem": "minecraft:block/pink_petals_stem"
-    }
-  },
-  "part2": {
-    "model": "tiny_flowers:block/garden_2",
-    "textures": {
-      "flowerbed": "tiny_flowers:block/tiny_white_tulip",
-      "particle": "tiny_flowers:block/tiny_white_tulip",
-      "stem": "minecraft:block/pink_petals_stem"
-    }
-  },
-  "part3": {
-    "model": "tiny_flowers:block/garden_3",
-    "textures": {
-      "flowerbed": "tiny_flowers:block/tiny_white_tulip",
-      "particle": "tiny_flowers:block/tiny_white_tulip",
-      "stem": "minecraft:block/pink_petals_stem"
-    }
-  },
-  "part4": {
-    "model": "tiny_flowers:block/garden_4",
-    "textures": {
-      "flowerbed": "tiny_flowers:block/tiny_white_tulip",
-      "particle": "tiny_flowers:block/tiny_white_tulip",
-      "stem": "minecraft:block/pink_petals_stem"
-    }
-  }
+  "modelPart1": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_1",
+  "modelPart2": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_2",
+  "modelPart3": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_3",
+  "modelPart4": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_4"
 }
