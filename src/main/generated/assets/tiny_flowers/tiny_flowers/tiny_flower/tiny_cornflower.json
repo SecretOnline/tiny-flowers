@@ -1,7 +1,9 @@
 {
   "id": "tiny_flowers:tiny_cornflower",
+  "item_texture": "tiny_flowers:item/tiny_cornflower",
   "modelPart1": "tiny_flowers:block/tiny_flowers/tiny_cornflower_1",
   "modelPart2": "tiny_flowers:block/tiny_flowers/tiny_cornflower_2",
   "modelPart3": "tiny_flowers:block/tiny_flowers/tiny_cornflower_3",
-  "modelPart4": "tiny_flowers:block/tiny_flowers/tiny_cornflower_4"
+  "modelPart4": "tiny_flowers:block/tiny_flowers/tiny_cornflower_4",
+  "particle_texture": "tiny_flowers:block/tiny_cornflower"
 }

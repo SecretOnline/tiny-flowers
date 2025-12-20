@@ -1,7 +1,9 @@
 {
   "id": "minecraft:pink_petals",
+  "item_texture": "minecraft:item/pink_petals",
   "modelPart1": "minecraft:block/tiny_flowers/pink_petals_1",
   "modelPart2": "minecraft:block/tiny_flowers/pink_petals_2",
   "modelPart3": "minecraft:block/tiny_flowers/pink_petals_3",
-  "modelPart4": "minecraft:block/tiny_flowers/pink_petals_4"
+  "modelPart4": "minecraft:block/tiny_flowers/pink_petals_4",
+  "particle_texture": "minecraft:block/pink_petals"
 }

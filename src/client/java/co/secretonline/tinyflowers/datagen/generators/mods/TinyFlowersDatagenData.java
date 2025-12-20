@@ -26,6 +26,8 @@ public class TinyFlowersDatagenData {
 	private static String MOD_ID_PREFIX = TinyFlowers.MOD_ID + "/";
 
 	private Identifier id;
+	private Identifier itemTexture;
+	private Identifier particleTexture;
 	private Identifier originalBlockId;
 	private boolean isSegmentable;
 	@NonNull
@@ -41,7 +43,7 @@ public class TinyFlowersDatagenData {
 	}
 
 	public TinyFlowerResources resources() {
-		return new TinyFlowerResources(id,
+		return new TinyFlowerResources(id, itemTexture, particleTexture,
 				modelPart1.id().withPrefix(MOD_ID_PREFIX).withPrefix("block/"),
 				modelPart2.id().withPrefix(MOD_ID_PREFIX).withPrefix("block/"),
 				modelPart3.id().withPrefix(MOD_ID_PREFIX).withPrefix("block/"),
@@ -85,6 +87,8 @@ public class TinyFlowersDatagenData {
 		private static final TextureSlot FLOWERBED_UPPER = TextureSlot.create("flowerbed_upper");
 
 		private Identifier id;
+		private Identifier itemTexture;
+		private Identifier particleTexture;
 		private Identifier originalBlockId;
 		private boolean isSegmentable = false;
 		private List<Entry> suspiciousStewEffects = new ArrayList<>();
@@ -99,6 +103,7 @@ public class TinyFlowersDatagenData {
 		public static Builder ofCustom(Identifier id, Identifier originalBlockId) {
 			return new Builder()
 					.id(id)
+					.itemTexture(id)
 					.originalBlockId(originalBlockId)
 					.layers(id);
 		}
@@ -106,6 +111,7 @@ public class TinyFlowersDatagenData {
 		public static Builder ofSegmented(Identifier originalBlockId) {
 			return new Builder()
 					.id(originalBlockId)
+					.itemTexture(originalBlockId)
 					.originalBlockId(originalBlockId)
 					.segmentable()
 					.layers(originalBlockId);
@@ -116,6 +122,7 @@ public class TinyFlowersDatagenData {
 
 			return new Builder()
 					.id(id)
+					.itemTexture(id)
 					.originalBlockId(originalBlockId)
 					.layers(id);
 		}
@@ -144,8 +151,19 @@ public class TinyFlowersDatagenData {
 			return this.stewEffect(effect, Mth.floor(seconds * 20.0f));
 		}
 
+		public Builder itemTexture(Identifier itemTexture) {
+			this.itemTexture = itemTexture.withPrefix("item/");
+			return this;
+		}
+
+		public Builder particleTexture(Identifier particleTexture) {
+			this.particleTexture = particleTexture.withPrefix("block/");
+			return this;
+		}
+
 		public Builder layers(Identifier flowerbedTexture) {
 			layers = 1;
+			particleTexture = flowerbedTexture.withPrefix("block/");
 			textureMap.put(TextureSlot.PARTICLE.getId(), flowerbedTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), flowerbedTexture.withPrefix("block/"));
 
@@ -154,6 +172,7 @@ public class TinyFlowersDatagenData {
 
 		public Builder layers(Identifier lowerTexture, Identifier upperTexture) {
 			layers = 2;
+			particleTexture = lowerTexture.withPrefix("block/");
 			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_UPPER.getId(), upperTexture.withPrefix("block/"));
@@ -163,6 +182,7 @@ public class TinyFlowersDatagenData {
 
 		public Builder layers(Identifier lowerTexture, Identifier middleTexture, Identifier upperTexture) {
 			layers = 2;
+			particleTexture = lowerTexture.withPrefix("block/");
 			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_MIDDLE.getId(), middleTexture.withPrefix("block/"));
@@ -195,6 +215,8 @@ public class TinyFlowersDatagenData {
 			TinyFlowersDatagenData data = new TinyFlowersDatagenData();
 
 			data.id = id;
+			data.itemTexture = itemTexture;
+			data.particleTexture = particleTexture;
 			data.originalBlockId = originalBlockId;
 			data.isSegmentable = isSegmentable;
 			data.suspiciousStewEffects = suspiciousStewEffects;
