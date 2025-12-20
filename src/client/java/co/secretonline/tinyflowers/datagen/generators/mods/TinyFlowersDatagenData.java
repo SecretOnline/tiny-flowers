@@ -24,6 +24,7 @@ import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
 
 public class TinyFlowersDatagenData {
 	private static String MOD_ID_PREFIX = TinyFlowers.MOD_ID + "/";
+	private static String BLOCK_MOD_PREFIX = "block/" + MOD_ID_PREFIX;
 
 	private Identifier id;
 	private Identifier itemTexture;
@@ -44,10 +45,10 @@ public class TinyFlowersDatagenData {
 
 	public TinyFlowerResources resources() {
 		return new TinyFlowerResources(id, itemTexture, particleTexture,
-				modelPart1.id().withPrefix(MOD_ID_PREFIX).withPrefix("block/"),
-				modelPart2.id().withPrefix(MOD_ID_PREFIX).withPrefix("block/"),
-				modelPart3.id().withPrefix(MOD_ID_PREFIX).withPrefix("block/"),
-				modelPart4.id().withPrefix(MOD_ID_PREFIX).withPrefix("block/"));
+				modelPart1.id().withPrefix(BLOCK_MOD_PREFIX),
+				modelPart2.id().withPrefix(BLOCK_MOD_PREFIX),
+				modelPart3.id().withPrefix(BLOCK_MOD_PREFIX),
+				modelPart4.id().withPrefix(BLOCK_MOD_PREFIX));
 	}
 
 	public ModelParts modelParts() {
@@ -75,7 +76,7 @@ public class TinyFlowersDatagenData {
 		}
 
 		public void outputModel(BiConsumer<Identifier, ModelInstance> consumer) {
-			consumer.accept(id.withPrefix(MOD_ID_PREFIX), this::toJsonElement);
+			consumer.accept(id.withPrefix(BLOCK_MOD_PREFIX), this::toJsonElement);
 		}
 	}
 

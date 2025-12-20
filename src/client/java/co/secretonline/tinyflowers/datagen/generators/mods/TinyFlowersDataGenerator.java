@@ -23,7 +23,7 @@ public class TinyFlowersDataGenerator extends BaseModDataGenerator {
 						.ofCustom(TinyFlowers.id("tiny_poppy"), Identifier.withDefaultNamespace("poppy"))
 						.stewEffectSeconds(MobEffects.NIGHT_VISION, 5.0)
 						.customModel(TinyFlowers.id("garden_tall"))
-						.stemTexture(TinyFlowers.id("tiny_tall_flower_stem"))
+						.stemTexture(TinyFlowers.id("tall_tiny_flower_stem"))
 						.build(),
 				TinyFlowersDatagenData.Builder
 						.ofCustom(TinyFlowers.id("tiny_blue_orchid"), Identifier.withDefaultNamespace("blue_orchid"))
