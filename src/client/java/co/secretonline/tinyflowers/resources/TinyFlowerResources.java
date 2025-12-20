@@ -3,11 +3,15 @@ package co.secretonline.tinyflowers.resources;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import co.secretonline.tinyflowers.TinyFlowers;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.resources.Identifier;
 
 public record TinyFlowerResources(Identifier id, Part part1, Part part2, Part part3, Part part4) {
@@ -31,6 +35,25 @@ public record TinyFlowerResources(Identifier id, Part part1, Part part2, Part pa
 			.apply(instance, TinyFlowerResources::new));
 
 	static public record Part(Identifier model, Map<String, Identifier> textures) {
+		public TextureMapping textureMap() {
+			TextureMapping textureMap = new TextureMapping();
+			this.textures.forEach((key, value) -> textureMap.put(TextureSlot.create(key), value));
+			return textureMap;
+		}
+
+		public JsonElement toJsonElement() {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("parent", model.toString());
+			if (!textures.isEmpty()) {
+				JsonObject texturesObject = new JsonObject();
+				textures.forEach((textureSlot, identifier) -> {
+					texturesObject.addProperty(textureSlot, identifier.toString());
+				});
+				jsonObject.add("textures", texturesObject);
+			}
+
+			return jsonObject;
+		}
 
 		public static Codec<Part> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 				Identifier.CODEC.fieldOf("model").forGetter(Part::model),
