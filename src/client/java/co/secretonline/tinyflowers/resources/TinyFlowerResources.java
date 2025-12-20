@@ -3,18 +3,13 @@ package co.secretonline.tinyflowers.resources;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import co.secretonline.tinyflowers.TinyFlowers;
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.resources.Identifier;
 
-public record TinyFlowerResources(Identifier id, Part part1, Part part2, Part part3, Part part4) {
+public record TinyFlowerResources(Identifier id, Identifier itemTexture, Identifier particleTexture,
+		Identifier modelPart1, Identifier modelPart2, Identifier modelPart3, Identifier modelPart4) {
 	private static Map<Identifier, TinyFlowerResources> INSTANCES = new HashMap<>();
 
 	public static Map<Identifier, TinyFlowerResources> getInstances() {
@@ -22,145 +17,16 @@ public record TinyFlowerResources(Identifier id, Part part1, Part part2, Part pa
 	}
 
 	public static void setInstances(Map<Identifier, TinyFlowerResources> map) {
-		TinyFlowers.LOGGER.info("did set map");
 		INSTANCES = map;
 	}
 
 	public static Codec<TinyFlowerResources> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerResources::id),
-			Part.CODEC.fieldOf("part1").forGetter(TinyFlowerResources::part1),
-			Part.CODEC.fieldOf("part2").forGetter(TinyFlowerResources::part2),
-			Part.CODEC.fieldOf("part3").forGetter(TinyFlowerResources::part3),
-			Part.CODEC.fieldOf("part4").forGetter(TinyFlowerResources::part4))
+			Identifier.CODEC.fieldOf("item_texture").forGetter(TinyFlowerResources::itemTexture),
+			Identifier.CODEC.fieldOf("particle_texture").forGetter(TinyFlowerResources::particleTexture),
+			Identifier.CODEC.fieldOf("modelPart1").forGetter(TinyFlowerResources::modelPart1),
+			Identifier.CODEC.fieldOf("modelPart2").forGetter(TinyFlowerResources::modelPart2),
+			Identifier.CODEC.fieldOf("modelPart3").forGetter(TinyFlowerResources::modelPart3),
+			Identifier.CODEC.fieldOf("modelPart4").forGetter(TinyFlowerResources::modelPart4))
 			.apply(instance, TinyFlowerResources::new));
-
-	static public record Part(Identifier model, Map<String, Identifier> textures) {
-		public TextureMapping textureMap() {
-			TextureMapping textureMap = new TextureMapping();
-			this.textures.forEach((key, value) -> textureMap.put(TextureSlot.create(key), value));
-			return textureMap;
-		}
-
-		public JsonElement toJsonElement() {
-			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty("parent", model.toString());
-			if (!textures.isEmpty()) {
-				JsonObject texturesObject = new JsonObject();
-				textures.forEach((textureSlot, identifier) -> {
-					texturesObject.addProperty(textureSlot, identifier.toString());
-				});
-				jsonObject.add("textures", texturesObject);
-			}
-
-			return jsonObject;
-		}
-
-		public static Codec<Part> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				Identifier.CODEC.fieldOf("model").forGetter(Part::model),
-				Codec.unboundedMap(Codec.STRING, Identifier.CODEC).fieldOf("textures").forGetter(Part::textures))
-				.apply(instance, Part::new));
-	}
-
-	static public class Builder {
-		private static final TextureSlot FLOWERBED_MIDDLE = TextureSlot.create("flowerbed_middle");
-		private static final TextureSlot FLOWERBED_UPPER = TextureSlot.create("flowerbed_upper");
-
-		private final Identifier id;
-		private int layers = 0;
-		private boolean untintedStem = false;
-		private boolean includeStemTexture = true;
-		private Identifier stemTexture = Identifier.withDefaultNamespace("block/pink_petals_stem");
-		private Map<String, Identifier> textureMap = new HashMap<>();
-		private Identifier special = null;
-
-		public Builder(Identifier id) {
-			this.id = id;
-		}
-
-		public Builder layers(Identifier flowerbedTexture) {
-			layers = 1;
-			textureMap.put(TextureSlot.PARTICLE.getId(), flowerbedTexture.withPrefix("block/"));
-			textureMap.put(TextureSlot.FLOWERBED.getId(), flowerbedTexture.withPrefix("block/"));
-
-			return this;
-		}
-
-		public Builder layers(Identifier lowerTexture, Identifier upperTexture) {
-			layers = 2;
-			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
-			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
-			textureMap.put(FLOWERBED_UPPER.getId(), upperTexture.withPrefix("block/"));
-
-			return this;
-		}
-
-		public Builder layers(Identifier lowerTexture, Identifier middleTexture, Identifier upperTexture) {
-			layers = 2;
-			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
-			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
-			textureMap.put(FLOWERBED_MIDDLE.getId(), middleTexture.withPrefix("block/"));
-			textureMap.put(FLOWERBED_UPPER.getId(), upperTexture.withPrefix("block/"));
-
-			return this;
-		}
-
-		public Builder untintedStem() {
-			this.untintedStem = true;
-			return this;
-		}
-
-		public Builder noStem() {
-			this.includeStemTexture = false;
-			return this;
-		}
-
-		public Builder stemTexture(Identifier stemTexture) {
-			this.stemTexture = stemTexture.withPrefix("block/");
-			return this;
-		}
-
-		public Builder special(Identifier special) {
-			this.special = special.withPrefix("block/");
-			return this;
-		}
-
-		public TinyFlowerResources build() {
-			if (layers == 0 && special == null) {
-				throw new Error("TinyFlowerResources.Builder: layers() or special() must be called once.");
-			}
-
-			Identifier parentId = null;
-
-			if (special != null) {
-				parentId = special;
-			} else if (layers == 1) {
-				if (untintedStem) {
-					parentId = TinyFlowers.id("block/garden_untinted");
-				} else {
-					parentId = TinyFlowers.id("block/garden");
-				}
-			} else if (layers == 2) {
-				if (untintedStem) {
-					parentId = TinyFlowers.id("block/garden_double_untinted");
-				} else {
-					parentId = TinyFlowers.id("block/garden_double");
-				}
-			} else if (layers == 3) {
-				if (untintedStem) {
-					parentId = TinyFlowers.id("block/garden_triple_untinted");
-				} else {
-					parentId = TinyFlowers.id("block/garden_triple");
-				}
-			}
-
-			if (includeStemTexture) {
-				textureMap.put("stem", this.stemTexture);
-			}
-
-			return new TinyFlowerResources(this.id, new Part(parentId.withSuffix("_1"), textureMap),
-					new Part(parentId.withSuffix("_2"), textureMap),
-					new Part(parentId.withSuffix("_3"), textureMap),
-					new Part(parentId.withSuffix("_4"), textureMap));
-		}
-	}
 }
