@@ -12,23 +12,21 @@ import com.mojang.serialization.JsonOps;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.ModRegistries;
+import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.PreparableReloadListener.SharedState;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 
-public class TinyFlowerModelReloadListener implements PreparableReloadListener {
+public class TinyFlowerModelDataLoader
+		implements PreparableModelLoadingPlugin.DataLoader<Map<Identifier, TinyFlowerResources>> {
 	@Override
-	public CompletableFuture<Void> reload(SharedState sharedState, Executor prepareExecutor,
-			PreparationBarrier preparationBarrier, Executor applyExecutor) {
-		return CompletableFuture
-				.runAsync(() -> this.getResourcesMap(sharedState.resourceManager()), prepareExecutor)
-				.thenCompose(preparationBarrier::wait)
-				.thenRunAsync(() -> {
-				}, applyExecutor);
+	public CompletableFuture<Map<Identifier, TinyFlowerResources>> load(SharedState sharedState,
+			Executor executor) {
+		return CompletableFuture.supplyAsync(() -> this.readResourceFiles(sharedState.resourceManager()), executor);
 	}
 
-	private void getResourcesMap(ResourceManager resourceManager) {
+	private Map<Identifier, TinyFlowerResources> readResourceFiles(ResourceManager resourceManager) {
 		Map<Identifier, TinyFlowerResources> map = new HashMap<>();
 
 		var allVariantJsonFiles = resourceManager.listResources(
@@ -57,6 +55,6 @@ public class TinyFlowerModelReloadListener implements PreparableReloadListener {
 			}
 		});
 
-		TinyFlowerResources.setInstances(map);
+		return map;
 	}
 }
