@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
+import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenData;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.registries.Registries;
@@ -15,15 +16,14 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput.PathProvider;
 import net.minecraft.data.PackOutput.Target;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Tuple;
 
 public class ModFlowersProvider implements DataProvider {
 	private final PathProvider tinyFlowersData;
 	private final PathProvider tinyFlowersResources;
 	private final String modId;
-	private final List<Tuple<TinyFlowerData, TinyFlowerResources>> flowers;
+	private final List<TinyFlowersDatagenData> flowers;
 
-	public ModFlowersProvider(String modId, List<Tuple<TinyFlowerData, TinyFlowerResources>> flowers,
+	public ModFlowersProvider(String modId, List<TinyFlowersDatagenData> flowers,
 			FabricDataOutput packOutput) {
 		this.tinyFlowersData = packOutput.createRegistryElementsPathProvider(ModRegistries.TINY_FLOWER);
 		this.tinyFlowersResources = packOutput.createPathProvider(Target.RESOURCE_PACK,
@@ -42,9 +42,9 @@ public class ModFlowersProvider implements DataProvider {
 		Map<Identifier, TinyFlowerData> flowerVariantData = new HashMap<>();
 		Map<Identifier, TinyFlowerResources> flowerVariantResources = new HashMap<>();
 
-		for (Tuple<TinyFlowerData, TinyFlowerResources> tuple : this.flowers) {
-			TinyFlowerData data = tuple.getA();
-			TinyFlowerResources resources = tuple.getB();
+		for (TinyFlowersDatagenData tuple : this.flowers) {
+			TinyFlowerData data = tuple.data();
+			TinyFlowerResources resources = tuple.resources();
 
 			flowerVariantData.put(data.id(), data);
 			flowerVariantResources.put(resources.id(), resources);
