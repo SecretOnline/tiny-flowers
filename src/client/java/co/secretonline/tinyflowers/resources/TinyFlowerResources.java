@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.renderer;
+package co.secretonline.tinyflowers.resources;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +11,16 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.resources.Identifier;
 
 public record TinyFlowerResources(Identifier id, Part part1, Part part2, Part part3, Part part4) {
+	private static Map<Identifier, TinyFlowerResources> INSTANCES = new HashMap<>();
+
+	public static Map<Identifier, TinyFlowerResources> getInstances() {
+		return INSTANCES;
+	}
+
+	public static void setInstances(Map<Identifier, TinyFlowerResources> map) {
+		TinyFlowers.LOGGER.info("did set map");
+		INSTANCES = map;
+	}
 
 	public static Codec<TinyFlowerResources> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerResources::id),

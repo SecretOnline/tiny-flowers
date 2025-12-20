@@ -8,7 +8,7 @@ import co.secretonline.tinyflowers.datagen.generators.PackContributor;
 import co.secretonline.tinyflowers.datagen.providers.ModModelProvider;
 import co.secretonline.tinyflowers.datagen.providers.ModFlowersProvider;
 import co.secretonline.tinyflowers.datagen.providers.ModRecipeProvider;
-import co.secretonline.tinyflowers.renderer.TinyFlowerResources;
+import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;

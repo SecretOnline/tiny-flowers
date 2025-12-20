@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.items.ModItems;
-import co.secretonline.tinyflowers.renderer.TinyFlowerResources;
+import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;

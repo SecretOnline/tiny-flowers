@@ -4,7 +4,7 @@ import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.renderer.TinyFlowerResources;
+import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.effect.MobEffects;
