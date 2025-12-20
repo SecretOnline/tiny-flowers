@@ -1,0 +1,7 @@
+{
+  "ambientocclusion": false,
+  "elements": [],
+  "textures": {
+    "particle": "tiny_flowers:item/tiny_garden"
+  }
+}

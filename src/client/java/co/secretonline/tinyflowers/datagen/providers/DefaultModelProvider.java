@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
+import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.items.ModItems;
@@ -10,7 +11,6 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 
 public class DefaultModelProvider extends FabricModelProvider {
@@ -31,7 +31,7 @@ public class DefaultModelProvider extends FabricModelProvider {
 			definitionCreator = definitionCreator.with(
 					BlockModelGenerators.condition()
 							.term(TinyGardenBlock.FACING, direction),
-					BlockModelGenerators.plainVariant(Identifier.withDefaultNamespace("air")));
+					BlockModelGenerators.plainVariant(TinyFlowers.id("block/tiny_garden")));
 		}
 
 		blockStateModelGenerator.blockStateOutput.accept(definitionCreator);
