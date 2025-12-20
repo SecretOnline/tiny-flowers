@@ -37,6 +37,22 @@ public class ModModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(@NonNull BlockModelGenerators blockStateModelGenerator) {
+		for (Tuple<TinyFlowerData, TinyFlowerResources> tuple : this.flowers) {
+			var flowerResources = tuple.getB();
+
+			blockStateModelGenerator.modelOutput.accept(
+					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_1"),
+					flowerResources.part1()::toJsonElement);
+			blockStateModelGenerator.modelOutput.accept(
+					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_2"),
+					flowerResources.part2()::toJsonElement);
+			blockStateModelGenerator.modelOutput.accept(
+					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_3"),
+					flowerResources.part3()::toJsonElement);
+			blockStateModelGenerator.modelOutput.accept(
+					flowerResources.id().withPrefix(TinyFlowers.MOD_ID + "/").withSuffix("_4"),
+					flowerResources.part4()::toJsonElement);
+		}
 	}
 
 	@Override
