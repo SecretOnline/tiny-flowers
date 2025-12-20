@@ -9,9 +9,9 @@ import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.items.ModItems;
+import co.secretonline.tinyflowers.renderer.TinyFlowerResources;
 import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -21,20 +21,18 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Tuple;
 
 public class ModModelProvider extends FabricModelProvider {
 	private final String modId;
-	private final List<TinyFlowerData> flowers;
+	private final List<Tuple<TinyFlowerData, TinyFlowerResources>> flowers;
 
-	public ModModelProvider(String modId, List<TinyFlowerData> flowers, FabricDataOutput generator) {
+	public ModModelProvider(String modId, List<Tuple<TinyFlowerData, TinyFlowerResources>> flowers,
+			FabricDataOutput generator) {
 		super(generator);
 
 		this.modId = modId;
 		this.flowers = flowers;
-	}
-
-	public static Pack.Factory<ModModelProvider> factoryFor(String modName, List<TinyFlowerData> flowers) {
-		return (FabricDataOutput output) -> new ModModelProvider(modName, flowers, output);
 	}
 
 	@Override
@@ -44,6 +42,7 @@ public class ModModelProvider extends FabricModelProvider {
 	@Override
 	public void generateItemModels(@NonNull ItemModelGenerators itemModelGenerator) {
 		List<SelectItemModel.SwitchCase<TinyFlowerComponent>> list = this.flowers.stream()
+				.map(tuple -> tuple.getA())
 				.filter(flowerData -> !flowerData.isSegmentable())
 				.map(flowerData -> ItemModelUtils.when(
 						new TinyFlowerComponent(flowerData.id()),

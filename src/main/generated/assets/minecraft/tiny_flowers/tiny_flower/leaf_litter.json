@@ -1,0 +1,31 @@
+{
+  "id": "minecraft:leaf_litter",
+  "part1": {
+    "model": "tiny_flowers:block/garden_leaf_litter_1",
+    "textures": {
+      "flowerbed": "minecraft:block/leaf_litter",
+      "particle": "minecraft:block/leaf_litter"
+    }
+  },
+  "part2": {
+    "model": "tiny_flowers:block/garden_leaf_litter_2",
+    "textures": {
+      "flowerbed": "minecraft:block/leaf_litter",
+      "particle": "minecraft:block/leaf_litter"
+    }
+  },
+  "part3": {
+    "model": "tiny_flowers:block/garden_leaf_litter_3",
+    "textures": {
+      "flowerbed": "minecraft:block/leaf_litter",
+      "particle": "minecraft:block/leaf_litter"
+    }
+  },
+  "part4": {
+    "model": "tiny_flowers:block/garden_leaf_litter_4",
+    "textures": {
+      "flowerbed": "minecraft:block/leaf_litter",
+      "particle": "minecraft:block/leaf_litter"
+    }
+  }
+}
