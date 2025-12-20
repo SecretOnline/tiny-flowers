@@ -1,7 +1,9 @@
 {
   "id": "minecraft:leaf_litter",
+  "item_texture": "minecraft:item/leaf_litter",
   "modelPart1": "minecraft:block/tiny_flowers/leaf_litter_1",
   "modelPart2": "minecraft:block/tiny_flowers/leaf_litter_2",
   "modelPart3": "minecraft:block/tiny_flowers/leaf_litter_3",
-  "modelPart4": "minecraft:block/tiny_flowers/leaf_litter_4"
+  "modelPart4": "minecraft:block/tiny_flowers/leaf_litter_4",
+  "particle_texture": "minecraft:block/leaf_litter"
 }
