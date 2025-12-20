@@ -1,7 +1,9 @@
 {
   "id": "tiny_flowers:tiny_open_eyeblossom",
+  "item_texture": "tiny_flowers:item/tiny_open_eyeblossom",
   "modelPart1": "tiny_flowers:block/tiny_flowers/tiny_open_eyeblossom_1",
   "modelPart2": "tiny_flowers:block/tiny_flowers/tiny_open_eyeblossom_2",
   "modelPart3": "tiny_flowers:block/tiny_flowers/tiny_open_eyeblossom_3",
-  "modelPart4": "tiny_flowers:block/tiny_flowers/tiny_open_eyeblossom_4"
+  "modelPart4": "tiny_flowers:block/tiny_flowers/tiny_open_eyeblossom_4",
+  "particle_texture": "tiny_flowers:block/tiny_open_eyeblossom"
 }

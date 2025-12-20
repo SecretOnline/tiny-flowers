@@ -10,7 +10,6 @@ import co.secretonline.tinyflowers.datagen.providers.ModRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.util.Mth;
 
 public abstract class BaseModDataGenerator implements PackContributor {
 	public abstract String getModId();
@@ -27,9 +26,5 @@ public abstract class BaseModDataGenerator implements PackContributor {
 				CompletableFuture<HolderLookup.Provider> registriesFuture) -> new ModRecipeProvider(modId, data,
 						output, registriesFuture));
 		pack.addProvider((FabricDataOutput output) -> new ModFlowersProvider(modId, data, output));
-	}
-
-	protected static int toTicks(float seconds) {
-		return Mth.floor(seconds * 20.0f);
 	}
 }
