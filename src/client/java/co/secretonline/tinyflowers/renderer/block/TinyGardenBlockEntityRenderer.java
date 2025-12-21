@@ -10,11 +10,11 @@ import com.mojang.math.Axis;
 
 import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
-import co.secretonline.tinyflowers.resources.TinyFlowerResources;
+import co.secretonline.tinyflowers.resources.TinyFlowerResolvedResources;
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
@@ -56,8 +56,10 @@ public class TinyGardenBlockEntityRenderer
 			SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
 		poseStack.pushPose();
 
+		poseStack.translate(0.5, 0, 0.5);
 		float rotationDegrees = Direction.getYRot(blockEntityRenderState.getDirection());
-		poseStack.mulPose(Axis.YP.rotationDegrees(rotationDegrees));
+		poseStack.mulPose(Axis.YP.rotationDegrees(180 - rotationDegrees));
+		poseStack.translate(-0.5, 0, -0.5);
 
 		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 1);
 		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 2);
@@ -67,21 +69,21 @@ public class TinyGardenBlockEntityRenderer
 		poseStack.popPose();
 	}
 
-	private void submitPartForFlowerIndex(TinyGardenBlockEntityRenderState blockEntityRenderState, PoseStack poseStack,
+	private void submitPartForFlowerIndex(TinyGardenBlockEntityRenderState state, PoseStack poseStack,
 			SubmitNodeCollector submitNodeCollector, int index) {
 		Identifier id;
 		switch (index) {
 			case 1:
-				id = blockEntityRenderState.getFlower1();
+				id = state.getFlower1();
 				break;
 			case 2:
-				id = blockEntityRenderState.getFlower2();
+				id = state.getFlower2();
 				break;
 			case 3:
-				id = blockEntityRenderState.getFlower3();
+				id = state.getFlower3();
 				break;
 			case 4:
-				id = blockEntityRenderState.getFlower4();
+				id = state.getFlower4();
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid flower index " + index);
@@ -90,44 +92,45 @@ public class TinyGardenBlockEntityRenderer
 			return;
 		}
 
-		Map<Identifier, TinyFlowerResources> resourceMap = TinyFlowerResources.getInstances();
-		TinyFlowerResources resources = resourceMap.get(id);
+		Map<Identifier, TinyFlowerResolvedResources> resourceMap = TinyFlowerResolvedResources.getInstances();
+		TinyFlowerResolvedResources resources = resourceMap.get(id);
 		if (resources == null) {
 			return;
 		}
 
-		Identifier modelId;
+		ExtraModelKey<BlockStateModel> key;
 		switch (index) {
 			case 1:
-				modelId = resources.modelPart1();
+				key = resources.model1().extraModelKey();
 				break;
 			case 2:
-				modelId = resources.modelPart2();
+				key = resources.model2().extraModelKey();
 				break;
 			case 3:
-				modelId = resources.modelPart3();
+				key = resources.model3().extraModelKey();
 				break;
 			case 4:
-				modelId = resources.modelPart4();
+				key = resources.model4().extraModelKey();
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid flower index " + index);
 		}
-		if (modelId == null) {
+		if (key == null) {
 			return;
 		}
-
-		ExtraModelKey<ModelPart> key = ExtraModelKey.create(modelId::toString);
 
 		Minecraft minecraft = Minecraft.getInstance();
 		ModelManager modelManager = minecraft.getModelManager();
 
-		ModelPart model = modelManager.getModel(key);
+		BlockStateModel model = modelManager.getModel(key);
 		if (model == null) {
 			return;
 		}
 
-		submitNodeCollector.submitModelPart(model, poseStack, RenderTypes.cutoutMovingBlock(), 0, 0, null);
+		submitNodeCollector.submitBlockModel(
+				poseStack, RenderTypes.cutoutMovingBlock(), model,
+				0, 0, 0,
+				state.lightCoords, 0, 0);
 	}
 
 	@Override

@@ -7,30 +7,31 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.resources.Identifier;
 
 public class TinyFlowersModelLoadingPlugin
-		implements PreparableModelLoadingPlugin<Map<Identifier, TinyFlowerResources>> {
+		implements PreparableModelLoadingPlugin<Map<Identifier, TinyFlowerResolvedResources>> {
 
 	@Override
-	public void initialize(Map<Identifier, TinyFlowerResources> data, Context pluginContext) {
-		TinyFlowerResources.setInstances(data);
+	public void initialize(Map<Identifier, TinyFlowerResolvedResources> data, Context pluginContext) {
+		TinyFlowerResolvedResources.setInstances(data);
 
 		for (var entry : data.entrySet()) {
-			TinyFlowerResources resources = entry.getValue();
+			TinyFlowerResolvedResources resources = entry.getValue();
 
 			pluginContext.addModel(
-					ExtraModelKey.create(resources.modelPart1()::toString),
-					SimpleUnbakedExtraModel.blockStateModel(resources.modelPart1()));
+					resources.model1().extraModelKey(),
+					SimpleUnbakedExtraModel.blockStateModel(resources.model1().modelId()));
 			pluginContext.addModel(
-					ExtraModelKey.create(resources.modelPart2()::toString),
-					SimpleUnbakedExtraModel.blockStateModel(resources.modelPart2()));
+					resources.model2().extraModelKey(),
+					SimpleUnbakedExtraModel.blockStateModel(resources.model2().modelId()));
 			pluginContext.addModel(
-					ExtraModelKey.create(resources.modelPart3()::toString),
-					SimpleUnbakedExtraModel.blockStateModel(resources.modelPart3()));
+					resources.model3().extraModelKey(),
+					SimpleUnbakedExtraModel.blockStateModel(resources.model3().modelId()));
 			pluginContext.addModel(
-					ExtraModelKey.create(resources.modelPart4()::toString),
-					SimpleUnbakedExtraModel.blockStateModel(resources.modelPart4()));
+					resources.model4().extraModelKey(),
+					SimpleUnbakedExtraModel.blockStateModel(resources.model4().modelId()));
 		}
 
 		pluginContext.modifyItemModelBeforeBake().register((model, itemContext) -> {

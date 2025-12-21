@@ -1,10 +1,12 @@
 package co.secretonline.tinyflowers.resources;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.DataResult;
@@ -12,6 +14,7 @@ import com.mojang.serialization.JsonOps;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.ModRegistries;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener.SharedState;
@@ -19,11 +22,13 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 
 public class TinyFlowerModelDataLoader
-		implements PreparableModelLoadingPlugin.DataLoader<Map<Identifier, TinyFlowerResources>> {
+		implements PreparableModelLoadingPlugin.DataLoader<Map<Identifier, TinyFlowerResolvedResources>> {
 	@Override
-	public CompletableFuture<Map<Identifier, TinyFlowerResources>> load(SharedState sharedState,
+	public CompletableFuture<Map<Identifier, TinyFlowerResolvedResources>> load(SharedState sharedState,
 			Executor executor) {
-		return CompletableFuture.supplyAsync(() -> this.readResourceFiles(sharedState.resourceManager()), executor);
+		return CompletableFuture
+				.supplyAsync(() -> this.readResourceFiles(sharedState.resourceManager()), executor)
+				.thenApplyAsync((map) -> this.resolveAll(map), executor);
 	}
 
 	private Map<Identifier, TinyFlowerResources> readResourceFiles(ResourceManager resourceManager) {
@@ -57,5 +62,27 @@ public class TinyFlowerModelDataLoader
 		});
 
 		return map;
+	}
+
+	private Map<Identifier, TinyFlowerResolvedResources> resolveAll(Map<Identifier, TinyFlowerResources> map) {
+		return map.entrySet()
+				.stream()
+				.map(entry -> {
+					var resources = entry.getValue();
+
+					return new AbstractMap.SimpleEntry<>(entry.getKey(),
+							new TinyFlowerResolvedResources(resources.id(), resources.itemTexture(), resources.particleTexture(),
+									new TinyFlowerResolvedResources.Part(resources.modelPart1(),
+											ExtraModelKey.create(resources.modelPart1()::toString)),
+									new TinyFlowerResolvedResources.Part(resources.modelPart2(),
+											ExtraModelKey.create(resources.modelPart2()::toString)),
+									new TinyFlowerResolvedResources.Part(resources.modelPart3(),
+											ExtraModelKey.create(resources.modelPart3()::toString)),
+									new TinyFlowerResolvedResources.Part(resources.modelPart4(),
+											ExtraModelKey.create(resources.modelPart4()::toString))));
+				})
+				.collect(Collectors.toMap(
+						Map.Entry::getKey,
+						Map.Entry::getValue));
 	}
 }
