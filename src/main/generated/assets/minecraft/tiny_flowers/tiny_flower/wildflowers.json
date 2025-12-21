@@ -1,9 +1,17 @@
 {
   "id": "minecraft:wildflowers",
   "item_texture": "minecraft:item/wildflowers",
-  "modelPart1": "minecraft:block/tiny_flowers/wildflowers_1",
-  "modelPart2": "minecraft:block/tiny_flowers/wildflowers_2",
-  "modelPart3": "minecraft:block/tiny_flowers/wildflowers_3",
-  "modelPart4": "minecraft:block/tiny_flowers/wildflowers_4",
+  "model1": {
+    "id": "minecraft:block/tiny_flowers/wildflowers_1"
+  },
+  "model2": {
+    "id": "minecraft:block/tiny_flowers/wildflowers_2"
+  },
+  "model3": {
+    "id": "minecraft:block/tiny_flowers/wildflowers_3"
+  },
+  "model4": {
+    "id": "minecraft:block/tiny_flowers/wildflowers_4"
+  },
   "particle_texture": "minecraft:block/wildflowers"
 }

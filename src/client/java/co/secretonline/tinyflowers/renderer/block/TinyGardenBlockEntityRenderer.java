@@ -8,11 +8,14 @@ import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.resources.TinyFlowerResolvedResources;
-import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
+import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -73,23 +76,13 @@ public class TinyGardenBlockEntityRenderer
 
 	private void submitPartForFlowerIndex(TinyGardenBlockEntityRenderState state, PoseStack poseStack,
 			SubmitNodeCollector submitNodeCollector, int index) {
-		Identifier id;
-		switch (index) {
-			case 1:
-				id = state.getFlower1();
-				break;
-			case 2:
-				id = state.getFlower2();
-				break;
-			case 3:
-				id = state.getFlower3();
-				break;
-			case 4:
-				id = state.getFlower4();
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid flower index " + index);
-		}
+		Identifier id = switch (index) {
+			case 1 -> state.getFlower1();
+			case 2 -> state.getFlower2();
+			case 3 -> state.getFlower3();
+			case 4 -> state.getFlower4();
+			default -> throw new IllegalArgumentException("Invalid flower index " + index);
+		};
 		if (id == null) {
 			return;
 		}
@@ -100,37 +93,38 @@ public class TinyGardenBlockEntityRenderer
 			return;
 		}
 
-		ExtraModelKey<BlockStateModel> key;
-		switch (index) {
-			case 1:
-				key = resources.model1().extraModelKey();
-				break;
-			case 2:
-				key = resources.model2().extraModelKey();
-				break;
-			case 3:
-				key = resources.model3().extraModelKey();
-				break;
-			case 4:
-				key = resources.model4().extraModelKey();
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid flower index " + index);
-		}
-		if (key == null) {
+		TinyFlowerResolvedResources.Part part = switch (index) {
+			case 1 -> resources.model1();
+			case 2 -> resources.model2();
+			case 3 -> resources.model3();
+			case 4 -> resources.model4();
+			default -> throw new IllegalArgumentException("Invalid flower index " + index);
+		};
+		if (part == null) {
 			return;
 		}
 
 		Minecraft minecraft = Minecraft.getInstance();
 		ModelManager modelManager = minecraft.getModelManager();
-
-		BlockStateModel model = modelManager.getModel(key);
+		BlockStateModel model = modelManager.getModel(part.extraModelKey());
 		if (model == null) {
 			return;
 		}
 
+		BlockColor tintProvider = ColorProviderRegistry.BLOCK.get(ModBlocks.TINY_GARDEN_BLOCK);
+		TintSource tintSource = part.tintSource();
+		int tintIndex = switch (tintSource) {
+			case TintSource.DRY_FOLIAGE -> 2;
+			default -> 1;
+		};
+
+		int packedTint = tintProvider.getColor(state.blockState, state.getBlockAndTintGetter(), state.blockPos, tintIndex);
+		float r = ((packedTint & 0xFF0000) >> 16) / 256f;
+		float g = ((packedTint & 0xFF00) >> 8) / 256f;
+		float b = (packedTint & 0xFF) / 256f;
+
 		submitNodeCollector.submitBlockStateModel(poseStack, (layer) -> RenderTypes.cutoutMovingBlock(), model,
-				1, 1, 1,
+				r, g, b,
 				state.lightCoords, 0, 0,
 				state.getBlockAndTintGetter(), state.blockPos, state.blockState);
 	}

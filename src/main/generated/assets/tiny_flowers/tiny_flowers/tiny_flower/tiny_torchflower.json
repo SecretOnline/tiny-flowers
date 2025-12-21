@@ -1,9 +1,17 @@
 {
   "id": "tiny_flowers:tiny_torchflower",
   "item_texture": "tiny_flowers:item/tiny_torchflower",
-  "modelPart1": "tiny_flowers:block/tiny_flowers/tiny_torchflower_1",
-  "modelPart2": "tiny_flowers:block/tiny_flowers/tiny_torchflower_2",
-  "modelPart3": "tiny_flowers:block/tiny_flowers/tiny_torchflower_3",
-  "modelPart4": "tiny_flowers:block/tiny_flowers/tiny_torchflower_4",
+  "model1": {
+    "id": "tiny_flowers:block/tiny_flowers/tiny_torchflower_1"
+  },
+  "model2": {
+    "id": "tiny_flowers:block/tiny_flowers/tiny_torchflower_2"
+  },
+  "model3": {
+    "id": "tiny_flowers:block/tiny_flowers/tiny_torchflower_3"
+  },
+  "model4": {
+    "id": "tiny_flowers:block/tiny_flowers/tiny_torchflower_4"
+  },
   "particle_texture": "tiny_flowers:block/tiny_torchflower"
 }
