@@ -1,5 +1,5 @@
 {
-  "parent": "tiny_flowers:block/garden_2",
+  "parent": "minecraft:block/flowerbed_2",
   "textures": {
     "flowerbed": "minecraft:block/wildflowers",
     "particle": "minecraft:block/wildflowers",
