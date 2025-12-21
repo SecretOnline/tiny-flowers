@@ -46,6 +46,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -136,7 +137,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			// the garden_contents component (normal). If it's the latter, then the Block
 			// Entity will handle this so we just have to set the direction.
 			// If it's the former, then don't do anything.
-			GardenContentsComponent gardenContents = stack.get(ModComponents.GARDEN_CONTENTS);
+			GardenContentsComponent gardenContents = stack.getOrDefault(ModComponents.GARDEN_CONTENTS, null);
 			if (gardenContents == null) {
 				return blockState;
 			}
@@ -306,6 +307,15 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 			popResource(serverLevel, pos, stack);
 		}
+	}
+
+	protected boolean propagatesSkylightDown(BlockState blockState) {
+		return blockState.getFluidState().isEmpty();
+	}
+
+	protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
+		return pathComputationType == PathComputationType.AIR && !this.hasCollision ? true
+				: super.isPathfindable(blockState, pathComputationType);
 	}
 
 	@Override
