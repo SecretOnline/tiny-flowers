@@ -16,9 +16,11 @@ public class VanillaDataGenerator extends BaseModDataGenerator {
 		return List.of(
 				TinyFlowersDatagenData.Builder
 						.ofSegmented(Identifier.withDefaultNamespace("pink_petals"))
+						.customModel(Identifier.withDefaultNamespace("flowerbed"))
 						.build(),
 				TinyFlowersDatagenData.Builder
 						.ofSegmented(Identifier.withDefaultNamespace("wildflowers"))
+						.customModel(Identifier.withDefaultNamespace("flowerbed"))
 						.build(),
 				TinyFlowersDatagenData.Builder
 						.ofSegmented(Identifier.withDefaultNamespace("leaf_litter"))
