@@ -7,6 +7,7 @@ import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.components.GardenContentsComponent;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -26,7 +27,14 @@ public class TinyFlowerItem extends BlockItem {
 			return newBlockState;
 		}
 
-		return newBlockState.setValue(TinyGardenBlock.FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
+		BlockState currentBlockState = blockPlaceContext.getLevel().getBlockState(blockPlaceContext.getClickedPos());
+		Direction currentDirection = currentBlockState.getValue(TinyGardenBlock.FACING);
+
+		Direction newDirection = currentDirection != null
+				? currentDirection
+				: blockPlaceContext.getHorizontalDirection().getOpposite();
+
+		return newBlockState.setValue(TinyGardenBlock.FACING, newDirection);
 	}
 
 	@Override
