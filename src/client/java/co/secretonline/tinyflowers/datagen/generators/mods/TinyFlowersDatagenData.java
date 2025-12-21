@@ -185,7 +185,7 @@ public class TinyFlowersDatagenData {
 		}
 
 		public Builder layers(Identifier lowerTexture, Identifier middleTexture, Identifier upperTexture) {
-			layers = 2;
+			layers = 3;
 			particleTexture = lowerTexture.withPrefix("block/");
 			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
