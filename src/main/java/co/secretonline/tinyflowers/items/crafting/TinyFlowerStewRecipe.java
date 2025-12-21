@@ -12,10 +12,12 @@ import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderLookup.RegistryLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -48,6 +50,10 @@ public class TinyFlowerStewRecipe extends CustomRecipe {
 		for (ItemStack itemStack : recipeInput.items()) {
 			// Ensure exactly one of each of bowl, red shroom, and brown shroom are in the
 			// list.
+			if (itemStack.isEmpty()) {
+				continue;
+			}
+
 			if (itemStack.is(Items.BOWL)) {
 				if (hasBowl) {
 					return false;
@@ -85,7 +91,7 @@ public class TinyFlowerStewRecipe extends CustomRecipe {
 
 	@Override
 	public ItemStack assemble(CraftingInput recipeInput, Provider provider) {
-		Registry<TinyFlowerData> registry = provider.getOrThrow(ModRegistries.TINY_FLOWER).value();
+		RegistryLookup<TinyFlowerData> registry = provider.lookupOrThrow(ModRegistries.TINY_FLOWER);
 		Map<Holder<MobEffect>, Integer> effectMap = new HashMap<>();
 
 		for (ItemStack itemStack : recipeInput.items()) {
@@ -98,12 +104,13 @@ public class TinyFlowerStewRecipe extends CustomRecipe {
 				continue;
 			}
 
-			Optional<TinyFlowerData> result = registry.getOptional(tinyFlowerComponent.id());
+			Optional<Reference<TinyFlowerData>> result = registry.get(
+					ResourceKey.create(ModRegistries.TINY_FLOWER, tinyFlowerComponent.id()));
 			if (result.isEmpty()) {
 				continue;
 			}
 
-			TinyFlowerData tinyFlowerData = result.get();
+			TinyFlowerData tinyFlowerData = result.get().value();
 			for (Entry entry : tinyFlowerData.getSuspiciousEffects().effects()) {
 				effectMap.merge(entry.effect(), entry.duration(), Integer::sum);
 			}
