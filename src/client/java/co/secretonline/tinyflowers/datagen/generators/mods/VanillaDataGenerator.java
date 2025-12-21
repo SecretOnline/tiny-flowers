@@ -3,6 +3,7 @@ package co.secretonline.tinyflowers.datagen.generators.mods;
 import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
 import net.minecraft.resources.Identifier;
 
 public class VanillaDataGenerator extends BaseModDataGenerator {
@@ -26,6 +27,7 @@ public class VanillaDataGenerator extends BaseModDataGenerator {
 						.ofSegmented(Identifier.withDefaultNamespace("leaf_litter"))
 						.customModel(TinyFlowers.id("garden_leaf_litter"))
 						.noStem()
+						.tintSource(TintSource.DRY_FOLIAGE)
 						.build());
 	}
 }

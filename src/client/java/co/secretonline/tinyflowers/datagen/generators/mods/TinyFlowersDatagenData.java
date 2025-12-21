@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
+import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Holder;
@@ -45,10 +46,10 @@ public class TinyFlowersDatagenData {
 
 	public TinyFlowerResources resources() {
 		return new TinyFlowerResources(id, itemTexture, particleTexture,
-				modelPart1.id().withPrefix(BLOCK_MOD_PREFIX),
-				modelPart2.id().withPrefix(BLOCK_MOD_PREFIX),
-				modelPart3.id().withPrefix(BLOCK_MOD_PREFIX),
-				modelPart4.id().withPrefix(BLOCK_MOD_PREFIX));
+				new TinyFlowerResources.Part(modelPart1.id().withPrefix(BLOCK_MOD_PREFIX), modelPart1.tintSource()),
+				new TinyFlowerResources.Part(modelPart2.id().withPrefix(BLOCK_MOD_PREFIX), modelPart2.tintSource()),
+				new TinyFlowerResources.Part(modelPart3.id().withPrefix(BLOCK_MOD_PREFIX), modelPart3.tintSource()),
+				new TinyFlowerResources.Part(modelPart4.id().withPrefix(BLOCK_MOD_PREFIX), modelPart4.tintSource()));
 	}
 
 	public ModelParts modelParts() {
@@ -59,7 +60,8 @@ public class TinyFlowersDatagenData {
 				modelPart4);
 	}
 
-	public static record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures) {
+	public static record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures,
+			TintSource tintSource) {
 
 		public JsonElement toJsonElement() {
 			JsonObject jsonObject = new JsonObject();
@@ -100,6 +102,7 @@ public class TinyFlowersDatagenData {
 		private Identifier stemTexture = Identifier.withDefaultNamespace("block/pink_petals_stem");
 		private Map<String, Identifier> textureMap = new HashMap<>();
 		private Identifier customModel = null;
+		private TintSource tintSource = TintSource.GRASS;
 
 		public static Builder ofCustom(Identifier id, Identifier originalBlockId) {
 			return new Builder()
@@ -212,6 +215,11 @@ public class TinyFlowersDatagenData {
 			return this;
 		}
 
+		public Builder tintSource(TintSource tintSource) {
+			this.tintSource = tintSource;
+			return this;
+		}
+
 		public TinyFlowersDatagenData build() {
 			TinyFlowersDatagenData data = new TinyFlowersDatagenData();
 
@@ -253,10 +261,10 @@ public class TinyFlowersDatagenData {
 				textureMap.put("stem", this.stemTexture);
 			}
 
-			data.modelPart1 = new ModelPart(id.withSuffix("_1"), parentId.withSuffix("_1"), textureMap);
-			data.modelPart2 = new ModelPart(id.withSuffix("_2"), parentId.withSuffix("_2"), textureMap);
-			data.modelPart3 = new ModelPart(id.withSuffix("_3"), parentId.withSuffix("_3"), textureMap);
-			data.modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap);
+			data.modelPart1 = new ModelPart(id.withSuffix("_1"), parentId.withSuffix("_1"), textureMap, tintSource);
+			data.modelPart2 = new ModelPart(id.withSuffix("_2"), parentId.withSuffix("_2"), textureMap, tintSource);
+			data.modelPart3 = new ModelPart(id.withSuffix("_3"), parentId.withSuffix("_3"), textureMap, tintSource);
+			data.modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap, tintSource);
 
 			return data;
 		}
