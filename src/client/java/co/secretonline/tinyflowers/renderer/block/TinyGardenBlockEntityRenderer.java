@@ -49,6 +49,8 @@ public class TinyGardenBlockEntityRenderer
 
 		state.setFlowers(blockEntity.getFlower(1), blockEntity.getFlower(2),
 				blockEntity.getFlower(3), blockEntity.getFlower(4));
+
+		state.setBlockAndTintGetter(blockEntity.getLevel());
 	}
 
 	@Override
@@ -127,10 +129,10 @@ public class TinyGardenBlockEntityRenderer
 			return;
 		}
 
-		submitNodeCollector.submitBlockModel(
-				poseStack, RenderTypes.cutoutMovingBlock(), model,
-				0, 0, 0,
-				state.lightCoords, 0, 0);
+		submitNodeCollector.submitBlockStateModel(poseStack, (layer) -> RenderTypes.cutoutMovingBlock(), model,
+				1, 1, 1,
+				state.lightCoords, 0, 0,
+				state.getBlockAndTintGetter(), state.blockPos, state.blockState);
 	}
 
 	@Override

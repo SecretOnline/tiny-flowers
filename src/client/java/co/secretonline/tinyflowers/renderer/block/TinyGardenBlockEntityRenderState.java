@@ -1,10 +1,12 @@
 package co.secretonline.tinyflowers.renderer.block;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.EmptyBlockAndTintGetter;
 
 public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 	private Direction direction = Direction.NORTH;
@@ -17,6 +19,8 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 	private Identifier flower3 = null;
 	@Nullable
 	private Identifier flower4 = null;
+	@Nullable
+	private BlockAndTintGetter blockAndTintGetter = null;
 
 	public Direction getDirection() {
 		return direction;
@@ -38,6 +42,14 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 		return flower4;
 	}
 
+	public BlockAndTintGetter getBlockAndTintGetter() {
+		if (blockAndTintGetter == null) {
+			return EmptyBlockAndTintGetter.INSTANCE;
+		}
+
+		return blockAndTintGetter;
+	}
+
 	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
@@ -47,5 +59,9 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 		this.flower2 = flower2;
 		this.flower3 = flower3;
 		this.flower4 = flower4;
+	}
+
+	public void setBlockAndTintGetter(BlockAndTintGetter getter) {
+		this.blockAndTintGetter = getter;
 	}
 }

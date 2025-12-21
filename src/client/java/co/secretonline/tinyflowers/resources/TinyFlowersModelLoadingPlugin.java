@@ -3,11 +3,9 @@ package co.secretonline.tinyflowers.resources;
 import java.util.Map;
 
 import co.secretonline.tinyflowers.items.ModItems;
-import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.resources.Identifier;
 
 public class TinyFlowersModelLoadingPlugin
