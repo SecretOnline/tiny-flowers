@@ -1,5 +1,7 @@
 package co.secretonline.tinyflowers.items;
 
+import java.util.Optional;
+
 import org.jspecify.annotations.Nullable;
 
 import co.secretonline.tinyflowers.blocks.ModBlocks;
@@ -28,11 +30,8 @@ public class TinyFlowerItem extends BlockItem {
 		}
 
 		BlockState currentBlockState = blockPlaceContext.getLevel().getBlockState(blockPlaceContext.getClickedPos());
-		Direction currentDirection = currentBlockState.getValue(TinyGardenBlock.FACING);
-
-		Direction newDirection = currentDirection != null
-				? currentDirection
-				: blockPlaceContext.getHorizontalDirection().getOpposite();
+		Optional<Direction> currentDirection = currentBlockState.getOptionalValue(TinyGardenBlock.FACING);
+		Direction newDirection = currentDirection.orElse(blockPlaceContext.getHorizontalDirection().getOpposite());
 
 		return newBlockState.setValue(TinyGardenBlock.FACING, newDirection);
 	}
