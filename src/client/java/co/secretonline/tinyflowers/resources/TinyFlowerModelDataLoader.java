@@ -45,7 +45,8 @@ public class TinyFlowerModelDataLoader
 					return;
 				}
 
-				map.put(identifier, readResult.getOrThrow());
+				TinyFlowerResources resources = readResult.getOrThrow();
+				map.put(resources.id(), resources);
 			} catch (IOException ex) {
 				TinyFlowers.LOGGER
 						.warn("Failed to read data for tiny flower resource info " + identifier.toString() + ". Skipping");

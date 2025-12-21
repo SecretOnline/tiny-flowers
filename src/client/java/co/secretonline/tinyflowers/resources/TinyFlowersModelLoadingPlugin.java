@@ -14,6 +14,8 @@ public class TinyFlowersModelLoadingPlugin
 
 	@Override
 	public void initialize(Map<Identifier, TinyFlowerResources> data, Context pluginContext) {
+		TinyFlowerResources.setInstances(data);
+
 		for (var entry : data.entrySet()) {
 			TinyFlowerResources resources = entry.getValue();
 
