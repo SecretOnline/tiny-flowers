@@ -8,7 +8,7 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.resources.Identifier;
 
-public record TinyFlowerResolvedResources(Identifier id, Identifier itemTexture, Identifier particleTexture,
+public record TinyFlowerResolvedResources(Identifier id, Identifier itemTexture, TintSource tintSource,
 		Part model1, Part model2, Part model3, Part model4) {
 	private static Map<Identifier, TinyFlowerResolvedResources> INSTANCES = new HashMap<>();
 
@@ -20,6 +20,6 @@ public record TinyFlowerResolvedResources(Identifier id, Identifier itemTexture,
 		INSTANCES = map;
 	}
 
-	public static record Part(Identifier modelId, ExtraModelKey<BlockStateModel> extraModelKey, TintSource tintSource) {
+	public static record Part(Identifier modelId, ExtraModelKey<BlockStateModel> extraModelKey) {
 	}
 }

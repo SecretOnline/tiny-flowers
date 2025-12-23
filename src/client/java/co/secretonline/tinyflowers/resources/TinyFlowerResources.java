@@ -6,26 +6,19 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
 
-public record TinyFlowerResources(Identifier id, Identifier itemTexture, Identifier particleTexture,
-		Part model1, Part model2, Part model3, Part model4) {
+public record TinyFlowerResources(Identifier id, Identifier itemTexture,
+		TintSource tintSource,
+		Identifier model1, Identifier model2, Identifier model3, Identifier model4) {
 
 	public static Codec<TinyFlowerResources> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerResources::id),
 			Identifier.CODEC.fieldOf("item_texture").forGetter(TinyFlowerResources::itemTexture),
-			Identifier.CODEC.fieldOf("particle_texture").forGetter(TinyFlowerResources::particleTexture),
-			Part.CODEC.fieldOf("model1").forGetter(TinyFlowerResources::model1),
-			Part.CODEC.fieldOf("model2").forGetter(TinyFlowerResources::model2),
-			Part.CODEC.fieldOf("model3").forGetter(TinyFlowerResources::model3),
-			Part.CODEC.fieldOf("model4").forGetter(TinyFlowerResources::model4))
+			TintSource.CODEC.optionalFieldOf("tintSource", TintSource.GRASS).forGetter(TinyFlowerResources::tintSource),
+			Identifier.CODEC.fieldOf("model1").forGetter(TinyFlowerResources::model1),
+			Identifier.CODEC.fieldOf("model2").forGetter(TinyFlowerResources::model2),
+			Identifier.CODEC.fieldOf("model3").forGetter(TinyFlowerResources::model3),
+			Identifier.CODEC.fieldOf("model4").forGetter(TinyFlowerResources::model4))
 			.apply(instance, TinyFlowerResources::new));
-
-	public static record Part(Identifier id, TintSource tintSource) {
-
-		public static Codec<Part> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				Identifier.CODEC.fieldOf("id").forGetter(Part::id),
-				TintSource.CODEC.optionalFieldOf("tintSource", TintSource.GRASS).forGetter(Part::tintSource))
-				.apply(instance, Part::new));
-	}
 
 	public static enum TintSource implements StringRepresentable {
 		GRASS("grass"),

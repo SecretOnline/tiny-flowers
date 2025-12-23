@@ -112,7 +112,7 @@ public class TinyGardenBlockEntityRenderer
 		}
 
 		BlockColor tintProvider = ColorProviderRegistry.BLOCK.get(ModBlocks.TINY_GARDEN_BLOCK);
-		TintSource tintSource = part.tintSource();
+		TintSource tintSource = resources.tintSource();
 		int tintIndex = switch (tintSource) {
 			case TintSource.DRY_FOLIAGE -> 2;
 			default -> 1;

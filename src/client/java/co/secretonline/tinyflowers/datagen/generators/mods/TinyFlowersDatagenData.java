@@ -29,11 +29,11 @@ public class TinyFlowersDatagenData {
 
 	private Identifier id;
 	private Identifier itemTexture;
-	private Identifier particleTexture;
 	private Identifier originalBlockId;
 	private boolean isSegmentable;
 	@NonNull
 	private List<Entry> suspiciousStewEffects;
+	private TintSource tintSource = TintSource.GRASS;
 
 	private ModelPart modelPart1;
 	private ModelPart modelPart2;
@@ -45,11 +45,11 @@ public class TinyFlowersDatagenData {
 	}
 
 	public TinyFlowerResources resources() {
-		return new TinyFlowerResources(id, itemTexture, particleTexture,
-				new TinyFlowerResources.Part(modelPart1.id().withPrefix(BLOCK_MOD_PREFIX), modelPart1.tintSource()),
-				new TinyFlowerResources.Part(modelPart2.id().withPrefix(BLOCK_MOD_PREFIX), modelPart2.tintSource()),
-				new TinyFlowerResources.Part(modelPart3.id().withPrefix(BLOCK_MOD_PREFIX), modelPart3.tintSource()),
-				new TinyFlowerResources.Part(modelPart4.id().withPrefix(BLOCK_MOD_PREFIX), modelPart4.tintSource()));
+		return new TinyFlowerResources(id, itemTexture, tintSource,
+				modelPart1.id().withPrefix(BLOCK_MOD_PREFIX),
+				modelPart2.id().withPrefix(BLOCK_MOD_PREFIX),
+				modelPart3.id().withPrefix(BLOCK_MOD_PREFIX),
+				modelPart4.id().withPrefix(BLOCK_MOD_PREFIX));
 	}
 
 	public ModelParts modelParts() {
@@ -60,8 +60,7 @@ public class TinyFlowersDatagenData {
 				modelPart4);
 	}
 
-	public static record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures,
-			TintSource tintSource) {
+	public static record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures) {
 
 		public JsonElement toJsonElement() {
 			JsonObject jsonObject = new JsonObject();
@@ -91,7 +90,6 @@ public class TinyFlowersDatagenData {
 
 		private Identifier id;
 		private Identifier itemTexture;
-		private Identifier particleTexture;
 		private Identifier originalBlockId;
 		private boolean isSegmentable = false;
 		private List<Entry> suspiciousStewEffects = new ArrayList<>();
@@ -160,14 +158,8 @@ public class TinyFlowersDatagenData {
 			return this;
 		}
 
-		public Builder particleTexture(Identifier particleTexture) {
-			this.particleTexture = particleTexture.withPrefix("block/");
-			return this;
-		}
-
 		public Builder layers(Identifier flowerbedTexture) {
 			layers = 1;
-			particleTexture = flowerbedTexture.withPrefix("block/");
 			textureMap.put(TextureSlot.PARTICLE.getId(), flowerbedTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), flowerbedTexture.withPrefix("block/"));
 
@@ -176,7 +168,6 @@ public class TinyFlowersDatagenData {
 
 		public Builder layers(Identifier lowerTexture, Identifier upperTexture) {
 			layers = 2;
-			particleTexture = lowerTexture.withPrefix("block/");
 			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_UPPER.getId(), upperTexture.withPrefix("block/"));
@@ -186,7 +177,6 @@ public class TinyFlowersDatagenData {
 
 		public Builder layers(Identifier lowerTexture, Identifier middleTexture, Identifier upperTexture) {
 			layers = 3;
-			particleTexture = lowerTexture.withPrefix("block/");
 			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_MIDDLE.getId(), middleTexture.withPrefix("block/"));
@@ -225,10 +215,10 @@ public class TinyFlowersDatagenData {
 
 			data.id = id;
 			data.itemTexture = itemTexture;
-			data.particleTexture = particleTexture;
 			data.originalBlockId = originalBlockId;
 			data.isSegmentable = isSegmentable;
 			data.suspiciousStewEffects = suspiciousStewEffects;
+			data.tintSource = tintSource;
 
 			if (layers == 0 && customModel == null) {
 				throw new Error("TinyFlowerResources.Builder: layers() or special() must be called once.");
@@ -261,10 +251,10 @@ public class TinyFlowersDatagenData {
 				textureMap.put("stem", this.stemTexture);
 			}
 
-			data.modelPart1 = new ModelPart(id.withSuffix("_1"), parentId.withSuffix("_1"), textureMap, tintSource);
-			data.modelPart2 = new ModelPart(id.withSuffix("_2"), parentId.withSuffix("_2"), textureMap, tintSource);
-			data.modelPart3 = new ModelPart(id.withSuffix("_3"), parentId.withSuffix("_3"), textureMap, tintSource);
-			data.modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap, tintSource);
+			data.modelPart1 = new ModelPart(id.withSuffix("_1"), parentId.withSuffix("_1"), textureMap);
+			data.modelPart2 = new ModelPart(id.withSuffix("_2"), parentId.withSuffix("_2"), textureMap);
+			data.modelPart3 = new ModelPart(id.withSuffix("_3"), parentId.withSuffix("_3"), textureMap);
+			data.modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap);
 
 			return data;
 		}

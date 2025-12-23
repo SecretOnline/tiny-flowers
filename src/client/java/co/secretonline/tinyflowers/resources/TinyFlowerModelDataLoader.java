@@ -71,19 +71,16 @@ public class TinyFlowerModelDataLoader
 					var resources = entry.getValue();
 
 					return new AbstractMap.SimpleEntry<>(entry.getKey(),
-							new TinyFlowerResolvedResources(resources.id(), resources.itemTexture(), resources.particleTexture(),
-									new TinyFlowerResolvedResources.Part(resources.model1().id(),
-											ExtraModelKey.create(resources.model1().id()::toString),
-											resources.model1().tintSource()),
-									new TinyFlowerResolvedResources.Part(resources.model2().id(),
-											ExtraModelKey.create(resources.model2().id()::toString),
-											resources.model2().tintSource()),
-									new TinyFlowerResolvedResources.Part(resources.model3().id(),
-											ExtraModelKey.create(resources.model3().id()::toString),
-											resources.model3().tintSource()),
-									new TinyFlowerResolvedResources.Part(resources.model4().id(),
-											ExtraModelKey.create(resources.model4().id()::toString),
-											resources.model4().tintSource())));
+							new TinyFlowerResolvedResources(resources.id(), resources.itemTexture(),
+									resources.tintSource(),
+									new TinyFlowerResolvedResources.Part(resources.model1(),
+											ExtraModelKey.create(resources.model1()::toString)),
+									new TinyFlowerResolvedResources.Part(resources.model2(),
+											ExtraModelKey.create(resources.model2()::toString)),
+									new TinyFlowerResolvedResources.Part(resources.model3(),
+											ExtraModelKey.create(resources.model3()::toString)),
+									new TinyFlowerResolvedResources.Part(resources.model4(),
+											ExtraModelKey.create(resources.model4()::toString))));
 				})
 				.collect(Collectors.toMap(
 						Map.Entry::getKey,
