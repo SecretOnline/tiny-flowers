@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -16,6 +17,7 @@ import co.secretonline.tinyflowers.helper.EyeblossomHelper;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -32,6 +34,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -47,6 +50,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.storage.loot.LootParams.Builder;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -93,6 +98,44 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	protected boolean canSurvive(BlockState blockState, LevelReader levelReader, BlockPos blockPos) {
 		BlockPos below = blockPos.below();
 		return this.mayPlaceOn(levelReader.getBlockState(below), levelReader, below);
+	}
+
+	@Override
+	protected BlockState updateShape(
+			BlockState blockState,
+			LevelReader levelReader,
+			ScheduledTickAccess scheduledTickAccess,
+			BlockPos blockPos,
+			Direction direction,
+			BlockPos blockPos2,
+			BlockState blockState2,
+			RandomSource randomSource) {
+		return !blockState.canSurvive(levelReader, blockPos)
+				? Blocks.AIR.defaultBlockState()
+				: super.updateShape(blockState, levelReader, scheduledTickAccess, blockPos, direction, blockPos2, blockState2,
+						randomSource);
+	}
+
+	@Override
+	protected List<ItemStack> getDrops(BlockState blockState, Builder builder) {
+		BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (!(blockEntity instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+			// If there's no block entity, fall back to default (probably nothing)
+			return super.getDrops(blockState, builder);
+		}
+
+		List<Identifier> flowerIds = gardenBlockEntity.getFlowers();
+		RegistryAccess registryAccess = builder.getLevel().registryAccess();
+
+		List<ItemStack> itemStacks = new ArrayList<>();
+		for (Identifier flowerId : flowerIds) {
+			TinyFlowerData flowerData = TinyFlowerData.findById(registryAccess, flowerId);
+			if (flowerData != null) {
+				itemStacks.add(flowerData.getItemStack(1));
+			}
+		}
+
+		return itemStacks;
 	}
 
 	@Override
