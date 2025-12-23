@@ -1,17 +1,8 @@
 {
   "id": "tiny_flowers:tiny_cornflower",
   "item_texture": "tiny_flowers:item/tiny_cornflower",
-  "model1": {
-    "id": "tiny_flowers:block/tiny_flowers/tiny_cornflower_1"
-  },
-  "model2": {
-    "id": "tiny_flowers:block/tiny_flowers/tiny_cornflower_2"
-  },
-  "model3": {
-    "id": "tiny_flowers:block/tiny_flowers/tiny_cornflower_3"
-  },
-  "model4": {
-    "id": "tiny_flowers:block/tiny_flowers/tiny_cornflower_4"
-  },
-  "particle_texture": "tiny_flowers:block/tiny_cornflower"
+  "model1": "tiny_flowers:block/tiny_flowers/tiny_cornflower_1",
+  "model2": "tiny_flowers:block/tiny_flowers/tiny_cornflower_2",
+  "model3": "tiny_flowers:block/tiny_flowers/tiny_cornflower_3",
+  "model4": "tiny_flowers:block/tiny_flowers/tiny_cornflower_4"
 }
