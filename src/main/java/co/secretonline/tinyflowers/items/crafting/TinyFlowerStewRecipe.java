@@ -38,7 +38,7 @@ public class TinyFlowerStewRecipe extends CustomRecipe {
 	public boolean matches(CraftingInput recipeInput, Level level) {
 		// Quick size check, since the recipe needs a bowl, the two shrooms, and at
 		// least one tiny flower.
-		if (recipeInput.size() < 4) {
+		if (recipeInput.ingredientCount() < 4) {
 			return false;
 		}
 
