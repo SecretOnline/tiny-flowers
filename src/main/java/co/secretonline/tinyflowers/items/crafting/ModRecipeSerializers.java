@@ -12,6 +12,11 @@ public class ModRecipeSerializers {
 			TinyFlowers.id("crafting_special_tiny_flower_stew"),
 			new CustomRecipe.Serializer<TinyFlowerStewRecipe>(TinyFlowerStewRecipe::new));
 
+	public static RecipeSerializer<ShearTinyFlowersRecipe> SHEAR_TINY_FLOWERS = Registry.register(
+			BuiltInRegistries.RECIPE_SERIALIZER,
+			TinyFlowers.id("crafting_special_shear_tiny_flowers"),
+			new CustomRecipe.Serializer<ShearTinyFlowersRecipe>(ShearTinyFlowersRecipe::new));
+
 	public static void initialize() {
 	}
 }

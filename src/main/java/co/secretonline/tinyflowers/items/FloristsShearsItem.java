@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -31,17 +30,6 @@ public class FloristsShearsItem extends ShearsItem {
 
 	public FloristsShearsItem(Properties settings) {
 		super(settings);
-	}
-
-	@Override
-	public ItemStack getRecipeRemainder(ItemStack stack) {
-		if (stack.getDamageValue() < stack.getMaxDamage() - 1) {
-			ItemStack moreDamaged = stack.copy();
-			moreDamaged.setDamageValue(stack.getDamageValue() + 1);
-			return moreDamaged;
-		}
-
-		return ItemStack.EMPTY;
 	}
 
 	@Override

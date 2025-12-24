@@ -14,7 +14,7 @@ import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.minecraft.core.Holder.Reference;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -85,30 +85,31 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 	}
 
 	@Nullable
-	private static TinyFlowerData ofPredicate(RegistryAccess registryAccess, Predicate<TinyFlowerData> predicate) {
-		return registryAccess.lookupOrThrow(ModRegistries.TINY_FLOWER)
-				.stream()
+	private static TinyFlowerData ofPredicate(HolderLookup.Provider provider, Predicate<TinyFlowerData> predicate) {
+		return provider.lookupOrThrow(ModRegistries.TINY_FLOWER)
+				.listElements()
+				.map(ref -> ref.value())
 				.filter(predicate)
 				.findFirst()
 				.orElse(null);
 	}
 
 	@Nullable
-	public static TinyFlowerData findByOriginalBlock(RegistryAccess registryAccess, Block block) {
-		return ofPredicate(registryAccess,
+	public static TinyFlowerData findByOriginalBlock(HolderLookup.Provider provider, Block block) {
+		return ofPredicate(provider,
 				flowerData -> flowerData.originalId().equals(BuiltInRegistries.BLOCK.getKey(block)));
 	}
 
 	@Nullable
-	public static TinyFlowerData findById(RegistryAccess registryAccess, Identifier id) {
-		return ofPredicate(registryAccess, flowerData -> flowerData.id().equals(id));
+	public static TinyFlowerData findById(HolderLookup.Provider provider, Identifier id) {
+		return ofPredicate(provider, flowerData -> flowerData.id().equals(id));
 	}
 
 	@Nullable
-	public static TinyFlowerData findByItemStack(RegistryAccess registryAccess, ItemStack itemStack) {
+	public static TinyFlowerData findByItemStack(HolderLookup.Provider provider, ItemStack itemStack) {
 		var key = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
 
-		return ofPredicate(registryAccess, flowerData -> {
+		return ofPredicate(provider, flowerData -> {
 			if (flowerData.isSegmentable()) {
 				// If the block is already segmented, then just check the original block ID.
 				return key.equals(flowerData.originalId());
