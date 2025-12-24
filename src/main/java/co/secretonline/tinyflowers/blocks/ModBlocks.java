@@ -24,7 +24,8 @@ public class ModBlocks {
 					.mapColor(MapColor.PLANT)
 					.noCollision()
 					.sound(SoundType.PINK_PETALS)
-					.pushReaction(PushReaction.DESTROY),
+					.pushReaction(PushReaction.DESTROY)
+					.randomTicks(),
 			TinyGardenBlock.CODEC,
 			true);
 

@@ -9,6 +9,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.TriState;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EyeblossomBlock;
@@ -18,29 +20,27 @@ public class EyeblossomHelper {
 	private static final Identifier OPEN_EYEBLOSSOM = TinyFlowers.id("tiny_open_eyeblossom");
 	private static final Identifier CLOSED_EYEBLOSSOM = TinyFlowers.id("tiny_closed_eyeblossom");
 
-	public static Identifier getIdentifierForDay(boolean isDay) {
-		return isDay
-				? CLOSED_EYEBLOSSOM
-				: OPEN_EYEBLOSSOM;
+	public static Identifier getTinyFlowerIdForOpenState(boolean isOpen) {
+		return isOpen
+				? OPEN_EYEBLOSSOM
+				: CLOSED_EYEBLOSSOM;
 	}
 
-	public static Block getBlock(boolean isDay) {
-		return isDay
-				? Blocks.CLOSED_EYEBLOSSOM
-				: Blocks.OPEN_EYEBLOSSOM;
-	}
-
-	public static EyeblossomBlock.Type getState(boolean isDay) {
-		return isDay
-				? EyeblossomBlock.Type.CLOSED
-				: EyeblossomBlock.Type.OPEN;
+	public static Block getEyeblossomBlockForOpenState(boolean isOpen) {
+		return isOpen
+				? Blocks.OPEN_EYEBLOSSOM
+				: Blocks.CLOSED_EYEBLOSSOM;
 	}
 
 	public static void notifyNearbyEyeblossoms(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		boolean isDay = world.isBrightOutside();
+		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
+		if (openTriState == TriState.DEFAULT) {
+			return;
+		}
 
-		Identifier incorrectId = getIdentifierForDay(!isDay);
-		Block incorrectEyeblossom = getBlock(!isDay);
+		boolean shouldOpen = openTriState.toBoolean(true);
+		Identifier incorrectId = getTinyFlowerIdForOpenState(!shouldOpen);
+		Block incorrectEyeblossom = getEyeblossomBlockForOpenState(!shouldOpen);
 
 		// This is to detect whether the central block of the area is a real Eyeblossom
 		// flower.
@@ -62,14 +62,14 @@ public class EyeblossomHelper {
 			// Gardens
 			if (nearbyBlockState.is(ModBlocks.TINY_GARDEN_BLOCK)) {
 
-				if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+				if (!(world.getBlockEntity(otherPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 					// If there's no block entity, don't do anything
 					return;
 				}
 
 				// Tiny Gardens should also recieve updates if they have eyeblossoms.
-				for (Identifier gardenId : gardenBlockEntity.getFlowers()) {
-					if (gardenId.equals(incorrectId)) {
+				for (Identifier gardenFlowerId : gardenBlockEntity.getFlowers()) {
+					if (gardenFlowerId.equals(incorrectId)) {
 						scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK, random);
 						return;
 					}
@@ -87,8 +87,8 @@ public class EyeblossomHelper {
 		world.scheduleTick(otherPos, block, numTicks);
 	}
 
-	public static void playSound(ServerLevel world, BlockPos pos, boolean isDay, boolean isLong) {
-		EyeblossomBlock.Type state = getState(isDay);
+	public static void playSound(ServerLevel world, BlockPos pos, boolean isOpen, boolean isLong) {
+		EyeblossomBlock.Type state = EyeblossomBlock.Type.fromBoolean(isOpen);
 
 		if (isLong) {
 			world.playSound(null, pos, state.longSwitchSound(),
