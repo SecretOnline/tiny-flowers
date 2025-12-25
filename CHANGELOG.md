@@ -16,6 +16,28 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+### Known Issues
+
+This is a ground-up rewrite of the mod, and is not compatible with any previous versions.
+
+Due to how different v1 is from v2, I wasn't able to find a nice way of upgrading worlds. As such, when you use v2 for the first time in an existing world, all previously made Tiny Flower items and blocks will be removed.
+
+### Added
+
+- After creating Florists' Shears with regular shears and a single dye, you can now use more dyes to re-color your Florists' Shears to almost any color possible.
+- You can now use multiple Tiny Flowers when crafting Suspicious Stew.
+  - Adding more of the same type of flower will increase the duration.
+  - Adding different types of flower will combine the effects into a single stew.
+- For mod developers:
+  - This mod is now entirely data-driven. This means you can use JSON files to add new Tiny Flower types.
+  - Read the README in GitHub for more information about what files are required.
+  - The `misc/tiny_dirt_flower` directory of this mod's source code contains an example mod containing only JSON and textures.
+
+### Fixed
+
+- Game startup times should be massively improved :)
+- Combining two Florists' Shears together to combine the durability no longer leaves the old shears in the crafting menu.
+
 ## v1.5.1 - 2026-02-02
 
 ### Added
