@@ -46,7 +46,7 @@ public class TinyFlowersModelLoadingPlugin
 
 			itemModels.add(ItemModelUtils.when(
 					new TinyFlowerComponent(resources.id()),
-					modelForIdentifier(resources.itemTexture())));
+					modelForIdentifier(resources.itemModel())));
 		}
 
 		pluginContext.modifyItemModelBeforeBake().register((model, itemContext) -> {
@@ -69,5 +69,6 @@ public class TinyFlowersModelLoadingPlugin
 	}
 
 	private void consumeModel(Identifier id, ModelInstance model) {
+		// TODO: if this ever
 	}
 }

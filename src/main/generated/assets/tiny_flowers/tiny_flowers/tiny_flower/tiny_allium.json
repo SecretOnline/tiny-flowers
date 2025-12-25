@@ -1,6 +1,6 @@
 {
   "id": "tiny_flowers:tiny_allium",
-  "item_texture": "tiny_flowers:item/tiny_allium",
+  "item_model": "tiny_flowers:item/tiny_allium",
   "model1": "tiny_flowers:block/tiny_flowers/tiny_allium_1",
   "model2": "tiny_flowers:block/tiny_flowers/tiny_allium_2",
   "model3": "tiny_flowers:block/tiny_flowers/tiny_allium_3",

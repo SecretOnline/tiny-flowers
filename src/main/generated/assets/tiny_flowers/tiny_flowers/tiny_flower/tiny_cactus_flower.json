@@ -1,6 +1,6 @@
 {
   "id": "tiny_flowers:tiny_cactus_flower",
-  "item_texture": "tiny_flowers:item/tiny_cactus_flower",
+  "item_model": "tiny_flowers:item/tiny_cactus_flower",
   "model1": "tiny_flowers:block/tiny_flowers/tiny_cactus_flower_1",
   "model2": "tiny_flowers:block/tiny_flowers/tiny_cactus_flower_2",
   "model3": "tiny_flowers:block/tiny_flowers/tiny_cactus_flower_3",

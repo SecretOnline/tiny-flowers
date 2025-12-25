@@ -1,6 +1,6 @@
 {
   "id": "tiny_flowers:tiny_poppy",
-  "item_texture": "tiny_flowers:item/tiny_poppy",
+  "item_model": "tiny_flowers:item/tiny_poppy",
   "model1": "tiny_flowers:block/tiny_flowers/tiny_poppy_1",
   "model2": "tiny_flowers:block/tiny_flowers/tiny_poppy_2",
   "model3": "tiny_flowers:block/tiny_flowers/tiny_poppy_3",
