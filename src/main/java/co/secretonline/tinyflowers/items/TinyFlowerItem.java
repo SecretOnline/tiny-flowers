@@ -25,7 +25,7 @@ public class TinyFlowerItem extends BlockItem {
 	@Override
 	protected @Nullable BlockState getPlacementState(BlockPlaceContext blockPlaceContext) {
 		BlockState newBlockState = super.getPlacementState(blockPlaceContext);
-		if (newBlockState == null) {
+		if (newBlockState == null || newBlockState.isAir()) {
 			return newBlockState;
 		}
 
