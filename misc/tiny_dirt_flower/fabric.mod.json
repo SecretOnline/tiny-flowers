@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "tiny_dirt_flower",
+  "version": "0.0.0",
+  "name": "Tiny Dirt Flower",
+  "description": "Test mod content for Tiny Flowers.",
+  "authors": [
+    {
+      "name": "secret_online",
+      "contact": {
+        "homepage": "https://secretonline.co"
+      }
+    }
+  ],
+  "license": "MPL-2.0",
+  "icon": "assets/tiny_flowers/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [],
+    "client": []
+  },
+  "depends": {
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "recommends": {
+    "tiny_flowers": ">=2.0.0"
+  }
+}
