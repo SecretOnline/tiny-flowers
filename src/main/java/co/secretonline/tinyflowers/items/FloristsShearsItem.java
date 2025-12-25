@@ -100,12 +100,17 @@ public class FloristsShearsItem extends ShearsItem {
 			int oneIndexed = index + 1;
 
 			Identifier idAtIndex = gardenBlockEntity.getFlower(oneIndexed);
-			TinyFlowerData flowerData = TinyFlowerData.findById(world.registryAccess(), idAtIndex);
-			if (flowerData == null) {
+			if (idAtIndex == null) {
+				// This spot has no flower.
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			}
-
-			Block.popResource(world, pos, flowerData.getItemStack(1));
+			TinyFlowerData flowerData = TinyFlowerData.findById(world.registryAccess(), idAtIndex);
+			// This condition fails if the garden has an identifier in this spot, but it is
+			// no longer registered. This usually happens when a mod is removed. In that
+			// case, don't pop an item, but do do the rest.
+			if (flowerData != null) {
+				Block.popResource(world, pos, flowerData.getItemStack(1));
+			}
 
 			if (ctx.getPlayer() != null) {
 				Player player = ctx.getPlayer();
