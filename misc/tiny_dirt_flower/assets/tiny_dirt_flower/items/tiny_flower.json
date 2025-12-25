@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_dirt_flower:item/tiny_dirt"
+        },
+        "when": "tiny_dirt_flower:tiny_dirt"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "tiny_flowers:item/tiny_garden"
+    },
+    "property": "tiny_flowers:tiny_flower"
+  }
+}
