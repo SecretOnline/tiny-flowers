@@ -1,0 +1,10 @@
+{
+  "id": "tiny_dirt_flower:tiny_dirt",
+  "original_id": "minecraft:dirt",
+  "suspicious_stew_effects": [
+    {
+      "duration": 10,
+      "id": "minecraft:darkness"
+    }
+  ]
+}
