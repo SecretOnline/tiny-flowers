@@ -71,7 +71,7 @@ public class TinyFlowerModelDataLoader
 					var resources = entry.getValue();
 
 					return new AbstractMap.SimpleEntry<>(entry.getKey(),
-							new TinyFlowerResolvedResources(resources.id(), resources.itemTexture(),
+							new TinyFlowerResolvedResources(resources.id(), resources.itemModel(),
 									resources.tintSource(),
 									new TinyFlowerResolvedResources.Part(resources.model1(),
 											ExtraModelKey.create(resources.model1()::toString)),
