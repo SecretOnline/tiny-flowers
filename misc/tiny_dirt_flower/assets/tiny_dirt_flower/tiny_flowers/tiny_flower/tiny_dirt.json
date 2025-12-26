@@ -1,6 +1,6 @@
 {
   "id": "tiny_dirt_flower:tiny_dirt",
-  "item_texture": "tiny_dirt_flower:item/tiny_dirt",
+  "item_model": "tiny_dirt_flower:item/tiny_dirt",
   "model1": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_1",
   "model2": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_2",
   "model3": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_3",
