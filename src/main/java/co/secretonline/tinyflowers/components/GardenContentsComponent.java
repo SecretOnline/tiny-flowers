@@ -6,7 +6,10 @@ import java.util.function.Consumer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import co.secretonline.tinyflowers.data.TinyFlowerData;
+import co.secretonline.tinyflowers.helper.Survivable;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,11 +18,32 @@ import net.minecraft.util.Util;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
+import net.minecraft.world.level.block.Block;
 
 public record GardenContentsComponent(Identifier flower1, Identifier flower2, Identifier flower3, Identifier flower4)
-		implements TooltipProvider {
+		implements TooltipProvider, Survivable {
 	public static final String GARDEN_TEXT = "block.tiny_flowers.tiny_garden";
 	public static final String EMPTY_TEXT = "block.tiny_flowers.tiny_garden.empty";
+
+	@Override
+	public boolean canSurviveOn(Block supportingBlock, HolderLookup.Provider provider) {
+		for (Identifier identifier : new Identifier[] { flower1, flower2, flower3, flower4 }) {
+			if (identifier == null) {
+				continue;
+			}
+
+			TinyFlowerData flowerData = TinyFlowerData.findById(provider, identifier);
+			if (flowerData == null) {
+				continue;
+			}
+
+			if (!flowerData.canSurviveOn(supportingBlock)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	@Override
 	public void addToTooltip(TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag,

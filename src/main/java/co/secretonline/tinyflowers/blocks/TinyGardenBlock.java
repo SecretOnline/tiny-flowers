@@ -23,7 +23,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.TriState;
 import net.minecraft.util.Util;
@@ -92,7 +91,19 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-		return blockState.is(BlockTags.DIRT) || blockState.is(Blocks.FARMLAND);
+		if (!(blockGetter.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+			// If there's no block entity at this position, that means we're in the middle
+			// of placing a block here. Let it pass for now, there will be another check
+			// later.
+			return true;
+		}
+
+		// If there is a block entity, then check all of the flowers to make sure
+		// they're valid for this position.
+		Block block = blockState.getBlock();
+		RegistryAccess registryAccess = gardenBlockEntity.getLevel().registryAccess();
+
+		return gardenBlockEntity.canSurviveOn(block, registryAccess);
 	}
 
 	@Override
@@ -171,23 +182,34 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 		BlockState blockState = level.getBlockState(blockPos);
 
+		Block supportingBlock = level.getBlockState(blockPos.below()).getBlock();
+
 		ItemStack stack = blockPlaceContext.getItemInHand();
 
 		TinyFlowerData flowerData = TinyFlowerData.findByItemStack(level.registryAccess(), stack);
 		if (flowerData == null) {
 			// The item being placed down is a TinyGardenBlock block item, but doesn't have
-			// data. This occurs if the item doesn't have the tiny_flower component, which
-			// happens either if the item doesn't have any components (unusual) or if it has
-			// the garden_contents component (normal). If it's the latter, then the Block
-			// Entity will handle this so we just have to set the direction.
-			// If it's the former, then don't do anything.
+			// the tiny_flower component, which happens either if the item doesn't have any
+			// components (unusual) or if it has the garden_contents component (normal). If
+			// it's the latter, then the Block Entity will handle this so we just have to
+			// set the direction. If it's the former, then don't do anything.
 			GardenContentsComponent gardenContents = stack.getOrDefault(ModComponents.GARDEN_CONTENTS, null);
 			if (gardenContents == null) {
 				return blockState;
 			}
 
+			if (!gardenContents.canSurviveOn(supportingBlock, level.registryAccess())) {
+				return blockState;
+			}
+
 			return this.defaultBlockState()
 					.setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
+		}
+
+		// Ensure the tiny flower type we're placing can be placed on top of the
+		// supporting block.
+		if (!flowerData.canSurviveOn(supportingBlock)) {
+			return blockState;
 		}
 
 		if (blockState.is(this)) {
@@ -214,6 +236,19 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			// and then add the flower variant to it.
 			BlockState newBlockState = ((TinyGardenBlock) ModBlocks.TINY_GARDEN_BLOCK).defaultBlockState()
 					.setValue(TinyGardenBlock.FACING, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+
+			TinyFlowerData originalSegmentedData = TinyFlowerData.findByOriginalBlock(level.registryAccess(),
+					blockState.getBlock());
+			if (originalSegmentedData == null) {
+				// The previous block was segmentable, but doesn't have a tiny flower variant
+				// registered.
+				return blockState;
+			}
+			if (!originalSegmentedData.canSurviveOn(supportingBlock)) {
+				// This only happens if the original segmentable block was on a block that the
+				// tiny flower doesn't support.
+				return blockState;
+			}
 
 			// Since we also need to update the entity, try to update the world now.
 			level.setBlockAndUpdate(blockPos, newBlockState);
