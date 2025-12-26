@@ -4,7 +4,9 @@ import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.block.Blocks;
 
 public class TinyFlowersDataGenerator extends BaseModDataGenerator {
 	@Override
@@ -97,11 +99,14 @@ public class TinyFlowersDataGenerator extends BaseModDataGenerator {
 				TinyFlowersDatagenData.Builder
 						.ofCustom(TinyFlowers.id("tiny_wither_rose"), Identifier.withDefaultNamespace("wither_rose"))
 						.stewEffectSeconds(MobEffects.WITHER, 7.0)
+						.addCanSurviveOn(Blocks.NETHERRACK, Blocks.SOUL_SAND, Blocks.SOUL_SOIL)
 						.untintedStem()
 						.stemTexture(TinyFlowers.id("tiny_wither_rose_stem"))
 						.build(),
 				TinyFlowersDatagenData.Builder
 						.ofCustom(TinyFlowers.id("tiny_cactus_flower"), Identifier.withDefaultNamespace("cactus_flower"))
+						.addCanSurviveOn(BlockTags.SAND)
+						.addCanSurviveOn(Blocks.SANDSTONE, Blocks.RED_SANDSTONE)
 						.customModel(TinyFlowers.id("garden_low_untinted"))
 						.stemTexture(TinyFlowers.id("tiny_cactus_flower_stem"))
 						.build());

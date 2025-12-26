@@ -17,6 +17,7 @@ public class ItemTagProvider extends FabricTagProvider.FabricValueLookupTagProvi
 	@Override
 	protected void addTags(HolderLookup.Provider wrapperLookup) {
 		valueLookupBuilder(ItemTags.BEE_FOOD).add(ModItems.TINY_FLOWER_ITEM);
+		valueLookupBuilder(ItemTags.FLOWERS).add(ModItems.TINY_FLOWER_ITEM);
 
 		valueLookupBuilder(ConventionalItemTags.SHEAR_TOOLS).add(ModItems.FLORISTS_SHEARS_ITEM);
 		valueLookupBuilder(ItemTags.DYEABLE).add(ModItems.FLORISTS_SHEARS_ITEM);

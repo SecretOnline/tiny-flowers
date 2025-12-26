@@ -9,6 +9,7 @@ import co.secretonline.tinyflowers.components.GardenContentsComponent;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
+import co.secretonline.tinyflowers.helper.Survivable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class TinyGardenBlockEntity extends BlockEntity {
+public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 	public static int NUM_SLOTS = 4;
 
 	@Nullable
@@ -59,6 +60,22 @@ public class TinyGardenBlockEntity extends BlockEntity {
 		}
 
 		return list;
+	}
+
+	@Override
+	public boolean canSurviveOn(Block supportingBlock, HolderLookup.Provider provider) {
+		for (Identifier identifier : this.getFlowers()) {
+			TinyFlowerData flowerData = TinyFlowerData.findById(provider, identifier);
+			if (flowerData == null) {
+				continue;
+			}
+
+			if (!flowerData.canSurviveOn(supportingBlock)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Nullable

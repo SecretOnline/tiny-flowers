@@ -1,4 +1,10 @@
 {
+  "can_survive_on": [
+    "#tiny_flowers:tiny_flower_can_survive_on",
+    "#minecraft:sand",
+    "minecraft:sandstone",
+    "minecraft:red_sandstone"
+  ],
   "id": "tiny_flowers:tiny_cactus_flower",
   "original_id": "minecraft:cactus_flower"
 }

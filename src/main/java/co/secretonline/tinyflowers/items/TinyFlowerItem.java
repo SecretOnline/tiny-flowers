@@ -10,11 +10,14 @@ import co.secretonline.tinyflowers.components.GardenContentsComponent;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TinyFlowerItem extends BlockItem {
@@ -26,7 +29,11 @@ public class TinyFlowerItem extends BlockItem {
 	protected @Nullable BlockState getPlacementState(BlockPlaceContext blockPlaceContext) {
 		BlockState newBlockState = super.getPlacementState(blockPlaceContext);
 		if (newBlockState == null || newBlockState.isAir()) {
-			return newBlockState;
+			return null;
+		}
+
+		if (!this.checkSupportingBlock(blockPlaceContext)) {
+			return null;
 		}
 
 		BlockState currentBlockState = blockPlaceContext.getLevel().getBlockState(blockPlaceContext.getClickedPos());
@@ -34,6 +41,25 @@ public class TinyFlowerItem extends BlockItem {
 		Direction newDirection = currentDirection.orElse(blockPlaceContext.getHorizontalDirection().getOpposite());
 
 		return newBlockState.setValue(TinyGardenBlock.FACING, newDirection);
+	}
+
+	private boolean checkSupportingBlock(BlockPlaceContext context) {
+		Level level = context.getLevel();
+		RegistryAccess registryAccess = level.registryAccess();
+		ItemStack itemStack = context.getItemInHand();
+		Block below = level.getBlockState(context.getClickedPos().below()).getBlock();
+
+		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS);
+		if (gardenComponent != null) {
+			return gardenComponent.canSurviveOn(below, registryAccess);
+		}
+
+		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
+		if (tinyFlowerComponent != null) {
+			return tinyFlowerComponent.canSurviveOn(below, registryAccess);
+		}
+
+		return false;
 	}
 
 	@Override
