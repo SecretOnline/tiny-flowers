@@ -14,14 +14,14 @@ import net.minecraft.world.item.CreativeModeTabs;
 @Mixin(CreativeModeTabs.class)
 public class CreativeModeTabsMixin {
 
-	@Inject(method = "streamAllTabs", at = @At("TAIL"))
+	@Inject(method = "streamAllTabs", at = @At("TAIL"), cancellable = true)
 	private static void sortStreamAllTabs(CallbackInfoReturnable<Stream<CreativeModeTab>> ci) {
 		ci.setReturnValue(ci.getReturnValue().sorted(CreativeModeTabsMixin::compareTabs));
 	}
 
 	private static int compareTabs(CreativeModeTab a, CreativeModeTab b) {
 		return Boolean.compare(
-				b.equals(ModItems.TINY_FLOWERS_GROUP),
-				a.equals(ModItems.TINY_FLOWERS_GROUP));
+				a.equals(ModItems.TINY_FLOWERS_GROUP),
+				b.equals(ModItems.TINY_FLOWERS_GROUP));
 	}
 }
