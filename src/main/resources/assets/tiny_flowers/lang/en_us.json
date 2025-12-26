@@ -1,5 +1,6 @@
 {
   "modmenu.descriptionTranslation.tiny_flowers": "Add tiny variants of all Vanilla flowers.",
+  "itemGroup.tiny_flowers": "Tiny Flowers",
   "item.tiny_flowers.florists_shears": "Florists' Shears",
   "block.tiny_flowers.tiny_garden": "Tiny Garden",
   "block.tiny_flowers.tiny_garden.empty": "Empty",
