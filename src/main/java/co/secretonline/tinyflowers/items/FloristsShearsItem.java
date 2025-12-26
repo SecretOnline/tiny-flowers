@@ -41,7 +41,15 @@ public class FloristsShearsItem extends ShearsItem {
 		Block prevBlock = prevBockState.getBlock();
 		TinyFlowerData prevData = TinyFlowerData.findByOriginalBlock(world.registryAccess(), prevBlock);
 		if (prevData != null) {
-			// Convert block into tiny flowers
+			// The block that was clicked on is the original block of a tiny flower variant.
+			// Try and turn into actual tiny flowers.
+
+			// Ensure the block underneath can support the tiny flower variant. This is
+			// likely, given the block was previously holding the original block.
+			Block supportingBlock = world.getBlockState(pos.below()).getBlock();
+			if (!prevData.canSurviveOn(supportingBlock)) {
+				return InteractionResult.FAIL;
+			}
 
 			BlockState newBlockState = ModBlocks.TINY_GARDEN_BLOCK.defaultBlockState()
 					.setValue(TinyGardenBlock.FACING, ctx.getHorizontalDirection().getOpposite());

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import co.secretonline.tinyflowers.blocks.ModBlockEntities;
+import co.secretonline.tinyflowers.blocks.ModBlockTags;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.data.ModRegistries;
@@ -25,6 +26,7 @@ public class TinyFlowers implements ModInitializer {
 	public void onInitialize() {
 		ModRegistries.initialize();
 		ModComponents.initialize();
+		ModBlockTags.initialize();
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();
 		ModItems.initialize();

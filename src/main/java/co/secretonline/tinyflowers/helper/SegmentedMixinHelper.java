@@ -53,6 +53,11 @@ public class SegmentedMixinHelper {
 			return;
 		}
 
+		Block below = context.getLevel().getBlockState(context.getClickedPos().below()).getBlock();
+		if (!flowerData.canSurviveOn(below)) {
+			return;
+		}
+
 		info.setReturnValue(true);
 	}
 
@@ -65,6 +70,7 @@ public class SegmentedMixinHelper {
 		// inside a TinyGardenBlock.
 		BlockState blockState = level.getBlockState(blockPos);
 		Block currentBlock = blockState.getBlock();
+		Block below = context.getLevel().getBlockState(context.getClickedPos().below()).getBlock();
 
 		// Early exit if the block being placed is the same as the current block.
 		// This falls back to the original implementation.
@@ -78,6 +84,10 @@ public class SegmentedMixinHelper {
 		if (!(currentBlock instanceof TinyGardenBlock)) {
 			TinyFlowerData flowerData = TinyFlowerData.findByOriginalBlock(level.registryAccess(), currentBlock);
 			if (flowerData != null) {
+				if (!flowerData.canSurviveOn(below)) {
+					return;
+				}
+
 				try {
 					BlockState prevBockState = blockState;
 					blockState = ((TinyGardenBlock) ModBlocks.TINY_GARDEN_BLOCK).defaultBlockState()
@@ -121,6 +131,10 @@ public class SegmentedMixinHelper {
 			TinyFlowerData flowerData = TinyFlowerData.findByOriginalBlock(level.registryAccess(),
 					blockBeingUsed);
 			if (flowerData == null) {
+				info.setReturnValue(blockState);
+				return;
+			}
+			if (!flowerData.canSurviveOn(below)) {
 				info.setReturnValue(blockState);
 				return;
 			}

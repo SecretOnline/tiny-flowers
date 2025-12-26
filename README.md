@@ -35,9 +35,11 @@ interface TinyFlowerData {
   id: Identifier;
   /** The ID of the original flower block. Will be turned into Tiny Flowers if crafted with or used on by Florists' Shears. */
   original_id: Identifier;
-  /** Optional. Whether the original block is segmentable like Pink Petals or Wildflowers. */
+  /** Optional. Whether the original block is segmentable like Pink Petals or Wildflowers. Defaults to false. */
   is_segmented?: boolean;
-  /** Optional. List of mob effects to be applied if consumed in Suspicious Stew. */
+  /** Optional. List of block IDs or tags that this tiny flower can be placed on. Defaults to `#tiny_flowers:tiny_flower_can_survive_on`. */
+  can_survive_on?: (Identifier | TagKey)[];
+  /** Optional. List of mob effects to be applied if consumed in Suspicious Stew. Defaults to an empty list. */
   suspicious_stew_effects?: {
     /** The ID of the mob effect that will be applied. */
     id: Identifier;
@@ -51,6 +53,7 @@ interface TinyFlowerData {
 {
   "id": "tiny_dirt_flower:tiny_dirt",
   "original_id": "minecraft:dirt",
+  "can_survive_on": ["minecraft:dirt"],
   "suspicious_stew_effects": [
     {
       "duration": 10,

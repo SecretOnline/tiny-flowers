@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers.datagen.generators.mods;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,16 +13,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.blocks.ModBlockTags;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
+import net.minecraft.world.level.block.Block;
 
 public class TinyFlowersDatagenData {
 	private static String MOD_ID_PREFIX = TinyFlowers.MOD_ID + "/";
@@ -33,6 +39,8 @@ public class TinyFlowersDatagenData {
 	private boolean isSegmentable;
 	@NonNull
 	private List<Entry> suspiciousStewEffects;
+	@NonNull
+	private List<TagOrElementLocation> canSurviveOn;
 	private TintSource tintSource = TintSource.GRASS;
 
 	private ModelPart modelPart1;
@@ -41,7 +49,7 @@ public class TinyFlowersDatagenData {
 	private ModelPart modelPart4;
 
 	public TinyFlowerData data() {
-		return new TinyFlowerData(id, originalBlockId, isSegmentable, suspiciousStewEffects);
+		return new TinyFlowerData(id, originalBlockId, isSegmentable, canSurviveOn, suspiciousStewEffects);
 	}
 
 	public TinyFlowerResources resources() {
@@ -93,6 +101,8 @@ public class TinyFlowersDatagenData {
 		private Identifier originalBlockId;
 		private boolean isSegmentable = false;
 		private List<Entry> suspiciousStewEffects = new ArrayList<>();
+		private List<TagOrElementLocation> canSurviveOn = new ArrayList<>(
+				List.of(ModBlockTags.TINY_FLOWER_CAN_SURVIVE_ON_LOCATION));
 
 		private int layers = 0;
 		private boolean untintedStem = false;
@@ -151,6 +161,31 @@ public class TinyFlowersDatagenData {
 
 		public Builder stewEffectSeconds(Holder<MobEffect> effect, double seconds) {
 			return this.stewEffect(effect, Mth.floor(seconds * 20.0f));
+		}
+
+		public Builder replaceCanSurviveOn(TagOrElementLocation... canSurviveOn) {
+			this.canSurviveOn = new ArrayList<>(Arrays.asList(canSurviveOn));
+			return this;
+		}
+
+		public Builder addCanSurviveOn(TagOrElementLocation... canSurviveOn) {
+			this.canSurviveOn.addAll(Arrays.asList(canSurviveOn));
+			return this;
+		}
+
+		public Builder addCanSurviveOn(Block... blocks) {
+			for (Block block : blocks) {
+				var id = BuiltInRegistries.BLOCK.getKey(block);
+				this.canSurviveOn.add(new TagOrElementLocation(id, false));
+			}
+			return this;
+		}
+
+		public Builder addCanSurviveOn(TagKey<Block>... tags) {
+			for (TagKey<Block> tag : tags) {
+				this.canSurviveOn.add(new TagOrElementLocation(tag.location(), true));
+			}
+			return this;
 		}
 
 		public Builder itemTexture(Identifier itemTexture) {
@@ -218,6 +253,7 @@ public class TinyFlowersDatagenData {
 			data.originalBlockId = originalBlockId;
 			data.isSegmentable = isSegmentable;
 			data.suspiciousStewEffects = suspiciousStewEffects;
+			data.canSurviveOn = canSurviveOn;
 			data.tintSource = tintSource;
 
 			if (layers == 0 && customModel == null) {
