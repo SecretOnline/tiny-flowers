@@ -156,7 +156,7 @@ Read [Model#Item_models](https://minecraft.wiki/w/Model#Item_models) on the wiki
 }
 ```
 
-#### `<namespace>/models/block/<id>_<index>.json`
+#### `<namespace>/models/block/tiny_flowers/<id>_<index>.json`
 
 These files define the models that will be rendered when the flower is placed in the world. The path of these files must match the `model<index>` key in the main resources file.
 
