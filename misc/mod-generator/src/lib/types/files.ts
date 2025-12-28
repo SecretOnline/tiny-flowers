@@ -79,6 +79,10 @@ export interface ItemsModelDefinitionJson {
       when: string;
     }[];
     property: "tiny_flowers:tiny_flower";
+    fallback: {
+      type: "minecraft:model";
+      model: "tiny_flowers:item/tiny_garden";
+    };
   };
 }
 
