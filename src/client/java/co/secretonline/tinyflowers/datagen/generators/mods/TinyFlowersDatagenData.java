@@ -106,8 +106,8 @@ public class TinyFlowersDatagenData {
 
 		private int layers = 0;
 		private boolean untintedStem = false;
-		private boolean includeStemTexture = true;
-		private Identifier stemTexture = Identifier.withDefaultNamespace("block/pink_petals_stem");
+		private Identifier stemTexture = null;
+		private Identifier particleTexture = null;
 		private Map<String, Identifier> textureMap = new HashMap<>();
 		private Identifier customModel = null;
 		private TintSource tintSource = TintSource.GRASS;
@@ -195,7 +195,6 @@ public class TinyFlowersDatagenData {
 
 		public Builder layers(Identifier flowerbedTexture) {
 			layers = 1;
-			textureMap.put(TextureSlot.PARTICLE.getId(), flowerbedTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), flowerbedTexture.withPrefix("block/"));
 
 			return this;
@@ -203,7 +202,6 @@ public class TinyFlowersDatagenData {
 
 		public Builder layers(Identifier lowerTexture, Identifier upperTexture) {
 			layers = 2;
-			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_UPPER.getId(), upperTexture.withPrefix("block/"));
 
@@ -212,7 +210,6 @@ public class TinyFlowersDatagenData {
 
 		public Builder layers(Identifier lowerTexture, Identifier middleTexture, Identifier upperTexture) {
 			layers = 3;
-			textureMap.put(TextureSlot.PARTICLE.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_MIDDLE.getId(), middleTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_UPPER.getId(), upperTexture.withPrefix("block/"));
@@ -225,13 +222,13 @@ public class TinyFlowersDatagenData {
 			return this;
 		}
 
-		public Builder noStem() {
-			this.includeStemTexture = false;
+		public Builder stemTexture(Identifier stemTexture) {
+			this.stemTexture = stemTexture.withPrefix("block/");
 			return this;
 		}
 
-		public Builder stemTexture(Identifier stemTexture) {
-			this.stemTexture = stemTexture.withPrefix("block/");
+		public Builder particleTexture(Identifier particleTexture) {
+			this.particleTexture = particleTexture.withPrefix("block/");
 			return this;
 		}
 
@@ -283,8 +280,11 @@ public class TinyFlowersDatagenData {
 				}
 			}
 
-			if (includeStemTexture) {
+			if (this.stemTexture != null) {
 				textureMap.put("stem", this.stemTexture);
+			}
+			if (this.particleTexture != null) {
+				textureMap.put("particle", this.particleTexture);
 			}
 
 			data.modelPart1 = new ModelPart(id.withSuffix("_1"), parentId.withSuffix("_1"), textureMap);

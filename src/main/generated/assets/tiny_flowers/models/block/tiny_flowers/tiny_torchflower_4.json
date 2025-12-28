@@ -4,7 +4,6 @@
     "flowerbed": "tiny_flowers:block/tiny_torchflower",
     "flowerbed_middle": "tiny_flowers:block/tiny_torchflower_middle",
     "flowerbed_upper": "tiny_flowers:block/tiny_torchflower_upper",
-    "particle": "tiny_flowers:block/tiny_torchflower",
     "stem": "tiny_flowers:block/tiny_torchflower_stem"
   }
 }
