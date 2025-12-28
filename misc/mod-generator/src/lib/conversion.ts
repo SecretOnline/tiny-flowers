@@ -1,40 +1,33 @@
+import JSZip from "jszip";
 import type {
   AllFiles,
   BlockModelGeneratedJson,
   ItemsModelDefinitionJson,
 } from "./types/files";
 import type { CombinedFlowerData, FormState, TextureType } from "./types/state";
+import {
+  identifierNamespace,
+  identifierPath,
+  identifierPathFinal,
+} from "./util";
 
 function trimFileName(name: string): string {
   return name.replace(/\.[^\.]+$/, "");
 }
 
-function makeBlockModel(
-  parentBase: string,
-  index: number,
-  textureMap: Record<string, string>
-): BlockModelGeneratedJson {
-  return {
-    parent: `${parentBase}_${index}`,
-    textures: textureMap,
-  };
-}
-
 export function convertFormToFiles(state: FormState): AllFiles {
-  const modId = state.metadata.id;
-
   const cases: ItemsModelDefinitionJson["model"]["cases"] = [];
 
   const value: AllFiles = {
     fabricModJson: {
       schemaVersion: 1,
-      id: modId,
+      id: state.metadata.id,
       version: state.metadata.version,
       name: state.metadata.name,
       description: state.metadata.description,
       authors: state.metadata.authors,
       license: state.metadata.license,
-      icon: `assets/${modId}/icon.png`,
+      icon: `assets/${state.metadata.id}/icon.png`,
       environment: "*",
       entrypoints: { client: [], main: [] },
       depends: { tiny_flowers: ">=2.0.0" },
@@ -61,6 +54,10 @@ export function convertFormToFiles(state: FormState): AllFiles {
             type: "minecraft:select",
             cases,
             property: "tiny_flowers:tiny_flower",
+            fallback: {
+              type: "minecraft:model",
+              model: "tiny_flowers:item/tiny_garden",
+            },
           },
         },
       },
@@ -68,6 +65,9 @@ export function convertFormToFiles(state: FormState): AllFiles {
   };
 
   for (const flower of state.flowers) {
+    const flowerNamespace = identifierNamespace(flower.id);
+    const flowerPath = identifierPath(flower.id);
+
     value.data.tinyFlowers[flower.id] = {
       id: flower.id,
       original_id: flower.originalId,
@@ -85,21 +85,22 @@ export function convertFormToFiles(state: FormState): AllFiles {
 
     value.assets.tinyFlowers[flower.id] = {
       id: flower.id,
-      item_model: `${modId}:item/${flower.id}`,
+      item_model: `${flowerNamespace}:item/${flowerPath}`,
       tint_source:
         flower.tintSource === "grass" ? undefined : flower.tintSource,
-      model1: `${modId}:block/tiny_flowers/${flower.id}_1`,
-      model2: `${modId}:block/tiny_flowers/${flower.id}_2`,
-      model3: `${modId}:block/tiny_flowers/${flower.id}_3`,
-      model4: `${modId}:block/tiny_flowers/${flower.id}_4`,
+      model1: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_1`,
+      model2: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_2`,
+      model3: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_3`,
+      model4: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_4`,
     };
 
+    const flowerLangKey = `block.${flowerNamespace}.${flowerPath}`;
     for (const { language, name } of flower.name) {
       if (!value.assets.lang[language]) {
         value.assets.lang[language] = {};
       }
 
-      value.assets.lang[language][flower.id] = name;
+      value.assets.lang[language][flowerLangKey] = name;
     }
 
     const textureMap: Record<string, string> = {};
@@ -111,47 +112,47 @@ export function convertFormToFiles(state: FormState): AllFiles {
           continue;
         }
 
-        value.assets.textures.block[trimFileName(texture.file.name)] =
-          texture.file;
-        textureMap[slot] = `${modId}:block/${trimFileName(texture.file.name)}`;
+        const textureIdentifier = `${flowerNamespace}:block/${trimFileName(
+          texture.file.name
+        )}`;
+        value.assets.textures.block[textureIdentifier] = texture.file;
+        textureMap[slot] = textureIdentifier;
       }
     }
 
     value.assets.textures.item[flower.id] = flower.itemTexture;
 
-    value.assets.models.block[`${flower.id}_1`] = makeBlockModel(
-      flower.modelParentBase,
-      1,
-      textureMap
-    );
-    value.assets.models.block[`${flower.id}_2`] = makeBlockModel(
-      flower.modelParentBase,
-      2,
-      textureMap
-    );
-    value.assets.models.block[`${flower.id}_3`] = makeBlockModel(
-      flower.modelParentBase,
-      3,
-      textureMap
-    );
-    value.assets.models.block[`${flower.id}_4`] = makeBlockModel(
-      flower.modelParentBase,
-      4,
-      textureMap
-    );
+    function blockModelId(index: number) {
+      return `${flowerNamespace}:block/tiny_flowers/${flowerPath}_${index}`;
+    }
+    function blockModelContent(index: number): BlockModelGeneratedJson {
+      return {
+        parent: `${flower.modelParentBase}_${index}`,
+        textures: textureMap,
+      };
+    }
+    value.assets.models.block[blockModelId(1)] = blockModelContent(1);
+    value.assets.models.block[blockModelId(2)] = blockModelContent(2);
+    value.assets.models.block[blockModelId(3)] = blockModelContent(3);
+    value.assets.models.block[blockModelId(4)] = blockModelContent(4);
 
     if (flower.itemTexture) {
       value.assets.models.item[flower.id] = {
         parent: "minecraft:item/generated",
         textures: {
-          layer0: `${modId}:block/${trimFileName(flower.itemTexture.name)}`,
+          layer0: `${flowerNamespace}:item/${trimFileName(
+            flower.itemTexture.name
+          )}`,
         },
       };
     }
 
     cases.push({
-      model: { type: "minecraft:model", model: `${modId}:item/${flower.id}` },
-      when: `${modId}:${flower.id}`,
+      model: {
+        type: "minecraft:model",
+        model: `${flowerNamespace}:item/${flowerPath}`,
+      },
+      when: `${flowerNamespace}:${flowerPath}`,
     });
   }
 
@@ -265,8 +266,188 @@ export function convertFilesToForm(files: AllFiles): FormState {
   return state;
 }
 
-export function convertFilesToZip(files: AllFiles): unknown {
-  return null;
+function appendJson(zip: JSZip, json: object, fileName: string) {
+  const str = JSON.stringify(json, null, 2);
+  const file = new File([str], fileName, { type: "application/json" });
+  zip.file(fileName, file);
+}
+
+function appendFile(zip: JSZip, file: File) {
+  zip.file(file.name, file);
+}
+
+export async function convertFilesToZip(files: AllFiles): Promise<File> {
+  const zip = new JSZip();
+
+  appendJson(zip, files.fabricModJson, "fabric.mod.json");
+
+  const dirCache: Record<
+    | "flowerData"
+    | "assets"
+    | "items"
+    | "lang"
+    | "flowerResources"
+    | "blockModel"
+    | "itemModel"
+    | "blockTexture"
+    | "itemTexture",
+    Record<string, JSZip>
+  > = {
+    flowerData: {},
+    assets: {},
+    items: {},
+    lang: {},
+    flowerResources: {},
+    blockModel: {},
+    itemModel: {},
+    blockTexture: {},
+    itemTexture: {},
+  };
+  function getZipDir(key: keyof typeof dirCache, namespace: string): JSZip {
+    if (!dirCache[key][namespace]) {
+      let fullPath: string;
+      switch (key) {
+        case "flowerData":
+          fullPath = `data/${namespace}/tiny_flowers/tiny_flower`;
+          break;
+        case "flowerResources":
+          fullPath = `assets/${namespace}/tiny_flowers/tiny_flower`;
+          break;
+        case "assets":
+          fullPath = `assets/${namespace}`;
+          break;
+        case "items":
+          fullPath = `assets/${namespace}/items`;
+          break;
+        case "lang":
+          fullPath = `assets/${namespace}/lang`;
+          break;
+        case "blockModel":
+          fullPath = `assets/${namespace}/models/block/tiny_flowers`;
+          break;
+        case "itemModel":
+          fullPath = `assets/${namespace}/models/item`;
+          break;
+        case "blockTexture":
+          fullPath = `assets/${namespace}/textures/block`;
+          break;
+        case "itemTexture":
+          fullPath = `assets/${namespace}/textures/item`;
+          break;
+      }
+
+      dirCache[key][namespace] = zip.folder(fullPath)!;
+    }
+
+    return dirCache[key][namespace];
+  }
+
+  function appendIdentifiedJson(
+    key: keyof typeof dirCache,
+    identifier: string,
+    json: object
+  ) {
+    appendJson(
+      getZipDir(key, identifierNamespace(identifier)),
+      json,
+      `${identifierPathFinal(identifier)}.json`
+    );
+  }
+
+  for (const [identifier, flowerData] of Object.entries(
+    files.data.tinyFlowers
+  )) {
+    if (!flowerData) {
+      continue;
+    }
+
+    appendIdentifiedJson("flowerData", identifier, flowerData);
+  }
+
+  if (files.assets.icon) {
+    appendFile(getZipDir("assets", files.fabricModJson.id), files.assets.icon);
+  }
+
+  if (files.assets.items.tiny_flower) {
+    appendJson(
+      getZipDir("items", files.fabricModJson.id),
+      files.assets.items.tiny_flower,
+      "tiny_flower.json"
+    );
+  }
+
+  for (const [key, languageData] of Object.entries(files.assets.lang)) {
+    if (!languageData) {
+      continue;
+    }
+
+    appendJson(
+      getZipDir("lang", files.fabricModJson.id),
+      languageData,
+      `${key}.json`
+    );
+  }
+
+  for (const [identifier, flowerResources] of Object.entries(
+    files.assets.tinyFlowers
+  )) {
+    if (!flowerResources) {
+      continue;
+    }
+
+    appendIdentifiedJson("flowerResources", identifier, flowerResources);
+  }
+
+  for (const [identifier, model] of Object.entries(files.assets.models.block)) {
+    if (!model) {
+      continue;
+    }
+
+    appendIdentifiedJson("blockModel", identifier, model);
+  }
+
+  for (const [identifier, model] of Object.entries(files.assets.models.item)) {
+    if (!model) {
+      continue;
+    }
+
+    appendIdentifiedJson("itemModel", identifier, model);
+  }
+
+  for (const [identifier, textureFile] of Object.entries(
+    files.assets.textures.block
+  )) {
+    if (!textureFile) {
+      continue;
+    }
+
+    appendFile(
+      getZipDir("blockTexture", identifierNamespace(identifier)),
+      textureFile
+    );
+  }
+
+  for (const [identifier, textureFile] of Object.entries(
+    files.assets.textures.item
+  )) {
+    if (!textureFile) {
+      continue;
+    }
+
+    appendFile(
+      getZipDir("itemTexture", identifierNamespace(identifier)),
+      textureFile
+    );
+  }
+
+  const exportBlob = await zip.generateAsync({ type: "blob" });
+  const exportFile = new File(
+    [exportBlob],
+    `${files.fabricModJson.id}_${files.fabricModJson.version}.jar`,
+    { type: "application/json" }
+  );
+
+  return exportFile;
 }
 
 export function convertZipToFiles(zip: unknown): AllFiles {
