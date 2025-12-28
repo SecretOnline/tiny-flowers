@@ -120,8 +120,6 @@ export function convertFormToFiles(state: FormState): AllFiles {
       }
     }
 
-    value.assets.textures.item[flower.id] = flower.itemTexture;
-
     function blockModelId(index: number) {
       return `${flowerNamespace}:block/tiny_flowers/${flowerPath}_${index}`;
     }
@@ -137,6 +135,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
     value.assets.models.block[blockModelId(4)] = blockModelContent(4);
 
     if (flower.itemTexture) {
+      value.assets.textures.item[flower.id] = flower.itemTexture;
       value.assets.models.item[flower.id] = {
         parent: "minecraft:item/generated",
         textures: {
@@ -258,6 +257,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
       itemTexture: files.assets.textures.item[data.id],
       modelParentBase: firstModel.parent.replace(/_\d+$/, ""),
       blockTextures,
+      isExpanded: false,
     };
 
     state.flowers.push(item);

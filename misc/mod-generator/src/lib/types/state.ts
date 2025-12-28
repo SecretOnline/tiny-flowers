@@ -37,4 +37,5 @@ export interface CombinedFlowerData {
   tintSource: "grass" | "dry_foliage";
   modelParentBase: string;
   blockTextures: { slot: string; texture: TextureType }[];
+  isExpanded: boolean;
 }
