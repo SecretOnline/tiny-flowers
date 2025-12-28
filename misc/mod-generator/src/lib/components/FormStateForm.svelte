@@ -11,6 +11,7 @@
   import ImageUpload from "./icons/ImageUpload.svelte";
   import Check from "./icons/Check.svelte";
   import Empty from "./icons/Empty.svelte";
+  import { convertFilesToZip, convertFormToFiles } from "../conversion";
 
   const PREDEFINED_BLOCK_MODELS = [
     {
@@ -111,7 +112,8 @@
         id: "tiny_dirt_flower",
         version: "1.0.0",
         name: "Tiny Dirt Flower",
-        description: "An example pack that adds a tiny flower.",
+        description:
+          "An example flower pack that adds a Tiny Flower based on the humble Dirt block.",
         authors: ["secret_online"],
         license: "MPL-2.0",
         icon: images.icon,
@@ -123,7 +125,7 @@
           originalId: "minecraft:dirt",
           isSegmented: false,
           canSurviveOn: ["#tiny_flowers:tiny_flower_can_survive_on"],
-          suspiciousStewEffects: [{ id: "minecraft:darkness", duration: 140 }],
+          suspiciousStewEffects: [{ id: "minecraft:darkness", duration: 10 }],
           itemTexture: images.item,
           tintSource: "grass",
           modelParentBase: "tiny_flowers:block/garden",
@@ -207,6 +209,27 @@
     formState.flowers[flowerIndex].blockTextures.splice(index, 1);
   }
   // #endregion
+
+  // #region Import/Export
+  async function downloadJar() {
+    const snapshot = $state.snapshot(formState);
+
+    const files = convertFormToFiles(snapshot);
+    const zip = await convertFilesToZip(files);
+
+    const url = URL.createObjectURL(zip);
+
+    const link = document.createElement("a");
+    link.download = zip.name;
+    link.href = url;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }
+  // #endregion
 </script>
 
 <div class="form-container">
@@ -221,6 +244,9 @@
   <button class="button" type="button" onclick={() => setToDirtFlower()}
     >Load example pack</button
   >
+  <button class="button color-add" type="button" onclick={() => downloadJar()}>
+    <span>Download .jar</span>
+  </button>
 
   <h2>
     {formState.metadata.name || "New mod"} (v{formState.metadata.version ??
