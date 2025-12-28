@@ -2,7 +2,12 @@ import JSZip from "jszip";
 import type {
   AllFiles,
   BlockModelGeneratedJson,
+  FabricModJson,
+  ItemModelGeneratedJson,
   ItemsModelDefinitionJson,
+  LanguageJson,
+  TinyFlowerDataJson,
+  TinyFlowerResourcesJson,
 } from "./types/files";
 import type { CombinedFlowerData, FormState, TextureType } from "./types/state";
 import {
@@ -175,22 +180,28 @@ export function convertFilesToForm(files: AllFiles): FormState {
     flowers: [],
   };
 
-  for (const data of Object.values(files.data.tinyFlowers)) {
+  for (const [identifier, data] of Object.entries(files.data.tinyFlowers)) {
     if (!data) {
       continue;
     }
 
+    const flowerNamespace = identifierNamespace(identifier);
+    const flowerPath = identifierPath(identifier);
+
     const resources = files.assets.tinyFlowers[data.id];
     if (!resources) {
       throw new Error(
-        `Flower ${data.id} has no resources definition (Tried to find assets/${manifest.id}/tiny_flowers/tiny_flower/${data.id}.json)`
+        `Flower ${data.id} has no resources definition (Tried to find assets/${flowerNamespace}/tiny_flowers/tiny_flower/${flowerPath}.json)`
       );
     }
 
-    const firstModel = files.assets.models.block[`${data.id}_1`];
+    const firstModel =
+      files.assets.models.block[
+        `${flowerNamespace}:block/tiny_flowers/${flowerPath}_1`
+      ];
     if (!firstModel) {
       throw new Error(
-        `Flower ${data.id} has no block model defined (Tried to find assets/${manifest.id}/models/block/tiny_flowers/${data.id}_1.json)`
+        `Flower ${data.id} has no block model defined (Tried to find assets/${flowerNamespace}/models/block/tiny_flowers/${flowerPath}_1.json)`
       );
     }
 
@@ -203,20 +214,12 @@ export function convertFilesToForm(files: AllFiles): FormState {
         existingItem.texture = texture;
       }
     }
-    for (const [slot, path] of Object.entries(firstModel.textures)) {
-      if (path.startsWith(`${data.id}:block/`)) {
-        const name = path.split(":block/")[1];
-        const file = files.assets.textures.block[name];
-        if (!file) {
-          console.warn(
-            `Unable to find texture referenced in ${data.id}_1: ${path}. Falling back to string value.`
-          );
-          setTextureForSlot(slot, { type: "reference", reference: path });
-        } else {
-          setTextureForSlot(slot, { type: "file", file });
-        }
+    for (const [slot, identifier] of Object.entries(firstModel.textures)) {
+      const file = files.assets.textures.block[identifier];
+      if (!file) {
+        setTextureForSlot(slot, { type: "reference", reference: identifier });
       } else {
-        setTextureForSlot(slot, { type: "reference", reference: path });
+        setTextureForSlot(slot, { type: "file", file });
       }
     }
 
@@ -238,10 +241,16 @@ export function convertFilesToForm(files: AllFiles): FormState {
         continue;
       }
 
-      const value = values[data.id];
+      const value = values[`block.${flowerNamespace}.${flowerPath}`];
       if (value) {
         setItemNameForLanguage(languageKey, value);
       }
+    }
+
+    const itemModel = files.assets.models.item[resources.item_model];
+    let itemTexture: File | undefined;
+    if (itemModel) {
+      itemTexture = files.assets.textures.item[itemModel.textures.layer0];
     }
 
     const item: CombinedFlowerData = {
@@ -254,7 +263,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
       ],
       suspiciousStewEffects: data.suspicious_stew_effects ?? [],
       tintSource: resources.tint_source ?? "grass",
-      itemTexture: files.assets.textures.item[data.id],
+      itemTexture,
       modelParentBase: firstModel.parent.replace(/_\d+$/, ""),
       blockTextures,
       isExpanded: false,
@@ -272,8 +281,8 @@ function appendJson(zip: JSZip, json: object, fileName: string) {
   zip.file(fileName, file);
 }
 
-function appendFile(zip: JSZip, file: File) {
-  zip.file(file.name, file);
+function appendFile(zip: JSZip, file: File, fileName = file.name) {
+  zip.file(fileName, file);
 }
 
 export async function convertFilesToZip(files: AllFiles): Promise<File> {
@@ -365,7 +374,11 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
   }
 
   if (files.assets.icon) {
-    appendFile(getZipDir("assets", files.fabricModJson.id), files.assets.icon);
+    appendFile(
+      getZipDir("assets", files.fabricModJson.id),
+      files.assets.icon,
+      "icon.png"
+    );
   }
 
   if (files.assets.items.tiny_flower) {
@@ -423,7 +436,8 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
 
     appendFile(
       getZipDir("blockTexture", identifierNamespace(identifier)),
-      textureFile
+      textureFile,
+      `${identifierPathFinal(identifier)}.png`
     );
   }
 
@@ -450,6 +464,148 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
   return exportFile;
 }
 
-export function convertZipToFiles(zip: unknown): AllFiles {
-  return null as any;
+const NAMESPACED_PATH_REGEX = /^(data|assets)\/([^\/]+)\/(.*)$/;
+const TINY_FLOWERS_JSON_REGEX = /^tiny_flowers\/tiny_flower\/(.*)\.json$/;
+const LANG_JSON_REGEX = /^lang\/(.*)\.json$/;
+const MODELS_JSON_REGEX = /^models\/(item|block\/tiny_flowers)\/(.*)\.json$/;
+const TEXTURES_JSON_REGEX = /^textures\/(item|block)\/(.*)\.png$/;
+
+export async function convertZipToFiles(file: File): Promise<AllFiles> {
+  const inputZip = await JSZip.loadAsync(file);
+
+  const allFiles: AllFiles = {
+    fabricModJson: {
+      id: "",
+      name: "",
+      version: "",
+      license: "",
+      authors: [],
+      depends: { tiny_flowers: ">=2.0.0" },
+      description: "",
+      entrypoints: { client: [], main: [] },
+      environment: "*",
+      icon: "",
+      schemaVersion: 1,
+      custom: { modmenu: { parent: "tiny_flowers" } },
+    },
+    data: { tinyFlowers: {} },
+    assets: {
+      tinyFlowers: {},
+      icon: undefined,
+      lang: {},
+      items: {} as never,
+      models: { block: {}, item: {} },
+      textures: { block: {}, item: {} },
+    },
+  };
+
+  const allPromises: Promise<void>[] = [];
+
+  async function processFile(zipObject: JSZip.JSZipObject) {
+    if (zipObject.name === "fabric.mod.json") {
+      const jsonString = await zipObject.async("text");
+      const modJson = JSON.parse(jsonString) as FabricModJson;
+
+      // Do a merge of the defaults, just in case.
+      for (const [key, value] of Object.entries(modJson)) {
+        (allFiles.fabricModJson as any)[key] = value;
+      }
+      return;
+    }
+
+    const namespacedPathMatch = zipObject.name.match(NAMESPACED_PATH_REGEX);
+    if (!namespacedPathMatch) {
+      // Unknown file, just skip.
+      return;
+    }
+    const [, type, namespace, remainingPath] = namespacedPathMatch;
+
+    if (type === "data") {
+      const tinyFlowersMatch = remainingPath.match(TINY_FLOWERS_JSON_REGEX);
+      if (!tinyFlowersMatch) {
+        return;
+      }
+
+      const [, flowerId] = tinyFlowersMatch;
+      const jsonString = await zipObject.async("text");
+      const flowerData = JSON.parse(jsonString) as TinyFlowerDataJson;
+
+      allFiles.data.tinyFlowers[`${namespace}:${flowerId}`] = flowerData;
+      return;
+    }
+    if (type === "assets") {
+      if (remainingPath === "icon.png") {
+        const blob = await zipObject.async("blob");
+        const file = new File([blob], "icon.png", { type: "image/png" });
+
+        allFiles.assets.icon = file;
+        return;
+      }
+
+      const tinyFlowersMatch = remainingPath.match(TINY_FLOWERS_JSON_REGEX);
+      if (tinyFlowersMatch) {
+        const [, flowerId] = tinyFlowersMatch;
+        const jsonString = await zipObject.async("text");
+        const flowerData = JSON.parse(jsonString) as TinyFlowerResourcesJson;
+
+        allFiles.assets.tinyFlowers[`${namespace}:${flowerId}`] = flowerData;
+        return;
+      }
+
+      const langMatch = remainingPath.match(LANG_JSON_REGEX);
+      if (langMatch) {
+        const [, languageId] = langMatch;
+        const jsonString = await zipObject.async("text");
+        const languageJson = JSON.parse(jsonString) as LanguageJson;
+
+        allFiles.assets.lang[languageId] = languageJson;
+        return;
+      }
+
+      const modelsMatch = remainingPath.match(MODELS_JSON_REGEX);
+      if (modelsMatch) {
+        const [, modelType, modelId] = modelsMatch;
+        const jsonString = await zipObject.async("text");
+
+        if (modelType === "item") {
+          const modelJson = JSON.parse(jsonString) as ItemModelGeneratedJson;
+          allFiles.assets.models.item[`${namespace}:${modelType}/${modelId}`] =
+            modelJson;
+        } else if (modelType === "block/tiny_flowers") {
+          const modelJson = JSON.parse(jsonString) as BlockModelGeneratedJson;
+          allFiles.assets.models.block[`${namespace}:${modelType}/${modelId}`] =
+            modelJson;
+        }
+        return;
+      }
+
+      const texturesMatch = remainingPath.match(TEXTURES_JSON_REGEX);
+      if (texturesMatch) {
+        const [, textureType, textureId] = texturesMatch;
+        const blob = await zipObject.async("blob");
+        const file = new File([blob], `${textureId}.png`, {
+          type: "image/png",
+        });
+
+        if (textureType === "item" || textureType === "block") {
+          allFiles.assets.textures[textureType][
+            `${namespace}:${textureType}/${textureId}`
+          ] = file;
+        }
+        return;
+      }
+    }
+  }
+
+  inputZip.forEach((relativePath, zipObject) => {
+    if (zipObject.dir) {
+      // We don't need to process directories at all, so just skip.
+      return;
+    }
+
+    allPromises.push(processFile(zipObject));
+  });
+  await Promise.all(allPromises);
+
+  return allFiles;
 }
