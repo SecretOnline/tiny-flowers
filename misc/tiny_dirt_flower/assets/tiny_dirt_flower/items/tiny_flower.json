@@ -10,10 +10,10 @@
         "when": "tiny_dirt_flower:tiny_dirt"
       }
     ],
+    "property": "tiny_flowers:tiny_flower",
     "fallback": {
       "type": "minecraft:model",
       "model": "tiny_flowers:item/tiny_garden"
-    },
-    "property": "tiny_flowers:tiny_flower"
+    }
   }
 }

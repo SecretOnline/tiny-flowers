@@ -1,23 +1,18 @@
 {
   "schemaVersion": 1,
   "id": "tiny_dirt_flower",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "name": "Tiny Dirt Flower",
-  "description": "Test mod content for Tiny Flowers.",
+  "description": "An example flower pack that adds a Tiny Flower based on the humble Dirt block.",
   "authors": [
-    {
-      "name": "secret_online",
-      "contact": {
-        "homepage": "https://secretonline.co"
-      }
-    }
+    "secret_online"
   ],
   "license": "MPL-2.0",
   "icon": "assets/tiny_dirt_flower/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [],
-    "client": []
+    "client": [],
+    "main": []
   },
   "depends": {
     "tiny_flowers": ">=2.0.0"
