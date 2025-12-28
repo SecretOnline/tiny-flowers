@@ -1,5 +1,9 @@
 {
   "ambientocclusion": false,
+  "textures": {
+    "particle": "#flowerbed",
+    "stem": "minecraft:block/pink_petals_stem"
+  },
   "elements": [
     {
       "name": "flower",

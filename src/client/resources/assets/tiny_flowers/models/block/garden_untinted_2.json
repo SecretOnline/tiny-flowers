@@ -1,5 +1,8 @@
 {
   "ambientocclusion": false,
+  "textures": {
+    "particle": "#flowerbed"
+  },
   "elements": [
     {
       "name": "flower",

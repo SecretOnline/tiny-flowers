@@ -1,5 +1,9 @@
 {
   "ambientocclusion": false,
+  "textures": {
+    "particle": "#flowerbed",
+    "stem": "tiny_flowers:block/tall_tiny_flower_stem"
+  },
   "elements": [
     {
       "name": "flower_upper",
