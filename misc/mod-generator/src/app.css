@@ -49,9 +49,7 @@ p {
   background-color: #0167ac;
   color: white;
 }
-.button:hover,
-.button:active,
-.button:focus-within {
+.button:is(:hover, :active, :focus-within) {
   background-color: #195a8f;
 }
 
@@ -63,7 +61,8 @@ p {
   height: 28px;
 }
 
-button svg {
+.button svg,
+.checkbox svg {
   fill: currentColor;
   width: 24px;
   height: 24px;
@@ -80,46 +79,68 @@ button svg {
   background-color: #fafafa;
   color: black;
 }
-.text-input:not(:is(:read-only, :disabled)):hover,
-.text-input:not(:is(:read-only, :disabled)):active,
-.text-input:not(:is(:read-only, :disabled)):focus-within {
+.text-input:not(:is(:read-only, :disabled)):is(:hover, :active, :focus-within) {
   background-color: #e6e6e6;
 }
-.text-input:read-only {
+.text-input:read-only,
+.text-input:disabled {
   background-color: transparent;
   color: #414141;
 }
 
-.color-delete {
+.checkbox {
   border-width: 2px;
   border-style: solid;
-  border-inline-start-color: #a65c5a;
-  border-block-start-color: #a65c5a;
-  border-inline-end-color: #6c2829;
-  border-block-end-color: #6c2829;
-  /* 21.72 */
-  background-color: #a23c3f;
+  border-inline-start-color: #2079c0;
+  border-block-start-color: #2079c0;
+  border-inline-end-color: #054473;
+  border-block-end-color: #054473;
+  /* 0 */
+  background-color: #fafafa;
   color: white;
 }
-.color-delete:hover,
-.color-delete:active,
-.color-delete:focus-within {
-  background-color: #883a3b;
+.checkbox:not(:is(:disabled)):is(:hover, :active, :focus-within) {
+  background-color: #e6e6e6;
 }
-
-.color-add {
-  border-width: 2px;
-  border-style: solid;
+.checkbox:is(input:checked ~ .checkbox) {
   border-inline-start-color: #318941;
   border-block-start-color: #318941;
   border-inline-end-color: #124f20;
   border-block-end-color: #124f20;
   /* 146.85 */
   background-color: #1b7730;
-  color: white;
 }
-.color-add:hover,
-.color-add:active,
-.color-add:focus-within {
+.checkbox:is(input:checked ~ .checkbox):not(input:checked ~ :is(:disabled)):is(
+    :hover,
+    :active,
+    :focus-within
+  ) {
+  background-color: #256631;
+}
+.checkbox:is(input:checked ~ :is(:disabled)) {
+  filter: grayscale();
+}
+
+.color-delete {
+  border-inline-start-color: #a65c5a;
+  border-block-start-color: #a65c5a;
+  border-inline-end-color: #6c2829;
+  border-block-end-color: #6c2829;
+  /* 21.72 */
+  background-color: #a23c3f;
+}
+.color-delete:is(:hover, :active, :focus-within) {
+  background-color: #883a3b;
+}
+
+.color-add {
+  border-inline-start-color: #318941;
+  border-block-start-color: #318941;
+  border-inline-end-color: #124f20;
+  border-block-end-color: #124f20;
+  /* 146.85 */
+  background-color: #1b7730;
+}
+.color-add:is(:hover, :active, :focus-within) {
   background-color: #256631;
 }
