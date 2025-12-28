@@ -11,9 +11,17 @@
   import ImageUpload from "./icons/ImageUpload.svelte";
   import Check from "./icons/Check.svelte";
   import Empty from "./icons/Empty.svelte";
-  import { convertFilesToZip, convertFormToFiles } from "../conversion";
+  import {
+    convertFilesToForm,
+    convertFilesToZip,
+    convertFormToFiles,
+    convertZipToFiles,
+  } from "../conversion";
   import ExpandRight from "./icons/ExpandRight.svelte";
   import ExpandDown from "./icons/ExpandDown.svelte";
+  import Download from "./icons/Download.svelte";
+  import Cube from "./icons/Cube.svelte";
+  import Upload from "./icons/Upload.svelte";
 
   const PREDEFINED_BLOCK_MODELS = [
     {
@@ -234,6 +242,25 @@
 
     URL.revokeObjectURL(url);
   }
+
+  async function uploadJar(file: File) {
+    if (
+      ![
+        "application/java-archive",
+        "application/jar",
+        "application/zip",
+        "application/x-zip-compressed",
+      ].includes(file.type)
+    ) {
+      return;
+    }
+
+    const asZip = new File([file], "input.zip", { type: "application/zip" });
+
+    const files = await convertZipToFiles(asZip);
+    const newState = convertFilesToForm(files);
+    formState = newState;
+  }
   // #endregion
 </script>
 
@@ -246,10 +273,28 @@
       rel="noopener noreferrer external">Tiny Flowers</a
     > mod.
   </p>
-  <button class="button" type="button" onclick={() => setToDirtFlower()}
-    >Load example pack</button
-  >
+  <button class="button" type="button" onclick={() => setToDirtFlower()}>
+    <Cube />
+    <span>Load example pack</span>
+  </button>
+  <input
+    type="file"
+    class="visually-hidden"
+    id="mod-icon"
+    accept=".jar,.zip"
+    onchange={(event) => {
+      const file = event.currentTarget.files?.[0];
+      if (file) {
+        uploadJar(file);
+      }
+    }}
+  />
+  <label class="file-input-facade button color-add" for="mod-icon">
+    <Upload />
+    <span>Upload .jar</span>
+  </label>
   <button class="button color-add" type="button" onclick={() => downloadJar()}>
+    <Download />
     <span>Download .jar</span>
   </button>
 
@@ -996,7 +1041,7 @@
     padding: 20px;
   }
 
-  label {
+  label:not(.file-input-facade) {
     font-weight: 600;
   }
 
@@ -1025,6 +1070,12 @@
   .file-input-facade {
     flex-grow: 1;
     width: unset;
+  }
+
+  button,
+  .file-input-facade {
+    padding-inline: 4px;
+    padding-block: 1px;
   }
 
   .layout-grid {
