@@ -1,11 +1,10 @@
-export function blockTexturePathForSlot(
-  modId: string,
-  blockId: string,
-  slot: string
-) {
+export function blockTexturePathForSlot(blockId: string, slot: string) {
   const slotSuffix = slot.startsWith("flowerbed")
     ? slot.replace(/^flowerbed/, "")
     : `_${slot}`;
 
-  return `${modId}:block/${blockId}${slotSuffix}`;
+  const blockNamespace = blockId.replace(/:.*$/, "");
+  const blockPath = blockId.replace(/^.*:/, "");
+
+  return `${blockNamespace}:block/${blockPath}${slotSuffix}`;
 }
