@@ -11,6 +11,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-block: 0;
+}
+
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -19,4 +31,95 @@
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  border-width: 2px;
+  border-style: solid;
+  border-inline-start-color: #2079c0;
+  border-block-start-color: #2079c0;
+  border-inline-end-color: #054473;
+  border-block-end-color: #054473;
+  /* 248.09 */
+  background-color: #0167ac;
+  color: white;
+}
+.button:hover,
+.button:active,
+.button:focus-within {
+  background-color: #195a8f;
+}
+
+.icon-button {
+  margin: 0;
+  padding: 0;
+
+  width: 28px;
+  height: 28px;
+}
+
+button svg {
+  fill: currentColor;
+  width: 24px;
+  height: 24px;
+}
+
+.text-input {
+  border-width: 2px;
+  border-style: solid;
+  border-inline-start-color: #aaaaaa;
+  border-block-start-color: #aaaaaa;
+  border-inline-end-color: #d3d3d3;
+  border-block-end-color: #d3d3d3;
+  /* 0 */
+  background-color: #fafafa;
+  color: black;
+}
+.text-input:not(:is(:read-only, :disabled)):hover,
+.text-input:not(:is(:read-only, :disabled)):active,
+.text-input:not(:is(:read-only, :disabled)):focus-within {
+  background-color: #e6e6e6;
+}
+.text-input:read-only {
+  background-color: transparent;
+  color: #414141;
+}
+
+.color-delete {
+  border-width: 2px;
+  border-style: solid;
+  border-inline-start-color: #a65c5a;
+  border-block-start-color: #a65c5a;
+  border-inline-end-color: #6c2829;
+  border-block-end-color: #6c2829;
+  /* 21.72 */
+  background-color: #a23c3f;
+  color: white;
+}
+.color-delete:hover,
+.color-delete:active,
+.color-delete:focus-within {
+  background-color: #883a3b;
+}
+
+.color-add {
+  border-width: 2px;
+  border-style: solid;
+  border-inline-start-color: #318941;
+  border-block-start-color: #318941;
+  border-inline-end-color: #124f20;
+  border-block-end-color: #124f20;
+  /* 146.85 */
+  background-color: #1b7730;
+  color: white;
+}
+.color-add:hover,
+.color-add:active,
+.color-add:focus-within {
+  background-color: #256631;
 }
