@@ -5,6 +5,8 @@
   import dirtItemTextureUrl from "../../assets/tiny_dirt_item_texture.png";
   import dirtBlockTextureUrl from "../../assets/tiny_dirt_block_texture.png";
   import ImagePreview from "./ImagePreview.svelte";
+  import Delete from "./icons/Delete.svelte";
+  import Add from "./icons/Add.svelte";
 
   const PREDEFINED_BLOCK_MODELS = [
     {
@@ -16,31 +18,31 @@
     {
       value: "garden_untinted",
       name: "1 layer (custom stem)",
-      id: "tiny_flowers:garden",
+      id: "tiny_flowers:garden_untinted",
       slots: ["flowerbed", "stem"],
     },
     {
       value: "garden_double",
       name: "2 layers (default stem)",
-      id: "tiny_flowers:garden",
+      id: "tiny_flowers:garden_double",
       slots: ["flowerbed", "flowerbed_upper"],
     },
     {
       value: "garden_double_untinted",
       name: "2 layers (custom stem)",
-      id: "tiny_flowers:garden",
+      id: "tiny_flowers:garden_double_untinted",
       slots: ["flowerbed", "flowerbed_upper", "stem"],
     },
     {
       value: "garden_triple",
       name: "3 layers (default stem)",
-      id: "tiny_flowers:garden",
+      id: "tiny_flowers:garden_triple",
       slots: ["flowerbed", "flowerbed_middle", "flowerbed_upper"],
     },
     {
       value: "garden_triple_untinted",
       name: "3 layers (custom stem)",
-      id: "tiny_flowers:garden",
+      id: "tiny_flowers:garden_triple_untinted",
       slots: ["flowerbed", "flowerbed_middle", "flowerbed_upper", "stem"],
     },
   ];
@@ -112,7 +114,7 @@
       },
       flowers: [
         {
-          id: "tiny_dirt",
+          id: "tiny_dirt_flower:tiny_dirt",
           name: [{ language: "en_us", name: "Tiny Dirt Flower" }],
           originalId: "minecraft:dirt",
           isSegmented: false,
@@ -191,7 +193,9 @@
   function addBlockTexture(flowerIndex: number) {
     formState.flowers[flowerIndex].blockTextures.push({
       slot: "",
-      texture: { type: "reference", reference: "" },
+      texture: formState.flowers[flowerIndex].isSegmented
+        ? { type: "reference", reference: "" }
+        : { type: "file", file: undefined },
     });
   }
 
@@ -210,7 +214,7 @@
       rel="noopener noreferrer external">Tiny Flowers</a
     > mod.
   </p>
-  <button type="button" onclick={() => setToDirtFlower()}
+  <button class="button" type="button" onclick={() => setToDirtFlower()}
     >Load example pack</button
   >
 
@@ -218,12 +222,13 @@
     {formState.metadata.name || "New mod"} (v{formState.metadata.version ??
       "???"})
   </h2>
-  <section class="metadata-section">
+  <section class="metadata-section layout-grid input-group">
     <div class="block-group metadata-id">
       <label for="mod-id">Mod ID</label>
       <div class="inline-group">
         <input
           type="text"
+          class="text-input"
           id="mod-id"
           bind:value={formState.metadata.id}
           placeholder="your_mod_id"
@@ -236,6 +241,7 @@
       <div class="inline-group">
         <input
           type="text"
+          class="text-input"
           id="mod-version"
           bind:value={formState.metadata.version}
         />
@@ -247,6 +253,7 @@
       <div class="inline-group">
         <input
           type="text"
+          class="text-input"
           id="mod-name"
           bind:value={formState.metadata.name}
           placeholder="Tiny Flowers for ..."
@@ -259,6 +266,7 @@
       <div class="inline-group">
         <input
           type="text"
+          class="text-input"
           id="mod-description"
           bind:value={formState.metadata.description}
           placeholder="Adds support for ... to Tiny Flowers."
@@ -298,358 +306,433 @@
       <div class="inline-group">
         <input
           type="text"
+          class="text-input"
           id="mod-license"
           bind:value={formState.metadata.license}
         />
       </div>
     </div>
 
-    <fieldset class="inline-group metadata-authors">
-      <legend>Authors</legend>
+    <div class="block-group metadata-authors input-group">
+      <h4 class="input-group-heading">Authors</h4>
       <ul class="input-list">
         {#each formState.metadata.authors as author, i (i)}
           <li class="input-list-item inline-group">
             <label class="visually-hidden" for={`author_${i}`}>Name</label>
             <input
               type="text"
+              class="text-input"
               id={`author_${i}`}
               bind:value={formState.metadata.authors[i]}
             />
-            <button type="button" onclick={() => removeAuthor(i)}>Remove</button
+            <button
+              class="button icon-button color-delete"
+              type="button"
+              onclick={() => removeAuthor(i)}
             >
+              <Delete />
+            </button>
           </li>
         {/each}
-        <button type="button" onclick={addAuthor}>Add Author</button>
+
+        <button
+          class="button color-add"
+          type="button"
+          onclick={() => addAuthor()}
+        >
+          <Add /><span>Add author</span>
+        </button>
       </ul>
-    </fieldset>
+    </div>
   </section>
 
   <section class="flowers-section">
-    <h2>Flowers</h2>
+    <div class="inline-group">
+      <h3>Flowers</h3>
+    </div>
 
     {#each formState.flowers as flower, flowerIndex (flowerIndex)}
       {@const hasFileTexture = flower.blockTextures.some(
         (entry) => entry.texture.type === "file",
       )}
-      <div class="flower-item">
-        <div class="flower-data-section">
-          <div class="block-group flower-data-id">
-            <label for="flower-id-{flowerIndex}">ID:</label>
-            <div class="inline-group">
-              <input
-                type="text"
-                id="flower-id-{flowerIndex}"
-                bind:value={flower.id}
-                placeholder="tiny_flower_id"
-              />
-            </div>
-          </div>
-
-          <div class="inline-group flower-data-remove">
-            <button type="button" onclick={() => removeFlower(flowerIndex)}
-              >Remove Flower</button
+      <div class="flower-data-section layout-grid input-group">
+        <div class="block-group flower-data-id">
+          <label for="flower-id-{flowerIndex}">ID</label>
+          <div class="inline-group">
+            <input
+              type="text"
+              class="text-input"
+              id="flower-id-{flowerIndex}"
+              bind:value={flower.id}
+              placeholder="your_mod_id:tiny_flower_id"
+            />
+            <button
+              class="button icon-button color-delete"
+              type="button"
+              onclick={() => removeFlower(flowerIndex)}
             >
+              <Delete />
+            </button>
           </div>
+        </div>
 
-          <div class="block-group flower-data-original">
-            <label for="original-id-{flowerIndex}">Original ID:</label>
-            <div class="inline-group">
-              <input
-                type="text"
-                id="original-id-{flowerIndex}"
-                bind:value={flower.originalId}
-                placeholder="flower_id"
-              />
-            </div>
-            <p>
-              When Florists' Shears are used on this block, it will be turned
-              into Tiny Flowers.
-            </p>
+        <div class="block-group flower-data-original">
+          <label for="original-id-{flowerIndex}">Full Block ID</label>
+          <div class="inline-group">
+            <input
+              type="text"
+              class="text-input"
+              id="original-id-{flowerIndex}"
+              bind:value={flower.originalId}
+              placeholder="your_mod_id:flower_id"
+            />
           </div>
+          <p>
+            When Florists' Shears are used on this block, it will be turned into
+            Tiny Flowers.
+          </p>
+        </div>
 
-          <div class="block-group flower-data-segmented">
-            <label for="is-segmented-{flowerIndex}">Is Segmented</label>
-            <div class="inline-group">
-              <input
-                type="checkbox"
-                id="is-segmented-{flowerIndex}"
-                bind:checked={flower.isSegmented}
-              />
-            </div>
-            <p>
-              Check this box if the original flower is made of multiple parts
-              (e.g. Pink Petals, Wildflowers, or Leaf Litter).
-            </p>
+        <div class="block-group flower-data-segmented">
+          <label for="is-segmented-{flowerIndex}">Is Segmented</label>
+          <div class="inline-group">
+            <input
+              type="checkbox"
+              id="is-segmented-{flowerIndex}"
+              bind:checked={flower.isSegmented}
+            />
           </div>
+          <p>
+            Check this box if the original flower is made of multiple parts
+            (e.g. Pink Petals, Wildflowers, or Leaf Litter).
+          </p>
+        </div>
 
-          <div class="block-group flower-data-item">
-            <label for="item-texture-{flowerIndex}">Item Texture</label>
-            <div class="inline-group">
-              <input
-                type="file"
-                id="item-texture-{flowerIndex}"
-                bind:files={
-                  () => {
-                    const dt = new DataTransfer();
-                    if (flower.itemTexture) {
-                      dt.items.add(flower.itemTexture);
-                    }
-                    return dt.files;
-                  },
-                  (newFiles) => {
-                    flower.itemTexture = newFiles?.[0] ?? undefined;
+        <div class="block-group flower-data-item">
+          <label for="item-texture-{flowerIndex}">Item Texture</label>
+          <div class="inline-group">
+            <input
+              type="file"
+              id="item-texture-{flowerIndex}"
+              bind:files={
+                () => {
+                  const dt = new DataTransfer();
+                  if (flower.itemTexture) {
+                    dt.items.add(flower.itemTexture);
                   }
+                  return dt.files;
+                },
+                (newFiles) => {
+                  flower.itemTexture = newFiles?.[0] ?? undefined;
                 }
-              />
-            </div>
-
-            <ImagePreview
-              file={flower.itemTexture}
-              alt={flower.name.find((e) => e.language === "en_us")?.name ??
-                flower.id}
+              }
             />
           </div>
 
-          <fieldset class="block-group flower-data-translations">
-            <legend>Translations</legend>
-            <table class="input-table">
-              <thead>
-                <tr>
-                  <th>Language ID</th>
-                  <th>Flower Name</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {#each flower.name as entry, i (i)}
-                  <tr class="name-item">
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_lang_id_${entry.language}`}
-                        >Language ID</label
-                      >
+          <ImagePreview
+            file={flower.itemTexture}
+            alt={flower.name.find((e) => e.language === "en_us")?.name ??
+              flower.id}
+          />
+        </div>
+
+        <div class="block-group flower-data-translations input-group">
+          <h4 class="input-group-heading">Translations</h4>
+
+          <table class="input-table">
+            <thead>
+              <tr>
+                <th>Language ID</th>
+                <th>Flower Name</th>
+                <th class="delete-column"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each flower.name as entry, i (i)}
+                <tr class="name-item">
+                  <td>
+                    <label
+                      class="visually-hidden"
+                      for={`${flower.id}_lang_id_${entry.language}`}
+                      >Language ID</label
+                    >
+                    <div class="inline-group">
                       <input
                         type="text"
+                        class="text-input"
                         id={`${flower.id}_lang_id_${entry.language}`}
                         bind:value={flower.name[i].language}
                       />
-                    </td>
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_lang_name_${entry.language}`}
-                        >Flower Name</label
-                      >
+                    </div>
+                  </td>
+                  <td>
+                    <label
+                      class="visually-hidden"
+                      for={`${flower.id}_lang_name_${entry.language}`}
+                      >Flower Name</label
+                    >
+                    <div class="inline-group">
                       <input
                         type="text"
+                        class="text-input"
                         id={`${flower.id}_lang_name_${entry.language}`}
                         bind:value={flower.name[i].name}
                         placeholder={entry.language.startsWith("en_")
                           ? "Tiny ..."
                           : undefined}
                       />
-                    </td>
-                    <td>
-                      <button
-                        type="button"
-                        onclick={() => removeFlowerName(flowerIndex, i)}
-                        >Remove</button
-                      >
-                    </td>
-                  </tr>
-                {/each}
-              </tbody>
-            </table>
-            <div class="input-list">
-              <button type="button" onclick={() => addFlowerName(flowerIndex)}
-                >Add Language</button
-              >
-            </div>
-          </fieldset>
-
-          <fieldset class="block-group flower-data-survive">
-            <legend>Can Survive On</legend>
-            <ul class="input-list">
-              {#each flower.canSurviveOn as block, i (i)}
-                <li class="input-list-item inline-group">
-                  <input type="text" bind:value={flower.canSurviveOn[i]} />
-                  <button
-                    type="button"
-                    onclick={() => removeSurvivalBlock(flowerIndex, i)}
-                    >Remove</button
-                  >
-                </li>
-              {/each}
-            </ul>
-
-            <div class="inline-group">
-              <button
-                type="button"
-                onclick={() => addSurvivalBlock(flowerIndex)}
-                >Add Block or Tag</button
-              >
-              <button
-                type="button"
-                onclick={() =>
-                  addSurvivalBlock(
-                    flowerIndex,
-                    "#tiny_flowers:tiny_flower_can_survive_on",
-                  )}>Add Default</button
-              >
-            </div>
-          </fieldset>
-
-          <fieldset class="block-group flower-data-effects">
-            <legend>Suspicious Stew Effects:</legend>
-
-            <table class="input-table">
-              <thead>
-                <tr>
-                  <th>Effect ID</th>
-                  <th>Duration (ticks)</th>
-                  <th></th>
+                    </div>
+                  </td>
+                  <td>
+                    <button
+                      class="button icon-button color-delete"
+                      type="button"
+                      onclick={() => removeFlowerName(flowerIndex, i)}
+                    >
+                      <Delete />
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {#each flower.suspiciousStewEffects as effect, i (i)}
-                  <tr class="effect-item">
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_effect_id_${i}`}>Effect ID</label
-                      >
+              {/each}
+            </tbody>
+          </table>
+
+          <button
+            class="button color-add"
+            type="button"
+            onclick={() => addFlowerName(flowerIndex)}
+          >
+            <Add /><span>Add translation</span>
+          </button>
+        </div>
+
+        <div class="block-group flower-data-survive input-group">
+          <h4 class="input-group-heading">Can Survive On</h4>
+          <ul class="input-list">
+            {#each flower.canSurviveOn as block, i (i)}
+              <li class="input-list-item inline-group">
+                <input
+                  type="text"
+                  class="text-input"
+                  bind:value={flower.canSurviveOn[i]}
+                />
+                <button
+                  class="button icon-button color-delete"
+                  type="button"
+                  onclick={() => removeSurvivalBlock(flowerIndex, i)}
+                >
+                  <Delete />
+                </button>
+              </li>
+            {/each}
+          </ul>
+
+          <div class="inline-group">
+            <button
+              class="button color-add"
+              type="button"
+              onclick={() => addSurvivalBlock(flowerIndex)}
+            >
+              <Add /><span>Add block or tag</span>
+            </button>
+
+            <button
+              class="button color-add"
+              type="button"
+              onclick={() =>
+                addSurvivalBlock(
+                  flowerIndex,
+                  "#tiny_flowers:tiny_flower_can_survive_on",
+                )}
+            >
+              <Add /><span>Add default tag</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="block-group flower-data-effects input-group">
+          <h4 class="input-group-heading">Suspicious Stew Effects</h4>
+
+          <table class="input-table">
+            <thead>
+              <tr>
+                <th>Effect ID</th>
+                <th>Duration (ticks)</th>
+                <th class="delete-column"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each flower.suspiciousStewEffects as effect, i (i)}
+                <tr class="effect-item">
+                  <td>
+                    <label
+                      class="visually-hidden"
+                      for={`${flower.id}_effect_id_${i}`}>Effect ID</label
+                    >
+                    <div class="inline-group">
                       <input
                         type="text"
+                        class="text-input"
                         id={`${flower.id}_effect_id_${i}`}
                         bind:value={effect.id}
                         placeholder="minecraft:effect_id"
                       />
-                    </td>
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_effect_duration_${i}`}
-                        >Duration (ticks)</label
-                      >
+                    </div>
+                  </td>
+                  <td>
+                    <label
+                      class="visually-hidden"
+                      for={`${flower.id}_effect_duration_${i}`}
+                      >Duration (ticks)</label
+                    >
+                    <div class="inline-group">
                       <input
                         type="number"
+                        class="text-input"
                         id={`${flower.id}_effect_duration_${i}`}
                         bind:value={effect.duration}
                       />
-                    </td>
-                    <td>
-                      <button
-                        type="button"
-                        onclick={() => removeEffect(flowerIndex, i)}
-                        >Remove</button
-                      >
-                    </td>
-                  </tr>
-                {/each}
-              </tbody>
-            </table>
-
-            <button type="button" onclick={() => addEffect(flowerIndex)}
-              >Add Effect</button
-            >
-          </fieldset>
-
-          <div class="block-group flower-data-parent-preset">
-            <label for="model-parent-preset-{flowerIndex}"
-              >Model Parent Preset</label
-            >
-            <p>
-              The Tiny Flowers mod provides a set of built-in models that only
-              need the upwards facing textures defined. In general, try to use
-              the fewest number of layers while still getting the essence of the
-              original flower across.
-            </p>
-            <div class="preset-button-grid">
-              {#each PREDEFINED_BLOCK_MODELS as model}
-                <button
-                  type="button"
-                  value={model.value}
-                  onclick={() => {
-                    flower.modelParentBase = model.id;
-                    flower.blockTextures = model.slots.map(
-                      (slot) =>
-                        flower.blockTextures.find((t) => t.slot === slot) ?? {
-                          slot,
-                          texture: { type: "file", file: undefined },
-                        },
-                    );
-                  }}>{model.name}</button
-                >
-              {/each}
-            </div>
-          </div>
-
-          <div class="block-group flower-data-parent">
-            <label for="model-parent-base-{flowerIndex}"
-              >Model Parent Identifier</label
-            >
-            <div class="inline-group">
-              <input
-                type="text"
-                id="model-parent-base-{flowerIndex}"
-                bind:value={flower.modelParentBase}
-              />
-            </div>
-          </div>
-
-          <div class="block-group flower-data-tint">
-            <label for="tint-source-{flowerIndex}">Tint Source</label>
-            <div class="inline-group">
-              <select
-                id="tint-source-{flowerIndex}"
-                bind:value={flower.tintSource}
-              >
-                <option value="grass">Grass</option>
-                <option value="dry_foliage">Dry Foliage</option>
-              </select>
-            </div>
-          </div>
-
-          <fieldset class="block-group flower-data-block">
-            <legend>Block Textures:</legend>
-
-            <table class="input-table">
-              <thead>
-                <tr>
-                  <th>Texture Slot</th>
-                  <th>Type</th>
-                  {#if hasFileTexture}
-                    <th>File</th>
-                  {/if}
-                  <th>Identifier</th>
-                  <th></th>
-                  {#if hasFileTexture}
-                    <th>Preview</th>
-                  {/if}
+                    </div>
+                  </td>
+                  <td>
+                    <button
+                      class="button icon-button color-delete"
+                      type="button"
+                      onclick={() => removeEffect(flowerIndex, i)}
+                    >
+                      <Delete />
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {#each flower.blockTextures as entry, i (i)}
-                  <tr class="texture-item">
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_texture_slot_${i}`}
-                        >Texture slot</label
-                      >
+              {/each}
+            </tbody>
+          </table>
+
+          <button
+            class="button color-add"
+            type="button"
+            onclick={() => addEffect(flowerIndex)}
+          >
+            <Add /><span>Add effect</span>
+          </button>
+        </div>
+
+        <div class="block-group flower-data-parent-preset">
+          <label for="model-parent-preset-{flowerIndex}"
+            >Model Parent Preset</label
+          >
+          <p>
+            The Tiny Flowers mod provides a set of built-in models that only
+            need the upwards facing textures defined. In general, try to use the
+            fewest number of layers while still getting the idea of the original
+            flower across.
+          </p>
+          <div class="preset-button-grid">
+            {#each PREDEFINED_BLOCK_MODELS as model}
+              <button
+                type="button"
+                class="button"
+                value={model.value}
+                onclick={() => {
+                  flower.modelParentBase = model.id;
+                  flower.blockTextures = model.slots.map(
+                    (slot) =>
+                      flower.blockTextures.find((t) => t.slot === slot) ?? {
+                        slot,
+                        texture: flower.isSegmented
+                          ? { type: "reference", reference: "" }
+                          : { type: "file", file: undefined },
+                      },
+                  );
+                }}>{model.name}</button
+              >
+            {/each}
+          </div>
+        </div>
+
+        <div class="block-group flower-data-parent">
+          <label for="model-parent-base-{flowerIndex}"
+            >Model Parent Identifier</label
+          >
+          <div class="inline-group">
+            <input
+              type="text"
+              class="text-input"
+              id="model-parent-base-{flowerIndex}"
+              bind:value={flower.modelParentBase}
+            />
+          </div>
+          <p>
+            This generator will generate 4 block models, with parents of <code
+              >&lt;parent&gt;_1</code
+            >, <code>&lt;parent&gt;_2</code>, <code>&lt;parent&gt;_3</code>, and
+            <code>&lt;parent&gt;_4</code>.
+          </p>
+        </div>
+
+        <div class="block-group flower-data-tint">
+          <label for="tint-source-{flowerIndex}">Tint Source</label>
+          <div class="inline-group">
+            <select
+              class="button"
+              id="tint-source-{flowerIndex}"
+              bind:value={flower.tintSource}
+            >
+              <option value="grass">Grass</option>
+              <option value="dry_foliage">Dry Foliage</option>
+            </select>
+          </div>
+          <p>
+            When using the default stem, or any other model that has an element
+            with a <code>tintindex</code>, set which source should be used for
+            the tint. The Tiny Flowers mod currently does not support multiple
+            <code>tintindex</code>es in the same model.
+          </p>
+        </div>
+
+        <div class="block-group flower-data-block input-group">
+          <h4 class="input-group-heading">Block Textures</h4>
+
+          <table class="input-table">
+            <thead>
+              <tr>
+                <th>Texture Slot</th>
+                <th>Type</th>
+                {#if hasFileTexture}
+                  <th>File</th>
+                {/if}
+                <th>Identifier</th>
+                <th class="delete-column"></th>
+                {#if hasFileTexture}
+                  <th>Preview</th>
+                {/if}
+              </tr>
+            </thead>
+            <tbody>
+              {#each flower.blockTextures as entry, i (i)}
+                <tr class="texture-item">
+                  <td>
+                    <label
+                      class="visually-hidden"
+                      for={`${flower.id}_texture_slot_${i}`}>Texture slot</label
+                    >
+                    <div class="inline-group">
                       <input
                         type="text"
+                        class="text-input"
                         id={`${flower.id}_texture_slot_${i}`}
                         bind:value={entry.slot}
                       />
-                    </td>
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_texture_type_${i}`}>Type</label
-                      >
+                    </div>
+                  </td>
+                  <td>
+                    <label
+                      class="visually-hidden"
+                      for={`${flower.id}_texture_type_${i}`}>Source</label
+                    >
+                    <div class="inline-group">
                       <select
+                        class="button"
                         id={`${flower.id}_texture_type_${i}`}
                         bind:value={
                           () => entry.texture.type,
@@ -658,7 +741,6 @@
                               entry.texture = {
                                 type: newType,
                                 reference: blockTexturePathForSlot(
-                                  formState.metadata.id,
                                   flower.id,
                                   entry.slot,
                                 ),
@@ -672,18 +754,20 @@
                           }
                         }
                       >
-                        <option value="reference">Identifier</option>
-                        <option value="file">Upload</option>
+                        <option value="reference">Existing identifier</option>
+                        <option value="file">Upload image</option>
                       </select>
-                    </td>
-                    {#if hasFileTexture}
-                      <td>
-                        {#if entry.texture.type === "file"}
-                          {@const tex = entry.texture}
-                          <label
-                            class="visually-hidden"
-                            for={`${flower.id}_texture_file_${i}`}>Upload</label
-                          >
+                    </div>
+                  </td>
+                  {#if hasFileTexture}
+                    <td>
+                      {#if entry.texture.type === "file"}
+                        {@const tex = entry.texture}
+                        <label
+                          class="visually-hidden"
+                          for={`${flower.id}_texture_file_${i}`}>Upload</label
+                        >
+                        <div class="inline-group">
                           <input
                             type="file"
                             id={`${flower.id}_texture_file_${i}`}
@@ -700,67 +784,73 @@
                               }
                             }
                           />
-                        {/if}
-                      </td>
-                    {/if}
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_texture_reference_${i}`}
-                        >Identifier</label
-                      >
+                        </div>
+                      {/if}
+                    </td>
+                  {/if}
+                  <td>
+                    <label
+                      class="visually-hidden"
+                      for={`${flower.id}_texture_reference_${i}`}
+                      >Identifier</label
+                    >
+                    <div class="inline-group">
                       {#if entry.texture.type === "file"}
                         <input
                           type="text"
+                          class="text-input"
                           id={`${flower.id}_texture_reference_${i}`}
                           disabled
-                          value={blockTexturePathForSlot(
-                            formState.metadata.id,
-                            flower.id,
-                            entry.slot,
-                          )}
+                          value={blockTexturePathForSlot(flower.id, entry.slot)}
                         />
                       {:else if entry.texture.type === "reference"}
                         <input
                           type="text"
+                          class="text-input"
                           id={`${flower.id}_texture_reference_${i}`}
                           bind:value={entry.texture.reference}
                         />
                       {/if}
-                    </td>
+                    </div>
+                  </td>
+                  <td>
+                    <button
+                      class="button icon-button color-delete"
+                      type="button"
+                      onclick={() => removeBlockTexture(flowerIndex, i)}
+                    >
+                      <Delete />
+                    </button>
+                  </td>
+                  {#if hasFileTexture}
                     <td>
-                      <button
-                        type="button"
-                        onclick={() => removeBlockTexture(flowerIndex, i)}
-                        >Remove</button
-                      >
+                      {#if entry.texture.type === "file"}
+                        <ImagePreview
+                          file={entry.texture.file}
+                          alt={entry.slot}
+                        />
+                      {/if}
                     </td>
-                    {#if hasFileTexture}
-                      <td>
-                        {#if entry.texture.type === "file"}
-                          <ImagePreview
-                            file={entry.texture.file}
-                            alt={entry.slot}
-                          />
-                        {/if}
-                      </td>
-                    {/if}
-                  </tr>
-                {/each}
-              </tbody>
-            </table>
+                  {/if}
+                </tr>
+              {/each}
+            </tbody>
+          </table>
 
-            <button type="button" onclick={() => addBlockTexture(flowerIndex)}
-              >Add Texture</button
-            >
-          </fieldset>
+          <button
+            class="button color-add"
+            type="button"
+            onclick={() => addBlockTexture(flowerIndex)}
+          >
+            <Add /><span>Add texture mapping</span>
+          </button>
         </div>
       </div>
     {/each}
 
-    <button type="button" onclick={addFlower} class="add-flower-btn"
-      >Add Flower</button
-    >
+    <button class="button color-add" type="button" onclick={() => addFlower()}>
+      <Add /><span>Add new flower</span>
+    </button>
   </section>
 
   <pre>{JSON.stringify(
@@ -782,6 +872,22 @@
     padding: 20px;
   }
 
+  label {
+    font-weight: 600;
+  }
+
+  .input-group-heading {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .input-group {
+    background: #f5f5f5;
+    border: 1px solid lightgrey;
+    border-radius: 12px;
+    padding: 0.5rem;
+  }
+
   button,
   input,
   select {
@@ -789,94 +895,142 @@
     font-family: inherit;
   }
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="number"],
+  select {
     flex-grow: 1;
     width: unset;
   }
 
-  .metadata-section {
+  .layout-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
+    overflow-x: hidden;
+  }
 
-    grid-template-areas:
-      "id version license icon"
-      "name name authors icon"
-      "description description authors icon";
+  .layout-grid > * {
+    overflow-x: auto;
+  }
 
-    .metadata-id {
-      grid-area: id;
-    }
-    .metadata-name {
-      grid-area: name;
-    }
-    .metadata-description {
-      grid-area: description;
-    }
-    .metadata-version {
-      grid-area: version;
-    }
-    .metadata-icon {
-      grid-area: icon;
-    }
-    .metadata-authors {
-      grid-area: authors;
-    }
-    .metadata-license {
-      grid-area: license;
-    }
+  .metadata-section {
+    grid-template-areas: "id" "version" "name" "description" "icon" "license" "authors";
+    margin-block-start: 1rem;
+  }
+
+  .flowers-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-block-start: 1.5rem;
   }
 
   .flower-data-section {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-
     grid-template-areas:
-      "id id id remove"
-      "original original segmented item"
-      "translations translations translations translations"
-      "survive survive effects effects"
-      "parent-preset parent-preset parent tint"
-      "block block block block";
+      "id" "original" "segmented" "item" "translations"
+      "survive" "effects" "parent-preset" "parent" "tint" "block";
+  }
 
-    .flower-data-id {
-      grid-area: id;
+  @media (min-width: 560px) {
+    .metadata-section {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas:
+        "id id"
+        "name name"
+        "description description"
+        "version license"
+        "authors icon";
     }
-    .flower-data-remove {
-      grid-area: remove;
-      justify-content: end;
+
+    .flower-data-section {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas:
+        "id id"
+        "original segmented"
+        "item item"
+        "translations translations"
+        "survive survive"
+        "effects effects"
+        "parent-preset parent-preset"
+        "parent tint"
+        "block block";
     }
-    .flower-data-translations {
-      grid-area: translations;
+  }
+
+  @media (min-width: 1072px) {
+    .metadata-section {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-areas:
+        "id version license icon"
+        "name name authors icon"
+        "description description authors icon";
     }
-    .flower-data-original {
-      grid-area: original;
+
+    .flower-data-section {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-areas:
+        "id id id id"
+        "original original segmented item"
+        "translations translations translations translations"
+        "survive survive effects effects"
+        "parent-preset parent-preset parent tint"
+        "block block block block";
     }
-    .flower-data-segmented {
-      grid-area: segmented;
-    }
-    .flower-data-survive {
-      grid-area: survive;
-    }
-    .flower-data-item {
-      grid-area: item;
-    }
-    .flower-data-tint {
-      grid-area: tint;
-    }
-    .flower-data-effects {
-      grid-area: effects;
-    }
-    .flower-data-parent {
-      grid-area: parent;
-    }
-    .flower-data-parent-preset {
-      grid-area: parent-preset;
-    }
-    .flower-data-block {
-      grid-area: block;
-    }
+  }
+
+  .metadata-id {
+    grid-area: id;
+  }
+  .metadata-name {
+    grid-area: name;
+  }
+  .metadata-description {
+    grid-area: description;
+  }
+  .metadata-version {
+    grid-area: version;
+  }
+  .metadata-icon {
+    grid-area: icon;
+  }
+  .metadata-authors {
+    grid-area: authors;
+  }
+  .metadata-license {
+    grid-area: license;
+  }
+
+  .flower-data-id {
+    grid-area: id;
+  }
+  .flower-data-translations {
+    grid-area: translations;
+  }
+  .flower-data-original {
+    grid-area: original;
+  }
+  .flower-data-segmented {
+    grid-area: segmented;
+  }
+  .flower-data-survive {
+    grid-area: survive;
+  }
+  .flower-data-item {
+    grid-area: item;
+  }
+  .flower-data-tint {
+    grid-area: tint;
+  }
+  .flower-data-effects {
+    grid-area: effects;
+  }
+  .flower-data-parent {
+    grid-area: parent;
+  }
+  .flower-data-parent-preset {
+    grid-area: parent-preset;
+  }
+  .flower-data-block {
+    grid-area: block;
   }
 
   .input-list {
@@ -889,7 +1043,7 @@
   .inline-group {
     display: flex;
     gap: 0.5rem;
-    align-items: baseline;
+    align-items: center;
   }
 
   .block-group {
@@ -901,11 +1055,16 @@
 
   .input-table {
     width: 100%;
+    overflow-x: auto;
   }
 
   .preset-button-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
+  }
+
+  .delete-column {
+    width: 28px;
   }
 </style>
