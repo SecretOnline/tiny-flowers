@@ -1,8 +1,6 @@
 {
   "parent": "tiny_flowers:block/garden_2",
   "textures": {
-    "flowerbed": "tiny_dirt_flower:block/tiny_dirt",
-    "particle": "tiny_dirt_flower:block/tiny_dirt",
-    "stem": "minecraft:block/pink_petals_stem"
+    "flowerbed": "tiny_dirt_flower:block/tiny_dirt"
   }
 }
