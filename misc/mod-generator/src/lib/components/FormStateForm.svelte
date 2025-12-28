@@ -7,6 +7,10 @@
   import ImagePreview from "./ImagePreview.svelte";
   import Delete from "./icons/Delete.svelte";
   import Add from "./icons/Add.svelte";
+  import Image from "./icons/Image.svelte";
+  import ImageUpload from "./icons/ImageUpload.svelte";
+  import Check from "./icons/Check.svelte";
+  import Empty from "./icons/Empty.svelte";
 
   const PREDEFINED_BLOCK_MODELS = [
     {
@@ -279,7 +283,9 @@
       <div class="inline-group">
         <input
           type="file"
+          class="visually-hidden"
           id="mod-icon"
+          accept="image/png"
           bind:files={
             () => {
               const dt = new DataTransfer();
@@ -293,12 +299,21 @@
             }
           }
         />
+        <label class="file-input-facade button" for="mod-icon">
+          {#if formState.metadata.icon?.name}
+            <Image /><span>{formState.metadata.icon.name}</span>
+          {:else}
+            <ImageUpload /><span>Browse...</span>
+          {/if}
+        </label>
       </div>
 
-      <ImagePreview
-        file={formState.metadata.icon}
-        alt={formState.metadata.name}
-      />
+      <label class="image-preview-label" for="mod-icon">
+        <ImagePreview
+          file={formState.metadata.icon}
+          alt={formState.metadata.name}
+        />
+      </label>
     </div>
 
     <div class="block-group metadata-license">
@@ -398,9 +413,17 @@
           <div class="inline-group">
             <input
               type="checkbox"
+              class="visually-hidden"
               id="is-segmented-{flowerIndex}"
               bind:checked={flower.isSegmented}
             />
+            <label class="button checkbox" for="is-segmented-{flowerIndex}">
+              {#if flower.isSegmented}
+                <Check />
+              {:else}
+                <Empty />
+              {/if}
+            </label>
           </div>
           <p>
             Check this box if the original flower is made of multiple parts
@@ -413,7 +436,9 @@
           <div class="inline-group">
             <input
               type="file"
+              class="visually-hidden"
               id="item-texture-{flowerIndex}"
+              accept="image/png"
               bind:files={
                 () => {
                   const dt = new DataTransfer();
@@ -427,13 +452,25 @@
                 }
               }
             />
+            <label
+              class="file-input-facade button"
+              for={`item-texture-${flowerIndex}`}
+            >
+              {#if flower.itemTexture?.name}
+                <Image /><span>{flower.itemTexture.name}</span>
+              {:else}
+                <ImageUpload /><span>Browse...</span>
+              {/if}
+            </label>
           </div>
 
-          <ImagePreview
-            file={flower.itemTexture}
-            alt={flower.name.find((e) => e.language === "en_us")?.name ??
-              flower.id}
-          />
+          <label class="image-preview-label" for="item-texture-{flowerIndex}">
+            <ImagePreview
+              file={flower.itemTexture}
+              alt={flower.name.find((e) => e.language === "en_us")?.name ??
+                flower.id}
+            />
+          </label>
         </div>
 
         <div class="block-group flower-data-translations input-group">
@@ -770,7 +807,9 @@
                         <div class="inline-group">
                           <input
                             type="file"
+                            class="visually-hidden"
                             id={`${flower.id}_texture_file_${i}`}
+                            accept="image/png"
                             bind:files={
                               () => {
                                 const dt = new DataTransfer();
@@ -784,6 +823,16 @@
                               }
                             }
                           />
+                          <label
+                            class="file-input-facade button"
+                            for={`${flower.id}_texture_file_${i}`}
+                          >
+                            {#if tex.file?.name}
+                              <Image /><span>{tex.file.name}</span>
+                            {:else}
+                              <ImageUpload /><span>Browse...</span>
+                            {/if}
+                          </label>
                         </div>
                       {/if}
                     </td>
@@ -825,10 +874,15 @@
                   {#if hasFileTexture}
                     <td>
                       {#if entry.texture.type === "file"}
-                        <ImagePreview
-                          file={entry.texture.file}
-                          alt={entry.slot}
-                        />
+                        <label
+                          class="image-preview-label"
+                          for={`${flower.id}_texture_file_${i}`}
+                        >
+                          <ImagePreview
+                            file={entry.texture.file}
+                            alt={entry.slot}
+                          />
+                        </label>
                       {/if}
                     </td>
                   {/if}
@@ -897,7 +951,8 @@
 
   input[type="text"],
   input[type="number"],
-  select {
+  select,
+  .file-input-facade {
     flex-grow: 1;
     width: unset;
   }
@@ -1066,5 +1121,9 @@
 
   .delete-column {
     width: 28px;
+  }
+
+  .image-preview-label {
+    align-self: center;
   }
 </style>

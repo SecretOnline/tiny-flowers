@@ -34,5 +34,6 @@
     width: 64px;
     height: 64px;
     image-rendering: pixelated;
+    background-color: #e9e9e9;
   }
 </style>
