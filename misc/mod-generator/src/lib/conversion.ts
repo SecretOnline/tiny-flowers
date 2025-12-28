@@ -3,7 +3,7 @@ import type {
   BlockModelGeneratedJson,
   ItemsModelDefinitionJson,
 } from "./types/files";
-import type { CombinedFlowerData, FormState } from "./types/state";
+import type { CombinedFlowerData, FormState, TextureType } from "./types/state";
 
 function trimFileName(name: string): string {
   return name.replace(/\.[^\.]+$/, "");
@@ -94,7 +94,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
       model4: `${modId}:block/tiny_flowers/${flower.id}_4`,
     };
 
-    for (const [language, name] of Object.entries(flower.name)) {
+    for (const { language, name } of flower.name) {
       if (!value.assets.lang[language]) {
         value.assets.lang[language] = {};
       }
@@ -103,16 +103,17 @@ export function convertFormToFiles(state: FormState): AllFiles {
     }
 
     const textureMap: Record<string, string> = {};
-    for (const [key, file] of Object.entries(flower.blockTextures)) {
-      if (!file) {
-        continue;
-      }
+    for (const { slot, texture } of flower.blockTextures) {
+      if (texture.type === "reference") {
+        textureMap[slot] = texture.reference;
+      } else if (texture.type === "file") {
+        if (!texture.file) {
+          continue;
+        }
 
-      if (typeof file === "string") {
-        textureMap[key] = file;
-      } else {
-        value.assets.textures.block[trimFileName(file.name)] = file;
-        textureMap[key] = `${modId}:block/${trimFileName(file.name)}`;
+        value.assets.textures.block[trimFileName(texture.file.name)] =
+          texture.file;
+        textureMap[slot] = `${modId}:block/${trimFileName(texture.file.name)}`;
       }
     }
 
@@ -193,8 +194,16 @@ export function convertFilesToForm(files: AllFiles): FormState {
       );
     }
 
-    const blockTextures: CombinedFlowerData["blockTextures"] = {};
-    for (const [textureKey, path] of Object.entries(firstModel.textures)) {
+    const blockTextures: CombinedFlowerData["blockTextures"] = [];
+    function setTextureForSlot(slot: string, texture: TextureType) {
+      const existingItem = blockTextures.find((entry) => entry.slot === slot);
+      if (!existingItem) {
+        blockTextures.push({ slot, texture });
+      } else {
+        existingItem.texture = texture;
+      }
+    }
+    for (const [slot, path] of Object.entries(firstModel.textures)) {
       if (path.startsWith(`${data.id}:block/`)) {
         const name = path.split(":block/")[1];
         const file = files.assets.textures.block[name];
@@ -202,16 +211,28 @@ export function convertFilesToForm(files: AllFiles): FormState {
           console.warn(
             `Unable to find texture referenced in ${data.id}_1: ${path}. Falling back to string value.`
           );
-          blockTextures[textureKey] = path;
+          setTextureForSlot(slot, { type: "reference", reference: path });
         } else {
-          blockTextures[textureKey] = file;
+          setTextureForSlot(slot, { type: "file", file });
         }
       } else {
-        blockTextures[textureKey] = path;
+        setTextureForSlot(slot, { type: "reference", reference: path });
       }
     }
 
-    const nameMap: CombinedFlowerData["name"] = { en_us: "<unknown>" };
+    const nameList: CombinedFlowerData["name"] = [
+      { language: "en_us", name: "" },
+    ];
+    function setItemNameForLanguage(language: string, name: string) {
+      const existingItem = nameList.find(
+        (entry) => entry.language === language
+      );
+      if (!existingItem) {
+        nameList.push({ language, name });
+      } else {
+        existingItem.name = name;
+      }
+    }
     for (const [languageKey, values] of Object.entries(files.assets.lang)) {
       if (!values) {
         continue;
@@ -219,13 +240,13 @@ export function convertFilesToForm(files: AllFiles): FormState {
 
       const value = values[data.id];
       if (value) {
-        nameMap[languageKey] = value;
+        setItemNameForLanguage(languageKey, value);
       }
     }
 
     const item: CombinedFlowerData = {
       id: data.id,
-      name: nameMap,
+      name: nameList,
       originalId: data.original_id,
       isSegmented: data.is_segmented ?? false,
       canSurviveOn: data.can_survive_on ?? [

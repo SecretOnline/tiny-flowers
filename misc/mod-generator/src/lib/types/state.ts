@@ -14,9 +14,21 @@ export interface ModMetadata {
   icon: File | undefined;
 }
 
+export interface TextureReference {
+  type: "reference";
+  reference: string;
+}
+
+export interface TextureFile {
+  type: "file";
+  file: File | undefined;
+}
+
+export type TextureType = TextureReference | TextureFile;
+
 export interface CombinedFlowerData {
   id: string;
-  name: Record<string, string>;
+  name: { language: string; name: string }[];
   originalId: string;
   isSegmented: boolean;
   canSurviveOn: string[];
@@ -24,5 +36,5 @@ export interface CombinedFlowerData {
   itemTexture: File | undefined;
   tintSource: "grass" | "dry_foliage";
   modelParentBase: string;
-  blockTextures: Record<string, File | string | undefined>;
+  blockTextures: { slot: string; texture: TextureType }[];
 }
