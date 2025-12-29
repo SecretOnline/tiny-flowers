@@ -33,6 +33,19 @@ p {
   width: 1px;
 }
 
+.inline-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.block-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -69,6 +82,7 @@ p {
   fill: currentColor;
   width: 24px;
   height: 24px;
+  flex-shrink: 0;
 }
 
 .text-input {
@@ -146,4 +160,21 @@ p {
 }
 .color-add:is(:hover, :active, :focus-within) {
   background-color: #256631;
+}
+
+.spin {
+  animation: Spin 4s linear infinite;
+}
+
+.slow-spin {
+  animation: Spin 40s linear infinite;
+}
+
+@keyframes Spin {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
 }
