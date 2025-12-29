@@ -1,7 +1,6 @@
 <script lang="ts">
+  import { getAbortSignal } from "svelte";
   import ColorPicker from "svelte-awesome-color-picker";
-  import ImageUpload from "./icons/ImageUpload.svelte";
-  import Image from "./icons/Image.svelte";
   import bg from "../../assets/generator/bg.png";
   import flowers1 from "../../assets/generator/flowers1.png";
   import flowers2 from "../../assets/generator/flowers2.png";
@@ -10,10 +9,11 @@
   import grassBlock from "../../assets/generator/grass-t.png";
   import stems from "../../assets/generator/stems.png";
   import title from "../../assets/generator/title.png";
-  import { getAbortSignal } from "svelte";
   import { delay } from "../util";
-  import ColorPickerWrapper from "./color-picker/ColorPickerWrapper.svelte";
   import ColorPickerButton from "./color-picker/ColorPickerButton.svelte";
+  import ColorPickerWrapper from "./color-picker/ColorPickerWrapper.svelte";
+  import Image from "./icons/Image.svelte";
+  import ImageUpload from "./icons/ImageUpload.svelte";
   import Progress from "./icons/Progress.svelte";
 
   const ICON_SIZE = 512;
@@ -182,7 +182,10 @@
 
 {#if typeof window.OffscreenCanvas !== "undefined"}
   <div class="block-group">
-    <p>You can also create an icon by selecting an image and color.</p>
+    <p>
+      You can also create an icon by uploading an image (e.g. your mod's logo)
+      and selecting a color.
+    </p>
     <div class="inline-group">
       <input
         type="file"
