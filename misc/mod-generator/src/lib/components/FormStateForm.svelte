@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { FormState } from "../types/state";
+  import type { FormState, TextureFile } from "../types/state";
   import { blockTexturePathForSlot } from "../util";
-  import dirtPackIconUrl from "../../assets/dirt_pack_icon.png";
-  import dirtItemTextureUrl from "../../assets/tiny_dirt_item_texture.png";
-  import dirtBlockTextureUrl from "../../assets/tiny_dirt_block_texture.png";
+  import examplePackUrl from "../../assets/example_1.0.0.jar?url";
   import ImagePreview from "./ImagePreview.svelte";
   import Delete from "./icons/Delete.svelte";
   import Add from "./icons/Add.svelte";
@@ -90,66 +88,16 @@
     ],
   });
 
-  // #region Dirt pack
-  let dirtPackImagesPromise =
-    $state<Promise<Record<"icon" | "item" | "block", File>>>();
-  async function getDirtPackImages() {
-    if (!dirtPackImagesPromise) {
-      var iconPromise = fetch(dirtPackIconUrl)
-        .then((response) => response.blob())
-        .then((blob) => new File([blob], "icon.png"));
-      var itemPromise = fetch(dirtItemTextureUrl)
-        .then((response) => response.blob())
-        .then((blob) => new File([blob], "tiny_dirt.png"));
-      var blockPromise = fetch(dirtBlockTextureUrl)
-        .then((response) => response.blob())
-        .then((blob) => new File([blob], "tiny_dirt.png"));
+  // #region Example pack
+  async function setToExamplePack() {
+    const jar = await fetch(examplePackUrl)
+      .then((response) => response.blob())
+      .then(
+        (blob) =>
+          new File([blob], "example_1.0.0.jar", { type: "application/jar" }),
+      );
 
-      dirtPackImagesPromise = Promise.all([
-        iconPromise,
-        itemPromise,
-        blockPromise,
-      ]).then(([icon, item, block]) => ({ icon, item, block }));
-    }
-
-    return dirtPackImagesPromise;
-  }
-  async function setToDirtFlower() {
-    const images = await getDirtPackImages();
-
-    formState = {
-      stateVersion: 1,
-      metadata: {
-        id: "tiny_dirt_flower",
-        version: "1.0.0",
-        name: "Tiny Dirt Flower",
-        description:
-          "An example flower pack that adds a Tiny Flower based on the humble Dirt block.",
-        authors: ["secret_online"],
-        license: "MPL-2.0",
-        icon: images.icon,
-      },
-      flowers: [
-        {
-          id: "tiny_dirt_flower:tiny_dirt",
-          name: [{ language: "en_us", name: "Tiny Dirt Flower" }],
-          originalId: "minecraft:dirt",
-          isSegmented: false,
-          canSurviveOn: ["#tiny_flowers:tiny_flower_can_survive_on"],
-          suspiciousStewEffects: [{ id: "minecraft:darkness", duration: 10 }],
-          itemTexture: images.item,
-          tintSource: "grass",
-          modelParentBase: "tiny_flowers:block/garden",
-          blockTextures: [
-            {
-              slot: "flowerbed",
-              texture: { type: "file", file: images.block },
-            },
-          ],
-          isExpanded: true,
-        },
-      ],
-    };
+    await uploadJar(jar);
   }
   // #endregion
 
@@ -271,16 +219,19 @@
       href="https://modrinth.com/mod/tiny-flowers"
       target="_blank"
       rel="noopener noreferrer external">Tiny Flowers</a
-    > mod.
+    >
+    mod. If you need even more customisation, check out the "For other mod developers"
+    section of the
+    <a
+      href="https://github.com/SecretOnline/tiny-flowers"
+      target="_blank"
+      rel="noopener noreferrer">README on GitHub</a
+    > for documentation on the JSON files the mod uses.
   </p>
-  <button class="button" type="button" onclick={() => setToDirtFlower()}>
-    <Cube />
-    <span>Load example pack</span>
-  </button>
   <input
     type="file"
     class="visually-hidden"
-    id="mod-icon"
+    id="upload"
     accept=".jar,.zip"
     onchange={(event) => {
       const file = event.currentTarget.files?.[0];
@@ -289,13 +240,17 @@
       }
     }}
   />
-  <label class="file-input-facade button color-add" for="mod-icon">
+  <label class="file-input-facade button color-add" for="upload">
     <Upload />
     <span>Upload .jar</span>
   </label>
   <button class="button color-add" type="button" onclick={() => downloadJar()}>
     <Download />
     <span>Download .jar</span>
+  </button>
+  <button class="button" type="button" onclick={() => setToExamplePack()}>
+    <Cube />
+    <span>Load example pack</span>
   </button>
 
   <h2>
@@ -311,7 +266,7 @@
           class="text-input"
           id="mod-id"
           bind:value={formState.metadata.id}
-          placeholder="your_mod_id"
+          placeholder="your_flower_pack_id"
         />
       </div>
     </div>
@@ -482,7 +437,7 @@
                 class="text-input"
                 id="flower-id-{flowerIndex}"
                 bind:value={flower.id}
-                placeholder="your_mod_id:tiny_flower_id"
+                placeholder="your_flower_pack_id:tiny_flower_id"
               />
             </div>
           </div>
@@ -1003,6 +958,14 @@
           </div>
         </section>
       {:else}
+        {@const previewTexture =
+          flower.itemTexture ??
+          (
+            flower.blockTextures.find(
+              (t) => t.slot === "particle" && t.texture.type === "file",
+            )?.texture as TextureFile
+          )?.file ??
+          undefined}
         <section class="flower-data-section-collapsed input-group inline-group">
           <button
             type="button"
@@ -1016,7 +979,7 @@
           <h4 class="expand-heading expand-align-top">
             {flowerName}
           </h4>
-          <ImagePreview file={flower.itemTexture} alt={flowerName} />
+          <ImagePreview file={previewTexture} alt={flowerName} />
           <button
             class="button icon-button color-delete expand-align-top"
             type="button"
@@ -1052,8 +1015,7 @@
 
   .input-group {
     background: #f5f5f5;
-    border: 1px solid lightgrey;
-    border-radius: 12px;
+    border: 2px solid lightgrey;
     padding: 0.5rem;
   }
 
@@ -1072,7 +1034,6 @@
     width: unset;
   }
 
-  button,
   .file-input-facade {
     padding-inline: 4px;
     padding-block: 1px;

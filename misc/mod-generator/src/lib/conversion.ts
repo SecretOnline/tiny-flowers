@@ -11,6 +11,7 @@ import type {
 } from "./types/files";
 import type { CombinedFlowerData, FormState, TextureType } from "./types/state";
 import {
+  blockTexturePathForSlot,
   identifierNamespace,
   identifierPath,
   identifierPathFinal,
@@ -117,9 +118,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
           continue;
         }
 
-        const textureIdentifier = `${flowerNamespace}:block/${trimFileName(
-          texture.file.name
-        )}`;
+        const textureIdentifier = blockTexturePathForSlot(flower.id, slot);
         value.assets.textures.block[textureIdentifier] = texture.file;
         textureMap[slot] = textureIdentifier;
       }

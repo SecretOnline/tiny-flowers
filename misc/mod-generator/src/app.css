@@ -38,6 +38,8 @@ p {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  padding-inline: 4px;
+  padding-block: 1px;
 
   border-width: 2px;
   border-style: solid;
@@ -53,7 +55,8 @@ p {
   background-color: #195a8f;
 }
 
-.icon-button {
+.icon-button,
+.checkbox {
   margin: 0;
   padding: 0;
 
