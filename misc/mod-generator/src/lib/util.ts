@@ -17,3 +17,14 @@ export function blockTexturePathForSlot(blockId: string, slot: string): string {
     blockId
   )}${slotSuffix}`;
 }
+
+export function delay(ms: number, signal: AbortSignal): Promise<void> {
+  return new Promise((res, rej) => {
+    const handle = window.setTimeout(res, ms);
+
+    signal.addEventListener("abort", () => {
+      window.clearTimeout(handle);
+      rej();
+    });
+  });
+}

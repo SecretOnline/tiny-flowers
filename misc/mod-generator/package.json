@@ -19,6 +19,8 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
-    "jszip": "^3.10.1"
+    "jszip": "^3.10.1",
+    "svelte-awesome-color-picker": "^4.1.0",
+    "svelte-portal": "^2.2.1"
   }
 }
