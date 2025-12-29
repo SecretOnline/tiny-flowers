@@ -20,6 +20,7 @@
   import Download from "./icons/Download.svelte";
   import Cube from "./icons/Cube.svelte";
   import Upload from "./icons/Upload.svelte";
+  import IconGenerator from "./IconGenerator.svelte";
 
   const PREDEFINED_BLOCK_MODELS = [
     {
@@ -345,6 +346,12 @@
           alt={formState.metadata.name}
         />
       </label>
+
+      <IconGenerator
+        onGenerate={(file) => {
+          formState.metadata.icon = file;
+        }}
+      />
     </div>
 
     <div class="block-group metadata-license">
@@ -1186,19 +1193,6 @@
     padding-inline-start: 0;
   }
 
-  .inline-group {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
-  .block-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: stretch;
-  }
-
   .expand-heading {
     flex-grow: 1;
   }
@@ -1225,5 +1219,13 @@
 
   .image-preview-label {
     align-self: center;
+  }
+
+  .metadata-icon .image-preview-label {
+    flex-grow: 1;
+  }
+  .metadata-icon .image-preview-label :global(.image-preview) {
+    width: 92px;
+    height: 92px;
   }
 </style>
