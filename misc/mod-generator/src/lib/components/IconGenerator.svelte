@@ -5,7 +5,7 @@
   import grassOnly from "../../assets/generator/grass-only.png";
   import defaultFlowers from "../../assets/generator/default-flowers.png";
   import stems from "../../assets/generator/stems.png";
-  import title from "../../assets/generator/title.png";
+  import title from "../../assets/generator/title-only.png";
   import { delay } from "../util";
   import ColorPickerButton from "./color-picker/ColorPickerButton.svelte";
   import ColorPickerWrapper from "./color-picker/ColorPickerWrapper.svelte";
@@ -14,14 +14,16 @@
   import Progress from "./icons/Progress.svelte";
 
   const ICON_SIZE = 512;
-  const OVERLAY_SAFE_START = 211;
+  const OVERLAY_SAFE_START = 0;
+  const OVERLAY_SAFE_END = 211;
   const OVERLAY_MARGIN = 12;
   const PX_SIZE = 16;
 
   const SAFE_START_X = OVERLAY_MARGIN;
   const SAFE_START_Y = OVERLAY_SAFE_START + OVERLAY_MARGIN;
-  const SAFE_WIDTH = ICON_SIZE - SAFE_START_X - OVERLAY_MARGIN;
-  const SAFE_HEIGHT = ICON_SIZE - SAFE_START_Y - OVERLAY_MARGIN;
+  const SAFE_WIDTH = ICON_SIZE / 2 - SAFE_START_X - OVERLAY_MARGIN;
+  const SAFE_HEIGHT =
+    OVERLAY_SAFE_END - OVERLAY_SAFE_START - 2 * OVERLAY_MARGIN;
   const SAFE_ASPECT_RATIO = SAFE_WIDTH / SAFE_HEIGHT;
 
   interface TransformInput {
@@ -174,6 +176,35 @@
     ctx.restore();
   }
 
+  function drawTitlePart(
+    ctx: OffscreenCanvasRenderingContext2D,
+    bitmap: ImageBitmap,
+    isLeft: boolean,
+  ) {
+    const bitmapAspect = bitmap.width / bitmap.height;
+
+    const drawWidth =
+      bitmapAspect > SAFE_ASPECT_RATIO
+        ? SAFE_WIDTH
+        : SAFE_HEIGHT * bitmapAspect;
+    const drawHeight =
+      bitmapAspect > SAFE_ASPECT_RATIO
+        ? SAFE_WIDTH / bitmapAspect
+        : SAFE_HEIGHT;
+
+    const startX =
+      SAFE_START_X +
+      (ICON_SIZE / 2) * (isLeft ? 0 : 1) +
+      (SAFE_WIDTH - drawWidth) / 2;
+    const startY = SAFE_START_Y + (SAFE_HEIGHT - drawHeight) / 2;
+
+    if (bitmap.width < SAFE_WIDTH || bitmap.height < SAFE_HEIGHT) {
+      ctx.imageSmoothingEnabled = false;
+    }
+
+    ctx.drawImage(bitmap, startX, startY, drawWidth, drawHeight);
+  }
+
   let isLoading = $state(false);
   $effect(() => {
     const signal = getAbortSignal();
@@ -212,8 +243,12 @@
           );
 
         ctx.drawImage(imageBitmaps.bg, 0, 0);
+        ctx.drawImage(imageBitmaps.grassBlock, 0, 0);
+
+        ctx.save();
         ctx.fillStyle = colorSnapshot;
         ctx.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
+        ctx.restore();
 
         ctx.save();
         ctx.globalAlpha = 0.42;
@@ -227,29 +262,9 @@
         drawFlowerPart(ctx, flowerBitmap2, 2);
         drawFlowerPart(ctx, flowerBitmap1, 1);
 
-        ctx.drawImage(imageBitmaps.title, 0, 0);
-
         const bitmap = await getBitmapForFile(trueImage);
-
-        const bitmapAspect = bitmap.width / bitmap.height;
-
-        const drawWidth =
-          bitmapAspect > SAFE_ASPECT_RATIO
-            ? SAFE_WIDTH
-            : SAFE_HEIGHT * bitmapAspect;
-        const drawHeight =
-          bitmapAspect > SAFE_ASPECT_RATIO
-            ? SAFE_WIDTH / bitmapAspect
-            : SAFE_HEIGHT;
-
-        const startX = SAFE_START_X + (SAFE_WIDTH - drawWidth) / 2;
-        const startY = SAFE_START_Y + (SAFE_HEIGHT - drawHeight) / 2;
-
-        if (bitmap.width < SAFE_WIDTH || bitmap.height < SAFE_HEIGHT) {
-          ctx.imageSmoothingEnabled = false;
-        }
-
-        ctx.drawImage(bitmap, startX, startY, drawWidth, drawHeight);
+        drawTitlePart(ctx, bitmap, false);
+        drawTitlePart(ctx, imageBitmaps.title, true);
 
         const png = await canvas.convertToBlob({ type: "image/png" });
         const file = new File([png], "icon.png", { type: "image/png" });
@@ -280,7 +295,7 @@
         type="file"
         class="visually-hidden"
         id="generator-icon"
-        accept="image/png"
+        accept="image/*"
         bind:files={
           () => {
             const dt = new DataTransfer();
@@ -320,7 +335,7 @@
         type="file"
         class="visually-hidden"
         id="generator-flower-1"
-        accept="image/png"
+        accept="image/*"
         bind:files={
           () => {
             const dt = new DataTransfer();
@@ -338,7 +353,7 @@
         type="file"
         class="visually-hidden"
         id="generator-flower-2"
-        accept="image/png"
+        accept="image/*"
         bind:files={
           () => {
             const dt = new DataTransfer();
@@ -356,7 +371,7 @@
         type="file"
         class="visually-hidden"
         id="generator-flower-3"
-        accept="image/png"
+        accept="image/*"
         bind:files={
           () => {
             const dt = new DataTransfer();
@@ -374,7 +389,7 @@
         type="file"
         class="visually-hidden"
         id="generator-flower-4"
-        accept="image/png"
+        accept="image/*"
         bind:files={
           () => {
             const dt = new DataTransfer();
