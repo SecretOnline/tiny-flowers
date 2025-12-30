@@ -73,53 +73,35 @@
   let { onGenerate }: Props = $props();
 
   let image = $state<File>();
-  let imageBitmapPromise = $derived.by(() =>
-    image ? window.createImageBitmap(image) : undefined,
-  );
   let color = $state("#4CAA47DB");
 
-  let loadImageBitmapsPromise =
-    $state<
-      Promise<
-        Record<
-          "bg" | "grassBlock" | "stems" | "title" | "defaultFlowers",
-          ImageBitmap
-        >
-      >
-    >();
-  async function loadImageBitmaps(signal: AbortSignal) {
-    if (!loadImageBitmapsPromise) {
-      const promises = [bg, grassOnly, stems, title, defaultFlowers].map(
-        (url) =>
-          fetch(url, { signal })
-            .then((response) => response.blob())
-            .then((blob) => window.createImageBitmap(blob)),
-      );
+  let flower1 = $state<File>();
+  let flower2 = $state<File>();
+  let flower3 = $state<File>();
+  let flower4 = $state<File>();
 
-      loadImageBitmapsPromise = Promise.all(promises).then(
-        ([bg, grassBlock, stems, title, defaultFlowers]) => ({
-          bg,
-          grassBlock,
-          stems,
-          title,
-          defaultFlowers,
-        }),
-      );
-
-      let didFinish = false;
-      loadImageBitmapsPromise.then(() => {
-        didFinish = true;
-      });
-
-      signal.addEventListener("abort", () => {
-        if (!didFinish) {
-          loadImageBitmapsPromise = undefined;
-        }
-      });
+  const bitmapPromiseMap = new WeakMap<File, Promise<ImageBitmap>>();
+  function getBitmapForFile(file: File) {
+    if (!bitmapPromiseMap.has(file)) {
+      bitmapPromiseMap.set(file, window.createImageBitmap(file));
     }
 
-    return loadImageBitmapsPromise;
+    return bitmapPromiseMap.get(file)!;
   }
+
+  let loadImageBitmapsPromise = Promise.all(
+    [bg, grassOnly, stems, title, defaultFlowers].map((url) =>
+      fetch(url)
+        .then((response) => response.blob())
+        .then((blob) => window.createImageBitmap(blob)),
+    ),
+  ).then(([bg, grassBlock, stems, title, defaultFlowers]) => ({
+    bg,
+    grassBlock,
+    stems,
+    title,
+    defaultFlowers,
+  }));
 
   function drawFlowerPart(
     ctx: OffscreenCanvasRenderingContext2D,
@@ -196,16 +178,19 @@
   $effect(() => {
     const signal = getAbortSignal();
 
-    const imageSnapshot = $state.snapshot(image);
     const colorSnapshot = $state.snapshot(color);
 
-    if (!imageSnapshot) {
+    // Force references to the various files that are only accessed asynchronously
+    $state.snapshot(image);
+    $state.snapshot(flower1);
+    $state.snapshot(flower2);
+    $state.snapshot(flower3);
+    $state.snapshot(flower4);
+
+    if (!image) {
       return;
     }
-    if (!imageBitmapPromise) {
-      console.warn("Had image but no Promise for bitmap");
-      return;
-    }
+    const trueImage = image;
 
     delay(100, signal).then(
       async () => {
@@ -218,7 +203,13 @@
           throw new Error("Unable to get canvas context");
         }
 
-        const imageBitmaps = await loadImageBitmaps(signal);
+        const imageBitmaps = await loadImageBitmapsPromise;
+        const [flowerBitmap1, flowerBitmap2, flowerBitmap3, flowerBitmap4] =
+          await Promise.all(
+            [flower1, flower2, flower3, flower4].map((file) =>
+              file ? getBitmapForFile(file) : imageBitmaps.defaultFlowers,
+            ),
+          );
 
         ctx.drawImage(imageBitmaps.bg, 0, 0);
         ctx.fillStyle = colorSnapshot;
@@ -231,14 +222,14 @@
 
         ctx.drawImage(imageBitmaps.stems, 0, 0);
 
-        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 3);
-        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 4);
-        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 2);
-        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 1);
+        drawFlowerPart(ctx, flowerBitmap3, 3);
+        drawFlowerPart(ctx, flowerBitmap4, 4);
+        drawFlowerPart(ctx, flowerBitmap2, 2);
+        drawFlowerPart(ctx, flowerBitmap1, 1);
 
         ctx.drawImage(imageBitmaps.title, 0, 0);
 
-        const bitmap = await imageBitmapPromise;
+        const bitmap = await getBitmapForFile(trueImage);
 
         const bitmapAspect = bitmap.width / bitmap.height;
 
@@ -303,7 +294,7 @@
           }
         }
       />
-      <label class="file-input-facade button icon-upload" for="generator-icon">
+      <label class="file-input-facade button" for="generator-icon">
         {#if image}
           {#if isLoading}
             <Progress class="spin" />
@@ -323,6 +314,109 @@
         />
         <div id="color-picker-portal"></div>
       </div>
+    </div>
+    <div class="inline-group">
+      <input
+        type="file"
+        class="visually-hidden"
+        id="generator-flower-1"
+        accept="image/png"
+        bind:files={
+          () => {
+            const dt = new DataTransfer();
+            if (flower1) {
+              dt.items.add(flower1);
+            }
+            return dt.files;
+          },
+          (newFiles) => {
+            flower1 = newFiles?.[0] ?? undefined;
+          }
+        }
+      />
+      <input
+        type="file"
+        class="visually-hidden"
+        id="generator-flower-2"
+        accept="image/png"
+        bind:files={
+          () => {
+            const dt = new DataTransfer();
+            if (flower2) {
+              dt.items.add(flower2);
+            }
+            return dt.files;
+          },
+          (newFiles) => {
+            flower2 = newFiles?.[0] ?? undefined;
+          }
+        }
+      />
+      <input
+        type="file"
+        class="visually-hidden"
+        id="generator-flower-3"
+        accept="image/png"
+        bind:files={
+          () => {
+            const dt = new DataTransfer();
+            if (flower3) {
+              dt.items.add(flower3);
+            }
+            return dt.files;
+          },
+          (newFiles) => {
+            flower3 = newFiles?.[0] ?? undefined;
+          }
+        }
+      />
+      <input
+        type="file"
+        class="visually-hidden"
+        id="generator-flower-4"
+        accept="image/png"
+        bind:files={
+          () => {
+            const dt = new DataTransfer();
+            if (flower4) {
+              dt.items.add(flower4);
+            }
+            return dt.files;
+          },
+          (newFiles) => {
+            flower4 = newFiles?.[0] ?? undefined;
+          }
+        }
+      />
+      <span>Flower textures:</span>
+      <label class="button icon-button" for="generator-flower-1">
+        {#if flower1}
+          <Image />
+        {:else}
+          <ImageUpload />
+        {/if}
+      </label>
+      <label class="button icon-button" for="generator-flower-2">
+        {#if flower2}
+          <Image />
+        {:else}
+          <ImageUpload />
+        {/if}
+      </label>
+      <label class="button icon-button" for="generator-flower-3">
+        {#if flower3}
+          <Image />
+        {:else}
+          <ImageUpload />
+        {/if}
+      </label>
+      <label class="button icon-button" for="generator-flower-4">
+        {#if flower4}
+          <Image />
+        {:else}
+          <ImageUpload />
+        {/if}
+      </label>
     </div>
   </div>
 {/if}
