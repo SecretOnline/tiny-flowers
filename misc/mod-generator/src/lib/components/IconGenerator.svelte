@@ -198,7 +198,7 @@
       (SAFE_WIDTH - drawWidth) / 2;
     const startY = SAFE_START_Y + (SAFE_HEIGHT - drawHeight) / 2;
 
-    if (bitmap.width < SAFE_WIDTH || bitmap.height < SAFE_HEIGHT) {
+    if (bitmap.width < drawWidth || bitmap.height < drawHeight) {
       ctx.imageSmoothingEnabled = false;
     }
 
