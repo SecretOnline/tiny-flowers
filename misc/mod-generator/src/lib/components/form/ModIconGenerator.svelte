@@ -1,17 +1,15 @@
 <script lang="ts">
   import { getAbortSignal } from "svelte";
-  import ColorPicker from "svelte-awesome-color-picker";
-  import bg from "../../assets/generator/bg.png";
-  import grassOnly from "../../assets/generator/grass-only.png";
-  import defaultFlowers from "../../assets/generator/default-flowers.png";
-  import stems from "../../assets/generator/stems.png";
-  import title from "../../assets/generator/title-only.png";
-  import { delay } from "../util";
-  import ColorPickerButton from "./color-picker/ColorPickerButton.svelte";
-  import ColorPickerWrapper from "./color-picker/ColorPickerWrapper.svelte";
-  import Image from "./icons/Image.svelte";
-  import ImageUpload from "./icons/ImageUpload.svelte";
-  import Progress from "./icons/Progress.svelte";
+  import bg from "../../../assets/generator/bg.png";
+  import defaultFlowers from "../../../assets/generator/default-flowers.png";
+  import grassOnly from "../../../assets/generator/grass-only.png";
+  import stems from "../../../assets/generator/stems.png";
+  import title from "../../../assets/generator/title-only.png";
+  import { delay } from "../../util";
+  import StyledColorPicker from "../color-picker/StyledColorPicker.svelte";
+  import Image from "../icons/Image.svelte";
+  import ImageUpload from "../icons/ImageUpload.svelte";
+  import Progress from "../icons/Progress.svelte";
 
   const ICON_SIZE = 512;
   const OVERLAY_SAFE_START = 0;
@@ -321,14 +319,7 @@
           <ImageUpload /><span>Browse...</span>
         {/if}
       </label>
-      <div>
-        <ColorPicker
-          bind:hex={color}
-          position="responsive"
-          components={{ input: ColorPickerButton, wrapper: ColorPickerWrapper }}
-        />
-        <div id="color-picker-portal"></div>
-      </div>
+      <StyledColorPicker bind:color />
     </div>
     <div class="inline-group">
       <input
@@ -446,9 +437,5 @@
   .file-name {
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-
-  #color-picker-portal {
-    position: absolute;
   }
 </style>

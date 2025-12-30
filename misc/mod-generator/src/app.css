@@ -23,6 +23,26 @@ p {
   margin-block: 0;
 }
 
+button,
+input,
+select {
+  font-size: inherit;
+  font-family: inherit;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+.file-input-facade {
+  flex-grow: 1;
+  width: unset;
+}
+
+.file-input-facade {
+  padding-inline: 4px;
+  padding-block: 1px;
+}
+
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -31,6 +51,16 @@ p {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.layout-grid {
+  display: grid;
+  gap: 1rem;
+  overflow-x: hidden;
+}
+
+.layout-grid > * {
+  overflow-x: auto;
 }
 
 .inline-group {
@@ -44,6 +74,24 @@ p {
   flex-direction: column;
   gap: 0.5rem;
   align-items: stretch;
+}
+
+.input-group {
+  background: #f5f5f5;
+  border: 2px solid lightgrey;
+  padding: 0.5rem;
+}
+
+.input-group-heading {
+  font-weight: 600;
+  margin: 0;
+}
+
+.input-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-inline-start: 0;
 }
 
 .button {
