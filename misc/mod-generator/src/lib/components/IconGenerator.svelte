@@ -2,11 +2,8 @@
   import { getAbortSignal } from "svelte";
   import ColorPicker from "svelte-awesome-color-picker";
   import bg from "../../assets/generator/bg.png";
-  import flowers1 from "../../assets/generator/flowers1.png";
-  import flowers2 from "../../assets/generator/flowers2.png";
-  import flowers3 from "../../assets/generator/flowers3.png";
-  import flowers4 from "../../assets/generator/flowers4.png";
-  import grassBlock from "../../assets/generator/grass-t.png";
+  import grassOnly from "../../assets/generator/grass-only.png";
+  import defaultFlowers from "../../assets/generator/default-flowers.png";
   import stems from "../../assets/generator/stems.png";
   import title from "../../assets/generator/title.png";
   import { delay } from "../util";
@@ -19,12 +16,55 @@
   const ICON_SIZE = 512;
   const OVERLAY_SAFE_START = 211;
   const OVERLAY_MARGIN = 12;
+  const PX_SIZE = 16;
 
   const SAFE_START_X = OVERLAY_MARGIN;
   const SAFE_START_Y = OVERLAY_SAFE_START + OVERLAY_MARGIN;
   const SAFE_WIDTH = ICON_SIZE - SAFE_START_X - OVERLAY_MARGIN;
   const SAFE_HEIGHT = ICON_SIZE - SAFE_START_Y - OVERLAY_MARGIN;
   const SAFE_ASPECT_RATIO = SAFE_WIDTH / SAFE_HEIGHT;
+
+  interface TransformInput {
+    px: number;
+    py: number;
+    degrees: number;
+    size: number;
+    skew: number;
+    rotation: number;
+  }
+
+  const FLOWER_TRANSFORM_1: TransformInput = {
+    px: 266,
+    py: 447,
+    degrees: 28.3,
+    size: 334,
+    skew: 1.04,
+    rotation: -0.04,
+  };
+  const FLOWER_TRANSFORM_2: TransformInput = {
+    px: 300,
+    py: 461,
+    degrees: 27.6,
+    size: 298,
+    skew: 0.85,
+    rotation: -0.12,
+  };
+  const FLOWER_TRANSFORM_3: TransformInput = {
+    px: 284,
+    py: 412,
+    degrees: 24.9,
+    size: 242,
+    skew: 0.91,
+    rotation: -0.05,
+  };
+  const FLOWER_TRANSFORM_4: TransformInput = {
+    px: 258,
+    py: 449,
+    degrees: 28.3,
+    size: 270,
+    skew: 1.06,
+    rotation: -0.02,
+  };
 
   interface Props {
     onGenerate?: (file: File) => void;
@@ -42,47 +82,27 @@
     $state<
       Promise<
         Record<
-          "bg" | `flowers${1 | 2 | 3 | 4}` | "grassBlock" | "stems" | "title",
+          "bg" | "grassBlock" | "stems" | "title" | "defaultFlowers",
           ImageBitmap
         >
       >
     >();
   async function loadImageBitmaps(signal: AbortSignal) {
     if (!loadImageBitmapsPromise) {
-      const promises = [
-        bg,
-        flowers1,
-        flowers2,
-        flowers3,
-        flowers4,
-        grassBlock,
-        stems,
-        title,
-      ].map((url) =>
-        fetch(url, { signal })
-          .then((response) => response.blob())
-          .then((blob) => window.createImageBitmap(blob)),
+      const promises = [bg, grassOnly, stems, title, defaultFlowers].map(
+        (url) =>
+          fetch(url, { signal })
+            .then((response) => response.blob())
+            .then((blob) => window.createImageBitmap(blob)),
       );
 
       loadImageBitmapsPromise = Promise.all(promises).then(
-        ([
+        ([bg, grassBlock, stems, title, defaultFlowers]) => ({
           bg,
-          flowers1,
-          flowers2,
-          flowers3,
-          flowers4,
           grassBlock,
           stems,
           title,
-        ]) => ({
-          bg,
-          flowers1,
-          flowers2,
-          flowers3,
-          flowers4,
-          grassBlock,
-          stems,
-          title,
+          defaultFlowers,
         }),
       );
 
@@ -99,6 +119,77 @@
     }
 
     return loadImageBitmapsPromise;
+  }
+
+  function drawFlowerPart(
+    ctx: OffscreenCanvasRenderingContext2D,
+    bitmap: ImageBitmap,
+    index: number,
+  ) {
+    let transform: TransformInput;
+    let insetX: number;
+    let insetY: number;
+
+    switch (index) {
+      case 1:
+        transform = FLOWER_TRANSFORM_1;
+        insetX = 0;
+        insetY = 0;
+        break;
+      case 2:
+        transform = FLOWER_TRANSFORM_2;
+        insetX = 0;
+        insetY = 0.5;
+        break;
+      case 3:
+        transform = FLOWER_TRANSFORM_3;
+        insetX = 0.5;
+        insetY = 0.5;
+        break;
+      case 4:
+        transform = FLOWER_TRANSFORM_4;
+        insetX = 0.5;
+        insetY = 0;
+        break;
+      default:
+        throw new Error("Invalid flower index");
+    }
+
+    const subX = insetX * bitmap.width;
+    const subY = insetY * bitmap.height;
+    const subWidth = bitmap.width / 2;
+    const subHeight = bitmap.height / 2;
+
+    const angle = (transform.degrees * Math.PI) / 180; // 30 degrees
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    const scale = transform.size / PX_SIZE;
+
+    // Transform and draw
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+    ctx.transform(
+      -cos * scale,
+      -sin * scale,
+      cos * scale * transform.skew,
+      -sin * scale * transform.skew,
+      transform.px,
+      transform.py,
+    );
+    ctx.rotate(transform.rotation);
+    ctx.drawImage(
+      bitmap,
+      subX,
+      subY,
+      subWidth,
+      subHeight,
+      subX,
+      subY,
+      PX_SIZE / 2,
+      PX_SIZE / 2,
+    );
+    ctx.restore();
   }
 
   let isLoading = $state(false);
@@ -132,12 +223,19 @@
         ctx.drawImage(imageBitmaps.bg, 0, 0);
         ctx.fillStyle = colorSnapshot;
         ctx.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
+
+        ctx.save();
+        ctx.globalAlpha = 0.42;
         ctx.drawImage(imageBitmaps.grassBlock, 0, 0);
+        ctx.restore();
+
         ctx.drawImage(imageBitmaps.stems, 0, 0);
-        ctx.drawImage(imageBitmaps.flowers1, 0, 0);
-        ctx.drawImage(imageBitmaps.flowers2, 0, 0);
-        ctx.drawImage(imageBitmaps.flowers3, 0, 0);
-        ctx.drawImage(imageBitmaps.flowers4, 0, 0);
+
+        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 3);
+        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 4);
+        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 2);
+        drawFlowerPart(ctx, imageBitmaps.defaultFlowers, 1);
+
         ctx.drawImage(imageBitmaps.title, 0, 0);
 
         const bitmap = await imageBitmapPromise;
