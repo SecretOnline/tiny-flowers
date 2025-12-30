@@ -29,6 +29,10 @@
 <img {src} {alt} class="image-preview" />
 
 <style>
+  :global(.image-preview-label):has(.image-preview) {
+    align-self: center;
+  }
+
   .image-preview {
     aspect-ratio: 1/1;
     width: 64px;
