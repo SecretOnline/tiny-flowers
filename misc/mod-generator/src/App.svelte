@@ -1,9 +1,9 @@
 <script lang="ts">
-  import FormStateForm from "./lib/components/FormStateForm.svelte";
+  import GeneratorForm from "./lib/components/GeneratorForm.svelte";
 </script>
 
 <main>
-  <FormStateForm />
+  <GeneratorForm />
 </main>
 
 <style>

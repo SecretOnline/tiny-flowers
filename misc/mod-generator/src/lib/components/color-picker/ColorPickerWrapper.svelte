@@ -1,11 +1,14 @@
 <script>
   import { portal } from "svelte-portal";
+  import { getPortalId } from "./context";
 
   let { wrapper = $bindable(), isOpen, isDialog, children } = $props();
+
+  const portalId = getPortalId();
 </script>
 
 <div
-  use:portal={"#color-picker-portal"}
+  use:portal={`#${portalId}`}
   bind:this={wrapper}
   class="wrapper"
   class:is-open={isOpen}

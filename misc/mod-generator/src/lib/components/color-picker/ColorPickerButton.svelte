@@ -93,5 +93,7 @@
     border-inline-end-color: var(--dark, #054473);
     border-block-end-color: var(--dark, #054473);
     background-color: var(--solid, #0167ac);
+
+    color: contrast-color(var(--dark));
   }
 </style>
