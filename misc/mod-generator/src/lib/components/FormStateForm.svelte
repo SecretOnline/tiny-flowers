@@ -26,37 +26,37 @@
     {
       value: "garden",
       name: "1 layer (default stem)",
-      id: "tiny_flowers:garden",
+      id: "tiny_flowers:block/garden",
       slots: ["flowerbed"],
     },
     {
       value: "garden_untinted",
       name: "1 layer (custom stem)",
-      id: "tiny_flowers:garden_untinted",
+      id: "tiny_flowers:block/garden_untinted",
       slots: ["flowerbed", "stem"],
     },
     {
       value: "garden_double",
       name: "2 layers (default stem)",
-      id: "tiny_flowers:garden_double",
+      id: "tiny_flowers:block/garden_double",
       slots: ["flowerbed", "flowerbed_upper"],
     },
     {
       value: "garden_double_untinted",
       name: "2 layers (custom stem)",
-      id: "tiny_flowers:garden_double_untinted",
+      id: "tiny_flowers:block/garden_double_untinted",
       slots: ["flowerbed", "flowerbed_upper", "stem"],
     },
     {
       value: "garden_triple",
       name: "3 layers (default stem)",
-      id: "tiny_flowers:garden_triple",
+      id: "tiny_flowers:block/garden_triple",
       slots: ["flowerbed", "flowerbed_middle", "flowerbed_upper"],
     },
     {
       value: "garden_triple_untinted",
       name: "3 layers (custom stem)",
-      id: "tiny_flowers:garden_triple_untinted",
+      id: "tiny_flowers:block/garden_triple_untinted",
       slots: ["flowerbed", "flowerbed_middle", "flowerbed_upper", "stem"],
     },
   ];
@@ -444,7 +444,7 @@
                 class="text-input"
                 id="flower-id-{flowerIndex}"
                 bind:value={flower.id}
-                placeholder="your_flower_pack_id:tiny_flower_id"
+                placeholder="your_mod_id:tiny_flower_id"
               />
             </div>
           </div>
@@ -489,117 +489,124 @@
             </p>
           </div>
 
-          <div class="block-group flower-data-item">
-            <label for="item-texture-{flowerIndex}">Item Texture</label>
-            <div class="inline-group">
-              <input
-                type="file"
-                class="visually-hidden"
-                id="item-texture-{flowerIndex}"
-                accept="image/png"
-                bind:files={
-                  () => {
-                    const dt = new DataTransfer();
-                    if (flower.itemTexture) {
-                      dt.items.add(flower.itemTexture);
+          {#if !flower.isSegmented}
+            <div class="block-group flower-data-item">
+              <label for="item-texture-{flowerIndex}">Item Texture</label>
+              <div class="inline-group">
+                <input
+                  type="file"
+                  class="visually-hidden"
+                  id="item-texture-{flowerIndex}"
+                  accept="image/png"
+                  bind:files={
+                    () => {
+                      const dt = new DataTransfer();
+                      if (flower.itemTexture) {
+                        dt.items.add(flower.itemTexture);
+                      }
+                      return dt.files;
+                    },
+                    (newFiles) => {
+                      flower.itemTexture = newFiles?.[0] ?? undefined;
                     }
-                    return dt.files;
-                  },
-                  (newFiles) => {
-                    flower.itemTexture = newFiles?.[0] ?? undefined;
                   }
-                }
-              />
+                />
+                <label
+                  class="file-input-facade button"
+                  for={`item-texture-${flowerIndex}`}
+                >
+                  {#if flower.itemTexture?.name}
+                    <Image /><span>{flower.itemTexture.name}</span>
+                  {:else}
+                    <ImageUpload /><span>Browse...</span>
+                  {/if}
+                </label>
+              </div>
+
               <label
-                class="file-input-facade button"
-                for={`item-texture-${flowerIndex}`}
+                class="image-preview-label"
+                for="item-texture-{flowerIndex}"
               >
-                {#if flower.itemTexture?.name}
-                  <Image /><span>{flower.itemTexture.name}</span>
-                {:else}
-                  <ImageUpload /><span>Browse...</span>
-                {/if}
+                <ImagePreview
+                  file={flower.itemTexture}
+                  alt={flower.name.find((e) => e.language === "en_us")?.name ??
+                    flower.id}
+                />
               </label>
             </div>
+          {/if}
 
-            <label class="image-preview-label" for="item-texture-{flowerIndex}">
-              <ImagePreview
-                file={flower.itemTexture}
-                alt={flower.name.find((e) => e.language === "en_us")?.name ??
-                  flower.id}
-              />
-            </label>
-          </div>
+          {#if !flower.isSegmented}
+            <div class="block-group flower-data-translations input-group">
+              <h4 class="input-group-heading">Translations</h4>
 
-          <div class="block-group flower-data-translations input-group">
-            <h4 class="input-group-heading">Translations</h4>
-
-            <table class="input-table">
-              <thead>
-                <tr>
-                  <th>Language ID</th>
-                  <th>Flower Name</th>
-                  <th class="delete-column"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {#each flower.name as entry, i (i)}
-                  <tr class="name-item">
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_lang_id_${entry.language}`}
-                        >Language ID</label
-                      >
-                      <div class="inline-group">
-                        <input
-                          type="text"
-                          class="text-input"
-                          id={`${flower.id}_lang_id_${entry.language}`}
-                          bind:value={flower.name[i].language}
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <label
-                        class="visually-hidden"
-                        for={`${flower.id}_lang_name_${entry.language}`}
-                        >Flower Name</label
-                      >
-                      <div class="inline-group">
-                        <input
-                          type="text"
-                          class="text-input"
-                          id={`${flower.id}_lang_name_${entry.language}`}
-                          bind:value={flower.name[i].name}
-                          placeholder={entry.language.startsWith("en_")
-                            ? "Tiny ..."
-                            : undefined}
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <button
-                        class="button icon-button color-delete"
-                        type="button"
-                        onclick={() => removeFlowerName(flowerIndex, i)}
-                      >
-                        <Delete />
-                      </button>
-                    </td>
+              <table class="input-table">
+                <thead>
+                  <tr>
+                    <th>Language ID</th>
+                    <th>Flower Name</th>
+                    <th class="delete-column"></th>
                   </tr>
-                {/each}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {#each flower.name as entry, i (i)}
+                    <tr class="name-item">
+                      <td>
+                        <label
+                          class="visually-hidden"
+                          for={`${flower.id}_lang_id_${entry.language}`}
+                          >Language ID</label
+                        >
+                        <div class="inline-group">
+                          <input
+                            type="text"
+                            class="text-input"
+                            id={`${flower.id}_lang_id_${entry.language}`}
+                            bind:value={flower.name[i].language}
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <label
+                          class="visually-hidden"
+                          for={`${flower.id}_lang_name_${entry.language}`}
+                          >Flower Name</label
+                        >
+                        <div class="inline-group">
+                          <input
+                            type="text"
+                            class="text-input"
+                            id={`${flower.id}_lang_name_${entry.language}`}
+                            bind:value={flower.name[i].name}
+                            placeholder={entry.language.startsWith("en_")
+                              ? "Tiny ..."
+                              : undefined}
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <button
+                          class="button icon-button color-delete"
+                          type="button"
+                          onclick={() => removeFlowerName(flowerIndex, i)}
+                        >
+                          <Delete />
+                        </button>
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
 
-            <button
-              class="button color-add"
-              type="button"
-              onclick={() => addFlowerName(flowerIndex)}
-            >
-              <Add /><span>Add translation</span>
-            </button>
-          </div>
+              <button
+                class="button color-add"
+                type="button"
+                onclick={() => addFlowerName(flowerIndex)}
+              >
+                <Add /><span>Add translation</span>
+              </button>
+            </div>
+          {/if}
 
           <div class="block-group flower-data-survive input-group">
             <h4 class="input-group-heading">Can Survive On</h4>
