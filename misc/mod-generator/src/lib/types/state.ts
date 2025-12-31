@@ -24,7 +24,33 @@ export interface TextureFile {
   file: File | undefined;
 }
 
-export type TextureType = TextureReference | TextureFile;
+export interface TextureCreate {
+  type: "create";
+  template: "tiny_flowers" | "pink_petals";
+  file: File | undefined;
+}
+
+export type TextureType = TextureReference | TextureFile | TextureCreate;
+
+export interface BlockTextureEntry {
+  slot: string;
+  texture: TextureType;
+}
+
+export interface ParentModelPrefix {
+  type: "prefix";
+  prefix: string;
+}
+
+export interface ParentModelCustom {
+  type: "custom";
+  model1: string;
+  model2: string;
+  model3: string;
+  model4: string;
+}
+
+export type ParentModelType = ParentModelPrefix | ParentModelCustom;
 
 export interface CombinedFlowerData {
   id: string;
@@ -35,7 +61,7 @@ export interface CombinedFlowerData {
   suspiciousStewEffects: { id: string; duration: number }[];
   itemTexture: File | undefined;
   tintSource: "grass" | "dry_foliage";
-  modelParentBase: string;
-  blockTextures: { slot: string; texture: TextureType }[];
+  parentModel: ParentModelType;
+  blockTextures: BlockTextureEntry[];
   isExpanded: boolean;
 }

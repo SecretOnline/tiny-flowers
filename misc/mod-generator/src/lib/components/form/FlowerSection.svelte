@@ -1,17 +1,29 @@
 <script lang="ts">
   import type { CombinedFlowerData, TextureFile } from "../../types/state";
-  import { blockTexturePathForSlot } from "../../util";
   import Add from "../icons/Add.svelte";
   import Check from "../icons/Check.svelte";
   import Delete from "../icons/Delete.svelte";
   import Empty from "../icons/Empty.svelte";
-  import Image from "../icons/Image.svelte";
   import ExpandDown from "../icons/ExpandDown.svelte";
+  import ExpandRight from "../icons/ExpandRight.svelte";
+  import Image from "../icons/Image.svelte";
   import ImageUpload from "../icons/ImageUpload.svelte";
   import ImagePreview from "../ImagePreview.svelte";
-  import ExpandRight from "../icons/ExpandRight.svelte";
+  import BlockTextureRow from "./BlockTextureRow.svelte";
 
   const PREDEFINED_BLOCK_MODELS = [
+    {
+      value: "petals",
+      name: "Pink Petals",
+      id: "minecraft:block/flowerbed",
+      slots: ["flowerbed"],
+    },
+    {
+      value: "leaf_litter",
+      name: "Leaf Litter",
+      id: "tiny_flowers:block/garden_leaf_litter",
+      slots: ["flowerbed"],
+    },
     {
       value: "garden",
       name: "1 layer (default stem)",
@@ -106,6 +118,9 @@
 
   let hasFileTexture = $derived(
     flower.blockTextures.some((entry) => entry.texture.type === "file"),
+  );
+  let hasCreateTexture = $derived(
+    flower.blockTextures.some((entry) => entry.texture.type === "create"),
   );
 </script>
 
@@ -417,6 +432,11 @@
         number of layers while still getting the idea of the original flower
         across.
       </p>
+      <p>
+        The "Pink Petals" model has only a single stem in positions 2 and 4. The
+        layered models added by Tiny Flowers have three stems in position 2, and
+        two stems in position 4.
+      </p>
       <div class="preset-button-grid">
         {#each PREDEFINED_BLOCK_MODELS as model}
           <button
@@ -424,7 +444,7 @@
             class="button"
             value={model.value}
             onclick={() => {
-              flower.modelParentBase = model.id;
+              flower.parentModel = { type: "prefix", prefix: model.id };
               flower.blockTextures = model.slots.map(
                 (slot) =>
                   flower.blockTextures.find((t) => t.slot === slot) ?? {
@@ -443,19 +463,96 @@
     <div class="block-group flower-data-parent">
       <label for="model-parent-base-{uid}">Model Parent Identifier</label>
       <div class="inline-group">
-        <input
-          type="text"
-          class="text-input"
-          id="model-parent-base-{uid}"
-          bind:value={flower.modelParentBase}
-        />
+        <select
+          class="button"
+          id="parent-model-type-{uid}"
+          value={flower.parentModel.type}
+          onchange={(event) => {
+            if (event.currentTarget.value === "prefix") {
+              flower.parentModel = { type: "prefix", prefix: "" };
+            } else if (event.currentTarget.value === "custom") {
+              if (
+                flower.parentModel.type === "prefix" &&
+                flower.parentModel.prefix
+              ) {
+                flower.parentModel = {
+                  type: "custom",
+                  model1: `${flower.parentModel.prefix}_1`,
+                  model2: `${flower.parentModel.prefix}_2`,
+                  model3: `${flower.parentModel.prefix}_3`,
+                  model4: `${flower.parentModel.prefix}_4`,
+                };
+              } else {
+                flower.parentModel = {
+                  type: "custom",
+                  model1: "",
+                  model2: "",
+                  model3: "",
+                  model4: "",
+                };
+              }
+            }
+          }}
+        >
+          <option value="prefix">Prefix</option>
+          <option value="custom">Custom</option>
+        </select>
       </div>
-      <p>
-        This generator will generate 4 block models, with parents of <code
-          >&lt;parent&gt;_1</code
-        >, <code>&lt;parent&gt;_2</code>, <code>&lt;parent&gt;_3</code>, and
-        <code>&lt;parent&gt;_4</code>.
-      </p>
+      {#if flower.parentModel.type === "prefix"}
+        {@const prefix = flower.parentModel.prefix ?? "<prefix>"}
+        <div class="inline-group">
+          <input
+            type="text"
+            class="text-input"
+            id="parent-model-prefix-{uid}"
+            placeholder="namespace:block/identifier"
+            bind:value={flower.parentModel.prefix}
+          />
+        </div>
+        <p>
+          This generator will generate 4 block models, with parents of <code
+            >{prefix}_1</code
+          >, <code>{prefix}_2</code>, <code>{prefix}_3</code>, and
+          <code>{prefix}_4</code>.
+        </p>
+      {:else if flower.parentModel.type === "custom"}
+        <div class="inline-group">
+          <input
+            type="text"
+            class="text-input"
+            id="parent-model-1-{uid}"
+            placeholder="namespace:block/identifier_1"
+            bind:value={flower.parentModel.model1}
+          />
+        </div>
+        <div class="inline-group">
+          <input
+            type="text"
+            class="text-input"
+            id="parent-model-2-{uid}"
+            placeholder="namespace:block/identifier_2"
+            bind:value={flower.parentModel.model2}
+          />
+        </div>
+        <div class="inline-group">
+          <input
+            type="text"
+            class="text-input"
+            id="parent-model-3-{uid}"
+            placeholder="namespace:block/identifier_3"
+            bind:value={flower.parentModel.model3}
+          />
+        </div>
+        <div class="inline-group">
+          <input
+            type="text"
+            class="text-input"
+            id="parent-model-4-{uid}"
+            placeholder="namespace:block/identifier_4"
+            bind:value={flower.parentModel.model4}
+          />
+        </div>
+      {/if}
     </div>
 
     <div class="block-group flower-data-tint">
@@ -486,157 +583,39 @@
           <tr>
             <th>Texture Slot</th>
             <th>Type</th>
-            {#if hasFileTexture}
-              <th>File</th>
+            {#if hasCreateTexture}
+              <th> Template </th>
+            {/if}
+            {#if hasFileTexture || hasCreateTexture}
+              <th>
+                {#if hasFileTexture}
+                  File
+                {/if}
+                {#if hasFileTexture && hasCreateTexture}
+                  /
+                {/if}
+                {#if hasCreateTexture}
+                  Colors
+                {/if}
+              </th>
             {/if}
             <th>Identifier</th>
             <th class="delete-column"></th>
-            {#if hasFileTexture}
+            {#if hasFileTexture || hasCreateTexture}
               <th>Preview</th>
             {/if}
           </tr>
         </thead>
         <tbody>
-          {#each flower.blockTextures as entry, i (i)}
-            <tr class="texture-item">
-              <td>
-                <label
-                  class="visually-hidden"
-                  for={`${flower.id}_texture_slot_${i}`}>Texture slot</label
-                >
-                <div class="inline-group">
-                  <input
-                    type="text"
-                    class="text-input"
-                    id={`${flower.id}_texture_slot_${i}`}
-                    bind:value={entry.slot}
-                  />
-                </div>
-              </td>
-              <td>
-                <label
-                  class="visually-hidden"
-                  for={`${flower.id}_texture_type_${i}`}>Source</label
-                >
-                <div class="inline-group">
-                  <select
-                    class="button"
-                    id={`${flower.id}_texture_type_${i}`}
-                    bind:value={
-                      () => entry.texture.type,
-                      (newType) => {
-                        if (newType === "reference") {
-                          entry.texture = {
-                            type: newType,
-                            reference: blockTexturePathForSlot(
-                              flower.id,
-                              entry.slot,
-                            ),
-                          };
-                        } else if (newType === "file") {
-                          entry.texture = {
-                            type: newType,
-                            file: undefined,
-                          };
-                        }
-                      }
-                    }
-                  >
-                    <option value="reference">Existing identifier</option>
-                    <option value="file">Upload image</option>
-                  </select>
-                </div>
-              </td>
-              {#if hasFileTexture}
-                <td>
-                  {#if entry.texture.type === "file"}
-                    {@const tex = entry.texture}
-                    <label
-                      class="visually-hidden"
-                      for={`${flower.id}_texture_file_${i}`}>Upload</label
-                    >
-                    <div class="inline-group">
-                      <input
-                        type="file"
-                        class="visually-hidden"
-                        id={`${flower.id}_texture_file_${i}`}
-                        accept="image/png"
-                        bind:files={
-                          () => {
-                            const dt = new DataTransfer();
-                            if (tex.file) {
-                              dt.items.add(tex.file);
-                            }
-                            return dt.files;
-                          },
-                          (newFiles) => {
-                            tex.file = newFiles?.[0] ?? undefined;
-                          }
-                        }
-                      />
-                      <label
-                        class="file-input-facade button"
-                        for={`${flower.id}_texture_file_${i}`}
-                      >
-                        {#if tex.file?.name}
-                          <Image /><span>{tex.file.name}</span>
-                        {:else}
-                          <ImageUpload /><span>Browse...</span>
-                        {/if}
-                      </label>
-                    </div>
-                  {/if}
-                </td>
-              {/if}
-              <td>
-                <label
-                  class="visually-hidden"
-                  for={`${flower.id}_texture_reference_${i}`}>Identifier</label
-                >
-                <div class="inline-group">
-                  {#if entry.texture.type === "file"}
-                    <input
-                      type="text"
-                      class="text-input"
-                      id={`${flower.id}_texture_reference_${i}`}
-                      disabled
-                      value={blockTexturePathForSlot(flower.id, entry.slot)}
-                    />
-                  {:else if entry.texture.type === "reference"}
-                    <input
-                      type="text"
-                      class="text-input"
-                      id={`${flower.id}_texture_reference_${i}`}
-                      bind:value={entry.texture.reference}
-                    />
-                  {/if}
-                </div>
-              </td>
-              <td>
-                <button
-                  class="button icon-button color-delete"
-                  type="button"
-                  onclick={() => removeBlockTexture(i)}
-                >
-                  <Delete />
-                </button>
-              </td>
-              {#if hasFileTexture}
-                <td>
-                  {#if entry.texture.type === "file"}
-                    <label
-                      class="image-preview-label"
-                      for={`${flower.id}_texture_file_${i}`}
-                    >
-                      <ImagePreview
-                        file={entry.texture.file}
-                        alt={entry.slot}
-                      />
-                    </label>
-                  {/if}
-                </td>
-              {/if}
-            </tr>
+          {#each flower.blockTextures, i (i)}
+            <BlockTextureRow
+              bind:entry={flower.blockTextures[i]}
+              {hasFileTexture}
+              {hasCreateTexture}
+              blockId={flower.id}
+              itemTexture={flower.itemTexture}
+              onRemove={() => removeBlockTexture(i)}
+            />
           {/each}
         </tbody>
       </table>
