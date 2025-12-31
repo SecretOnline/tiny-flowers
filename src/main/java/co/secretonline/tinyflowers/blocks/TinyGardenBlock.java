@@ -24,9 +24,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.TriState;
 import net.minecraft.util.Util;
-import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -38,7 +36,6 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.EyeblossomBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SegmentableBlock;
@@ -280,66 +277,16 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 	@Override
 	protected void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		if (doEyeblossomTick(state, world, pos, random)) {
-			EyeblossomHelper.playSound(world, pos, !world.isBrightOutside(), true);
-		}
+		EyeblossomHelper.doEyeblossomTick(state, world, pos, random, true);
 
 		super.randomTick(state, world, pos, random);
 	}
 
 	@Override
 	protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		if (doEyeblossomTick(state, world, pos, random)) {
-			EyeblossomHelper.playSound(world, pos, !world.isBrightOutside(), false);
-		}
+		EyeblossomHelper.doEyeblossomTick(state, world, pos, random, false);
 
 		super.tick(state, world, pos, random);
-	}
-
-	private static boolean doEyeblossomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
-		if (openTriState == TriState.DEFAULT) {
-			return false;
-		}
-
-		boolean shouldOpen = openTriState.toBoolean(true);
-		Identifier correctVariant = EyeblossomHelper.getTinyFlowerIdForOpenState(shouldOpen);
-		Identifier incorrectVariant = EyeblossomHelper.getTinyFlowerIdForOpenState(!shouldOpen);
-
-		BlockState currentState = state;
-		boolean didChange = false;
-
-		if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
-			// If there's no block entity, don't do anything
-			return false;
-		}
-
-		if (incorrectVariant.equals(gardenBlockEntity.getFlower(1))) {
-			gardenBlockEntity.setFlower(1, correctVariant);
-			didChange = true;
-		}
-		if (incorrectVariant.equals(gardenBlockEntity.getFlower(2))) {
-			gardenBlockEntity.setFlower(2, correctVariant);
-			didChange = true;
-		}
-		if (incorrectVariant.equals(gardenBlockEntity.getFlower(3))) {
-			gardenBlockEntity.setFlower(3, correctVariant);
-			didChange = true;
-		}
-		if (incorrectVariant.equals(gardenBlockEntity.getFlower(4))) {
-			gardenBlockEntity.setFlower(4, correctVariant);
-			didChange = true;
-		}
-
-		if (didChange) {
-			world.setBlock(pos, currentState, Block.UPDATE_CLIENTS);
-			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
-
-			EyeblossomBlock.Type.fromBoolean(shouldOpen).spawnTransformParticle(world, pos, random);
-			EyeblossomHelper.notifyNearbyEyeblossoms(state, world, pos, random);
-		}
-
-		return didChange;
 	}
 
 	@Override
