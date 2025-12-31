@@ -435,7 +435,7 @@
       <p>
         The "Pink Petals" model has only a single stem in positions 2 and 4. The
         layered models added by Tiny Flowers have three stems in position 2, and
-        two stems in position 4.
+        two stems in position 4 for added variety.
       </p>
       <div class="preset-button-grid">
         {#each PREDEFINED_BLOCK_MODELS as model}
@@ -461,7 +461,7 @@
     </div>
 
     <div class="block-group flower-data-parent">
-      <label for="model-parent-base-{uid}">Model Parent Identifier</label>
+      <label for="model-parent-base-{uid}">Parent Models</label>
       <div class="inline-group">
         <select
           class="button"

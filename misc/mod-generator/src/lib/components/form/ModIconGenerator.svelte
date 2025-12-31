@@ -285,8 +285,8 @@
 {#if typeof window.OffscreenCanvas !== "undefined"}
   <div class="block-group">
     <p>
-      You can also create an icon by uploading an image (e.g. your mod's logo)
-      and selecting a color.
+      You can also create an icon by uploading your mod's logo, selecting a
+      background color, and uploading flower textures.
     </p>
     <div class="inline-group">
       <input

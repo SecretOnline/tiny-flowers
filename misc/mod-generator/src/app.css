@@ -43,6 +43,10 @@ select,
   padding-block: 1px;
 }
 
+label:not(.file-input-facade) {
+  font-weight: 600;
+}
+
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
