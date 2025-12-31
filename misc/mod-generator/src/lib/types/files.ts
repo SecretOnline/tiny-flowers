@@ -52,6 +52,7 @@ export interface TinyFlowerDataJson {
     id: string;
     duration: number;
   }[];
+  special_features?: unknown[];
 }
 
 export interface TinyFlowerResourcesJson {

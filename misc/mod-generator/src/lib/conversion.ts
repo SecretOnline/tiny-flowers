@@ -92,6 +92,10 @@ export function convertFormToFiles(state: FormState): AllFiles {
         flower.suspiciousStewEffects.length === 0
           ? undefined
           : flower.suspiciousStewEffects,
+      special_features:
+        flower.specialFeatures.length === 0
+          ? undefined
+          : flower.specialFeatures,
     };
 
     value.assets.tinyFlowers[flower.id] = {
@@ -317,6 +321,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
         "#tiny_flowers:tiny_flower_can_survive_on",
       ],
       suspiciousStewEffects: data.suspicious_stew_effects ?? [],
+      specialFeatures: data.special_features ?? [],
       tintSource: resources.tint_source ?? "grass",
       itemTexture,
       parentModel,
