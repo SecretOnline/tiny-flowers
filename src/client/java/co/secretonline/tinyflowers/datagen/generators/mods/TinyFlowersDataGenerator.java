@@ -3,7 +3,9 @@ package co.secretonline.tinyflowers.datagen.generators.mods;
 import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature.When;
 import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Blocks;
@@ -86,6 +88,8 @@ public class TinyFlowersDataGenerator extends BaseModDataGenerator {
 						.layers(TinyFlowers.id("tiny_closed_eyeblossom"))
 						.untintedStem()
 						.stemTexture(TinyFlowers.id("tiny_eyeblossom_stem"))
+						.addEyeblossomBehaviour(When.NIGHT, TinyFlowers.id("tiny_open_eyeblossom"), 16545810,
+								SoundEvents.EYEBLOSSOM_OPEN_LONG, SoundEvents.EYEBLOSSOM_OPEN)
 						.build(),
 				TinyFlowersDatagenData.Builder
 						.ofCustom(TinyFlowers.id("tiny_open_eyeblossom"), Identifier.withDefaultNamespace("open_eyeblossom"))
@@ -95,6 +99,8 @@ public class TinyFlowersDataGenerator extends BaseModDataGenerator {
 						.customModel(TinyFlowers.id("garden_double_untinted_glow"))
 						.untintedStem()
 						.stemTexture(TinyFlowers.id("tiny_eyeblossom_stem"))
+						.addEyeblossomBehaviour(When.DAY, TinyFlowers.id("tiny_closed_eyeblossom"), 6250335,
+								SoundEvents.EYEBLOSSOM_CLOSE_LONG, SoundEvents.EYEBLOSSOM_CLOSE)
 						.build(),
 				TinyFlowersDatagenData.Builder
 						.ofCustom(TinyFlowers.id("tiny_wither_rose"), Identifier.withDefaultNamespace("wither_rose"))

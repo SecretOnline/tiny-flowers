@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import com.google.gson.JsonElement;
@@ -15,6 +17,9 @@ import com.google.gson.JsonObject;
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.blocks.ModBlockTags;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
+import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature.When;
+import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature;
+import co.secretonline.tinyflowers.data.special.SpecialFeature;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
 import net.minecraft.client.data.models.model.ModelInstance;
@@ -22,6 +27,7 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
 import net.minecraft.util.Mth;
@@ -42,6 +48,8 @@ public class TinyFlowersDatagenData {
 	@NonNull
 	private List<TagOrElementLocation> canSurviveOn;
 	private TintSource tintSource = TintSource.GRASS;
+	@NonNull
+	private List<SpecialFeature> specialFeatures;
 
 	private ModelPart modelPart1;
 	private ModelPart modelPart2;
@@ -49,7 +57,7 @@ public class TinyFlowersDatagenData {
 	private ModelPart modelPart4;
 
 	public TinyFlowerData data() {
-		return new TinyFlowerData(id, originalBlockId, isSegmentable, canSurviveOn, suspiciousStewEffects);
+		return new TinyFlowerData(id, originalBlockId, isSegmentable, canSurviveOn, suspiciousStewEffects, specialFeatures);
 	}
 
 	public TinyFlowerResources resources() {
@@ -103,6 +111,8 @@ public class TinyFlowersDatagenData {
 		private List<Entry> suspiciousStewEffects = new ArrayList<>();
 		private List<TagOrElementLocation> canSurviveOn = new ArrayList<>(
 				List.of(ModBlockTags.TINY_FLOWER_CAN_SURVIVE_ON_LOCATION));
+		@NonNull
+		private List<SpecialFeature> specialFeatures = new ArrayList<>();
 
 		private int layers = 0;
 		private boolean untintedStem = false;
@@ -242,6 +252,24 @@ public class TinyFlowersDatagenData {
 			return this;
 		}
 
+		public Builder addEyeblossomBehaviour(When when, Identifier turnsInto) {
+			return this.addEyeblossomBehaviour(when, turnsInto, 0, null, null);
+		}
+
+		public Builder addEyeblossomBehaviour(When when, Identifier turnsInto, int particleColor,
+				@Nullable SoundEvent soundEventLong,
+				@Nullable SoundEvent soundEventShort) {
+			Optional<Identifier> longOptional = (soundEventLong == null ? Optional.empty()
+					: Optional.of(soundEventLong.location()));
+			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
+					: Optional.of(soundEventShort.location()));
+
+			this.specialFeatures.add(new EyeblossomOpeningSpecialFeature(when, turnsInto, particleColor,
+					longOptional, shortOptional));
+
+			return this;
+		}
+
 		public TinyFlowersDatagenData build() {
 			TinyFlowersDatagenData data = new TinyFlowersDatagenData();
 
@@ -252,6 +280,7 @@ public class TinyFlowersDatagenData {
 			data.suspiciousStewEffects = suspiciousStewEffects;
 			data.canSurviveOn = canSurviveOn;
 			data.tintSource = tintSource;
+			data.specialFeatures = specialFeatures;
 
 			if (layers == 0 && customModel == null) {
 				throw new Error("TinyFlowerResources.Builder: layers() or special() must be called once.");
