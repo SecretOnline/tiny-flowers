@@ -87,26 +87,17 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 				.setValue(FACING, Direction.NORTH));
 	}
 
-	protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-		if (!(blockGetter.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+	@Override
+	protected boolean canSurvive(BlockState blockState, LevelReader levelReader, BlockPos blockPos) {
+		if (!(levelReader.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 			// If there's no block entity at this position, that means we're in the middle
 			// of placing a block here. Let it pass for now, there will be another check
 			// later.
 			return true;
 		}
 
-		// If there is a block entity, then check all of the flowers to make sure
-		// they're valid for this position.
-		Block block = blockState.getBlock();
-		RegistryAccess registryAccess = gardenBlockEntity.getLevel().registryAccess();
-
-		return gardenBlockEntity.canSurviveOn(block, registryAccess);
-	}
-
-	@Override
-	protected boolean canSurvive(BlockState blockState, LevelReader levelReader, BlockPos blockPos) {
-		BlockPos below = blockPos.below();
-		return this.mayPlaceOn(levelReader.getBlockState(below), levelReader, below);
+		Block belowBlock = levelReader.getBlockState(blockPos.below()).getBlock();
+		return gardenBlockEntity.canSurviveOn(belowBlock, levelReader.registryAccess());
 	}
 
 	@Override
