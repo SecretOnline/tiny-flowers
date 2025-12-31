@@ -6,9 +6,10 @@
 
   interface Props {
     color: string;
+    swatches?: string[];
   }
 
-  let { color = $bindable() }: Props = $props();
+  let { color = $bindable(), swatches }: Props = $props();
 
   const uid = $props.id();
   const portalId = `color-picker-${uid}`;
@@ -21,11 +22,16 @@
   <ColorPicker
     bind:hex={color}
     position="responsive"
+    {swatches}
     components={{ input: ColorPickerButton, wrapper: ColorPickerWrapper }}
   />
 </div>
 
 <style>
+  .styled-color-picker {
+    --cp-swatch-grid-template-columns: repeat(auto-fit, 36px);
+  }
+
   .portal-container {
     width: 100%;
     position: absolute;
