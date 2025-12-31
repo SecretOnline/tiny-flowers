@@ -114,44 +114,60 @@
 
 <div class="form-container">
   <h1>Tiny Flower Pack Generator</h1>
-  <p>
-    Create packs of tiny flowers for the <a
-      href="https://modrinth.com/mod/tiny-flowers"
-      target="_blank"
-      rel="noopener noreferrer external">Tiny Flowers</a
-    >
-    mod. If you need even more customisation, check out the "For other mod developers"
-    section of the
-    <a
-      href="https://github.com/SecretOnline/tiny-flowers"
-      target="_blank"
-      rel="noopener noreferrer">README on GitHub</a
-    > for documentation on the JSON files the mod uses.
-  </p>
-  <input
-    type="file"
-    class="visually-hidden"
-    id="upload"
-    accept=".jar,.zip"
-    onchange={(event) => {
-      const file = event.currentTarget.files?.[0];
-      if (file) {
-        uploadJar(file);
-      }
-    }}
-  />
-  <label class="file-input-facade button color-add" for="upload">
-    <Upload />
-    <span>Upload .jar</span>
-  </label>
-  <button class="button color-add" type="button" onclick={() => downloadJar()}>
-    <Download />
-    <span>Download .jar</span>
-  </button>
-  <button class="button" type="button" onclick={() => setToExamplePack()}>
-    <Cube />
-    <span>Load example pack</span>
-  </button>
+  <div class="block-group">
+    <p>
+      Create packs of tiny flowers for the <a
+        href="https://modrinth.com/mod/tiny-flowers"
+        target="_blank"
+        rel="noopener noreferrer external">Tiny Flowers</a
+      >
+      mod. If you need even more customisation, check out the "For other mod developers"
+      section of the
+      <a
+        href="https://github.com/SecretOnline/tiny-flowers"
+        target="_blank"
+        rel="noopener noreferrer">README on GitHub</a
+      > for documentation on the JSON files the mod uses.
+    </p>
+    <p>
+      All processing happens in your browser, no data is sent anywhere. If you
+      need to save your progress, just download a .jar file and upload it again
+      to restore.
+    </p>
+    <div class="inline-group">
+      <input
+        type="file"
+        class="visually-hidden"
+        id="upload"
+        accept=".jar,.zip"
+        onchange={(event) => {
+          const file = event.currentTarget.files?.[0];
+          if (file) {
+            uploadJar(file);
+          }
+        }}
+      />
+      <label
+        class="file-input-facade button color-add upload-button"
+        for="upload"
+      >
+        <Upload />
+        <span>Upload .jar</span>
+      </label>
+      <button
+        class="button color-add"
+        type="button"
+        onclick={() => downloadJar()}
+      >
+        <Download />
+        <span>Download .jar</span>
+      </button>
+      <button class="button" type="button" onclick={() => setToExamplePack()}>
+        <Cube />
+        <span>Load example pack</span>
+      </button>
+    </div>
+  </div>
 
   <h2>
     {formState.metadata.name || "New mod"} (v{formState.metadata.version ??
@@ -185,14 +201,14 @@
     padding: 20px;
   }
 
-  label:not(.file-input-facade) {
-    font-weight: 600;
-  }
-
   .flowers-section {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     margin-block-start: 1.5rem;
+  }
+
+  .upload-button {
+    flex-grow: 0;
   }
 </style>

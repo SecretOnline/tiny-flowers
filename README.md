@@ -8,7 +8,11 @@ If you're looking for a more thorough description of the mod and its features, c
 
 ## For other mod developers
 
-So you want to add your own Tiny Flowers? This section explains the JSON files required to do just that.
+So you want to add your own Tiny Flowers? The easiest way to get started is to use [the pack generator I've built](https://tiny-flowers-generator.secretonline.co/). Fill in the boxes, provide your textures, and download a `.jar` file ready to put in the mods directory. Alternatively, grab the files out of that `.jar` and include them directly in your mod.
+
+[![Screenshot of the pack generator](.github/pack-generator.png)](https://tiny-flowers-generator.secretonline.co/)
+
+Want a bit more control? The rest of this section explains the JSON files this mod uses.
 
 The files required are split into data and assets. The data files are loaded by the server and synced via a dynamic registry. The asset files are client-only, and affect how the flowers look. Unfortunately, most of the work is in the second half. For each custom file, I have written a Typescript definition, for those proficient in Typescript, and an example JSON file. Alternatively, you can check the source code of this mod for the codec definitions.
 
@@ -16,10 +20,6 @@ To keep this README readable, everything in inside the following expandable sect
 
 <details>
 <summary>JSON files</summary>
-
-```ts
-type Identifier = `${string}:${string}`;
-```
 
 ### Data
 

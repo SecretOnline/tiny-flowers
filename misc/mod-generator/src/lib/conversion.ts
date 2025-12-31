@@ -505,7 +505,8 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
 
     appendFile(
       getZipDir("itemTexture", identifierNamespace(identifier)),
-      textureFile
+      textureFile,
+      `${identifierPathFinal(identifier)}.png`
     );
   }
 

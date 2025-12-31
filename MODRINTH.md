@@ -48,6 +48,10 @@ A big thank you to the following people for their work:
 
 If you want to help make this mod easier to use for everyone, then please don't hesitate to create a pull request adding/updating [the language files](https://github.com/SecretOnline/tiny-flowers/tree/main/src/main/resources/assets/tiny_flowers/lang) on GitHub.
 
+## For mod developers
+
+Want to add your own Tiny Flowers? Check out the [Tiny Flower Pack Generator](https://tiny-flowers-generator.secretonline.co/) or the [documentation in the GitHub README](https://github.com/SecretOnline/tiny-flowers).
+
 ## License
 
 This mod is licensed under the Mozilla Public License 2.0. You may use this mod in your mod packs.

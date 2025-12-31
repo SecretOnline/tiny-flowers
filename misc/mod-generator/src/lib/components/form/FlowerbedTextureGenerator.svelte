@@ -380,7 +380,7 @@
 </script>
 
 {#if typeof window.OffscreenCanvas !== "undefined"}
-  <div class="inline-group">
+  <div class="inline-group color-picker-list">
     <StyledColorPicker bind:color={color1} {swatches} />
     <StyledColorPicker bind:color={color2} {swatches} />
     <StyledColorPicker bind:color={color3} {swatches} />
@@ -390,4 +390,7 @@
 {/if}
 
 <style>
+  .color-picker-list {
+    gap: 0.25rem;
+  }
 </style>
