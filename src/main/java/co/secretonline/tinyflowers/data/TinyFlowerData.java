@@ -13,6 +13,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import co.secretonline.tinyflowers.blocks.ModBlockTags;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
+import co.secretonline.tinyflowers.data.special.SpecialFeature;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderLookup;
@@ -33,33 +34,36 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
 /**
  * Data for a tiny flower variant.
  *
- * @param id            A unique identifier for this vatiant. Usually matches
- *                      the pack namespace and file name. Used for getting
- *                      textures, models, and other things.
- * @param originalId    The original plant block that is used to create the
- *                      tiny flowers.
- * @param isSegmentable Whether an entry is for a block that implements
- *                      {@link net.minecraft.world.level.block.SegmentableBlock
- *                      SegmentableBlock}. This flag affects the behaviour of
- *                      the
- *                      mod in the following ways:
- *                      <ul>
- *                      <li>Using Florists' Shears on a Tiny Garden with this
- *                      variant will pop the original item, rather than a Tiny
- *                      Flower item.
- *                      <li>The data generation will not create a crafting
- *                      recipe
- *                      for creating Tiny Flowers of this type, as the item
- *                      already exists.
- *                      </ul>
- * @param canSurviveOn  Block IDs or #-prefixed tags for what blocks this flower
- *                      type can be placed on. This defaults to the
- *                      `#tiny_flowers:tiny_flower_can_survive_on` tag, which
- *                      contains `#minecraft:dirt` and `minecraft:farmland`.
- * @param stewEffect    A potion effect for Suspicious Stew.
+ * @param id              A unique identifier for this vatiant. Usually matches
+ *                        the pack namespace and file name. Used for getting
+ *                        textures, models, and other things.
+ * @param originalId      The original plant block that is used to create the
+ *                        tiny flowers.
+ * @param isSegmentable   Whether an entry is for a block that implements
+ *                        {@link net.minecraft.world.level.block.SegmentableBlock
+ *                        SegmentableBlock}. This flag affects the behaviour of
+ *                        the
+ *                        mod in the following ways:
+ *                        <ul>
+ *                        <li>Using Florists' Shears on a Tiny Garden with this
+ *                        variant will pop the original item, rather than a Tiny
+ *                        Flower item.
+ *                        <li>The data generation will not create a crafting
+ *                        recipe
+ *                        for creating Tiny Flowers of this type, as the item
+ *                        already exists.
+ *                        </ul>
+ * @param canSurviveOn    Block IDs or #-prefixed tags for what blocks this
+ *                        flower
+ *                        type can be placed on. This defaults to the
+ *                        `#tiny_flowers:tiny_flower_can_survive_on` tag, which
+ *                        contains `#minecraft:dirt` and `minecraft:farmland`.
+ * @param stewEffect      A potion effect for Suspicious Stew.
+ * @param specialFeatures Any special features this flower type might have.
  */
 public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSegmentable,
-		@NonNull List<TagOrElementLocation> canSurviveOn, @NonNull List<Entry> suspiciousStewEffects)
+		@NonNull List<TagOrElementLocation> canSurviveOn, @NonNull List<Entry> suspiciousStewEffects,
+		@NonNull List<SpecialFeature> specialFeatures)
 		implements SuspiciousEffectHolder {
 
 	public boolean canSurviveOn(Block supportingBlock) {
@@ -165,6 +169,8 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 					.optionalFieldOf("can_survive_on", List.of(ModBlockTags.TINY_FLOWER_CAN_SURVIVE_ON_LOCATION))
 					.forGetter(TinyFlowerData::canSurviveOn),
 			Entry.CODEC.listOf().optionalFieldOf("suspicious_stew_effects", List.of())
-					.forGetter(TinyFlowerData::suspiciousStewEffects))
+					.forGetter(TinyFlowerData::suspiciousStewEffects),
+			SpecialFeature.CODEC.listOf().optionalFieldOf("special_features", List.of())
+					.forGetter(TinyFlowerData::specialFeatures))
 			.apply(instance, TinyFlowerData::new));
 }

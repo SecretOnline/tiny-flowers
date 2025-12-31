@@ -1,6 +1,16 @@
 {
   "id": "tiny_flowers:tiny_open_eyeblossom",
   "original_id": "minecraft:open_eyeblossom",
+  "special_features": [
+    {
+      "type": "eyeblossom_opening",
+      "particle_color": 6250335,
+      "sound_event_long": "minecraft:block.eyeblossom.close_long",
+      "sound_event_short": "minecraft:block.eyeblossom.close",
+      "turns_into": "tiny_flowers:tiny_closed_eyeblossom",
+      "when": "day"
+    }
+  ],
   "suspicious_stew_effects": [
     {
       "duration": 220,

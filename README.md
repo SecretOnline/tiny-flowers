@@ -46,6 +46,24 @@ interface TinyFlowerData {
     /** Effect duration in ticks. */
     duration: number;
   }[];
+  /** Optional. A list of special features or behaviours for this tiny flower type. */
+  special_features?: SpecialFeature[];
+}
+
+type SpecialFeature = EyeblossomOpeningSpecialFeature;
+
+interface EyeblossomOpeningSpecialFeature {
+  type: "eyeblossom_opening";
+  /** When the transformation is allowed to take place. */
+  when: "always" | "day" | "night";
+  /** Identifier of a tiny flower type to turn into when a tick is received. */
+  turns_into: Identifier;
+  /** Optional. Packed RGB value of a colour to tint particles. No particles will be spawned if omitted or set to 0. */
+  particle_color?: number;
+  /** Optional. ID of the sound event that plays when this transformation happens due to a random tick. */
+  sound_event_long?: Identifier;
+  /** Optional. ID of the sound event that plays when this transformation happens due to a scheduled tick. */
+  sound_event_short?: Identifier;
 }
 ```
 
