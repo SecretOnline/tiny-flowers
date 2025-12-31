@@ -35,7 +35,7 @@
         suspiciousStewEffects: [],
         itemTexture: undefined,
         tintSource: "grass",
-        modelParentBase: "",
+        parentModel: { type: "prefix", prefix: "" },
         blockTextures: [],
         isExpanded: true,
       },
@@ -52,7 +52,7 @@
       suspiciousStewEffects: [],
       itemTexture: undefined,
       tintSource: "grass",
-      modelParentBase: "",
+      parentModel: { type: "prefix", prefix: "" },
       blockTextures: [],
       isExpanded: true,
     });

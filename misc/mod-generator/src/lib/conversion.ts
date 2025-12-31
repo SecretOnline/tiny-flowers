@@ -9,7 +9,12 @@ import type {
   TinyFlowerDataJson,
   TinyFlowerResourcesJson,
 } from "./types/files";
-import type { CombinedFlowerData, FormState, TextureType } from "./types/state";
+import type {
+  CombinedFlowerData,
+  FormState,
+  ParentModelType,
+  TextureType,
+} from "./types/state";
 import {
   blockTexturePathForSlot,
   identifierNamespace,
@@ -128,8 +133,39 @@ export function convertFormToFiles(state: FormState): AllFiles {
       return `${flowerNamespace}:block/tiny_flowers/${flowerPath}_${index}`;
     }
     function blockModelContent(index: number): BlockModelGeneratedJson {
+      let modelString;
+      switch (flower.parentModel.type) {
+        case "prefix":
+          modelString = `${flower.parentModel.prefix}_${index}`;
+          break;
+        case "custom":
+          switch (index) {
+            case 1:
+              modelString = flower.parentModel.model1;
+              break;
+            case 2:
+              modelString = flower.parentModel.model2;
+              break;
+            case 3:
+              modelString = flower.parentModel.model3;
+              break;
+            case 4:
+              modelString = flower.parentModel.model4;
+              break;
+            default:
+              throw new Error("Invalid index");
+          }
+          break;
+        default:
+          throw new Error(
+            `Unknown model parent type ${
+              (flower.parentModel as any).type
+            } for flower ${flower.id}`
+          );
+      }
+
       return {
-        parent: `${flower.modelParentBase}_${index}`,
+        parent: modelString,
         textures: textureMap,
       };
     }
@@ -194,14 +230,34 @@ export function convertFilesToForm(files: AllFiles): FormState {
       );
     }
 
-    const firstModel =
-      files.assets.models.block[
-        `${flowerNamespace}:block/tiny_flowers/${flowerPath}_1`
-      ];
-    if (!firstModel) {
-      throw new Error(
-        `Flower ${data.id} has no block model defined (Tried to find assets/${flowerNamespace}/models/block/tiny_flowers/${flowerPath}_1.json)`
-      );
+    const model1 = files.assets.models.block[resources.model1];
+    const model2 = files.assets.models.block[resources.model2];
+    const model3 = files.assets.models.block[resources.model3];
+    const model4 = files.assets.models.block[resources.model4];
+    if (!(model1 && model2 && model3 && model4)) {
+      throw new Error(`Flower ${data.id} has a missing block model`);
+    }
+
+    let parentModel: ParentModelType;
+    const model1ParentMatch = model1.parent.match(/^(.*)_1$/);
+    if (
+      model1ParentMatch &&
+      model2.parent.match(new RegExp(`^${model1ParentMatch[1]}_2$`)) &&
+      model3.parent.match(new RegExp(`^${model1ParentMatch[1]}_3$`)) &&
+      model4.parent.match(new RegExp(`^${model1ParentMatch[1]}_4$`))
+    ) {
+      parentModel = {
+        type: "prefix",
+        prefix: model1ParentMatch[1],
+      };
+    } else {
+      parentModel = {
+        type: "custom",
+        model1: model1.parent,
+        model2: model2.parent,
+        model3: model3.parent,
+        model4: model4.parent,
+      };
     }
 
     const blockTextures: CombinedFlowerData["blockTextures"] = [];
@@ -213,7 +269,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
         existingItem.texture = texture;
       }
     }
-    for (const [slot, identifier] of Object.entries(firstModel.textures)) {
+    for (const [slot, identifier] of Object.entries(model1.textures)) {
       const file = files.assets.textures.block[identifier];
       if (!file) {
         setTextureForSlot(slot, { type: "reference", reference: identifier });
@@ -263,7 +319,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
       suspiciousStewEffects: data.suspicious_stew_effects ?? [],
       tintSource: resources.tint_source ?? "grass",
       itemTexture,
-      modelParentBase: firstModel.parent.replace(/_\d+$/, ""),
+      parentModel,
       blockTextures,
       isExpanded: false,
     };
