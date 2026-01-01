@@ -8,12 +8,11 @@ import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.resources.TinyFlowerResolvedResources;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -23,7 +22,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
@@ -105,13 +103,13 @@ public class TinyGardenBlockEntityRenderer
 		}
 
 		Minecraft minecraft = Minecraft.getInstance();
-		ModelManager modelManager = minecraft.getModelManager();
+		FabricBakedModelManager modelManager = minecraft.getModelManager();
 		BlockStateModel model = modelManager.getModel(part.extraModelKey());
 		if (model == null) {
 			return;
 		}
 
-		BlockColor tintProvider = ColorProviderRegistry.BLOCK.get(ModBlocks.TINY_GARDEN_BLOCK);
+		BlockColor tintProvider = TinyGardenColorProvider.getInstance();
 		TintSource tintSource = resources.tintSource();
 		int tintIndex = switch (tintSource) {
 			case TintSource.DRY_FOLIAGE -> 2;
@@ -119,14 +117,13 @@ public class TinyGardenBlockEntityRenderer
 		};
 
 		int packedTint = tintProvider.getColor(state.blockState, state.getBlockAndTintGetter(), state.blockPos, tintIndex);
-		float r = ((packedTint & 0xFF0000) >> 16) / 256f;
-		float g = ((packedTint & 0xFF00) >> 8) / 256f;
-		float b = (packedTint & 0xFF) / 256f;
+		float r = ((packedTint & 0xFF0000) >> 16) / 255f;
+		float g = ((packedTint & 0xFF00) >> 8) / 255f;
+		float b = (packedTint & 0xFF) / 255f;
 
-		submitNodeCollector.submitBlockStateModel(poseStack, (layer) -> RenderTypes.cutoutMovingBlock(), model,
+		submitNodeCollector.submitBlockModel(poseStack, RenderTypes.cutoutMovingBlock(), model,
 				r, g, b,
-				state.lightCoords, 0, 0,
-				state.getBlockAndTintGetter(), state.blockPos, state.blockState);
+				state.lightCoords, 0, 0);
 	}
 
 	@Override

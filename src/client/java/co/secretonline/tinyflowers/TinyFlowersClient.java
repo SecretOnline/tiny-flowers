@@ -4,13 +4,11 @@ import co.secretonline.tinyflowers.blocks.ModBlockEntities;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.items.CreativeTabEvents;
 import co.secretonline.tinyflowers.renderer.block.TinyGardenBlockEntityRenderer;
-import co.secretonline.tinyflowers.renderer.block.TinyGardenColorProvider;
 import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
 import co.secretonline.tinyflowers.resources.TinyFlowerModelDataLoader;
 import co.secretonline.tinyflowers.resources.TinyFlowersModelLoadingPlugin;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingPluginManager;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
@@ -33,7 +31,5 @@ public class TinyFlowersClient implements ClientModInitializer {
 		ModelLoadingPluginManager.registerPlugin(new TinyFlowerModelDataLoader(), new TinyFlowersModelLoadingPlugin());
 
 		CreativeTabEvents.initialize();
-
-		ColorProviderRegistry.BLOCK.register(new TinyGardenColorProvider(), ModBlocks.TINY_GARDEN_BLOCK);
 	}
 }
