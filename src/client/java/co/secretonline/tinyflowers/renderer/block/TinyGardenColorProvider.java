@@ -11,6 +11,15 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TinyGardenColorProvider implements BlockColor {
+	private static TinyGardenColorProvider INSTANCE = null;
+
+	public static TinyGardenColorProvider getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new TinyGardenColorProvider();
+		}
+
+		return INSTANCE;
+	}
 
 	@Override
 	public int getColor(BlockState state, @Nullable BlockAndTintGetter world, @Nullable BlockPos pos, int tintIndex) {
