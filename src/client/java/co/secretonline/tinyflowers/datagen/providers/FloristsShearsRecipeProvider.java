@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.items.ModItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.Recipe;
@@ -44,7 +44,7 @@ public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
 			Map.entry(DyeColor.RED, ConventionalItemTags.RED_DYES),
 			Map.entry(DyeColor.BLACK, ConventionalItemTags.BLACK_DYES));
 
-	public FloristsShearsRecipeProvider(FabricDataOutput output,
+	public FloristsShearsRecipeProvider(FabricPackOutput output,
 			CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
@@ -60,7 +60,7 @@ public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
 				for (var entry : COLOR_TAGS.entrySet()) {
 					DyeColor color = entry.getKey();
 					TagKey<Item> tagKey = entry.getValue();
-					ItemStack stack = new ItemStack(
+					ItemStackTemplate stack = new ItemStackTemplate(
 							BuiltInRegistries.ITEM.wrapAsHolder(ModItems.FLORISTS_SHEARS_ITEM),
 							1,
 							DataComponentPatch.builder()

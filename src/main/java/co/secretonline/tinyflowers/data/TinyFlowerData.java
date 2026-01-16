@@ -10,7 +10,6 @@ import org.jspecify.annotations.NonNull;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import co.secretonline.tinyflowers.blocks.ModBlockTags;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
@@ -21,6 +20,7 @@ import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
@@ -56,8 +56,7 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
  * @param canSurviveOn    Block IDs or #-prefixed tags for what blocks this
  *                        flower
  *                        type can be placed on. This defaults to the
- *                        `#tiny_flowers:tiny_flower_can_survive_on` tag, which
- *                        contains `#minecraft:dirt` and `minecraft:farmland`.
+ *                        `#minecraft:supports_vegetation` tag.
  * @param stewEffect      A potion effect for Suspicious Stew.
  * @param specialFeatures Any special features this flower type might have.
  */
@@ -166,7 +165,8 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 			Identifier.CODEC.fieldOf("original_id").forGetter(TinyFlowerData::originalId),
 			Codec.BOOL.optionalFieldOf("is_segmented", false).forGetter(TinyFlowerData::isSegmentable),
 			ExtraCodecs.TAG_OR_ELEMENT_ID.listOf()
-					.optionalFieldOf("can_survive_on", List.of(ModBlockTags.TINY_FLOWER_CAN_SURVIVE_ON_LOCATION))
+					.optionalFieldOf("can_survive_on",
+							List.of(new TagOrElementLocation(BlockTags.SUPPORTS_VEGETATION.location(), true)))
 					.forGetter(TinyFlowerData::canSurviveOn),
 			Entry.CODEC.listOf().optionalFieldOf("suspicious_stew_effects", List.of())
 					.forGetter(TinyFlowerData::suspiciousStewEffects),

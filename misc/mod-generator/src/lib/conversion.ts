@@ -84,7 +84,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
       original_id: flower.originalId,
       can_survive_on:
         flower.canSurviveOn.length === 1 &&
-        flower.canSurviveOn[0] === "#tiny_flowers:tiny_flower_can_survive_on"
+        flower.canSurviveOn[0] === "#minecraft:supports_vegetation"
           ? undefined
           : flower.canSurviveOn,
       is_segmented: flower.isSegmented ? true : undefined,
@@ -318,7 +318,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
       originalId: data.original_id,
       isSegmented: data.is_segmented ?? false,
       canSurviveOn: data.can_survive_on ?? [
-        "#tiny_flowers:tiny_flower_can_survive_on",
+        "#minecraft:supports_vegetation",
       ],
       suspiciousStewEffects: data.suspicious_stew_effects ?? [],
       specialFeatures: data.special_features ?? [],

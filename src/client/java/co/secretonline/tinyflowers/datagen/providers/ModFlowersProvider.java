@@ -9,7 +9,7 @@ import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenData;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -24,7 +24,7 @@ public class ModFlowersProvider implements DataProvider {
 	private final List<TinyFlowersDatagenData> flowers;
 
 	public ModFlowersProvider(String modId, List<TinyFlowersDatagenData> flowers,
-			FabricDataOutput packOutput) {
+			FabricPackOutput packOutput) {
 		this.tinyFlowersData = packOutput.createRegistryElementsPathProvider(ModRegistries.TINY_FLOWER);
 		this.tinyFlowersResources = packOutput.createPathProvider(Target.RESOURCE_PACK,
 				Registries.elementsDirPath(ModRegistries.TINY_FLOWER));

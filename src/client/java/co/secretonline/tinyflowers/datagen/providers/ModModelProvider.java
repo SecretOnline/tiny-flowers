@@ -12,7 +12,7 @@ import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenDat
 import co.secretonline.tinyflowers.items.ModItems;
 import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ItemModelUtils;
@@ -27,7 +27,7 @@ public class ModModelProvider extends FabricModelProvider {
 	private final List<TinyFlowersDatagenData> flowers;
 
 	public ModModelProvider(String modId, List<TinyFlowersDatagenData> flowers,
-			FabricDataOutput generator) {
+			FabricPackOutput generator) {
 		super(generator);
 
 		this.modId = modId;
