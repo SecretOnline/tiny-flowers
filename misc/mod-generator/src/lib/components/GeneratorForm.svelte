@@ -31,13 +31,14 @@
         name: [{ language: "en_us", name: "" }],
         originalId: "",
         isSegmented: false,
-        canSurviveOn: ["#tiny_flowers:tiny_flower_can_survive_on"],
+        canSurviveOn: ["#minecraft:supports_vegetation"],
         suspiciousStewEffects: [],
         itemTexture: undefined,
         tintSource: "grass",
         parentModel: { type: "prefix", prefix: "" },
         blockTextures: [],
         isExpanded: true,
+        specialFeatures: [],
       },
     ],
   });
@@ -48,13 +49,14 @@
       name: [{ language: "en_us", name: "" }],
       originalId: "",
       isSegmented: false,
-      canSurviveOn: ["#tiny_flowers:tiny_flower_can_survive_on"],
+      canSurviveOn: ["#minecraft:supports_vegetation"],
       suspiciousStewEffects: [],
       itemTexture: undefined,
       tintSource: "grass",
       parentModel: { type: "prefix", prefix: "" },
       blockTextures: [],
       isExpanded: true,
+      specialFeatures: [],
     });
   }
 

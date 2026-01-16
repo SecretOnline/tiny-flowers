@@ -1,8 +1,8 @@
 package co.secretonline.tinyflowers.items;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,7 +41,7 @@ public class ModItems {
 
 	public static final ResourceKey<CreativeModeTab> TINY_FLOWERS_GROUP_KEY = ResourceKey
 			.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), TinyFlowers.id("tiny_flowers"));
-	public static final CreativeModeTab TINY_FLOWERS_GROUP = FabricItemGroup.builder()
+	public static final CreativeModeTab TINY_FLOWERS_GROUP = FabricCreativeModeTab.builder()
 			.icon(() -> new ItemStack(TINY_FLOWER_ITEM))
 			.title(Component.translatable("itemGroup." + TinyFlowers.MOD_ID))
 			.build();
@@ -49,10 +49,10 @@ public class ModItems {
 	public static void initialize() {
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, TINY_FLOWERS_GROUP_KEY, TINY_FLOWERS_GROUP);
 
-		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register((itemGroup) -> {
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register((itemGroup) -> {
 			itemGroup.accept(FLORISTS_SHEARS_ITEM);
 		});
-		ItemGroupEvents.modifyEntriesEvent(TINY_FLOWERS_GROUP_KEY).register((itemGroup) -> {
+		CreativeModeTabEvents.modifyOutputEvent(TINY_FLOWERS_GROUP_KEY).register((itemGroup) -> {
 			itemGroup.accept(FLORISTS_SHEARS_ITEM);
 		});
 	}

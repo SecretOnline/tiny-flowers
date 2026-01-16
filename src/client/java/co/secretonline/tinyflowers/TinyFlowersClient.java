@@ -8,7 +8,7 @@ import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
 import co.secretonline.tinyflowers.resources.TinyFlowerModelDataLoader;
 import co.secretonline.tinyflowers.resources.TinyFlowersModelLoadingPlugin;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.ChunkSectionLayerMap;
 import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingPluginManager;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
@@ -24,7 +24,7 @@ public class TinyFlowersClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		SelectItemModelProperties.ID_MAPPER.put(TinyFlowers.id("tiny_flower"), TinyFlowerProperty.TYPE);
 
-		BlockRenderLayerMap.putBlock(ModBlocks.TINY_GARDEN_BLOCK, ChunkSectionLayer.CUTOUT);
+		ChunkSectionLayerMap.putBlock(ModBlocks.TINY_GARDEN_BLOCK, ChunkSectionLayer.CUTOUT);
 
 		BlockEntityRenderers.register(ModBlockEntities.TINY_GARDEN_BLOCK_ENTITY, TinyGardenBlockEntityRenderer::new);
 

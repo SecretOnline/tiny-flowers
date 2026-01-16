@@ -105,7 +105,7 @@ public class ShearTinyFlowersRecipe extends CustomRecipe {
 					nonNullList.set(i, ItemStack.EMPTY);
 				}
 			} else {
-				nonNullList.set(i, itemStack.getItem().getCraftingRemainder());
+				nonNullList.set(i, itemStack.getItem().getCraftingRemainder().create());
 			}
 		}
 

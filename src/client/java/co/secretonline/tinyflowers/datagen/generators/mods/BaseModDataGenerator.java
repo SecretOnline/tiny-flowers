@@ -6,7 +6,7 @@ import co.secretonline.tinyflowers.datagen.generators.PackContributor;
 import co.secretonline.tinyflowers.datagen.providers.ModFlowersProvider;
 import co.secretonline.tinyflowers.datagen.providers.ModModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 
 public abstract class BaseModDataGenerator implements PackContributor {
 	public abstract String getModId();
@@ -18,7 +18,7 @@ public abstract class BaseModDataGenerator implements PackContributor {
 		String modId = getModId();
 		List<TinyFlowersDatagenData> data = this.getFlowerData();
 
-		pack.addProvider((FabricDataOutput output) -> new ModModelProvider(modId, data, output));
-		pack.addProvider((FabricDataOutput output) -> new ModFlowersProvider(modId, data, output));
+		pack.addProvider((FabricPackOutput output) -> new ModModelProvider(modId, data, output));
+		pack.addProvider((FabricPackOutput output) -> new ModFlowersProvider(modId, data, output));
 	}
 }

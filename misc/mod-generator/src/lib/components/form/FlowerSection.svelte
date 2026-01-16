@@ -349,8 +349,7 @@
         <button
           class="button color-add"
           type="button"
-          onclick={() =>
-            addSurvivalBlock("#tiny_flowers:tiny_flower_can_survive_on")}
+          onclick={() => addSurvivalBlock("#minecraft:supports_vegetation")}
         >
           <Add /><span>Add default tag</span>
         </button>

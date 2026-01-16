@@ -6,7 +6,7 @@ import java.util.List;
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
@@ -23,10 +23,10 @@ public class CreativeTabEvents {
 		// tiny variants in our final tab.
 		// We do also need to wait for other mods to add their own
 		Identifier afterDefaultPhase = TinyFlowers.id("after_default");
-		ItemGroupEvents.MODIFY_ENTRIES_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, afterDefaultPhase);
+		CreativeModeTabEvents.MODIFY_OUTPUT_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, afterDefaultPhase);
 
 		List<TinyFlowerData> orderedFlowerData = new ArrayList<>();
-		ItemGroupEvents.MODIFY_ENTRIES_ALL.register(afterDefaultPhase, (tab, entries) -> {
+		CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register(afterDefaultPhase, (tab, entries) -> {
 			// I don't like that we are grabbing the registry from the Minecraft client, but
 			// I coulnd't really figure anythin g else out. Minecraft's Creative inventory
 			// code is already split across server and client, so I hope this isn't too bad.

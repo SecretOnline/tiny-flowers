@@ -37,7 +37,7 @@ interface TinyFlowerData {
   original_id: Identifier;
   /** Optional. Whether the original block is segmentable like Pink Petals or Wildflowers. Defaults to false. */
   is_segmented?: boolean;
-  /** Optional. List of block IDs or tags that this tiny flower can be placed on. Defaults to `#tiny_flowers:tiny_flower_can_survive_on`. */
+  /** Optional. List of block IDs or tags that this tiny flower can be placed on. Defaults to `#minecraft:supports_vegetation`. */
   can_survive_on?: (Identifier | TagKey)[];
   /** Optional. List of mob effects to be applied if consumed in Suspicious Stew. Defaults to an empty list. */
   suspicious_stew_effects?: {

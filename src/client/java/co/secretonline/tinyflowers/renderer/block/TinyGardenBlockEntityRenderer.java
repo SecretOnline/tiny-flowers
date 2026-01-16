@@ -12,7 +12,7 @@ import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.resources.TinyFlowerResolvedResources;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
-import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
+import net.fabricmc.fabric.api.client.model.loading.v1.FabricModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -103,7 +103,7 @@ public class TinyGardenBlockEntityRenderer
 		}
 
 		Minecraft minecraft = Minecraft.getInstance();
-		FabricBakedModelManager modelManager = minecraft.getModelManager();
+		FabricModelManager modelManager = minecraft.getModelManager();
 		BlockStateModel model = modelManager.getModel(part.extraModelKey());
 		if (model == null) {
 			return;

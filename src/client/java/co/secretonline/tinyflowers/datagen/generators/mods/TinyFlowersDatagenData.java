@@ -15,10 +15,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.blocks.ModBlockTags;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature.When;
 import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature;
+import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature.When;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
@@ -28,6 +27,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
 import net.minecraft.util.Mth;
@@ -110,7 +110,7 @@ public class TinyFlowersDatagenData {
 		private boolean isSegmentable = false;
 		private List<Entry> suspiciousStewEffects = new ArrayList<>();
 		private List<TagOrElementLocation> canSurviveOn = new ArrayList<>(
-				List.of(ModBlockTags.TINY_FLOWER_CAN_SURVIVE_ON_LOCATION));
+				List.of(new TagOrElementLocation(BlockTags.SUPPORTS_VEGETATION.location(), true)));
 		@NonNull
 		private List<SpecialFeature> specialFeatures = new ArrayList<>();
 
