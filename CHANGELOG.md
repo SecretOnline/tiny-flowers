@@ -16,6 +16,13 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.5.1 - 2026-02-02
+
+### Added
+
+- Translations
+  - Chinese (Simplified), by [FluorescentLava](https://github.com/FluorescentLava)
+
 ## v1.5.0 - 2025-12-15
 
 ### Updated
