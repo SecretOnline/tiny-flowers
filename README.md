@@ -50,10 +50,10 @@ interface TinyFlowerData {
   special_features?: SpecialFeature[];
 }
 
-type SpecialFeature = EyeblossomOpeningSpecialFeature;
+type SpecialFeature = TransformDayNightSpecialFeature;
 
-interface EyeblossomOpeningSpecialFeature {
-  type: "eyeblossom_opening";
+interface TransformDayNightSpecialFeature {
+  type: "transform_day_night";
   /** When the transformation is allowed to take place. */
   when: "always" | "day" | "night";
   /** Identifier of a tiny flower type to turn into when a tick is received. */

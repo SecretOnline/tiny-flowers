@@ -3,7 +3,7 @@ package co.secretonline.tinyflowers.datagen.generators.mods;
 import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature.When;
+import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature.When;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
