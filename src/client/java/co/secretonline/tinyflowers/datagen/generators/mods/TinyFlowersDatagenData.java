@@ -16,9 +16,8 @@ import com.google.gson.JsonObject;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature;
-import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature.When;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
+import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
 import net.minecraft.client.data.models.model.ModelInstance;
@@ -252,13 +251,12 @@ public class TinyFlowersDatagenData {
 			return this;
 		}
 
-		public Builder addEyeblossomBehaviour(When when, Identifier turnsInto) {
-			return this.addEyeblossomBehaviour(when, turnsInto, 0, null, null);
+		public Builder addTransformDayNightBehaviour(TransformDayNightSpecialFeature.When when, Identifier turnsInto) {
+			return this.addTransformDayNightBehaviour(when, turnsInto, 0, null, null);
 		}
 
-		public Builder addEyeblossomBehaviour(When when, Identifier turnsInto, int particleColor,
-				@Nullable SoundEvent soundEventLong,
-				@Nullable SoundEvent soundEventShort) {
+		public Builder addTransformDayNightBehaviour(TransformDayNightSpecialFeature.When when, Identifier turnsInto,
+				int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
 			Optional<Identifier> longOptional = (soundEventLong == null ? Optional.empty()
 					: Optional.of(soundEventLong.location()));
 			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
