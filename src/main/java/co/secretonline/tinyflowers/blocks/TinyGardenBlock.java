@@ -13,7 +13,7 @@ import co.secretonline.tinyflowers.components.GardenContentsComponent;
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.helper.EyeblossomHelper;
+import co.secretonline.tinyflowers.helper.TransformHelper;
 import co.secretonline.tinyflowers.items.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -268,14 +268,14 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 	@Override
 	protected void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		EyeblossomHelper.doEyeblossomTick(state, world, pos, random, true);
+		TransformHelper.doTransformTick(state, world, pos, random, true);
 
 		super.randomTick(state, world, pos, random);
 	}
 
 	@Override
 	protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		EyeblossomHelper.doEyeblossomTick(state, world, pos, random, false);
+		TransformHelper.doTransformTick(state, world, pos, random, false);
 
 		super.tick(state, world, pos, random);
 	}

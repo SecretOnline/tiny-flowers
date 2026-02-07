@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import co.secretonline.tinyflowers.helper.EyeblossomHelper;
+import co.secretonline.tinyflowers.helper.TransformHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -22,6 +22,6 @@ public class EyeblossomBlockMixin {
 			return;
 		}
 
-		EyeblossomHelper.notifyNearbyEyeblossoms(state, world, pos, random);
+		TransformHelper.notifyNearbyBlocks(state, world, pos, random);
 	}
 }
