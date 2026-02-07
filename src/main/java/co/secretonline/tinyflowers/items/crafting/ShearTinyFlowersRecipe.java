@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class ShearTinyFlowersRecipe extends CustomRecipe {
+public class ShearTinyFlowersRecipe extends CustomRecipeWithProvider {
 	public static final ShearTinyFlowersRecipe INSTANCE = new ShearTinyFlowersRecipe();
 	public static final MapCodec<ShearTinyFlowersRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
 	public static final StreamCodec<RegistryFriendlyByteBuf, ShearTinyFlowersRecipe> STREAM_CODEC = StreamCodec

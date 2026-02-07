@@ -31,7 +31,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-public class TinyFlowerStewRecipe extends CustomRecipe {
+public class TinyFlowerStewRecipe extends CustomRecipeWithProvider {
 	public static final TinyFlowerStewRecipe INSTANCE = new TinyFlowerStewRecipe();
 	public static final MapCodec<TinyFlowerStewRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
 	public static final StreamCodec<RegistryFriendlyByteBuf, TinyFlowerStewRecipe> STREAM_CODEC = StreamCodec
