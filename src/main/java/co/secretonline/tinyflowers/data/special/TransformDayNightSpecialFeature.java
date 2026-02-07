@@ -41,9 +41,9 @@ public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, I
 		Optional<Identifier> soundEventShort) implements SpecialFeature {
 
 	@Override
-	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
+	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level,
 			BlockPos pos, RandomSource random) {
-		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
+		TriState openTriState = level.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
 		if (openTriState == TriState.DEFAULT) {
 			return false;
 		}
@@ -52,7 +52,7 @@ public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, I
 	}
 
 	@Override
-	public void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
+	public void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level,
 			BlockPos pos, RandomSource random) {
 		entity.setFlower(index, this.turnsInto());
 	}
