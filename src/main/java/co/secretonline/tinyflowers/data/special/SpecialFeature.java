@@ -9,7 +9,7 @@ public interface SpecialFeature {
 	abstract MapCodec<? extends SpecialFeature> getMapCodec();
 
 	public static final Codec<SpecialFeature> CODEC = new ExtraCodecs.LateBoundIdMapper<String, MapCodec<? extends SpecialFeature>>()
-			.put("eyeblossom_opening", EyeblossomOpeningSpecialFeature.MAP_CODEC)
+			.put("transform_day_night", TransformDayNightSpecialFeature.MAP_CODEC)
 			.codec(Codec.STRING)
 			.dispatch(SpecialFeature::getMapCodec, (mapCodec) -> mapCodec);
 }

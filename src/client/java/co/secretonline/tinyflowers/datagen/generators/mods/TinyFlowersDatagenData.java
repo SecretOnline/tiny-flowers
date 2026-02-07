@@ -16,8 +16,8 @@ import com.google.gson.JsonObject;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature;
-import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature.When;
+import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature;
+import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature.When;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
@@ -264,7 +264,7 @@ public class TinyFlowersDatagenData {
 			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
 					: Optional.of(soundEventShort.location()));
 
-			this.specialFeatures.add(new EyeblossomOpeningSpecialFeature(when, turnsInto, particleColor,
+			this.specialFeatures.add(new TransformDayNightSpecialFeature(when, turnsInto, particleColor,
 					longOptional, shortOptional));
 
 			return this;

@@ -33,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
  *                               referred to as the short switch sound by
  *                               Minecraft.
  */
-public record EyeblossomOpeningSpecialFeature(When when, Identifier turnsInto, Integer particleColor,
+public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, Integer particleColor,
 		Optional<Identifier> soundEventLong,
 		Optional<Identifier> soundEventShort) implements SpecialFeature {
 
@@ -66,19 +66,19 @@ public record EyeblossomOpeningSpecialFeature(When when, Identifier turnsInto, I
 		serverLevel.playSound(null, blockPos, soundEvent.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
 
-	public static final MapCodec<EyeblossomOpeningSpecialFeature> MAP_CODEC = RecordCodecBuilder
+	public static final MapCodec<TransformDayNightSpecialFeature> MAP_CODEC = RecordCodecBuilder
 			.mapCodec(instance -> instance
 					.group(
-							When.CODEC.fieldOf("when").forGetter(EyeblossomOpeningSpecialFeature::when),
-							Identifier.CODEC.fieldOf("turns_into").forGetter(EyeblossomOpeningSpecialFeature::turnsInto),
-							Codec.INT.optionalFieldOf("particle_color", 0).forGetter(EyeblossomOpeningSpecialFeature::particleColor),
+							When.CODEC.fieldOf("when").forGetter(TransformDayNightSpecialFeature::when),
+							Identifier.CODEC.fieldOf("turns_into").forGetter(TransformDayNightSpecialFeature::turnsInto),
+							Codec.INT.optionalFieldOf("particle_color", 0).forGetter(TransformDayNightSpecialFeature::particleColor),
 							Identifier.CODEC.optionalFieldOf("sound_event_long")
-									.forGetter(EyeblossomOpeningSpecialFeature::soundEventLong),
+									.forGetter(TransformDayNightSpecialFeature::soundEventLong),
 							Identifier.CODEC.optionalFieldOf("sound_event_short")
-									.forGetter(EyeblossomOpeningSpecialFeature::soundEventShort))
-					.apply(instance, EyeblossomOpeningSpecialFeature::new));
+									.forGetter(TransformDayNightSpecialFeature::soundEventShort))
+					.apply(instance, TransformDayNightSpecialFeature::new));
 
-	public MapCodec<EyeblossomOpeningSpecialFeature> getMapCodec() {
+	public MapCodec<TransformDayNightSpecialFeature> getMapCodec() {
 		return MAP_CODEC;
 	}
 

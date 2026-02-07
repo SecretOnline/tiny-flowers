@@ -3,7 +3,7 @@
   "original_id": "minecraft:closed_eyeblossom",
   "special_features": [
     {
-      "type": "eyeblossom_opening",
+      "type": "transform_day_night",
       "particle_color": 16545810,
       "sound_event_long": "minecraft:block.eyeblossom.open_long",
       "sound_event_short": "minecraft:block.eyeblossom.open",

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.special.EyeblossomOpeningSpecialFeature;
+import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -39,7 +39,7 @@ public class EyeblossomHelper {
 			return false;
 		}
 
-		List<EyeblossomOpeningSpecialFeature> allChanges = new ArrayList<>();
+		List<TransformDayNightSpecialFeature> allChanges = new ArrayList<>();
 
 		for (int i = 1; i <= 4; i++) {
 			@Nullable
@@ -55,7 +55,7 @@ public class EyeblossomHelper {
 			}
 
 			for (SpecialFeature feature : flowerData.specialFeatures()) {
-				if (feature instanceof EyeblossomOpeningSpecialFeature eyeblossomFeature) {
+				if (feature instanceof TransformDayNightSpecialFeature eyeblossomFeature) {
 					if (eyeblossomFeature.when().shouldChange(openTriState)) {
 						gardenBlockEntity.setFlower(i, eyeblossomFeature.turnsInto());
 						allChanges.add(eyeblossomFeature);
@@ -73,7 +73,7 @@ public class EyeblossomHelper {
 
 			EyeblossomHelper.notifyNearbyEyeblossoms(state, world, pos, random);
 
-			EyeblossomOpeningSpecialFeature randomChange = Util.getRandom(allChanges, random);
+			TransformDayNightSpecialFeature randomChange = Util.getRandom(allChanges, random);
 			randomChange.spawnTransformParticle(world, pos, random);
 			randomChange.playSound(world, pos, isRandomTick);
 		}
@@ -125,7 +125,7 @@ public class EyeblossomHelper {
 					}
 
 					for (SpecialFeature feature : flowerData.specialFeatures()) {
-						if (feature instanceof EyeblossomOpeningSpecialFeature eyeblossomFeature) {
+						if (feature instanceof TransformDayNightSpecialFeature eyeblossomFeature) {
 							if (eyeblossomFeature.when().shouldChange(openTriState)) {
 								scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK, random);
 								didNotify = true;
