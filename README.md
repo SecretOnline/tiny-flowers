@@ -50,12 +50,28 @@ interface TinyFlowerData {
   special_features?: SpecialFeature[];
 }
 
-type SpecialFeature = TransformDayNightSpecialFeature;
+type SpecialFeature =
+  | TransformDayNightSpecialFeature
+  | TransformWeatherSpecialFeature;
 
 interface TransformDayNightSpecialFeature {
   type: "transform_day_night";
   /** When the transformation is allowed to take place. */
   when: "always" | "day" | "night";
+  /** Identifier of a tiny flower type to turn into when a tick is received. */
+  turns_into: Identifier;
+  /** Optional. Packed RGB value of a colour to tint particles. No particles will be spawned if omitted or set to 0. */
+  particle_color?: number;
+  /** Optional. ID of the sound event that plays when this transformation happens due to a random tick. */
+  sound_event_long?: Identifier;
+  /** Optional. ID of the sound event that plays when this transformation happens due to a scheduled tick. */
+  sound_event_short?: Identifier;
+}
+
+interface TransformWeatherSpecialFeature {
+  type: "transform_weather";
+  /** When the transformation is allowed to take place. */
+  when: "always" | "raining" | "thundering";
   /** Identifier of a tiny flower type to turn into when a tick is received. */
   turns_into: Identifier;
   /** Optional. Packed RGB value of a colour to tint particles. No particles will be spawned if omitted or set to 0. */

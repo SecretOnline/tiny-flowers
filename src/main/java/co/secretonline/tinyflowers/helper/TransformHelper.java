@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import co.secretonline.tinyflowers.blocks.ModBlocks;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -22,9 +21,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class EyeblossomHelper {
+public class TransformHelper {
 
-	public static boolean doEyeblossomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random,
+	public static boolean doTransformTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random,
 			boolean isRandomTick) {
 		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
 		if (openTriState == TriState.DEFAULT) {
@@ -39,8 +38,7 @@ public class EyeblossomHelper {
 			return false;
 		}
 
-		List<TransformDayNightSpecialFeature> allChanges = new ArrayList<>();
-
+		List<SpecialFeature> featuresWithWorldEffect = new ArrayList<>();
 		for (int i = 1; i <= 4; i++) {
 			@Nullable
 			Identifier flowerId = gardenBlockEntity.getFlower(i);
@@ -55,33 +53,33 @@ public class EyeblossomHelper {
 			}
 
 			for (SpecialFeature feature : flowerData.specialFeatures()) {
-				if (feature instanceof TransformDayNightSpecialFeature eyeblossomFeature) {
-					if (eyeblossomFeature.when().shouldChange(openTriState)) {
-						gardenBlockEntity.setFlower(i, eyeblossomFeature.turnsInto());
-						allChanges.add(eyeblossomFeature);
+				if (feature.shouldActivateFeature(gardenBlockEntity, i, currentState, world, pos, random)) {
+					didChange = true;
+					feature.onActivateFeature(gardenBlockEntity, i, currentState, world, pos, random);
 
-						// Stop processing special features.
-						break;
+					if (feature.hasWorldEffect()) {
+						featuresWithWorldEffect.add(feature);
 					}
 				}
 			}
 		}
 
-		if (allChanges.size() > 0) {
+		if (didChange) {
 			world.setBlock(pos, currentState, Block.UPDATE_CLIENTS);
 			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
 
-			EyeblossomHelper.notifyNearbyEyeblossoms(state, world, pos, random);
+			TransformHelper.notifyNearbyBlocks(state, world, pos, random);
 
-			TransformDayNightSpecialFeature randomChange = Util.getRandom(allChanges, random);
-			randomChange.spawnTransformParticle(world, pos, random);
-			randomChange.playSound(world, pos, isRandomTick);
+			if (featuresWithWorldEffect.size() > 0) {
+				SpecialFeature randomChange = Util.getRandom(featuresWithWorldEffect, random);
+				randomChange.doWorldEffect(world, pos, random, isRandomTick);
+			}
 		}
 
 		return didChange;
 	}
 
-	public static void notifyNearbyEyeblossoms(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	public static void notifyNearbyBlocks(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
 		if (openTriState == TriState.DEFAULT) {
 			return;
@@ -117,7 +115,13 @@ public class EyeblossomHelper {
 
 				// Tiny Gardens should also recieve updates if they have eyeblossoms.
 				boolean didNotify = false;
-				for (Identifier flowerId : gardenBlockEntity.getFlowers()) {
+				for (int i = 1; i <= 4; i++) {
+					@Nullable
+					Identifier flowerId = gardenBlockEntity.getFlower(i);
+					if (flowerId == null) {
+						continue;
+					}
+
 					@Nullable
 					TinyFlowerData flowerData = TinyFlowerData.findById(world.registryAccess(), flowerId);
 					if (flowerData == null) {
@@ -125,12 +129,10 @@ public class EyeblossomHelper {
 					}
 
 					for (SpecialFeature feature : flowerData.specialFeatures()) {
-						if (feature instanceof TransformDayNightSpecialFeature eyeblossomFeature) {
-							if (eyeblossomFeature.when().shouldChange(openTriState)) {
-								scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK, random);
-								didNotify = true;
-								break;
-							}
+						if (feature.shouldActivateFeature(gardenBlockEntity, i, state, world, pos, random)) {
+							scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK, random);
+							didNotify = true;
+							break;
 						}
 					}
 					if (didNotify) {
