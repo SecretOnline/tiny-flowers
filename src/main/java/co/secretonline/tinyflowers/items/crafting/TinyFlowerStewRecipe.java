@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.mojang.serialization.MapCodec;
+
 import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.ModRegistries;
@@ -17,22 +19,25 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.HolderLookup.RegistryLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class TinyFlowerStewRecipe extends CustomRecipe {
-	public TinyFlowerStewRecipe(CraftingBookCategory craftingBookCategory) {
-		super(craftingBookCategory);
-	}
+	public static final TinyFlowerStewRecipe INSTANCE = new TinyFlowerStewRecipe();
+	public static final MapCodec<TinyFlowerStewRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+	public static final StreamCodec<RegistryFriendlyByteBuf, TinyFlowerStewRecipe> STREAM_CODEC = StreamCodec
+			.unit(INSTANCE);
+	public static final RecipeSerializer<TinyFlowerStewRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC,
+			STREAM_CODEC);
 
 	@Override
 	public boolean matches(CraftingInput recipeInput, Level level) {
