@@ -16,8 +16,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.saveddata.WeatherData;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -40,18 +40,13 @@ public record TransformWeatherSpecialFeature(When when, Identifier turnsInto, In
 		Optional<Identifier> soundEventShort) implements SpecialFeature {
 
 	@Override
-	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
+	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level,
 			BlockPos pos, RandomSource random) {
-		if (!world.canHaveWeather()) {
-			return false;
-		}
-
-		WeatherData weatherData = world.getWeatherData();
-		return this.when().shouldChange(weatherData);
+		return this.when().shouldChange(level, pos);
 	}
 
 	@Override
-	public void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
+	public void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level,
 			BlockPos pos, RandomSource random) {
 		entity.setFlower(index, this.turnsInto());
 	}
@@ -105,7 +100,9 @@ public record TransformWeatherSpecialFeature(When when, Identifier turnsInto, In
 	public static enum When implements StringRepresentable {
 		ALWAYS("always"),
 		RAINING("raining"),
-		THUNDERING("thundering");
+		THUNDERING("thundering"),
+		RAINING_ON("raining_on"),
+		SNOWING_ON("snowing_on");
 
 		private final String name;
 
@@ -118,16 +115,23 @@ public record TransformWeatherSpecialFeature(When when, Identifier turnsInto, In
 			return this.name;
 		}
 
-		public boolean shouldChange(WeatherData weatherData) {
+		public boolean shouldChange(ServerLevel level, BlockPos pos) {
+			if (!level.canHaveWeather()) {
+				return false;
+			}
+
 			if (this.equals(ALWAYS)) {
 				return true;
 			}
 
-			if (this.equals(RAINING) && weatherData.isRaining()) {
+			if ((this.equals(RAINING) && level.isRaining()) ||
+					(this.equals(THUNDERING) && level.isThundering())) {
 				return true;
 			}
 
-			if (this.equals(THUNDERING) && weatherData.isThundering()) {
+			Biome.Precipitation weatherAtPos = level.precipitationAt(pos);
+			if ((this.equals(RAINING_ON) && weatherAtPos.equals(Biome.Precipitation.RAIN)) ||
+					(this.equals(SNOWING_ON) && weatherAtPos.equals(Biome.Precipitation.SNOW))) {
 				return true;
 			}
 

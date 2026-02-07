@@ -71,7 +71,12 @@ interface TransformDayNightSpecialFeature {
 interface TransformWeatherSpecialFeature {
   type: "transform_weather";
   /** When the transformation is allowed to take place. */
-  when: "always" | "raining" | "thundering";
+  when:
+    | "always"
+    | "raining" // When it is raining in this world.
+    | "thundering" // When it is thundering in this world.
+    | "raining_on" // When this block is receiving direct rainfall.
+    | "snowing_on"; // When this block is receiving direct snowfall.
   /** Identifier of a tiny flower type to turn into when a tick is received. */
   turns_into: Identifier;
   /** Optional. Packed RGB value of a colour to tint particles. No particles will be spawned if omitted or set to 0. */
