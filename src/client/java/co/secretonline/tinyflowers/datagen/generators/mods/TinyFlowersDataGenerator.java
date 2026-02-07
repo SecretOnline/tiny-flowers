@@ -88,7 +88,7 @@ public class TinyFlowersDataGenerator extends BaseModDataGenerator {
 						.layers(TinyFlowers.id("tiny_closed_eyeblossom"))
 						.untintedStem()
 						.stemTexture(TinyFlowers.id("tiny_eyeblossom_stem"))
-						.addEyeblossomBehaviour(When.NIGHT, TinyFlowers.id("tiny_open_eyeblossom"), 16545810,
+						.addTransformDayNightBehaviour(When.NIGHT, TinyFlowers.id("tiny_open_eyeblossom"), 16545810,
 								SoundEvents.EYEBLOSSOM_OPEN_LONG, SoundEvents.EYEBLOSSOM_OPEN)
 						.build(),
 				TinyFlowersDatagenData.Builder
@@ -99,7 +99,7 @@ public class TinyFlowersDataGenerator extends BaseModDataGenerator {
 						.customModel(TinyFlowers.id("garden_double_untinted_glow"))
 						.untintedStem()
 						.stemTexture(TinyFlowers.id("tiny_eyeblossom_stem"))
-						.addEyeblossomBehaviour(When.DAY, TinyFlowers.id("tiny_closed_eyeblossom"), 6250335,
+						.addTransformDayNightBehaviour(When.DAY, TinyFlowers.id("tiny_closed_eyeblossom"), 6250335,
 								SoundEvents.EYEBLOSSOM_CLOSE_LONG, SoundEvents.EYEBLOSSOM_CLOSE)
 						.build(),
 				TinyFlowersDatagenData.Builder
