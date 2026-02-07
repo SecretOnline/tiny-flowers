@@ -20,6 +20,5 @@ public class ItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 		valueLookupBuilder(ItemTags.FLOWERS).add(ModItems.TINY_FLOWER_ITEM);
 
 		valueLookupBuilder(ConventionalItemTags.SHEAR_TOOLS).add(ModItems.FLORISTS_SHEARS_ITEM);
-		valueLookupBuilder(ItemTags.DYEABLE).add(ModItems.FLORISTS_SHEARS_ITEM);
 	}
 }

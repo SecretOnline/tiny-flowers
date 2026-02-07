@@ -79,6 +79,8 @@ public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
 							.unlockedBy(getHasName(Items.SHEARS), has(Items.SHEARS))
 							.save(output, recipeKey);
 				}
+
+				dyedItem(ModItems.FLORISTS_SHEARS_ITEM, "florists_shears_dyed");
 			}
 		};
 	}
