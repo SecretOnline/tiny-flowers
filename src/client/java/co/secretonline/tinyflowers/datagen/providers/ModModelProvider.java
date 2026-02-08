@@ -7,8 +7,8 @@ import org.jspecify.annotations.NonNull;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.components.TinyFlowerComponent;
-import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenData;
-import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenData.ModelParts;
+import co.secretonline.tinyflowers.datagen.generators.TinyFlowersDatagenData;
+import co.secretonline.tinyflowers.datagen.generators.TinyFlowersDatagenData.ModelParts;
 import co.secretonline.tinyflowers.items.ModItems;
 import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;

@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.datagen.generators.mods.TinyFlowersDatagenData;
+import co.secretonline.tinyflowers.datagen.generators.TinyFlowersDatagenData;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.registries.Registries;
