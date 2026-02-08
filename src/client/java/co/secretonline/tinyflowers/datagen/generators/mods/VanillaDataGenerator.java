@@ -3,6 +3,8 @@ package co.secretonline.tinyflowers.datagen.generators.mods;
 import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.datagen.generators.BaseModDataGenerator;
+import co.secretonline.tinyflowers.datagen.generators.TinyFlowersDatagenData;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
 import net.minecraft.resources.Identifier;
 

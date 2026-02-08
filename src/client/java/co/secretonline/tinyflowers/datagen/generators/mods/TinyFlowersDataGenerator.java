@@ -4,6 +4,8 @@ import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature.When;
+import co.secretonline.tinyflowers.datagen.generators.BaseModDataGenerator;
+import co.secretonline.tinyflowers.datagen.generators.TinyFlowersDatagenData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;

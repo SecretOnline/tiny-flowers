@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.datagen.generators.mods;
+package co.secretonline.tinyflowers.datagen.generators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
