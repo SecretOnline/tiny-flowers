@@ -1,9 +1,0 @@
-{
-  "required": true,
-  "package": "co.secretonline.tinyflowers.mixin",
-  "compatibilityLevel": "JAVA_25",
-  "mixins": ["TerrainParticleMixin"],
-  "injectors": {
-    "defaultRequire": 1
-  }
-}

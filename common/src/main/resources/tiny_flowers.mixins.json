@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "co.secretonline.tinyflowers.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "CrafterBlockMixin",
+    "CrafterMenuMixin",
+    "CraftingMenuMixin",
+    "CreativeModeTabsMixin",
+    "DyeColorMixin",
+    "EyeblossomBlockMixin",
+    "FlowerbedBlockMixin",
+    "ItemStackMixin",
+    "LeafLitterBlockMixin",
+    "ModelBakeryMixin",
+    "ModelManagerMixin",
+    "TerrainParticleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
