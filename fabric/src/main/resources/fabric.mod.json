@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": [
+    {
+      "name": "secret_online",
+      "contact": {
+        "homepage": "https://secretonline.co"
+      }
+    }
+  ],
+  "contributors": [
+    {
+      "name": "eSonOfAnder",
+      "contact": {
+        "homepage": "https://github.com/eSonOfAnder"
+      }
+    },
+    {
+      "name": "haykam821",
+      "contact": {
+        "homepage": "https://github.com/haykam821"
+      }
+    },
+    {
+      "name": "Lucanoria",
+      "contact": {
+        "homepage": "https://github.com/Lucanoria"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "https://secretonline.co/mods/tiny-flowers",
+    "sources": "https://github.com/SecretOnline/tiny-flowers",
+    "issues": "https://github.com/SecretOnline/tiny-flowers/issues"
+  },
+  "license": "${license}",
+  "icon": "assets/${mod_id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["co.secretonline.tinyflowers.FabricTinyFlowers"],
+    "client": ["co.secretonline.tinyflowers.FabricTinyFlowersClient"],
+    "fabric-datagen": ["co.secretonline.tinyflowers.datagen.FabricTinyFlowersDataGenerator"]
+  },
+  "mixins": [
+    "tiny_flowers.mixins.json"
+  ],
+  "depends": {
+    "java": ">=${java_version}",
+    "fabric-api": "*"
+  },
+  "recommends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~${minecraft_version}"
+  },
+  "custom": {
+    "mc-publish": {
+      "modrinth": "tiny-flowers",
+      "curseforge": 1183435
+    },
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/xnDeRSuk8r",
+        "modmenu.modrinth": "https://modrinth.com/mod/tiny-flowers",
+        "modmenu.curseforge": "https://legacy.curseforge.com/minecraft/mc-mods/tiny-flowers"
+      }
+    }
+  }
+}

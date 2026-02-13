@@ -7,10 +7,6 @@ build/
 out/
 classes/
 
-# eclipse
-
-*.launch
-
 # idea
 
 .idea/
@@ -42,3 +38,16 @@ replay_*.log
 *.jfr
 
 .cache/
+
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# other
+eclipse
+run
+runs

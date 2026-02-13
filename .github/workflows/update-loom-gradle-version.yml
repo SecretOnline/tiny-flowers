@@ -8,6 +8,10 @@ on:
         description: New Loom major version
         required: true
         type: string
+      moddevgradle-version:
+        description: New Mod Dev Gradle major version
+        required: true
+        type: string
       gradle-version:
         description: New Gradle version
         required: true
@@ -50,7 +54,9 @@ jobs:
       - name: Update files
         run: |
           ./gradlew wrapper --gradle-version=${{ inputs.gradle-version }}  --distribution-type=bin
-          sed -i -e "/id 'net.fabricmc.fabric-loom' version/ s/version '.*'/version '${{ inputs.loom-version }}-SNAPSHOT'/" build.gradle
+          sed -i -e "/id 'fabric-loom' version/ s/version '.*'/version '${{ inputs.loom-version }}-SNAPSHOT'/" build.gradle
+          sed -i -e "/id 'dev.architectury.loom' version/ s/version '.*'/version '${{ inputs.loom-version }}-SNAPSHOT'/" build.gradle
+          sed -i -e "/id 'net.neoforged.moddev' version/ s/version '.*'/version '${{ inputs.moddevgradle-version }}'/" build.gradle
 
       - name: Prepare PR body
         run: |

@@ -1,21 +1,8 @@
 import { getInput, info, setOutput, warning } from "@actions/core";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { URL, URLSearchParams } from "node:url";
-import { minSatisfying, satisfies } from "semver";
+import { compare, SemVer } from "semver";
 import { getAllMinecraftVersions, getMinecraftVersion } from "../lib/mojang.js";
-import {
-  addAllZeroVersions,
-  parseVersionSafe,
-  trimAllZeroVersions,
-} from "../lib/versions.js";
-
-const fileString = await readFile(
-  join(process.cwd(), "src/main/resources", "fabric.mod.json"),
-  { encoding: "utf8" }
-);
-const modJson = JSON.parse(fileString);
-const recommendsRange = addAllZeroVersions(modJson.recommends.minecraft);
+import { parseVersionSafe, trimAllZeroVersions } from "../lib/versions.js";
 
 const allVersions = await getAllMinecraftVersions();
 
@@ -33,76 +20,9 @@ function getUpdateVersion() {
   return allVersions.latest.release;
 }
 
-/**
- * @returns {string | null}
- */
-function getMaxUpdateVersion() {
-  const inputValue = getInput("max-minecraft-version");
-  if (inputValue) {
-    return inputValue;
-  }
-
-  return null;
-}
-
 const versionToUpdate = getUpdateVersion();
+const versionToUpdateSemver = new SemVer(versionToUpdate);
 const updateVersionInfo = await getMinecraftVersion(versionToUpdate);
-
-async function getNewVersionRange() {
-  if (updateVersionInfo.type !== "release") {
-    return versionToUpdate;
-  }
-
-  const updateSemver = parseVersionSafe(versionToUpdate);
-
-  if (recommendsRange === updateSemver.toString()) {
-    return versionToUpdate;
-  }
-
-  if (satisfies(updateSemver, recommendsRange)) {
-    // New version already satisfies the current range, but double check Java version first.
-    const allReleaseVersions = allVersions.versions.filter(
-      (v) => v.type === "release"
-    );
-    const minMatchingSemver = minSatisfying(
-      allReleaseVersions.map((v) => parseVersionSafe(v.id)),
-      recommendsRange
-    );
-    if (!minMatchingSemver) {
-      throw new Error(`No versions matched range ${recommendsRange}`);
-    }
-
-    const minMatchingInfo = await getMinecraftVersion(
-      minMatchingSemver.toString()
-    );
-
-    const isSameJava =
-      updateVersionInfo.javaVersion.majorVersion ===
-      minMatchingInfo.javaVersion.majorVersion;
-    if (isSameJava) {
-      return recommendsRange;
-    }
-
-    // New version satisfies range, but has new Java version so is incompatible.
-  }
-
-  const minVersion = versionToUpdate;
-  const maxUpdateVersion = getMaxUpdateVersion();
-  // Current rules mean that the minor version is always the same, so we can use a range here
-  // Also we're assuming middle versions are compatible. This should always be the case, but
-  // I can't wait to eat my words on that one.
-  const simplified = trimAllZeroVersions(
-    maxUpdateVersion !== null
-      ? `${minVersion} - ${maxUpdateVersion}`
-      : `~${minVersion}`
-  );
-
-  info(
-    `New version is likely compatible with existing versions of Minecraft. Adding to version range ${simplified}`
-  );
-
-  return simplified;
-}
 
 /**
  * @param {string} projectId
@@ -165,18 +85,76 @@ async function getFabricLoaderVersion() {
   return data[0].version;
 }
 
-// Early exit if latest version already matches
-const newVersionRange = await getNewVersionRange();
+/**
+ * @returns {Promise<{neoforge:string;}>}
+ */
+async function getArchitecturyVersions() {
+  const response = await fetch(
+    "https://generate.architectury.dev/version_index.json",
+    {
+      headers: {
+        "user-agent": "secret_online/mod-auto-updater (mc@secretonline.co)",
+      },
+    }
+  );
+  /** @type {Record<string,any>} */
+  const data = await response.json();
+
+  const versionData = data[versionToUpdate];
+  if (versionData) {
+    if (!versionData.neoforge) {
+      throw new Error(`No Neoforge version in Architectury index`);
+    }
+
+    info(
+      `Found Architectury data: neoforge ${versionData.neoforge}`
+    );
+
+    return versionData;
+  }
+
+  warning(
+    `No version for ${versionToUpdate} in Architectury index. Trying Neoforge release`
+  );
+
+  // Get latest Neoforge version from Neoforge Maven
+  const neoforgeResponse = await fetch(
+    "https://maven.neoforged.net/api/maven/versions/releases/net%2Fneoforged%2Fneoforge",
+    {
+      headers: {
+        "user-agent": "secret_online/mod-auto-updater (mc@secretonline.co)",
+      },
+    }
+  );
+  /** @type {{versions:string[]}} */
+  const neoforgeData = await neoforgeResponse.json();
+  const matchRegex = new RegExp(
+    `^${versionToUpdateSemver.minor}.${versionToUpdateSemver.patch}.`
+  );
+  const matchingVersions = neoforgeData.versions.filter((version) =>
+    matchRegex.test(version)
+  );
+  if (matchingVersions.length === 0) {
+    throw new Error(`No version for ${versionToUpdate} in Neoforge Maven`);
+  }
+  matchingVersions.sort((a, b) => compare(b, a));
+  const neoforgeVersion = matchingVersions[0];
+  info(`Found Neoforge data: neoforge ${neoforgeVersion}`);
+
+  return {
+    neoforge: neoforgeVersion,
+  };
+}
+
 const fabricApiVersion = await getModrinthProjectVersion("fabric-api");
 const modMenuVersion = await getModrinthProjectVersion("modmenu");
 const fabricLoaderVersion = await getFabricLoaderVersion();
+const { neoforge } = await getArchitecturyVersions();
 
 setOutput("has-updates", true);
 setOutput("minecraft-version", versionToUpdate);
-setOutput("minecraft-version-range", newVersionRange);
 setOutput("java-version", updateVersionInfo.javaVersion.majorVersion);
 setOutput("fabric-api-version", fabricApiVersion);
 setOutput("mod-menu-version", modMenuVersion);
-setOutput("loader-version", fabricLoaderVersion);
-// Do not add code below the above closing brace, as it will run whether or not any updates happened.
-// Control flow is hard.
+setOutput("fabric-loader-version", fabricLoaderVersion);
+setOutput("neoforge-version", neoforge);
