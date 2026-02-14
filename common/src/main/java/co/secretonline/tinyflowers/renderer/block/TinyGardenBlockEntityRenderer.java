@@ -5,10 +5,8 @@ import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.client.model.TinyFlowerModelHolder;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
-import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -104,14 +102,7 @@ public class TinyGardenBlockEntityRenderer
 			return;
 		}
 
-		BlockColor tintProvider = TinyGardenColorProvider.getInstance();
-		TintSource tintSource = resources.tintSource();
-		int tintIndex = switch (tintSource) {
-			case TintSource.DRY_FOLIAGE -> 2;
-			default -> 1;
-		};
-
-		int packedTint = tintProvider.getColor(state.blockState, state.getBlockAndTintGetter(), state.blockPos, tintIndex);
+		int packedTint = TinyGardenColorProvider.getColor(state.blockState, state.getBlockAndTintGetter(), state.blockPos, resources.tintSource());
 		float r = ((packedTint & 0xFF0000) >> 16) / 255f;
 		float g = ((packedTint & 0xFF00) >> 8) / 255f;
 		float b = (packedTint & 0xFF) / 255f;

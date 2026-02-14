@@ -125,6 +125,6 @@ public class ShearTinyFlowersRecipe extends CustomRecipeWithProvider {
 
 	@Override
 	public @NonNull RecipeSerializer<ShearTinyFlowersRecipe> getSerializer() {
-		return ModRecipeSerializers.SHEAR_TINY_FLOWERS;
+		return ModRecipeSerializers.SHEAR_TINY_FLOWERS.get();
 	}
 }

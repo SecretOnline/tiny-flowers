@@ -137,6 +137,6 @@ public class TinyFlowerStewRecipe extends CustomRecipeWithProvider {
 
 	@Override
 	public @NonNull RecipeSerializer<TinyFlowerStewRecipe> getSerializer() {
-		return ModRecipeSerializers.TINY_FLOWER_STEW;
+		return ModRecipeSerializers.TINY_FLOWER_STEW.get();
 	}
 }
