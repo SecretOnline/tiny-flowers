@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers.platform;
 
-import co.secretonline.tinyflowers.platform.services.IPlatformRegistration;
+import co.secretonline.tinyflowers.platform.services.AccessHelper;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -9,10 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.BiFunction;
 
-public class NeoForgePlatformRegistration implements IPlatformRegistration {
+public class FabricAccessHelper implements AccessHelper {
 	@Override
 	public <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> entityFactory, Block... blocks) {
-		//noinspection unchecked
-		return new BlockEntityType<>((BlockEntityType.BlockEntitySupplier<? extends T>) entityFactory, blocks);
+		return FabricBlockEntityTypeBuilder.create(entityFactory::apply, blocks).build();
 	}
 }

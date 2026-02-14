@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.renderer.block;
 
+import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -11,32 +12,21 @@ import net.minecraft.world.level.DryFoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TinyGardenColorProvider implements BlockColor {
-	private static TinyGardenColorProvider INSTANCE = null;
-
-	public static TinyGardenColorProvider getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new TinyGardenColorProvider();
-		}
-
-		return INSTANCE;
-	}
-
-	@Override
-	public int getColor(@NonNull BlockState state, @Nullable BlockAndTintGetter world, @Nullable BlockPos pos, int tintIndex) {
+public class TinyGardenColorProvider {
+	public static int getColor(@NonNull BlockState state, @Nullable BlockAndTintGetter world, @Nullable BlockPos pos, TinyFlowerResources.TintSource source) {
 		// Loosely based on Pink Petals in net.minecraft.client.color.block.BlockColors
 
 		boolean useDefaultColors = world == null || pos == null;
 
-		switch (tintIndex) {
-			case 1 -> {
+		switch (source) {
+			case TinyFlowerResources.TintSource.GRASS -> {
 				if (useDefaultColors) {
 					return GrassColor.getDefaultColor();
 				} else {
 					return BiomeColors.getAverageGrassColor(world, pos);
 				}
 			}
-			case 2 -> {
+			case TinyFlowerResources.TintSource.DRY_FOLIAGE -> {
 				if (useDefaultColors) {
 					return DryFoliageColor.get(0.5, 1.0);
 				} else {
@@ -48,5 +38,4 @@ public class TinyGardenColorProvider implements BlockColor {
 			}
 		}
 	}
-
 }
