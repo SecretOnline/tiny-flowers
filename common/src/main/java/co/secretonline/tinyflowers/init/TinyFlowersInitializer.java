@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers;
+package co.secretonline.tinyflowers.init;
 
 import co.secretonline.tinyflowers.blocks.ModBlockEntities;
 import co.secretonline.tinyflowers.blocks.ModBlocks;

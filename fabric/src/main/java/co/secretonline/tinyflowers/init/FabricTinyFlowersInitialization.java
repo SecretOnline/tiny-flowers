@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers;
+package co.secretonline.tinyflowers.init;
 
 import co.secretonline.tinyflowers.data.ModRegistries;
 import com.mojang.serialization.MapCodec;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;
 
-public class FabricTinyFlowersRegistration extends TinyFlowersInitializer {
+public class FabricTinyFlowersInitialization extends TinyFlowersInitializer {
 	@Override
 	public void registerBlock(Identifier id, Supplier<Block> blockSupplier, MapCodec<? extends Block> codec) {
 		Registry.register(BuiltInRegistries.BLOCK_TYPE, id, codec);
