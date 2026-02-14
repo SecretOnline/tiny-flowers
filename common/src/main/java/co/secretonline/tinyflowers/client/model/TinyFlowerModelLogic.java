@@ -104,10 +104,6 @@ public final class TinyFlowerModelLogic {
 				cases);
 	}
 
-	public static boolean shouldReplaceItemModel(Identifier itemId) {
-		return itemId.equals(ModItems.TINY_FLOWER_ITEM_KEY.identifier());
-	}
-
 	private static ItemModel.Unbaked modelForIdentifier(Identifier id) {
 		return ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(
 				id,

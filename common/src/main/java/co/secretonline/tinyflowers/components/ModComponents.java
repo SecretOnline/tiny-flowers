@@ -1,20 +1,24 @@
 package co.secretonline.tinyflowers.components;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.platform.Services;
+import com.google.common.base.Suppliers;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.resources.Identifier;
+
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public class ModComponents {
-	public static final DataComponentType<TinyFlowerComponent> TINY_FLOWER = DataComponentType.<TinyFlowerComponent>builder()
+	public static final Supplier<DataComponentType<TinyFlowerComponent>> TINY_FLOWER = Suppliers.memoize(() -> DataComponentType.<TinyFlowerComponent>builder()
 		.persistent(TinyFlowerComponent.CODEC)
-		.build();
+		.build());
 
-	public static final DataComponentType<GardenContentsComponent> GARDEN_CONTENTS = DataComponentType.<GardenContentsComponent>builder()
+	public static final Supplier<DataComponentType<GardenContentsComponent>> GARDEN_CONTENTS = Suppliers.memoize(() -> DataComponentType.<GardenContentsComponent>builder()
 		.persistent(GardenContentsComponent.CODEC)
-		.build();
+		.build());
 
-	public static void register() {
-		Services.PLATFORM_REGISTRATION.registerDataComponent(TinyFlowers.id("tiny_flower"), TINY_FLOWER);
-		Services.PLATFORM_REGISTRATION.registerDataComponent(TinyFlowers.id("garden_contents"), GARDEN_CONTENTS);
+	public static void register(BiConsumer<Identifier, Supplier<? extends DataComponentType<?>>> register) {
+		register.accept(TinyFlowers.id("tiny_flower"), TINY_FLOWER);
+		register.accept(TinyFlowers.id("garden_contents"), GARDEN_CONTENTS);
 	}
 }

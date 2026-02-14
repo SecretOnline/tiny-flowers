@@ -17,7 +17,7 @@ public class CreativeModeTabsMixin {
 	@ModifyReturnValue(method = "streamAllTabs", at = @At("RETURN"))
 	private static Stream<CreativeModeTab> sortStreamAllTabs(Stream<CreativeModeTab> tabStream) {
 		return tabStream.sorted((a, b) -> Boolean.compare(
-			a.getIconItem().is(ModItems.TINY_FLOWER_ITEM),
-			b.getIconItem().is(ModItems.TINY_FLOWER_ITEM)));
+			a.getIconItem().is(ModItems.TINY_FLOWER_ITEM.get()),
+			b.getIconItem().is(ModItems.TINY_FLOWER_ITEM.get())));
 	}
 }

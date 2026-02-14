@@ -42,7 +42,7 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 	private Identifier flower4 = null;
 
 	public TinyGardenBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.TINY_GARDEN_BLOCK_ENTITY, pos, state);
+		super(ModBlockEntities.TINY_GARDEN_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public List<Identifier> getFlowers() {
@@ -181,14 +181,14 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 	protected void applyImplicitComponents(@NonNull DataComponentGetter dataComponentGetter) {
 		super.applyImplicitComponents(dataComponentGetter);
 
-		GardenContentsComponent gardenComponent = dataComponentGetter.get(ModComponents.GARDEN_CONTENTS);
+		GardenContentsComponent gardenComponent = dataComponentGetter.get(ModComponents.GARDEN_CONTENTS.get());
 		if (gardenComponent != null) {
 			setFlower(1, gardenComponent.flower1());
 			setFlower(2, gardenComponent.flower2());
 			setFlower(3, gardenComponent.flower3());
 			setFlower(4, gardenComponent.flower4());
 		} else {
-			TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER);
+			TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER.get());
 			if (itemComponent != null) {
 				addFlower(itemComponent.id());
 			}
@@ -199,7 +199,7 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 	protected void collectImplicitComponents(@NonNull Builder builder) {
 		super.collectImplicitComponents(builder);
 
-		builder.set(ModComponents.GARDEN_CONTENTS, new GardenContentsComponent(flower1, flower2, flower3, flower4));
+		builder.set(ModComponents.GARDEN_CONTENTS.get(), new GardenContentsComponent(flower1, flower2, flower3, flower4));
 	}
 
 	@Override

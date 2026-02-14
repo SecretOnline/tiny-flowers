@@ -56,12 +56,12 @@ public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
 			@Override
 			public void buildRecipes() {
 				// Generate recipes for each colour of shears.
-				Identifier shearsId = BuiltInRegistries.ITEM.getKey(ModItems.FLORISTS_SHEARS_ITEM);
+				Identifier shearsId = BuiltInRegistries.ITEM.getKey(ModItems.FLORISTS_SHEARS_ITEM.get());
 				for (var entry : COLOR_TAGS.entrySet()) {
 					DyeColor color = entry.getKey();
 					TagKey<Item> tagKey = entry.getValue();
 					ItemStackTemplate stack = new ItemStackTemplate(
-							BuiltInRegistries.ITEM.wrapAsHolder(ModItems.FLORISTS_SHEARS_ITEM),
+							BuiltInRegistries.ITEM.wrapAsHolder(ModItems.FLORISTS_SHEARS_ITEM.get()),
 							1,
 							DataComponentPatch.builder()
 									.set(DataComponents.DYED_COLOR, new DyedItemColor(color.getTextureDiffuseColor()))
@@ -80,7 +80,7 @@ public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
 							.save(output, recipeKey);
 				}
 
-				dyedItem(ModItems.FLORISTS_SHEARS_ITEM, "florists_shears_dyed");
+				dyedItem(ModItems.FLORISTS_SHEARS_ITEM.get(), "florists_shears_dyed");
 			}
 		};
 	}

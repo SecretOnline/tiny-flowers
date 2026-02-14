@@ -26,7 +26,7 @@ public class FabricCreativeTabEvents {
 	public static final ResourceKey<CreativeModeTab> TINY_FLOWERS_GROUP_KEY = ResourceKey
 		.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), TinyFlowers.id("tiny_flowers"));
 	public static final CreativeModeTab TINY_FLOWERS_GROUP = FabricCreativeModeTab.builder()
-		.icon(() -> new ItemStack(ModItems.TINY_FLOWER_ITEM))
+		.icon(() -> new ItemStack(ModItems.TINY_FLOWER_ITEM.get()))
 		.title(Component.translatable("itemGroup." + TinyFlowers.MOD_ID))
 		.build();
 
@@ -34,10 +34,10 @@ public class FabricCreativeTabEvents {
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, TINY_FLOWERS_GROUP_KEY, TINY_FLOWERS_GROUP);
 
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register((itemGroup) -> {
-			itemGroup.accept(ModItems.FLORISTS_SHEARS_ITEM);
+			itemGroup.accept(ModItems.FLORISTS_SHEARS_ITEM.get());
 		});
 		CreativeModeTabEvents.modifyOutputEvent(TINY_FLOWERS_GROUP_KEY).register((itemGroup) -> {
-			itemGroup.accept(ModItems.FLORISTS_SHEARS_ITEM);
+			itemGroup.accept(ModItems.FLORISTS_SHEARS_ITEM.get());
 		});
 
 		// Tiny flowers should be added in the order they original flowers are in their

@@ -47,7 +47,7 @@ public abstract class ModDatagenHelper {
 			return;
 		}
 
-		itemModelOutput.accept(ModItems.TINY_FLOWER_ITEM,
+		itemModelOutput.accept(ModItems.TINY_FLOWER_ITEM.get(),
 			ItemModelUtils.select(
 				new TinyFlowerProperty(),
 				flatItemForIdentifier(TinyFlowers.id("tiny_garden"), modelOutput),

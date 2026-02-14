@@ -84,7 +84,7 @@ public class TinyFlowerStewRecipe extends CustomRecipeWithProvider {
 				continue;
 			}
 
-			if (!itemStack.is(ModItems.TINY_FLOWER_ITEM)) {
+			if (!itemStack.is(ModItems.TINY_FLOWER_ITEM.get())) {
 				return false;
 			}
 
@@ -100,11 +100,11 @@ public class TinyFlowerStewRecipe extends CustomRecipeWithProvider {
 		Map<Holder<MobEffect>, Integer> effectMap = new HashMap<>();
 
 		for (ItemStack itemStack : recipeInput.items()) {
-			if (!itemStack.is(ModItems.TINY_FLOWER_ITEM)) {
+			if (!itemStack.is(ModItems.TINY_FLOWER_ITEM.get())) {
 				continue;
 			}
 
-			TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
+			TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER.get());
 			if (tinyFlowerComponent == null) {
 				continue;
 			}

@@ -25,7 +25,7 @@ public class DefaultModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
 		MultiPartGenerator definitionCreator = MultiPartGenerator
-				.multiPart(ModBlocks.TINY_GARDEN_BLOCK);
+				.multiPart(ModBlocks.TINY_GARDEN_BLOCK.get());
 
 		for (Direction direction : DIRECTIONS) {
 			definitionCreator = definitionCreator.with(
@@ -40,7 +40,7 @@ public class DefaultModelProvider extends FabricModelProvider {
 	@Override
 	public void generateItemModels(ItemModelGenerators itemModelGenerator) {
 		itemModelGenerator.generateItemWithTintedOverlay(
-				ModItems.FLORISTS_SHEARS_ITEM,
+				ModItems.FLORISTS_SHEARS_ITEM.get(),
 				"_handle",
 				new Dye(DyeColor.RED.getTextureDiffuseColor()));
 	}

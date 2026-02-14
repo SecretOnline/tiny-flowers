@@ -52,7 +52,7 @@ public class FloristsShearsItem extends ShearsItem {
 				return InteractionResult.FAIL;
 			}
 
-			BlockState newBlockState = ModBlocks.TINY_GARDEN_BLOCK.defaultBlockState()
+			BlockState newBlockState = ModBlocks.TINY_GARDEN_BLOCK.get().defaultBlockState()
 					.setValue(TinyGardenBlock.FACING, ctx.getHorizontalDirection().getOpposite());
 
 			world.setBlockAndUpdate(pos, newBlockState);
@@ -89,7 +89,7 @@ public class FloristsShearsItem extends ShearsItem {
 			}
 		}
 
-		if (prevBockState.is(ModBlocks.TINY_GARDEN_BLOCK)) {
+		if (prevBockState.is(ModBlocks.TINY_GARDEN_BLOCK.get())) {
 			if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 				// If there's no block entity, don't do anything
 				return InteractionResult.FAIL;
