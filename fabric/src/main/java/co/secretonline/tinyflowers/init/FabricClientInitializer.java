@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.item.properties.select.SelectItemModelPrope
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class FabricTinyFlowersClientInitializer extends TinyFlowersClientInitializer {
+public class FabricClientInitializer extends TinyFlowersClientInitializer {
 	@Override
 	void registerSelectItemModelProperty(Identifier id, SelectItemModelProperty.Type<?, ?> propertyType) {
 		SelectItemModelProperties.ID_MAPPER.put(id, propertyType);

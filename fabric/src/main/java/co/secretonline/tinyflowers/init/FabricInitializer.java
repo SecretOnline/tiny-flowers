@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;
 
-public class FabricTinyFlowersInitialization extends TinyFlowersInitializer {
+public class FabricInitializer extends TinyFlowersInitializer {
 	@Override
 	public void registerBlock(Identifier id, Supplier<Block> blockSupplier, MapCodec<? extends Block> codec) {
 		Registry.register(BuiltInRegistries.BLOCK_TYPE, id, codec);
@@ -40,10 +40,5 @@ public class FabricTinyFlowersInitialization extends TinyFlowersInitializer {
 	@Override
 	public void registerRecipeSerializer(Identifier id, Supplier<RecipeSerializer<?>> serializerSupplier) {
 		Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id, serializerSupplier.get());
-	}
-
-	@Override
-	public <T> void registerDynamicRegistry(ModRegistries.RegistryInfo<T> info) {
-		DynamicRegistries.registerSynced(info.registryKey(), info.codec());
 	}
 }

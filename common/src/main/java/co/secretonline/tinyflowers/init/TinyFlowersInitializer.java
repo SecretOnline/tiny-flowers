@@ -24,7 +24,6 @@ public abstract class TinyFlowersInitializer {
 		ModComponents.register(this::registerDataComponent);
 		ModItems.register(this::registerItem);
 		ModRecipeSerializers.register(this::registerRecipeSerializer);
-		ModRegistries.register(this::registerDynamicRegistry);
 	}
 
 	abstract void registerBlock(Identifier id, Supplier<Block> blockSupplier, MapCodec<? extends Block> codec);
@@ -36,6 +35,4 @@ public abstract class TinyFlowersInitializer {
 	abstract void registerDataComponent(Identifier id, Supplier<? extends DataComponentType<?>> componentSupplier);
 
 	abstract void registerRecipeSerializer(Identifier id, Supplier<RecipeSerializer<?>> serializerSupplier);
-
-	abstract <T> void registerDynamicRegistry(ModRegistries.RegistryInfo<T> info);
 }
