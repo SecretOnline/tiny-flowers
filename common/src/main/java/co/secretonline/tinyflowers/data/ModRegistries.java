@@ -10,11 +10,4 @@ import java.util.function.Consumer;
 public class ModRegistries {
 	public static ResourceKey<Registry<TinyFlowerData>> TINY_FLOWER = ResourceKey
 		.createRegistryKey(TinyFlowers.id("tiny_flower"));
-
-	public static void register(Consumer<RegistryInfo<?>> register) {
-		register.accept(new RegistryInfo<>(TINY_FLOWER, TinyFlowerData.CODEC));
-	}
-
-	public record RegistryInfo<T>(ResourceKey<Registry<T>> registryKey, Codec<T> codec) {
-	}
 }
