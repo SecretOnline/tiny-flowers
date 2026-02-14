@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.platform;
 
+import co.secretonline.tinyflowers.items.FabricCreativeTabEvents;
 import co.secretonline.tinyflowers.platform.services.IPlatformRegistration;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -67,6 +68,6 @@ public class FabricPlatformRegistration implements IPlatformRegistration {
 
 	@Override
 	public void registerCreativeModeTab() {
-
+		FabricCreativeTabEvents.register();
 	}
 }

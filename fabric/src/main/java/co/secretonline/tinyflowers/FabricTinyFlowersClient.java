@@ -1,7 +1,6 @@
 package co.secretonline.tinyflowers;
 
 import co.secretonline.tinyflowers.blocks.ModBlocks;
-import co.secretonline.tinyflowers.items.FabricCreativeTabEvents;
 import co.secretonline.tinyflowers.renderer.block.ModBlockEntityRenderers;
 import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
 import net.fabricmc.api.ClientModInitializer;
@@ -17,7 +16,5 @@ public class FabricTinyFlowersClient implements ClientModInitializer {
 		ChunkSectionLayerMap.putBlock(ModBlocks.TINY_GARDEN_BLOCK, ChunkSectionLayer.CUTOUT);
 
 		ModBlockEntityRenderers.register();
-
-		FabricCreativeTabEvents.register();
 	}
 }
