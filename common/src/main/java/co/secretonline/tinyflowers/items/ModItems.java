@@ -1,7 +1,6 @@
 package co.secretonline.tinyflowers.items;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.platform.Services;
 import com.google.common.base.Suppliers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;

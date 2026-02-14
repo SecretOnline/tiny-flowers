@@ -5,7 +5,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ModRegistries {
