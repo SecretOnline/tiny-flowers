@@ -110,10 +110,10 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 		}
 
 		return new ItemStack(
-			BuiltInRegistries.ITEM.wrapAsHolder(ModItems.TINY_FLOWER_ITEM),
+			BuiltInRegistries.ITEM.wrapAsHolder(ModItems.TINY_FLOWER_ITEM.get()),
 			count,
 			DataComponentPatch.builder()
-				.set(ModComponents.TINY_FLOWER, new TinyFlowerComponent(this.id()))
+				.set(ModComponents.TINY_FLOWER.get(), new TinyFlowerComponent(this.id()))
 				.build());
 	}
 
@@ -152,7 +152,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 			// This does mean that items other than this mod's Tiny Flower item will trigger
 			// this, but I think that's fine. If someone has gone out of their way to add
 			// the component to their item, then they probably wanted it to happen.
-			TinyFlowerComponent component = itemStack.get(ModComponents.TINY_FLOWER);
+			TinyFlowerComponent component = itemStack.get(ModComponents.TINY_FLOWER.get());
 			if (component == null) {
 				return false;
 			}

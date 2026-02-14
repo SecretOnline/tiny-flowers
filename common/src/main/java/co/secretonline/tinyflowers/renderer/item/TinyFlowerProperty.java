@@ -25,7 +25,7 @@ public record TinyFlowerProperty() implements SelectItemModelProperty<TinyFlower
 	@Override
 	public @Nullable TinyFlowerComponent get(ItemStack itemStack, @Nullable ClientLevel clientLevel,
 																					 @Nullable LivingEntity entity, int i, @NonNull ItemDisplayContext ctx) {
-		return itemStack.get(ModComponents.TINY_FLOWER);
+		return itemStack.get(ModComponents.TINY_FLOWER.get());
 	}
 
 	@Override

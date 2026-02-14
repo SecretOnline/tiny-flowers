@@ -25,7 +25,7 @@ public class ItemStackMixin {
 			Consumer<Component> textConsumer,
 			CallbackInfo ci) {
 		((ItemStack) (Object) this).addToTooltip(
-				ModComponents.GARDEN_CONTENTS,
+				ModComponents.GARDEN_CONTENTS.get(),
 				context,
 				displayComponent,
 				textConsumer,

@@ -43,7 +43,7 @@ public class ShearTinyFlowersRecipe extends CustomRecipeWithProvider {
 				continue;
 			}
 
-			if (itemStack.is(ModItems.FLORISTS_SHEARS_ITEM)) {
+			if (itemStack.is(ModItems.FLORISTS_SHEARS_ITEM.get())) {
 				if (hasFloristsShears) {
 					return false;
 				}
@@ -103,7 +103,7 @@ public class ShearTinyFlowersRecipe extends CustomRecipeWithProvider {
 
 			// Florists' shears should be damaged. This can't be a regular recipe
 			// remainder otherwise it the shears duplicate when combining or dyeing.
-			if (itemStack.is(ModItems.FLORISTS_SHEARS_ITEM)) {
+			if (itemStack.is(ModItems.FLORISTS_SHEARS_ITEM.get())) {
 				if (itemStack.getDamageValue() < itemStack.getMaxDamage() - 1) {
 					ItemStack moreDamaged = itemStack.copy();
 					moreDamaged.setDamageValue(itemStack.getDamageValue() + 1);

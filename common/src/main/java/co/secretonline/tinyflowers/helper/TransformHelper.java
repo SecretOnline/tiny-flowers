@@ -105,7 +105,7 @@ public class TransformHelper {
 			}
 
 			// Gardens
-			if (nearbyBlockState.is(ModBlocks.TINY_GARDEN_BLOCK)) {
+			if (nearbyBlockState.is(ModBlocks.TINY_GARDEN_BLOCK.get())) {
 
 				if (!(world.getBlockEntity(otherPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 					// If there's no block entity, don't do anything
@@ -129,7 +129,7 @@ public class TransformHelper {
 
 					for (SpecialFeature feature : flowerData.specialFeatures()) {
 						if (feature.shouldActivateFeature(gardenBlockEntity, i, state, world, pos, random)) {
-							scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK, random);
+							scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK.get(), random);
 							didNotify = true;
 							break;
 						}

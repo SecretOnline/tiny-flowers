@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TinyFlowerItem extends BlockItem {
 	public TinyFlowerItem(Item.Properties properties) {
-		super(ModBlocks.TINY_GARDEN_BLOCK, properties);
+		super(ModBlocks.TINY_GARDEN_BLOCK.get(), properties);
 	}
 
 	@Override
@@ -50,12 +50,12 @@ public class TinyFlowerItem extends BlockItem {
 		ItemStack itemStack = context.getItemInHand();
 		Block below = level.getBlockState(context.getClickedPos().below()).getBlock();
 
-		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS);
+		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS.get());
 		if (gardenComponent != null) {
 			return gardenComponent.canSurviveOn(below, registryAccess);
 		}
 
-		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
+		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER.get());
 		if (tinyFlowerComponent != null) {
 			return tinyFlowerComponent.canSurviveOn(below, registryAccess);
 		}
@@ -65,12 +65,12 @@ public class TinyFlowerItem extends BlockItem {
 
 	@Override
 	public @NonNull Component getName(ItemStack itemStack) {
-		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS);
+		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS.get());
 		if (gardenComponent != null) {
 			return Component.translatable(GardenContentsComponent.GARDEN_TEXT);
 		}
 
-		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER);
+		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER.get());
 		if (tinyFlowerComponent != null) {
 			return Component.translatable(tinyFlowerComponent.getTranslationKey());
 		}

@@ -3,6 +3,7 @@ package co.secretonline.tinyflowers.mixin;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import co.secretonline.tinyflowers.TinyFlowers;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -45,7 +46,7 @@ public class ModelBakeryMixin {
 			ItemModel.BakingContext bakeContext,
 			Operation<ItemModel> operation,
 			@Local(argsOnly = true) Identifier itemId) {
-		if (TinyFlowerModelLogic.shouldReplaceItemModel(itemId)) {
+		if (itemId.equals(TinyFlowers.id("tiny_flower"))) {
 			ItemModel.Unbaked customModel = TinyFlowerModelLogic.createTinyFlowerItemModel();
 			return customModel.bake(bakeContext);
 		}

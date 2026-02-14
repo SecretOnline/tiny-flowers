@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.MapCodec;
@@ -182,7 +183,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			// components (unusual) or if it has the garden_contents component (normal). If
 			// it's the latter, then the Block Entity will handle this so we just have to
 			// set the direction. If it's the former, then don't do anything.
-			GardenContentsComponent gardenContents = stack.getOrDefault(ModComponents.GARDEN_CONTENTS, null);
+			GardenContentsComponent gardenContents = stack.get(ModComponents.GARDEN_CONTENTS.get());
 			if (gardenContents == null) {
 				return blockState;
 			}
@@ -219,15 +220,24 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			stack.consume(1, player);
 
 			return blockState;
-		} else if (blockState.getBlock() instanceof SegmentableBlock) {
+		}
+
+		Block currentBlock = blockState.getBlock();
+		if (currentBlock instanceof SegmentableBlock segmentableBlock) {
 			// Placing a tiny flower on a segmented block.
+			// Don't do anything if the segmented block is already full.
+			IntegerProperty amountProperty = segmentableBlock.getSegmentAmountProperty();
+			int currentAmount = blockState.getValue(amountProperty);
+			if (currentAmount >= SegmentableBlock.MAX_SEGMENT) {
+				return blockState;
+			}
+
 			// We need to convert the segmented block to a garden block
 			// and then add the flower variant to it.
-			BlockState newBlockState = ((TinyGardenBlock) ModBlocks.TINY_GARDEN_BLOCK).defaultBlockState()
+			BlockState newBlockState = ModBlocks.TINY_GARDEN_BLOCK.get().defaultBlockState()
 					.setValue(TinyGardenBlock.FACING, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
 
-			TinyFlowerData originalSegmentedData = TinyFlowerData.findByOriginalBlock(level.registryAccess(),
-					blockState.getBlock());
+			TinyFlowerData originalSegmentedData = TinyFlowerData.findByOriginalBlock(level.registryAccess(), currentBlock);
 			if (originalSegmentedData == null) {
 				// The previous block was segmentable, but doesn't have a tiny flower variant
 				// registered.
@@ -316,10 +326,10 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			// Drop an item based on the variants in the garden. At this stage we can assume
 			// that the garden is full.
 			ItemStack stack = new ItemStack(
-					BuiltInRegistries.ITEM.wrapAsHolder(ModItems.TINY_FLOWER_ITEM),
+					BuiltInRegistries.ITEM.wrapAsHolder(ModItems.TINY_FLOWER_ITEM.get()),
 					4,
 					DataComponentPatch.builder()
-							.set(ModComponents.TINY_FLOWER, new TinyFlowerComponent(randomId))
+							.set(ModComponents.TINY_FLOWER.get(), new TinyFlowerComponent(randomId))
 							.build());
 
 			popResource(serverLevel, pos, stack);
