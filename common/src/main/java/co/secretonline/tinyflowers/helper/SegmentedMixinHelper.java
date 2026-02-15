@@ -24,14 +24,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * This class contains common logic for mixins targeting Segmented blocks.
- *
+ * <p>
  * As Segmented is an interface, we can't use a mixin to inject into it
  * directly. Instead, we need to inject into all classes that implement
  * Segmented and call the methods in this class.
  */
 public class SegmentedMixinHelper {
 	public static void shouldAddSegment(BlockState state, BlockPlaceContext context,
-			IntegerProperty property, CallbackInfoReturnable<Boolean> info) {
+																			IntegerProperty property, CallbackInfoReturnable<Boolean> info) {
 		// Early exit for cases where no additional items should be placed.
 		if (context.isSecondaryUseActive() || state.getValue(property) >= SegmentableBlock.MAX_SEGMENT) {
 			return;
@@ -61,7 +61,7 @@ public class SegmentedMixinHelper {
 	}
 
 	public static void getPlacementState(BlockPlaceContext context, Block blockBeingUsed, IntegerProperty amountProperty,
-			EnumProperty<Direction> directionProperty, CallbackInfoReturnable<BlockState> info) {
+																			 EnumProperty<Direction> directionProperty, CallbackInfoReturnable<BlockState> info) {
 		Level level = context.getLevel();
 		BlockPos blockPos = context.getClickedPos();
 
@@ -89,8 +89,8 @@ public class SegmentedMixinHelper {
 
 				try {
 					BlockState prevBockState = blockState;
-					blockState = ((TinyGardenBlock) ModBlocks.TINY_GARDEN_BLOCK).defaultBlockState()
-							.setValue(TinyGardenBlock.FACING, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+					blockState = ModBlocks.TINY_GARDEN_BLOCK.get().defaultBlockState()
+						.setValue(TinyGardenBlock.FACING, blockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
 
 					// Since we also need to update the entity, try to update the world now.
 					level.setBlockAndUpdate(blockPos, blockState);
@@ -128,7 +128,7 @@ public class SegmentedMixinHelper {
 
 			// There's space in the garden, so add a flower.
 			TinyFlowerData flowerData = TinyFlowerData.findByOriginalBlock(level.registryAccess(),
-					blockBeingUsed);
+				blockBeingUsed);
 			if (flowerData == null) {
 				info.setReturnValue(blockState);
 				return;
@@ -144,7 +144,7 @@ public class SegmentedMixinHelper {
 			Player player = context.getPlayer();
 			SoundType soundType = blockState.getSoundType();
 			level.playSound(player, blockPos, soundType.getPlaceSound(), SoundSource.BLOCKS,
-					(soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
+				(soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 			level.gameEvent(GameEvent.BLOCK_PLACE, blockPos, GameEvent.Context.of(player, blockState));
 			context.getItemInHand().consume(1, player);
 
