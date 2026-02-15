@@ -1,7 +1,12 @@
 package co.secretonline.tinyflowers;
 
+import co.secretonline.tinyflowers.blocks.ModBlockEntities;
+import co.secretonline.tinyflowers.blocks.ModBlocks;
+import co.secretonline.tinyflowers.components.ModComponents;
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
+import co.secretonline.tinyflowers.items.ModItems;
+import co.secretonline.tinyflowers.items.crafting.ModRecipeSerializers;
 import co.secretonline.tinyflowers.platform.NeoForgeRegistryHelper;
 import co.secretonline.tinyflowers.platform.Services;
 import co.secretonline.tinyflowers.platform.RegistryHelper;
@@ -16,6 +21,12 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 @EventBusSubscriber(modid = TinyFlowers.MOD_ID)
 public class NeoForgeTinyFlowers {
 	public NeoForgeTinyFlowers(ModContainer container, IEventBus modBus) {
+		ModBlocks.initialize();
+		ModBlockEntities.initialize();
+		ModComponents.initialize();
+		ModItems.initialize();
+		ModRecipeSerializers.initialize();
+
 		RegistryHelper registryHelper = Services.REGISTRY;
 		if (registryHelper instanceof NeoForgeRegistryHelper neoForgeRegistryHelper) {
 			neoForgeRegistryHelper.registerToBus(modBus);
@@ -27,9 +38,5 @@ public class NeoForgeTinyFlowers {
 	@SubscribeEvent
 	public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
 		event.dataPackRegistry(ModRegistries.TINY_FLOWER, TinyFlowerData.CODEC, TinyFlowerData.CODEC);
-	}
-
-	static {
-		TinyFlowers.initialize();
 	}
 }

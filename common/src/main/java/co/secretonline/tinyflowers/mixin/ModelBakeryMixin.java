@@ -9,10 +9,14 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ModelBakery.class)
 public class ModelBakeryMixin {
+	@Unique
+	private final static Identifier TINY_FLOWER_ID = TinyFlowers.id("tiny_flower");
+
 	/**
 	 * Intercept item model baking to replace the tiny_flower item model with
 	 * our dynamic select model.
@@ -25,7 +29,7 @@ public class ModelBakeryMixin {
 			ItemModel.BakingContext bakeContext,
 			Operation<ItemModel> operation,
 			@Local(argsOnly = true) Identifier itemId) {
-		if (itemId.equals(TinyFlowers.id("tiny_flower"))) {
+		if (itemId.equals(TINY_FLOWER_ID)) {
 			ItemModel.Unbaked customModel = TinyFlowerModelLogic.createTinyFlowerItemModel();
 			return customModel.bake(bakeContext);
 		}

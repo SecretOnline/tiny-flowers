@@ -18,12 +18,4 @@ public class TinyFlowers {
 	public static Identifier id(String path) {
 		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
-
-	public static void initialize() {
-		ModBlocks.initialize();
-		ModBlockEntities.initialize();
-		ModComponents.initialize();
-		ModItems.initialize();
-		ModRecipeSerializers.initialize();
-	}
 }

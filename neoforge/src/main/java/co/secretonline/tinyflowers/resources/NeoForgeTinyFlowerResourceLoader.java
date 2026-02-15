@@ -1,6 +1,6 @@
 package co.secretonline.tinyflowers.resources;
 
-import co.secretonline.tinyflowers.TinyFlowers;
+import co.secretonline.tinyflowers.TinyFlowersClientState;
 import co.secretonline.tinyflowers.platform.Services;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -19,6 +19,8 @@ public class NeoForgeTinyFlowerResourceLoader extends SimplePreparableReloadList
 	@Override
 	protected Map<Identifier, TinyFlowerResources> prepare(@NonNull ResourceManager resourceManager, @NonNull ProfilerFiller profilerFiller) {
 		var resources = TinyFlowerModelDataLoader.readResourceFiles(resourceManager);
+
+		TinyFlowersClientState.RESOURCE_INSTANCES = resources;
 
 		knownIds.clear();
 		for (TinyFlowerResources flowerResources : resources.values()) {
