@@ -53,6 +53,17 @@ public class FabricCreativeTabHandler {
 
 		List<TinyFlowerData> orderedFlowerData = new ArrayList<>();
 		CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register(afterDefaultPhase, (tab, entries) -> {
+			if (tab.equals(TINY_FLOWERS_GROUP)) {
+				// We're pretty certain at this stage that all of the other tab groups have
+				// gone, so we can add all the flowers now.
+
+				for (TinyFlowerData tinyFlowerData : orderedFlowerData) {
+					entries.accept(tinyFlowerData.getItemStack(1));
+				}
+				orderedFlowerData.clear();
+				return;
+			}
+
 			// I don't like that we are grabbing the registry from the Minecraft client, but
 			// I couldn't really figure anything else out. Minecraft's Creative inventory
 			// code is already split across server and client, so I hope this isn't too bad.
@@ -61,16 +72,6 @@ public class FabricCreativeTabHandler {
 				return;
 			}
 			RegistryAccess registryAccess = minecraft.level.registryAccess();
-
-			if (tab.equals(TINY_FLOWERS_GROUP)) {
-				// We're pretty certain at this stage that all of the other tab groups have
-				// gone, so we can add all the flowers now.
-
-				for (TinyFlowerData tinyFlowerData : orderedFlowerData) {
-					entries.accept(tinyFlowerData.getItemStack(1));
-				}
-				return;
-			}
 
 			for (ItemStack itemStack : entries.getDisplayStacks()) {
 				if (itemStack.getItem() instanceof BlockItem blockItem) {
