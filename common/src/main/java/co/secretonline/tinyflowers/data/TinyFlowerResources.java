@@ -11,7 +11,7 @@ public record TinyFlowerResources(Identifier id, Identifier itemModel,
 		TintSource tintSource,
 		Identifier model1, Identifier model2, Identifier model3, Identifier model4) {
 
-	public static Codec<TinyFlowerResources> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final Codec<TinyFlowerResources> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerResources::id),
 			Identifier.CODEC.fieldOf("item_model").forGetter(TinyFlowerResources::itemModel),
 			TintSource.CODEC.optionalFieldOf("tint_source", TintSource.GRASS).forGetter(TinyFlowerResources::tintSource),
@@ -21,13 +21,13 @@ public record TinyFlowerResources(Identifier id, Identifier itemModel,
 			Identifier.CODEC.fieldOf("model4").forGetter(TinyFlowerResources::model4))
 			.apply(instance, TinyFlowerResources::new));
 
-	public static enum TintSource implements StringRepresentable {
+	public enum TintSource implements StringRepresentable {
 		GRASS("grass"),
 		DRY_FOLIAGE("dry_foliage");
 
 		private final String name;
 
-		private TintSource(String name) {
+		TintSource(String name) {
 			this.name = name;
 		}
 

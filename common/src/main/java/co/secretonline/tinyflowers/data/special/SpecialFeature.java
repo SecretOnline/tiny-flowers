@@ -11,20 +11,20 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface SpecialFeature {
-	abstract boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
-			BlockPos pos, RandomSource random);
+	boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
+																BlockPos pos, RandomSource random);
 
-	abstract void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
-			BlockPos pos, RandomSource random);
+	void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
+												 BlockPos pos, RandomSource random);
 
-	abstract boolean hasWorldEffect();
+	boolean hasWorldEffect();
 
-	abstract void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource,
-			boolean isRandomTick);
+	void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource,
+										 boolean isRandomTick);
 
-	abstract MapCodec<? extends SpecialFeature> getMapCodec();
+	MapCodec<? extends SpecialFeature> getMapCodec();
 
-	public static final Codec<SpecialFeature> CODEC = new ExtraCodecs.LateBoundIdMapper<String, MapCodec<? extends SpecialFeature>>()
+	Codec<SpecialFeature> CODEC = new ExtraCodecs.LateBoundIdMapper<String, MapCodec<? extends SpecialFeature>>()
 			.put("transform_day_night", TransformDayNightSpecialFeature.MAP_CODEC)
 			.put("transform_weather", TransformWeatherSpecialFeature.MAP_CODEC)
 			.codec(Codec.STRING)

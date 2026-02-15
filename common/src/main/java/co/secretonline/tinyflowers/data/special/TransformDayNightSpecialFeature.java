@@ -104,7 +104,7 @@ public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, I
 		return MAP_CODEC;
 	}
 
-	public static enum When implements StringRepresentable {
+	public enum When implements StringRepresentable {
 		ALWAYS("always", TriState.DEFAULT),
 		DAY("day", TriState.FALSE),
 		NIGHT("night", TriState.TRUE);
@@ -112,7 +112,7 @@ public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, I
 		private final String name;
 		private final TriState eyeblossomOpen;
 
-		private When(String name, TriState eyeblossomOpen) {
+		When(String name, TriState eyeblossomOpen) {
 			this.name = name;
 			this.eyeblossomOpen = eyeblossomOpen;
 		}

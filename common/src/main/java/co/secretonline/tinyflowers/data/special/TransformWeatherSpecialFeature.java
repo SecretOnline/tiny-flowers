@@ -98,7 +98,7 @@ public record TransformWeatherSpecialFeature(When when, Identifier turnsInto, In
 		return MAP_CODEC;
 	}
 
-	public static enum When implements StringRepresentable {
+	public enum When implements StringRepresentable {
 		ALWAYS("always"),
 		RAINING("raining"),
 		THUNDERING("thundering"),
@@ -107,7 +107,7 @@ public record TransformWeatherSpecialFeature(When when, Identifier turnsInto, In
 
 		private final String name;
 
-		private When(String name) {
+		When(String name) {
 			this.name = name;
 		}
 
@@ -131,12 +131,8 @@ public record TransformWeatherSpecialFeature(When when, Identifier turnsInto, In
 			}
 
 			Biome.Precipitation weatherAtPos = level.precipitationAt(pos);
-			if ((this.equals(RAINING_ON) && weatherAtPos.equals(Biome.Precipitation.RAIN)) ||
-				(this.equals(SNOWING_ON) && weatherAtPos.equals(Biome.Precipitation.SNOW))) {
-				return true;
-			}
-
-			return false;
+			return (this.equals(RAINING_ON) && weatherAtPos.equals(Biome.Precipitation.RAIN)) ||
+				(this.equals(SNOWING_ON) && weatherAtPos.equals(Biome.Precipitation.SNOW));
 		}
 
 		public static final Codec<When> CODEC = StringRepresentable.fromEnum(When::values);
