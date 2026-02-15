@@ -7,6 +7,7 @@ import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -46,14 +47,17 @@ public class SegmentedMixinHelper {
 			return;
 		}
 
-		TinyFlowerData flowerData = TinyFlowerData.findByItemStack(context.getLevel().registryAccess(), stack);
+		RegistryAccess registryAccess = context.getLevel().registryAccess();
+
+		TinyFlowerData flowerData = TinyFlowerData.findByItemStack(registryAccess, stack);
 		if (flowerData == null) {
 			// The item is not a valid flower variant, so we don't need to do anything.
 			return;
 		}
 
-		Block below = context.getLevel().getBlockState(context.getClickedPos().below()).getBlock();
-		if (!flowerData.canSurviveOn(below)) {
+		BlockPos supportingPos = context.getClickedPos().below();
+		BlockState supportingBlockState = context.getLevel().getBlockState(supportingPos);
+		if (!flowerData.canSurviveOn(supportingBlockState, context.getLevel(), supportingPos)) {
 			return;
 		}
 
@@ -63,13 +67,15 @@ public class SegmentedMixinHelper {
 	public static void getPlacementState(BlockPlaceContext context, Block blockBeingUsed, IntegerProperty amountProperty,
 																			 EnumProperty<Direction> directionProperty, CallbackInfoReturnable<BlockState> info) {
 		Level level = context.getLevel();
+		RegistryAccess registryAccess = level.registryAccess();
 		BlockPos blockPos = context.getClickedPos();
 
 		// We need to build a new BlockState if a Segmented block item is being placed
 		// inside a TinyGardenBlock.
 		BlockState blockState = level.getBlockState(blockPos);
 		Block currentBlock = blockState.getBlock();
-		Block below = context.getLevel().getBlockState(context.getClickedPos().below()).getBlock();
+		BlockPos supportingPos = context.getClickedPos().below();
+		BlockState supportingBlockState = context.getLevel().getBlockState(supportingPos);
 
 		// Early exit if the block being placed is the same as the current block.
 		// This falls back to the original implementation.
@@ -81,9 +87,9 @@ public class SegmentedMixinHelper {
 		// a tiny flower, then we need to convert the current blockstate to a
 		// TinyGardenBlock to before continuing.
 		if (!(currentBlock instanceof TinyGardenBlock)) {
-			TinyFlowerData flowerData = TinyFlowerData.findByOriginalBlock(level.registryAccess(), currentBlock);
+			TinyFlowerData flowerData = TinyFlowerData.findByOriginalBlock(registryAccess, currentBlock);
 			if (flowerData != null) {
-				if (!flowerData.canSurviveOn(below)) {
+				if (!flowerData.canSurviveOn(supportingBlockState, level, supportingPos)) {
 					return;
 				}
 
@@ -101,7 +107,7 @@ public class SegmentedMixinHelper {
 						return;
 					}
 
-					gardenBlockEntity.setFromPreviousBlockState(level.registryAccess(), prevBockState);
+					gardenBlockEntity.setFromPreviousBlockState(registryAccess, prevBockState);
 
 					currentBlock = blockState.getBlock();
 				} catch (IllegalStateException e) {
@@ -127,13 +133,12 @@ public class SegmentedMixinHelper {
 			}
 
 			// There's space in the garden, so add a flower.
-			TinyFlowerData flowerData = TinyFlowerData.findByOriginalBlock(level.registryAccess(),
-				blockBeingUsed);
+			TinyFlowerData flowerData = TinyFlowerData.findByOriginalBlock(registryAccess, blockBeingUsed);
 			if (flowerData == null) {
 				info.setReturnValue(blockState);
 				return;
 			}
-			if (!flowerData.canSurviveOn(below)) {
+			if (!flowerData.canSurviveOn(supportingBlockState, level, supportingPos)) {
 				info.setReturnValue(blockState);
 				return;
 			}

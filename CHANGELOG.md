@@ -28,10 +28,12 @@ Due to how different v1 is from v2, I wasn't able to find a nice way of upgradin
 - You can now use multiple Tiny Flowers when crafting Suspicious Stew.
   - Adding more of the same type of flower will increase the duration.
   - Adding different types of flower will combine the effects into a single stew.
+- Tiny Cactus Flowers and Leaf Litter can be placed and mixed on top of any block that Leaf Litter can be placed on.
 - For mod developers:
   - This mod is now entirely data-driven. This means you can use JSON files to add new Tiny Flower types.
   - Read the README in GitHub for more information about what files are required.
   - The `misc/tiny_dirt_flower` directory of this mod's source code contains an example mod containing only JSON and textures.
+  - I've also made [a mod generator](https://tiny-flowers-generator.secretonline.co/) to create packs of Tiny Flowers entirely within the browser.
 
 ### Fixed
 

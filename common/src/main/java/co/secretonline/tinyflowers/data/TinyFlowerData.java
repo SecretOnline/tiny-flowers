@@ -4,6 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import co.secretonline.tinyflowers.data.special.SturdyPlacementSpecialFeature;
+import co.secretonline.tinyflowers.helper.Survivable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
@@ -64,10 +71,17 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 														 @NonNull List<TagOrElementLocation> canSurviveOn,
 														 @NonNull List<Entry> suspiciousStewEffects,
 														 @NonNull List<SpecialFeature> specialFeatures)
-	implements SuspiciousEffectHolder {
+	implements SuspiciousEffectHolder, Survivable {
 
-	public boolean canSurviveOn(Block supportingBlock) {
-		var blockHolder = BuiltInRegistries.BLOCK.wrapAsHolder(supportingBlock);
+	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
+		for (SpecialFeature specialFeature : specialFeatures) {
+			if (specialFeature instanceof SturdyPlacementSpecialFeature && state.isFaceSturdy(level, pos, Direction.UP)) {
+				return true;
+			}
+		}
+
+		Block block = state.getBlock();
+		Holder<Block> blockHolder = BuiltInRegistries.BLOCK.wrapAsHolder(block);
 
 		for (TagOrElementLocation tagOrElementLocation : canSurviveOn) {
 			Identifier id = tagOrElementLocation.id();

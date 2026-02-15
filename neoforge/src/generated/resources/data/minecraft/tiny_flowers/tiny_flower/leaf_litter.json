@@ -1,5 +1,10 @@
 {
   "id": "minecraft:leaf_litter",
   "is_segmented": true,
-  "original_id": "minecraft:leaf_litter"
+  "original_id": "minecraft:leaf_litter",
+  "special_features": [
+    {
+      "type": "sturdy_placement"
+    }
+  ]
 }

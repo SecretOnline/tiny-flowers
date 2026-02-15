@@ -52,8 +52,10 @@ interface TinyFlowerData {
 
 type SpecialFeature =
   | TransformDayNightSpecialFeature
-  | TransformWeatherSpecialFeature;
+  | TransformWeatherSpecialFeature
+  | SturdyPlacementSpecialFeature;
 
+/** Turns this tiny flower into another at a specific time of day. */
 interface TransformDayNightSpecialFeature {
   type: "transform_day_night";
   /** When the transformation is allowed to take place. */
@@ -68,6 +70,7 @@ interface TransformDayNightSpecialFeature {
   sound_event_short?: Identifier;
 }
 
+/** Turns this tiny flower into under specific weather conditions. */
 interface TransformWeatherSpecialFeature {
   type: "transform_weather";
   /** When the transformation is allowed to take place. */
@@ -85,6 +88,11 @@ interface TransformWeatherSpecialFeature {
   sound_event_long?: Identifier;
   /** Optional. ID of the sound event that plays when this transformation happens due to a scheduled tick. */
   sound_event_short?: Identifier;
+}
+
+/** Allows placement on any sturdy block, similar to Leaf Litter. */
+interface SturdyPlacementSpecialFeature {
+  type: "sturdy_placement";
 }
 ```
 

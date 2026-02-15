@@ -1,15 +1,11 @@
 package co.secretonline.tinyflowers.item;
 
-import java.util.Optional;
-
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
-
 import co.secretonline.tinyflowers.block.ModBlocks;
 import co.secretonline.tinyflowers.block.TinyGardenBlock;
 import co.secretonline.tinyflowers.item.component.GardenContentsComponent;
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
@@ -18,8 +14,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Optional;
 
 public class TinyFlowerItem extends BlockItem {
 	public TinyFlowerItem(Item.Properties properties) {
@@ -48,16 +47,17 @@ public class TinyFlowerItem extends BlockItem {
 		Level level = context.getLevel();
 		RegistryAccess registryAccess = level.registryAccess();
 		ItemStack itemStack = context.getItemInHand();
-		Block below = level.getBlockState(context.getClickedPos().below()).getBlock();
+		BlockPos supportingPos = context.getClickedPos().below();
+		BlockState supportingBlockState = level.getBlockState(supportingPos);
 
 		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS.get());
 		if (gardenComponent != null) {
-			return gardenComponent.canSurviveOn(below, registryAccess);
+			return gardenComponent.canSurviveOn(supportingBlockState, level, supportingPos);
 		}
 
 		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER.get());
 		if (tinyFlowerComponent != null) {
-			return tinyFlowerComponent.canSurviveOn(below, registryAccess);
+			return tinyFlowerComponent.canSurviveOn(supportingBlockState, level, supportingPos);
 		}
 
 		return false;

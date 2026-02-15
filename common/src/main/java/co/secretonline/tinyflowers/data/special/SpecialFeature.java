@@ -27,6 +27,7 @@ public interface SpecialFeature {
 	Codec<SpecialFeature> CODEC = new ExtraCodecs.LateBoundIdMapper<String, MapCodec<? extends SpecialFeature>>()
 			.put("transform_day_night", TransformDayNightSpecialFeature.MAP_CODEC)
 			.put("transform_weather", TransformWeatherSpecialFeature.MAP_CODEC)
+			.put("sturdy_placement", SturdyPlacementSpecialFeature.MAP_CODEC)
 			.codec(Codec.STRING)
 			.dispatch(SpecialFeature::getMapCodec, (mapCodec) -> mapCodec);
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import org.jetbrains.annotations.Nullable;
 
 import co.secretonline.tinyflowers.item.component.GardenContentsComponent;
@@ -65,14 +66,14 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 	}
 
 	@Override
-	public boolean canSurviveOn(Block supportingBlock, HolderLookup.Provider provider) {
+	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
 		for (Identifier identifier : this.getFlowers()) {
-			TinyFlowerData flowerData = TinyFlowerData.findById(provider, identifier);
+			TinyFlowerData flowerData = TinyFlowerData.findById(level.registryAccess(), identifier);
 			if (flowerData == null) {
 				continue;
 			}
 
-			if (!flowerData.canSurviveOn(supportingBlock)) {
+			if (!flowerData.canSurviveOn(state, level, pos)) {
 				return false;
 			}
 		}
