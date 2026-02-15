@@ -6,8 +6,8 @@ import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 
-import co.secretonline.tinyflowers.components.ModComponents;
-import co.secretonline.tinyflowers.components.TinyFlowerComponent;
+import co.secretonline.tinyflowers.item.component.ModComponents;
+import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.resources.Identifier;

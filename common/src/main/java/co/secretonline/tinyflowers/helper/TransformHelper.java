@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import co.secretonline.tinyflowers.blocks.ModBlocks;
-import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
+import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
 import net.minecraft.core.BlockPos;

@@ -1,10 +1,5 @@
 package co.secretonline.tinyflowers;
 
-import co.secretonline.tinyflowers.blocks.ModBlockEntities;
-import co.secretonline.tinyflowers.blocks.ModBlocks;
-import co.secretonline.tinyflowers.components.ModComponents;
-import co.secretonline.tinyflowers.items.ModItems;
-import co.secretonline.tinyflowers.items.crafting.ModRecipeSerializers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

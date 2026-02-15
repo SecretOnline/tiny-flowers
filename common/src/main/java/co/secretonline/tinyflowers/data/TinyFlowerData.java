@@ -10,10 +10,10 @@ import org.jspecify.annotations.NonNull;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import co.secretonline.tinyflowers.components.ModComponents;
-import co.secretonline.tinyflowers.components.TinyFlowerComponent;
+import co.secretonline.tinyflowers.item.component.ModComponents;
+import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.special.SpecialFeature;
-import co.secretonline.tinyflowers.items.ModItems;
+import co.secretonline.tinyflowers.item.ModItems;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;

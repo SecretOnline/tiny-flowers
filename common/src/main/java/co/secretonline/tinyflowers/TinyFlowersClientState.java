@@ -1,6 +1,6 @@
 package co.secretonline.tinyflowers;
 
-import co.secretonline.tinyflowers.resources.TinyFlowerResources;
+import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;

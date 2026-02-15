@@ -3,7 +3,7 @@ package co.secretonline.tinyflowers.data.special;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 
-import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
+import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ExtraCodecs;
