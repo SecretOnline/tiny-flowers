@@ -14,3 +14,12 @@ updates:
       all:
         patterns:
           - "*"
+  - package-ecosystem: "npm"
+    directory: "/misc/mod-generator"
+    schedule:
+      interval: "monthly"
+      timezone: "Pacific/Auckland"
+    groups:
+      all:
+        patterns:
+          - "*"
