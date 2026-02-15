@@ -101,7 +101,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 		BlockPos supportingPos = blockPos.below();
 		BlockState belowBlockState = levelReader.getBlockState(supportingPos);
-		return gardenBlockEntity.canSurviveOn(belowBlockState, levelReader, supportingPos);
+		return gardenBlockEntity.canSurviveOn(levelReader, supportingPos);
 	}
 
 	@Override
@@ -176,7 +176,6 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 		BlockState blockState = level.getBlockState(blockPos);
 
 		BlockPos supportingPos = blockPos.below();
-		BlockState supportingBlockState = level.getBlockState(supportingPos);
 
 		ItemStack stack = blockPlaceContext.getItemInHand();
 
@@ -192,7 +191,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 				return blockState;
 			}
 
-			if (!gardenContents.canSurviveOn(supportingBlockState, level, supportingPos)) {
+			if (!gardenContents.canSurviveOn(level, supportingPos)) {
 				return blockState;
 			}
 
@@ -202,7 +201,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 		// Ensure the tiny flower type we're placing can be placed on top of the
 		// supporting block.
-		if (!flowerData.canSurviveOn(supportingBlockState, level, supportingPos)) {
+		if (!flowerData.canSurviveOn(level, supportingPos)) {
 			return blockState;
 		}
 
@@ -247,7 +246,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 				// registered.
 				return blockState;
 			}
-			if (!originalSegmentedData.canSurviveOn(supportingBlockState, level, supportingPos)) {
+			if (!originalSegmentedData.canSurviveOn(level, supportingPos)) {
 				// This only happens if the original segmentable block was on a block that the
 				// tiny flower doesn't support.
 				return blockState;

@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.state.BlockState;
 
 public record TinyFlowerComponent(Identifier id) implements Survivable {
 	public String getTranslationKey() {
@@ -16,13 +15,13 @@ public record TinyFlowerComponent(Identifier id) implements Survivable {
 	}
 
 	@Override
-	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
+	public boolean canSurviveOn(LevelReader level, BlockPos pos) {
 		TinyFlowerData flowerData = TinyFlowerData.findById(level.registryAccess(), id);
 		if (flowerData == null) {
 			return true;
 		}
 
-		return flowerData.canSurviveOn(state, level, pos);
+		return flowerData.canSurviveOn(level, pos);
 	}
 
 	public static final Codec<TinyFlowerComponent> CODEC = Identifier.CODEC.xmap(TinyFlowerComponent::new,
