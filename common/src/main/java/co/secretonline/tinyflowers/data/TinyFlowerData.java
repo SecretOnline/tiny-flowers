@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import co.secretonline.tinyflowers.data.special.SturdyPlacementSpecialFeature;
+import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
 import co.secretonline.tinyflowers.helper.Survivable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,7 +19,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
-import co.secretonline.tinyflowers.data.special.SpecialFeature;
+import co.secretonline.tinyflowers.data.behavior.Behavior;
 import co.secretonline.tinyflowers.item.ModItems;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderLookup;
@@ -65,17 +65,17 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
  *                              type can be placed on. This defaults to the
  *                              `#minecraft:supports_vegetation` tag.
  * @param suspiciousStewEffects A potion effect for Suspicious Stew.
- * @param specialFeatures       Any special features this flower type might have.
+ * @param behaviors       Any special features this flower type might have.
  */
 public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSegmentable,
 														 @NonNull List<TagOrElementLocation> canSurviveOn,
 														 @NonNull List<Entry> suspiciousStewEffects,
-														 @NonNull List<SpecialFeature> specialFeatures)
+														 @NonNull List<Behavior> behaviors)
 	implements SuspiciousEffectHolder, Survivable {
 
 	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
-		for (SpecialFeature specialFeature : specialFeatures) {
-			if (specialFeature instanceof SturdyPlacementSpecialFeature && state.isFaceSturdy(level, pos, Direction.UP)) {
+		for (Behavior behavior : behaviors) {
+			if (behavior instanceof SturdyPlacementBehavior && state.isFaceSturdy(level, pos, Direction.UP)) {
 				return true;
 			}
 		}
@@ -185,7 +185,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 				.forGetter(TinyFlowerData::canSurviveOn),
 			Entry.CODEC.listOf().optionalFieldOf("suspicious_stew_effects", List.of())
 				.forGetter(TinyFlowerData::suspiciousStewEffects),
-			SpecialFeature.CODEC.listOf().optionalFieldOf("special_features", List.of())
-				.forGetter(TinyFlowerData::specialFeatures))
+			Behavior.CODEC.listOf().optionalFieldOf("behaviors", List.of())
+				.forGetter(TinyFlowerData::behaviors))
 		.apply(instance, TinyFlowerData::new));
 }

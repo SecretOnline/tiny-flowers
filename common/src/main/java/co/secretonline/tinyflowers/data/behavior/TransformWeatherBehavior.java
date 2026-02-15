@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.data.special;
+package co.secretonline.tinyflowers.data.behavior;
 
 import java.util.Optional;
 
@@ -16,8 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.util.TriState;
-import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
@@ -37,19 +36,14 @@ import org.jspecify.annotations.NonNull;
  *                        referred to as the short switch sound by
  *                        Minecraft.
  */
-public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, Integer particleColor,
-																							Optional<Identifier> soundEventLong,
-																							Optional<Identifier> soundEventShort) implements SpecialFeature {
+public record TransformWeatherBehavior(When when, Identifier turnsInto, Integer particleColor,
+									   Optional<Identifier> soundEventLong,
+									   Optional<Identifier> soundEventShort) implements Behavior {
 
 	@Override
 	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level,
 																			 BlockPos pos, RandomSource random) {
-		TriState openTriState = level.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
-		if (openTriState == TriState.DEFAULT) {
-			return false;
-		}
-
-		return this.when().shouldChange(openTriState);
+		return this.when().shouldChange(level, pos);
 	}
 
 	@Override
@@ -88,33 +82,33 @@ public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, I
 		}
 	}
 
-	public static final MapCodec<TransformDayNightSpecialFeature> MAP_CODEC = RecordCodecBuilder
+	public static final MapCodec<TransformWeatherBehavior> MAP_CODEC = RecordCodecBuilder
 		.mapCodec(instance -> instance
 			.group(
-				When.CODEC.fieldOf("when").forGetter(TransformDayNightSpecialFeature::when),
-				Identifier.CODEC.fieldOf("turns_into").forGetter(TransformDayNightSpecialFeature::turnsInto),
-				Codec.INT.optionalFieldOf("particle_color", 0).forGetter(TransformDayNightSpecialFeature::particleColor),
+				When.CODEC.fieldOf("when").forGetter(TransformWeatherBehavior::when),
+				Identifier.CODEC.fieldOf("turns_into").forGetter(TransformWeatherBehavior::turnsInto),
+				Codec.INT.optionalFieldOf("particle_color", 0).forGetter(TransformWeatherBehavior::particleColor),
 				Identifier.CODEC.optionalFieldOf("sound_event_long")
-					.forGetter(TransformDayNightSpecialFeature::soundEventLong),
+					.forGetter(TransformWeatherBehavior::soundEventLong),
 				Identifier.CODEC.optionalFieldOf("sound_event_short")
-					.forGetter(TransformDayNightSpecialFeature::soundEventShort))
-			.apply(instance, TransformDayNightSpecialFeature::new));
+					.forGetter(TransformWeatherBehavior::soundEventShort))
+			.apply(instance, TransformWeatherBehavior::new));
 
-	public MapCodec<TransformDayNightSpecialFeature> getMapCodec() {
+	public MapCodec<TransformWeatherBehavior> getMapCodec() {
 		return MAP_CODEC;
 	}
 
 	public enum When implements StringRepresentable {
-		ALWAYS("always", TriState.DEFAULT),
-		DAY("day", TriState.FALSE),
-		NIGHT("night", TriState.TRUE);
+		ALWAYS("always"),
+		RAINING("raining"),
+		THUNDERING("thundering"),
+		RAINING_ON("raining_on"),
+		SNOWING_ON("snowing_on");
 
 		private final String name;
-		private final TriState eyeblossomOpen;
 
-		When(String name, TriState eyeblossomOpen) {
+		When(String name) {
 			this.name = name;
-			this.eyeblossomOpen = eyeblossomOpen;
 		}
 
 		@Override
@@ -122,15 +116,23 @@ public record TransformDayNightSpecialFeature(When when, Identifier turnsInto, I
 			return this.name;
 		}
 
-		public boolean shouldChange(TriState eyeblossomOpen) {
-			if (this.equals(ALWAYS)) {
-				return true;
-			}
-			if (eyeblossomOpen.equals(TriState.DEFAULT)) {
+		public boolean shouldChange(ServerLevel level, BlockPos pos) {
+			if (!level.canHaveWeather()) {
 				return false;
 			}
 
-			return this.eyeblossomOpen.equals(eyeblossomOpen);
+			if (this.equals(ALWAYS)) {
+				return true;
+			}
+
+			if ((this.equals(RAINING) && level.isRaining()) ||
+				(this.equals(THUNDERING) && level.isThundering())) {
+				return true;
+			}
+
+			Biome.Precipitation weatherAtPos = level.precipitationAt(pos);
+			return (this.equals(RAINING_ON) && weatherAtPos.equals(Biome.Precipitation.RAIN)) ||
+				(this.equals(SNOWING_ON) && weatherAtPos.equals(Biome.Precipitation.SNOW));
 		}
 
 		public static final Codec<When> CODEC = StringRepresentable.fromEnum(When::values);

@@ -92,10 +92,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
         flower.suspiciousStewEffects.length === 0
           ? undefined
           : flower.suspiciousStewEffects,
-      special_features:
-        flower.specialFeatures.length === 0
-          ? undefined
-          : flower.specialFeatures,
+      behaviors: flower.behaviors.length === 0 ? undefined : flower.behaviors,
     };
 
     value.assets.tinyFlowers[flower.id] = {
@@ -164,7 +161,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
           throw new Error(
             `Unknown model parent type ${
               (flower.parentModel as any).type
-            } for flower ${flower.id}`
+            } for flower ${flower.id}`,
           );
       }
 
@@ -184,7 +181,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
         parent: "minecraft:item/generated",
         textures: {
           layer0: `${flowerNamespace}:item/${trimFileName(
-            flower.itemTexture.name
+            flower.itemTexture.name,
           )}`,
         },
       };
@@ -230,7 +227,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
     const resources = files.assets.tinyFlowers[data.id];
     if (!resources) {
       throw new Error(
-        `Flower ${data.id} has no resources definition (Tried to find assets/${flowerNamespace}/tiny_flowers/tiny_flower/${flowerPath}.json)`
+        `Flower ${data.id} has no resources definition (Tried to find assets/${flowerNamespace}/tiny_flowers/tiny_flower/${flowerPath}.json)`,
       );
     }
 
@@ -287,7 +284,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
     ];
     function setItemNameForLanguage(language: string, name: string) {
       const existingItem = nameList.find(
-        (entry) => entry.language === language
+        (entry) => entry.language === language,
       );
       if (!existingItem) {
         nameList.push({ language, name });
@@ -317,11 +314,9 @@ export function convertFilesToForm(files: AllFiles): FormState {
       name: nameList,
       originalId: data.original_id,
       isSegmented: data.is_segmented ?? false,
-      canSurviveOn: data.can_survive_on ?? [
-        "#minecraft:supports_vegetation",
-      ],
+      canSurviveOn: data.can_survive_on ?? ["#minecraft:supports_vegetation"],
       suspiciousStewEffects: data.suspicious_stew_effects ?? [],
-      specialFeatures: data.special_features ?? [],
+      behaviors: data.behaviors ?? [],
       tintSource: resources.tint_source ?? "grass",
       itemTexture,
       parentModel,
@@ -414,17 +409,17 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
   function appendIdentifiedJson(
     key: keyof typeof dirCache,
     identifier: string,
-    json: object
+    json: object,
   ) {
     appendJson(
       getZipDir(key, identifierNamespace(identifier)),
       json,
-      `${identifierPathFinal(identifier)}.json`
+      `${identifierPathFinal(identifier)}.json`,
     );
   }
 
   for (const [identifier, flowerData] of Object.entries(
-    files.data.tinyFlowers
+    files.data.tinyFlowers,
   )) {
     if (!flowerData) {
       continue;
@@ -437,7 +432,7 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
     appendFile(
       getZipDir("assets", files.fabricModJson.id),
       files.assets.icon,
-      "icon.png"
+      "icon.png",
     );
   }
 
@@ -445,7 +440,7 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
     appendJson(
       getZipDir("items", files.fabricModJson.id),
       files.assets.items.tiny_flower,
-      "tiny_flower.json"
+      "tiny_flower.json",
     );
   }
 
@@ -457,12 +452,12 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
     appendJson(
       getZipDir("lang", files.fabricModJson.id),
       languageData,
-      `${key}.json`
+      `${key}.json`,
     );
   }
 
   for (const [identifier, flowerResources] of Object.entries(
-    files.assets.tinyFlowers
+    files.assets.tinyFlowers,
   )) {
     if (!flowerResources) {
       continue;
@@ -488,7 +483,7 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
   }
 
   for (const [identifier, textureFile] of Object.entries(
-    files.assets.textures.block
+    files.assets.textures.block,
   )) {
     if (!textureFile) {
       continue;
@@ -497,12 +492,12 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
     appendFile(
       getZipDir("blockTexture", identifierNamespace(identifier)),
       textureFile,
-      `${identifierPathFinal(identifier)}.png`
+      `${identifierPathFinal(identifier)}.png`,
     );
   }
 
   for (const [identifier, textureFile] of Object.entries(
-    files.assets.textures.item
+    files.assets.textures.item,
   )) {
     if (!textureFile) {
       continue;
@@ -511,7 +506,7 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
     appendFile(
       getZipDir("itemTexture", identifierNamespace(identifier)),
       textureFile,
-      `${identifierPathFinal(identifier)}.png`
+      `${identifierPathFinal(identifier)}.png`,
     );
   }
 
@@ -519,7 +514,7 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
   const exportFile = new File(
     [exportBlob],
     `${files.fabricModJson.id}_${files.fabricModJson.version}.jar`,
-    { type: "application/json" }
+    { type: "application/json" },
   );
 
   return exportFile;

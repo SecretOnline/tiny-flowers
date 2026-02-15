@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-import co.secretonline.tinyflowers.data.special.SturdyPlacementSpecialFeature;
+import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
@@ -17,8 +17,8 @@ import com.google.gson.JsonObject;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.special.SpecialFeature;
-import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature;
+import co.secretonline.tinyflowers.data.behavior.Behavior;
+import co.secretonline.tinyflowers.data.behavior.TransformDayNightBehavior;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import co.secretonline.tinyflowers.data.TinyFlowerResources.TintSource;
 import net.minecraft.client.data.models.model.ModelInstance;
@@ -49,7 +49,7 @@ public class TinyFlowersDatagenData {
 	private List<TagOrElementLocation> canSurviveOn;
 	private TintSource tintSource = TintSource.GRASS;
 	@NonNull
-	private List<SpecialFeature> specialFeatures;
+	private List<Behavior> behaviors;
 
 	private ModelPart modelPart1;
 	private ModelPart modelPart2;
@@ -57,7 +57,7 @@ public class TinyFlowersDatagenData {
 	private ModelPart modelPart4;
 
 	public TinyFlowerData data() {
-		return new TinyFlowerData(id, originalBlockId, isSegmentable, canSurviveOn, suspiciousStewEffects, specialFeatures);
+		return new TinyFlowerData(id, originalBlockId, isSegmentable, canSurviveOn, suspiciousStewEffects, behaviors);
 	}
 
 	public TinyFlowerResources resources() {
@@ -112,7 +112,7 @@ public class TinyFlowersDatagenData {
 		private List<TagOrElementLocation> canSurviveOn = new ArrayList<>(
 				List.of(new TagOrElementLocation(BlockTags.SUPPORTS_VEGETATION.location(), true)));
 		@NonNull
-		private final List<SpecialFeature> specialFeatures = new ArrayList<>();
+		private final List<Behavior> behaviors = new ArrayList<>();
 
 		private int layers = 0;
 		private boolean untintedStem = false;
@@ -253,25 +253,25 @@ public class TinyFlowersDatagenData {
 			return this;
 		}
 
-		public Builder addTransformDayNightBehaviour(TransformDayNightSpecialFeature.When when, Identifier turnsInto) {
+		public Builder addTransformDayNightBehaviour(TransformDayNightBehavior.When when, Identifier turnsInto) {
 			return this.addTransformDayNightBehaviour(when, turnsInto, 0, null, null);
 		}
 
-		public Builder addTransformDayNightBehaviour(TransformDayNightSpecialFeature.When when, Identifier turnsInto,
-				int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
+		public Builder addTransformDayNightBehaviour(TransformDayNightBehavior.When when, Identifier turnsInto,
+																								 int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
 			Optional<Identifier> longOptional = (soundEventLong == null ? Optional.empty()
 					: Optional.of(soundEventLong.location()));
 			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
 					: Optional.of(soundEventShort.location()));
 
-			this.specialFeatures.add(new TransformDayNightSpecialFeature(when, turnsInto, particleColor,
+			this.behaviors.add(new TransformDayNightBehavior(when, turnsInto, particleColor,
 					longOptional, shortOptional));
 
 			return this;
 		}
 
 		public Builder addSturdyPlacementBehaviour() {
-			this.specialFeatures.add(new SturdyPlacementSpecialFeature(true));
+			this.behaviors.add(new SturdyPlacementBehavior(true));
 
 			return this;
 		}
@@ -286,7 +286,7 @@ public class TinyFlowersDatagenData {
 			data.suspiciousStewEffects = suspiciousStewEffects;
 			data.canSurviveOn = canSurviveOn;
 			data.tintSource = tintSource;
-			data.specialFeatures = specialFeatures;
+			data.behaviors = behaviors;
 
 			if (layers == 0 && customModel == null) {
 				throw new Error("TinyFlowerResources.Builder: layers() or special() must be called once.");

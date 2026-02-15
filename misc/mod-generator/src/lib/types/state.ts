@@ -59,7 +59,7 @@ export interface CombinedFlowerData {
   isSegmented: boolean;
   canSurviveOn: string[];
   suspiciousStewEffects: { id: string; duration: number }[];
-  specialFeatures: unknown[];
+  behaviors: unknown[];
   itemTexture: File | undefined;
   tintSource: "grass" | "dry_foliage";
   parentModel: ParentModelType;

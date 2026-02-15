@@ -46,17 +46,17 @@ interface TinyFlowerData {
     /** Effect duration in ticks. */
     duration: number;
   }[];
-  /** Optional. A list of special features or behaviours for this tiny flower type. */
-  special_features?: SpecialFeature[];
+  /** Optional. A list of behaviours for this tiny flower type. */
+  behaviors?: Behavior[];
 }
 
-type SpecialFeature =
-  | TransformDayNightSpecialFeature
-  | TransformWeatherSpecialFeature
-  | SturdyPlacementSpecialFeature;
+type Behavior =
+  | TransformDayNightBehavior
+  | TransformWeatherBehavior
+  | SturdyPlacementBehavior;
 
 /** Turns this tiny flower into another at a specific time of day. */
-interface TransformDayNightSpecialFeature {
+interface TransformDayNightBehavior {
   type: "transform_day_night";
   /** When the transformation is allowed to take place. */
   when: "always" | "day" | "night";
@@ -71,7 +71,7 @@ interface TransformDayNightSpecialFeature {
 }
 
 /** Turns this tiny flower into under specific weather conditions. */
-interface TransformWeatherSpecialFeature {
+interface TransformWeatherBehavior {
   type: "transform_weather";
   /** When the transformation is allowed to take place. */
   when:
@@ -91,7 +91,7 @@ interface TransformWeatherSpecialFeature {
 }
 
 /** Allows placement on any sturdy block, similar to Leaf Litter. */
-interface SturdyPlacementSpecialFeature {
+interface SturdyPlacementBehavior {
   type: "sturdy_placement";
 }
 ```

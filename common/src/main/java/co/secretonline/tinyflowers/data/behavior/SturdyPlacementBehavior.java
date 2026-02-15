@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.data.special;
+package co.secretonline.tinyflowers.data.behavior;
 
 import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import com.mojang.serialization.Codec;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * @param isReallyCool Does nothing, is only here because I couldn't be bothered messing with Codecs.
  */
-public record SturdyPlacementSpecialFeature(boolean isReallyCool) implements SpecialFeature {
+public record SturdyPlacementBehavior(boolean isReallyCool) implements Behavior {
 	@Override
 	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		return false;
@@ -31,13 +31,13 @@ public record SturdyPlacementSpecialFeature(boolean isReallyCool) implements Spe
 	public void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource, boolean isRandomTick) {
 	}
 
-	public static final MapCodec<SturdyPlacementSpecialFeature> MAP_CODEC = RecordCodecBuilder
+	public static final MapCodec<SturdyPlacementBehavior> MAP_CODEC = RecordCodecBuilder
 		.mapCodec(instance -> instance
 			.group(
-				Codec.BOOL.optionalFieldOf("is_really_cool", true).forGetter(SturdyPlacementSpecialFeature::isReallyCool))
-			.apply(instance, SturdyPlacementSpecialFeature::new));
+				Codec.BOOL.optionalFieldOf("is_really_cool", true).forGetter(SturdyPlacementBehavior::isReallyCool))
+			.apply(instance, SturdyPlacementBehavior::new));
 
-	public MapCodec<SturdyPlacementSpecialFeature> getMapCodec() {
+	public MapCodec<SturdyPlacementBehavior> getMapCodec() {
 		return MAP_CODEC;
 	}
 }
