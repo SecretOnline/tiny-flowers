@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.data.special;
+package co.secretonline.tinyflowers.data.behavior;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -10,7 +10,7 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-public interface SpecialFeature {
+public interface Behavior {
 	boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
 																BlockPos pos, RandomSource random);
 
@@ -22,12 +22,12 @@ public interface SpecialFeature {
 	void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource,
 										 boolean isRandomTick);
 
-	MapCodec<? extends SpecialFeature> getMapCodec();
+	MapCodec<? extends Behavior> getMapCodec();
 
-	Codec<SpecialFeature> CODEC = new ExtraCodecs.LateBoundIdMapper<String, MapCodec<? extends SpecialFeature>>()
-			.put("transform_day_night", TransformDayNightSpecialFeature.MAP_CODEC)
-			.put("transform_weather", TransformWeatherSpecialFeature.MAP_CODEC)
-			.put("sturdy_placement", SturdyPlacementSpecialFeature.MAP_CODEC)
+	Codec<Behavior> CODEC = new ExtraCodecs.LateBoundIdMapper<String, MapCodec<? extends Behavior>>()
+			.put("transform_day_night", TransformDayNightBehavior.MAP_CODEC)
+			.put("transform_weather", TransformWeatherBehavior.MAP_CODEC)
+			.put("sturdy_placement", SturdyPlacementBehavior.MAP_CODEC)
 			.codec(Codec.STRING)
-			.dispatch(SpecialFeature::getMapCodec, (mapCodec) -> mapCodec);
+			.dispatch(Behavior::getMapCodec, (mapCodec) -> mapCodec);
 }

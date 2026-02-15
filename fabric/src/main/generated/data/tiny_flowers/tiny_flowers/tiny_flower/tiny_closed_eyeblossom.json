@@ -1,7 +1,5 @@
 {
-  "id": "tiny_flowers:tiny_closed_eyeblossom",
-  "original_id": "minecraft:closed_eyeblossom",
-  "special_features": [
+  "behaviors": [
     {
       "type": "transform_day_night",
       "particle_color": 16545810,
@@ -11,6 +9,8 @@
       "when": "night"
     }
   ],
+  "id": "tiny_flowers:tiny_closed_eyeblossom",
+  "original_id": "minecraft:closed_eyeblossom",
   "suspicious_stew_effects": [
     {
       "duration": 140,

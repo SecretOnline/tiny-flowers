@@ -3,7 +3,7 @@ package co.secretonline.tinyflowers.datagen.mods;
 import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.data.special.TransformDayNightSpecialFeature.When;
+import co.secretonline.tinyflowers.data.behavior.TransformDayNightBehavior.When;
 import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
 import co.secretonline.tinyflowers.datagen.TinyFlowersDatagenData;
 import net.minecraft.resources.Identifier;

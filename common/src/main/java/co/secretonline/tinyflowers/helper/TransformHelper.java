@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import co.secretonline.tinyflowers.block.ModBlocks;
 import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.special.SpecialFeature;
+import co.secretonline.tinyflowers.data.behavior.Behavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +37,7 @@ public class TransformHelper {
 			return false;
 		}
 
-		List<SpecialFeature> featuresWithWorldEffect = new ArrayList<>();
+		List<Behavior> featuresWithWorldEffect = new ArrayList<>();
 		for (int i = 1; i <= 4; i++) {
 			@Nullable
 			Identifier flowerId = gardenBlockEntity.getFlower(i);
@@ -51,7 +51,7 @@ public class TransformHelper {
 				continue;
 			}
 
-			for (SpecialFeature feature : flowerData.specialFeatures()) {
+			for (Behavior feature : flowerData.behaviors()) {
 				if (feature.shouldActivateFeature(gardenBlockEntity, i, currentState, world, pos, random)) {
 					didChange = true;
 					feature.onActivateFeature(gardenBlockEntity, i, currentState, world, pos, random);
@@ -70,7 +70,7 @@ public class TransformHelper {
 			TransformHelper.notifyNearbyBlocks(currentState, world, pos, random);
 
 			if (!featuresWithWorldEffect.isEmpty()) {
-				SpecialFeature randomChange = Util.getRandom(featuresWithWorldEffect, random);
+				Behavior randomChange = Util.getRandom(featuresWithWorldEffect, random);
 				randomChange.doWorldEffect(world, pos, random, isRandomTick);
 			}
 		}
@@ -127,7 +127,7 @@ public class TransformHelper {
 						continue;
 					}
 
-					for (SpecialFeature feature : flowerData.specialFeatures()) {
+					for (Behavior feature : flowerData.behaviors()) {
 						if (feature.shouldActivateFeature(gardenBlockEntity, i, state, world, pos, random)) {
 							scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK.get(), random);
 							didNotify = true;
