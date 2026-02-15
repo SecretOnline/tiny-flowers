@@ -24,9 +24,10 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.Recipe;
+import org.jspecify.annotations.NonNull;
 
 public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
-	private static Map<DyeColor, TagKey<Item>> COLOR_TAGS = Map.ofEntries(
+	private static final Map<DyeColor, TagKey<Item>> COLOR_TAGS = Map.ofEntries(
 			Map.entry(DyeColor.WHITE, ConventionalItemTags.WHITE_DYES),
 			Map.entry(DyeColor.ORANGE, ConventionalItemTags.ORANGE_DYES),
 			Map.entry(DyeColor.MAGENTA, ConventionalItemTags.MAGENTA_DYES),
@@ -50,8 +51,8 @@ public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
 	}
 
 	@Override
-	protected RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup,
-			RecipeOutput exporter) {
+	protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider registryLookup,
+																												 @NonNull RecipeOutput exporter) {
 		return new net.minecraft.data.recipes.RecipeProvider(registryLookup, exporter) {
 			@Override
 			public void buildRecipes() {
@@ -86,7 +87,7 @@ public class FloristsShearsRecipeProvider extends FabricRecipeProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NonNull String getName() {
 		return "FloristsShearsRecipeProvider";
 	}
 }

@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_allium",
+  "original_id": "minecraft:allium",
+  "suspicious_stew_effects": [
+    {
+      "duration": 60,
+      "id": "minecraft:fire_resistance"
+    }
+  ]
+}

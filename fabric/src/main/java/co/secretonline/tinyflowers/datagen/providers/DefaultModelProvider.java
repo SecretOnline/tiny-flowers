@@ -12,6 +12,7 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
+import org.jspecify.annotations.NonNull;
 
 public class DefaultModelProvider extends FabricModelProvider {
 	private final static Direction[] DIRECTIONS = new Direction[] {
@@ -23,7 +24,7 @@ public class DefaultModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
+	public void generateBlockStateModels(@NonNull BlockModelGenerators blockStateModelGenerator) {
 		MultiPartGenerator definitionCreator = MultiPartGenerator
 				.multiPart(ModBlocks.TINY_GARDEN_BLOCK.get());
 
@@ -46,7 +47,7 @@ public class DefaultModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NonNull String getName() {
 		return "FloristsShearsItemModelProvider";
 	}
 }

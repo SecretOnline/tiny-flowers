@@ -1,0 +1,20 @@
+{
+  "id": "tiny_flowers:tiny_closed_eyeblossom",
+  "original_id": "minecraft:closed_eyeblossom",
+  "special_features": [
+    {
+      "type": "transform_day_night",
+      "particle_color": 16545810,
+      "sound_event_long": "minecraft:block.eyeblossom.open_long",
+      "sound_event_short": "minecraft:block.eyeblossom.open",
+      "turns_into": "tiny_flowers:tiny_open_eyeblossom",
+      "when": "night"
+    }
+  ],
+  "suspicious_stew_effects": [
+    {
+      "duration": 140,
+      "id": "minecraft:nausea"
+    }
+  ]
+}

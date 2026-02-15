@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "group": "florists_shears",
+  "ingredients": [
+    "minecraft:shears",
+    "#c:dyes/pink"
+  ],
+  "result": {
+    "components": {
+      "minecraft:dyed_color": -816214
+    },
+    "id": "tiny_flowers:florists_shears"
+  }
+}

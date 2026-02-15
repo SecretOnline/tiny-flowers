@@ -1,12 +1,14 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
+import co.secretonline.tinyflowers.datagen.PartialModelProvider;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
+import org.jspecify.annotations.NonNull;
 
-public class FabricModModelProvider extends FabricModelProvider {
+public class FabricModModelProvider extends FabricModelProvider implements PartialModelProvider {
 	private final ModDatagenHelper modData;
 
 	public FabricModModelProvider(ModDatagenHelper modData, FabricPackOutput output) {
@@ -26,7 +28,12 @@ public class FabricModModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NonNull String getName() {
 		return "Mod models provider [" + this.modData.getModId() + "]";
+	}
+
+	@Override
+	public boolean shouldValidateAllEntries() {
+		return false;
 	}
 }
