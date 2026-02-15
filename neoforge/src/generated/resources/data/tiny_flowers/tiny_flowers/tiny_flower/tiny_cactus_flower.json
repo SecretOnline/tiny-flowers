@@ -6,5 +6,10 @@
     "minecraft:red_sandstone"
   ],
   "id": "tiny_flowers:tiny_cactus_flower",
-  "original_id": "minecraft:cactus_flower"
+  "original_id": "minecraft:cactus_flower",
+  "special_features": [
+    {
+      "type": "sturdy_placement"
+    }
+  ]
 }

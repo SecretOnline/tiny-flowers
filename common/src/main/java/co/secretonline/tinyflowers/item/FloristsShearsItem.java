@@ -35,35 +35,36 @@ public class FloristsShearsItem extends ShearsItem {
 
 	@Override
 	public @NonNull InteractionResult useOn(UseOnContext ctx) {
-		Level world = ctx.getLevel();
+		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		BlockState prevBockState = world.getBlockState(pos);
+		BlockState prevBockState = level.getBlockState(pos);
 
 		Block prevBlock = prevBockState.getBlock();
-		TinyFlowerData prevData = TinyFlowerData.findByOriginalBlock(world.registryAccess(), prevBlock);
+		TinyFlowerData prevData = TinyFlowerData.findByOriginalBlock(level.registryAccess(), prevBlock);
 		if (prevData != null) {
 			// The block that was clicked on is the original block of a tiny flower variant.
 			// Try and turn into actual tiny flowers.
 
 			// Ensure the block underneath can support the tiny flower variant. This is
 			// likely, given the block was previously holding the original block.
-			Block supportingBlock = world.getBlockState(pos.below()).getBlock();
-			if (!prevData.canSurviveOn(supportingBlock)) {
+			BlockPos supportingPos = pos.below();
+			BlockState supportingBlockState = level.getBlockState(supportingPos);
+			if (!prevData.canSurviveOn(supportingBlockState, level, supportingPos)) {
 				return InteractionResult.FAIL;
 			}
 
 			BlockState newBlockState = ModBlocks.TINY_GARDEN_BLOCK.get().defaultBlockState()
 					.setValue(TinyGardenBlock.FACING, ctx.getHorizontalDirection().getOpposite());
 
-			world.setBlockAndUpdate(pos, newBlockState);
+			level.setBlockAndUpdate(pos, newBlockState);
 
-			if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+			if (!(level.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 				// If there's no block entity, try undo the change
-				world.setBlockAndUpdate(pos, prevBockState);
+				level.setBlockAndUpdate(pos, prevBockState);
 				return InteractionResult.FAIL;
 			}
 
-			gardenBlockEntity.setFromPreviousBlockState(world.registryAccess(), prevBockState);
+			gardenBlockEntity.setFromPreviousBlockState(level.registryAccess(), prevBockState);
 
 			// If the block we converted from is not segmentable, then we're done here.
 			if (!(prevBlock instanceof SegmentableBlock)) {
@@ -71,11 +72,11 @@ public class FloristsShearsItem extends ShearsItem {
 					Player player = ctx.getPlayer();
 					ctx.getItemInHand().hurtAndBreak(1, player, ctx.getHand());
 
-					world.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP,
+					level.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP,
 							SoundSource.BLOCKS, 1.0F, 1.0F);
 				}
 
-				world.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(ctx.getPlayer(),
+				level.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(ctx.getPlayer(),
 						newBlockState));
 
 				return InteractionResult.SUCCESS;
@@ -90,7 +91,7 @@ public class FloristsShearsItem extends ShearsItem {
 		}
 
 		if (prevBockState.is(ModBlocks.TINY_GARDEN_BLOCK.get())) {
-			if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+			if (!(level.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 				// If there's no block entity, don't do anything
 				return InteractionResult.FAIL;
 			}
@@ -113,29 +114,29 @@ public class FloristsShearsItem extends ShearsItem {
 				// This spot has no flower.
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			}
-			TinyFlowerData flowerData = TinyFlowerData.findById(world.registryAccess(), idAtIndex);
+			TinyFlowerData flowerData = TinyFlowerData.findById(level.registryAccess(), idAtIndex);
 			// This condition fails if the garden has an identifier in this spot, but it is
 			// no longer registered. This usually happens when a mod is removed. In that
 			// case, don't pop an item, but do do the rest.
 			if (flowerData != null) {
-				Block.popResource(world, pos, flowerData.getItemStack(1));
+				Block.popResource(level, pos, flowerData.getItemStack(1));
 			}
 
 			if (ctx.getPlayer() != null) {
 				Player player = ctx.getPlayer();
 				ctx.getItemInHand().hurtAndBreak(1, player, ctx.getHand());
 
-				world.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP,
+				level.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP,
 						SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
 
 			gardenBlockEntity.setFlower(oneIndexed, null);
 
 			if (gardenBlockEntity.isEmpty()) {
-				world.removeBlock(pos, false);
+				level.removeBlock(pos, false);
 			}
 
-			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(ctx.getPlayer(),
+			level.gameEvent(GameEvent.BLOCK_CHANGE, pos, Context.of(ctx.getPlayer(),
 					prevBockState));
 
 			return InteractionResult.SUCCESS;

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+import co.secretonline.tinyflowers.data.special.SturdyPlacementSpecialFeature;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
@@ -265,6 +266,12 @@ public class TinyFlowersDatagenData {
 
 			this.specialFeatures.add(new TransformDayNightSpecialFeature(when, turnsInto, particleColor,
 					longOptional, shortOptional));
+
+			return this;
+		}
+
+		public Builder addSturdyPlacementBehaviour() {
+			this.specialFeatures.add(new SturdyPlacementSpecialFeature(true));
 
 			return this;
 		}

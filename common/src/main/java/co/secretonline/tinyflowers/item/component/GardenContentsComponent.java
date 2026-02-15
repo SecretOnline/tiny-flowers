@@ -9,7 +9,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.helper.Survivable;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -18,7 +18,8 @@ import net.minecraft.util.Util;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.NonNull;
 
 public record GardenContentsComponent(Identifier flower1, Identifier flower2, Identifier flower3, Identifier flower4)
@@ -27,18 +28,18 @@ public record GardenContentsComponent(Identifier flower1, Identifier flower2, Id
 	public static final String EMPTY_TEXT = "block.tiny_flowers.tiny_garden.empty";
 
 	@Override
-	public boolean canSurviveOn(Block supportingBlock, HolderLookup.Provider provider) {
+	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
 		for (Identifier identifier : new Identifier[] { flower1, flower2, flower3, flower4 }) {
 			if (identifier == null) {
 				continue;
 			}
 
-			TinyFlowerData flowerData = TinyFlowerData.findById(provider, identifier);
+			TinyFlowerData flowerData = TinyFlowerData.findById(level.registryAccess(), identifier);
 			if (flowerData == null) {
 				continue;
 			}
 
-			if (!flowerData.canSurviveOn(supportingBlock)) {
+			if (!flowerData.canSurviveOn(state, level, pos)) {
 				return false;
 			}
 		}
