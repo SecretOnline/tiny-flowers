@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.platform.services;
+package co.secretonline.tinyflowers.platform;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;

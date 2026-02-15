@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.platform.services;
+package co.secretonline.tinyflowers.platform;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.component.DataComponentType;

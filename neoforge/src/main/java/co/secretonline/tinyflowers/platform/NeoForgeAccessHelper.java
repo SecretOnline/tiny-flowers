@@ -1,6 +1,5 @@
 package co.secretonline.tinyflowers.platform;
 
-import co.secretonline.tinyflowers.platform.services.AccessHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

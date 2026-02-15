@@ -36,56 +36,6 @@ public final class TinyFlowerModelLogic {
 	}
 
 	/**
-	 * Called after resource loading completes. Stores resolved resources and
-	 * clears the model registry for the new reload cycle.
-	 */
-	public static void onResourcesLoaded(Map<Identifier, TinyFlowerResources> resources) {
-		TinyFlowersClientState.RESOURCE_INSTANCES = resources;
-		TinyFlowerModelHolder.clear();
-	}
-
-	/**
-	 * Adds all extra model dependencies to the model discovery graph.
-	 * Called during model dependency resolution.
-	 */
-	public static void addModelDependencies(ModelDiscovery discovery) {
-		for (var resources : TinyFlowersClientState.RESOURCE_INSTANCES.values()) {
-			discovery.addRoot(new TinyFlowerModel(resources.model1()));
-			discovery.addRoot(new TinyFlowerModel(resources.model2()));
-			discovery.addRoot(new TinyFlowerModel(resources.model3()));
-			discovery.addRoot(new TinyFlowerModel(resources.model4()));
-		}
-	}
-
-	/**
-	 * Bakes all registered extra models and stores them in ExtraModelRegistry.
-	 * Called after model baking completes.
-	 */
-	public static void bakeExtraModels(ModelBaker baker) {
-		for (var resources : TinyFlowersClientState.RESOURCE_INSTANCES.values()) {
-			bakeAndStore(baker, resources.model1());
-			bakeAndStore(baker, resources.model2());
-			bakeAndStore(baker, resources.model3());
-			bakeAndStore(baker, resources.model4());
-		}
-	}
-
-	private static void bakeAndStore(ModelBaker baker, Identifier modelId) {
-		try {
-			ResolvedModel resolved = baker.getModel(modelId);
-			TextureSlots textures = resolved.getTopTextureSlots();
-			BlockStateModel model = new SingleVariant(new SimpleModelWrapper(
-					resolved.bakeTopGeometry(textures, baker, BlockModelRotation.IDENTITY),
-					resolved.getTopAmbientOcclusion(),
-					resolved.resolveParticleSprite(textures, baker)));
-
-			TinyFlowerModelHolder.setModel(modelId, model);
-		} catch (Exception e) {
-			TinyFlowers.LOGGER.warn("Failed to bake extra model: {}", modelId, e);
-		}
-	}
-
-	/**
 	 * Creates the select item model for the tiny_flower item.
 	 */
 	public static ItemModel.Unbaked createTinyFlowerItemModel() {

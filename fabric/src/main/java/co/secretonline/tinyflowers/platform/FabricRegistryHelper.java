@@ -1,6 +1,5 @@
 package co.secretonline.tinyflowers.platform;
 
-import co.secretonline.tinyflowers.platform.services.RegistryHelper;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;

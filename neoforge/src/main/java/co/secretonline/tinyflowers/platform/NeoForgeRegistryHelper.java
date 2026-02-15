@@ -1,7 +1,6 @@
 package co.secretonline.tinyflowers.platform;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.platform.services.RegistryHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
