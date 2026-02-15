@@ -1,9 +1,9 @@
 package co.secretonline.tinyflowers.helper;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.blocks.ModBlocks;
-import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
-import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
+import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.block.TinyGardenBlock;
+import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -5,7 +5,7 @@ import java.util.List;
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
 import co.secretonline.tinyflowers.datagen.TinyFlowersDatagenData;
-import co.secretonline.tinyflowers.resources.TinyFlowerResources.TintSource;
+import co.secretonline.tinyflowers.data.TinyFlowerResources.TintSource;
 import net.minecraft.resources.Identifier;
 
 public class VanillaDatagenHelper extends ModDatagenHelper {

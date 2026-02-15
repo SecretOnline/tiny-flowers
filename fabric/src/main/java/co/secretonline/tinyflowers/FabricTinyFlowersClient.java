@@ -1,8 +1,8 @@
 package co.secretonline.tinyflowers;
 
-import co.secretonline.tinyflowers.blocks.ModBlockEntities;
-import co.secretonline.tinyflowers.blocks.ModBlocks;
-import co.secretonline.tinyflowers.renderer.block.TinyGardenBlockEntityRenderer;
+import co.secretonline.tinyflowers.block.entity.ModBlockEntities;
+import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.renderer.blockentity.TinyGardenBlockEntityRenderer;
 import co.secretonline.tinyflowers.renderer.item.ModSelectItemModelProperties;
 import co.secretonline.tinyflowers.resources.FabricFlowerModelDataLoader;
 import co.secretonline.tinyflowers.resources.FabricFlowerModelLoadingPlugin;

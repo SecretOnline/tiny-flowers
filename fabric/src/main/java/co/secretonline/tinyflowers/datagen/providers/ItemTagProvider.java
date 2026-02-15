@@ -2,7 +2,7 @@ package co.secretonline.tinyflowers.datagen.providers;
 
 import java.util.concurrent.CompletableFuture;
 
-import co.secretonline.tinyflowers.items.ModItems;
+import co.secretonline.tinyflowers.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;

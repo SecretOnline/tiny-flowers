@@ -1,13 +1,12 @@
 package co.secretonline.tinyflowers;
 
-import co.secretonline.tinyflowers.blocks.ModBlockEntities;
-import co.secretonline.tinyflowers.blocks.ModBlocks;
-import co.secretonline.tinyflowers.components.ModComponents;
+import co.secretonline.tinyflowers.block.entity.ModBlockEntities;
+import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.items.FabricCreativeTabEvents;
-import co.secretonline.tinyflowers.items.ModItems;
-import co.secretonline.tinyflowers.items.crafting.ModRecipeSerializers;
+import co.secretonline.tinyflowers.item.ModItems;
+import co.secretonline.tinyflowers.item.crafting.ModRecipeSerializers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 
@@ -23,6 +22,7 @@ public class FabricTinyFlowers implements ModInitializer {
 
 		DynamicRegistries.registerSynced(ModRegistries.TINY_FLOWER, TinyFlowerData.CODEC);
 
-		FabricCreativeTabEvents.register();
+		FabricCreativeTabHandler.register();
+		FabricCreativeTabHandler.addTinyFlowerItems();
 	}
 }

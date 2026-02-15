@@ -1,9 +1,9 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.blocks.ModBlocks;
-import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
-import co.secretonline.tinyflowers.items.ModItems;
+import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.block.TinyGardenBlock;
+import co.secretonline.tinyflowers.item.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.color.item.Dye;

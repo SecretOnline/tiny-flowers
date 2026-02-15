@@ -1,8 +1,8 @@
 package co.secretonline.tinyflowers.datagen;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.components.TinyFlowerComponent;
-import co.secretonline.tinyflowers.items.ModItems;
+import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
+import co.secretonline.tinyflowers.item.ModItems;
 import co.secretonline.tinyflowers.renderer.item.TinyFlowerProperty;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.ItemModelUtils;
