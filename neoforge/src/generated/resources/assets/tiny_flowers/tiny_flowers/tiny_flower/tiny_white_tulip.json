@@ -1,0 +1,8 @@
+{
+  "id": "tiny_flowers:tiny_white_tulip",
+  "item_model": "tiny_flowers:item/tiny_white_tulip",
+  "model1": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_1",
+  "model2": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_2",
+  "model3": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_3",
+  "model4": "tiny_flowers:block/tiny_flowers/tiny_white_tulip_4"
+}

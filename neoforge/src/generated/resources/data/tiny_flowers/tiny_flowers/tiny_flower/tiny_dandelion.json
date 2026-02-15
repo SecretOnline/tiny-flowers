@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_dandelion",
+  "original_id": "minecraft:dandelion",
+  "suspicious_stew_effects": [
+    {
+      "duration": 7,
+      "id": "minecraft:saturation"
+    }
+  ]
+}

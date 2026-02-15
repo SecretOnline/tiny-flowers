@@ -1,0 +1,8 @@
+{
+  "id": "minecraft:wildflowers",
+  "item_model": "minecraft:item/wildflowers",
+  "model1": "minecraft:block/tiny_flowers/wildflowers_1",
+  "model2": "minecraft:block/tiny_flowers/wildflowers_2",
+  "model3": "minecraft:block/tiny_flowers/wildflowers_3",
+  "model4": "minecraft:block/tiny_flowers/wildflowers_4"
+}

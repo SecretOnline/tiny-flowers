@@ -12,18 +12,18 @@ public class FabricTinyFlowersDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
-		List<ModDatagenHelper> mods = List.of(
-			new TinyFlowersDatagenHelper(),
-			new VanillaDatagenHelper());
 
 		pack.addProvider(ItemTagProvider::new);
 		pack.addProvider(BlockTagProvider::new);
 		pack.addProvider(FloristsShearsRecipeProvider::new);
 		pack.addProvider(DefaultModelProvider::new);
 
+		List<ModDatagenHelper> mods = List.of(
+			new TinyFlowersDatagenHelper(),
+			new VanillaDatagenHelper());
 		for (ModDatagenHelper mod : mods) {
-			pack.addProvider((FabricDataGenerator.Pack.Factory<FabricModFlowersProvider>) (output) -> new FabricModFlowersProvider(mod, output));
-			pack.addProvider((FabricDataGenerator.Pack.Factory<FabricModModelProvider>) (output) -> new FabricModModelProvider(mod, output));
+			pack.addProvider((output,_) -> new FabricModFlowersProvider(mod, output));
+			pack.addProvider((output,_) -> new FabricModModelProvider(mod, output));
 		}
 	}
 }

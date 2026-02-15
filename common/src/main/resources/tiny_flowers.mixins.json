@@ -10,6 +10,7 @@
     "crafting.CrafterMenuMixin",
     "crafting.CraftingMenuMixin",
     "crafting.DyeColorMixin",
+    "datagen.ModelProviderMixin",
     "item.CreativeModeTabsMixin",
     "item.ItemStackMixin",
     "item.ModelBakeryMixin",

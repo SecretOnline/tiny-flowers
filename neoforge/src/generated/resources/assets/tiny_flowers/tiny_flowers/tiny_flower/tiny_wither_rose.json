@@ -1,0 +1,8 @@
+{
+  "id": "tiny_flowers:tiny_wither_rose",
+  "item_model": "tiny_flowers:item/tiny_wither_rose",
+  "model1": "tiny_flowers:block/tiny_flowers/tiny_wither_rose_1",
+  "model2": "tiny_flowers:block/tiny_flowers/tiny_wither_rose_2",
+  "model3": "tiny_flowers:block/tiny_flowers/tiny_wither_rose_3",
+  "model4": "tiny_flowers:block/tiny_flowers/tiny_wither_rose_4"
+}

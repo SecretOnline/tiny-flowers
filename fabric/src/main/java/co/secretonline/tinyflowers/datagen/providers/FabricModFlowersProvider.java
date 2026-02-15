@@ -11,6 +11,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,12 +34,12 @@ public class FabricModFlowersProvider implements DataProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NonNull String getName() {
 		return "Mod flowers provider [" + this.modData.getModId() + "]";
 	}
 
 	@Override
-	public CompletableFuture<?> run(CachedOutput cachedOutput) {
+	public @NonNull CompletableFuture<?> run(@NonNull CachedOutput cachedOutput) {
 
 		Map<Identifier, TinyFlowerData> flowerVariantData = new HashMap<>();
 		Map<Identifier, TinyFlowerResources> flowerVariantResources = new HashMap<>();
