@@ -1,6 +1,5 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
-import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
 import co.secretonline.tinyflowers.datagen.PartialModelProvider;
 import net.minecraft.client.data.models.BlockModelGenerators;

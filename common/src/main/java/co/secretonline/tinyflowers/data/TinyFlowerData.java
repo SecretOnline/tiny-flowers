@@ -86,7 +86,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 	}
 
 	@Override
-	public SuspiciousStewEffects getSuspiciousEffects() {
+	public @NonNull SuspiciousStewEffects getSuspiciousEffects() {
 		if (this.suspiciousStewEffects() == null) {
 			return new SuspiciousStewEffects(List.of());
 		}

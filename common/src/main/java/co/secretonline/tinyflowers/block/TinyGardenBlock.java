@@ -61,28 +61,28 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	private static final BiFunction<Direction, Integer, VoxelShape> FACING_AND_AMOUNT_TO_SHAPE = Util.memoize(
-			(BiFunction<Direction, Integer, VoxelShape>) ((facing, bitmap) -> {
-				if (bitmap == 0) {
-					return Block.box(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
+		(facing, bitmap) -> {
+			if (bitmap == 0) {
+				return Block.box(0.0, 0.0, 0.0, 16.0, 3.0, 16.0);
+			}
+
+			VoxelShape[] voxelShapes = new VoxelShape[] {
+					Block.box(8.0, 0.0, 8.0, 16.0, 3.0, 16.0),
+					Block.box(8.0, 0.0, 0.0, 16.0, 3.0, 8.0),
+					Block.box(0.0, 0.0, 0.0, 8.0, 3.0, 8.0),
+					Block.box(0.0, 0.0, 8.0, 8.0, 3.0, 16.0)
+			};
+			VoxelShape voxelShape = Shapes.empty();
+
+			for (int i = 0; i < TinyGardenBlockEntity.NUM_SLOTS; i++) {
+				if ((bitmap & (1 << i)) > 0) {
+					int j = Math.floorMod(i - facing.get2DDataValue(), 4);
+					voxelShape = Shapes.or(voxelShape, voxelShapes[j]);
 				}
+			}
 
-				VoxelShape[] voxelShapes = new VoxelShape[] {
-						Block.box(8.0, 0.0, 8.0, 16.0, 3.0, 16.0),
-						Block.box(8.0, 0.0, 0.0, 16.0, 3.0, 8.0),
-						Block.box(0.0, 0.0, 0.0, 8.0, 3.0, 8.0),
-						Block.box(0.0, 0.0, 8.0, 8.0, 3.0, 16.0)
-				};
-				VoxelShape voxelShape = Shapes.empty();
-
-				for (int i = 0; i < TinyGardenBlockEntity.NUM_SLOTS; i++) {
-					if ((bitmap & (1 << i)) > 0) {
-						int j = Math.floorMod(i - facing.get2DDataValue(), 4);
-						voxelShape = Shapes.or(voxelShape, voxelShapes[j]);
-					}
-				}
-
-				return voxelShape.singleEncompassing();
-			}));
+			return voxelShape.singleEncompassing();
+		});
 
 	public TinyGardenBlock(Properties settings) {
 		super(settings);
@@ -162,7 +162,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 	@Override
 	public @NonNull VoxelShape getShape(BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
-		return (VoxelShape) FACING_AND_AMOUNT_TO_SHAPE.apply((Direction) state.getValue(FACING),
+		return FACING_AND_AMOUNT_TO_SHAPE.apply(state.getValue(FACING),
 				getFlowerBitmap(world, pos));
 	}
 

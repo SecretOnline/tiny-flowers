@@ -30,7 +30,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 
 public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
-	public static int NUM_SLOTS = 4;
+	public static final int NUM_SLOTS = 4;
 
 	@Nullable
 	private Identifier flower1 = null;

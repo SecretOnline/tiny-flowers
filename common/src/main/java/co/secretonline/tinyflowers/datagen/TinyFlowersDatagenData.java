@@ -75,7 +75,7 @@ public class TinyFlowersDatagenData {
 				modelPart4);
 	}
 
-	public static record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures) {
+	public record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures) {
 
 		public JsonElement toJsonElement() {
 			JsonObject jsonObject = new JsonObject();
@@ -96,7 +96,7 @@ public class TinyFlowersDatagenData {
 		}
 	}
 
-	public static record ModelParts(ModelPart part1, ModelPart part2, ModelPart part3, ModelPart part4) {
+	public record ModelParts(ModelPart part1, ModelPart part2, ModelPart part3, ModelPart part4) {
 	}
 
 	public static class Builder {
