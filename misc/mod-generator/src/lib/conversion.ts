@@ -340,10 +340,43 @@ function appendFile(zip: JSZip, file: File, fileName = file.name) {
   zip.file(fileName, file);
 }
 
+function buildModsToml(json: FabricModJson): string {
+  const lines: string[] = [
+    'modLoader = "javafml"',
+    'loaderVersion = "[4,)"',
+    `license = "${json.license}"`,
+    "[[mods]]",
+    `modId = "${json.id}"`,
+    `version = "${json.version}"`,
+    `displayName = "${json.name}"`,
+    `logoFile="assets/${json.id}/icon.png"`,
+    `authors = "${json.authors.join(", ")}"`,
+    `description = '''${json.description}'''`,
+    `[[dependencies.${json.id}]]`,
+    'modId = "neoforge"',
+    'type="required"',
+    'versionRange = "*"',
+    `[[dependencies.${json.id}]]`,
+    'modId = "minecraft"',
+    'type="required"',
+    'versionRange = "*"',
+    `[[dependencies.${json.id}]]`,
+    'modId = "tiny_flowers"',
+    'type="required"',
+    'versionRange = "*"',
+  ];
+
+  return lines.join("\n");
+}
+
 export async function convertFilesToZip(files: AllFiles): Promise<File> {
   const zip = new JSZip();
 
   appendJson(zip, files.fabricModJson, "fabric.mod.json");
+  appendFile(
+    zip.folder("META-INF")!,
+    new File([buildModsToml(files.fabricModJson)], "neoforge.mods.toml"),
+  );
 
   const dirCache: Record<
     | "flowerData"
