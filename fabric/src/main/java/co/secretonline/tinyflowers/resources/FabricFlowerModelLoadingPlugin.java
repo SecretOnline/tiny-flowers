@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.resources;
 
+import co.secretonline.tinyflowers.TinyFlowersClientState;
 import co.secretonline.tinyflowers.platform.Services;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -13,6 +14,8 @@ public class FabricFlowerModelLoadingPlugin
 
 	@Override
 	public void initialize(Map<Identifier, TinyFlowerResources> data, @NonNull Context pluginContext) {
+		TinyFlowersClientState.RESOURCE_INSTANCES = data;
+
 		for (var entry : data.entrySet()) {
 			TinyFlowerResources resources = entry.getValue();
 

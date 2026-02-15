@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers.platform;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -16,13 +17,5 @@ import java.util.function.Supplier;
  * Both (Neo)Forge and Fabric have their own ways of registering things to the registry, with not much overlap.
  */
 public interface RegistryHelper {
-	Supplier<Block> registerBlock(Identifier id, Supplier<Block> blockSupplier, MapCodec<? extends Block> codec);
-
-	<T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(Identifier id, Supplier<BlockEntityType<T>> blockEntitySupplier);
-
-	Supplier<Item> registerItem(Identifier id, Supplier<Item> itemSupplier);
-
-	<T> Supplier<DataComponentType<T>> registerDataComponent(Identifier id, Supplier<DataComponentType<T>> componentSupplier);
-
-	<T extends Recipe<?>> Supplier<RecipeSerializer<T>> registerRecipeSerializer(Identifier id, Supplier<RecipeSerializer<T>> serializerSupplier);
+	<T, U extends T> DeferredRegistryObject<U> register(Registry<T> objRegistry, Identifier id, Supplier<U> objSupplier);
 }
