@@ -3,10 +3,11 @@ package co.secretonline.tinyflowers.renderer.block;
 import co.secretonline.tinyflowers.TinyFlowersClientState;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlock;
 import co.secretonline.tinyflowers.blocks.TinyGardenBlockEntity;
-import co.secretonline.tinyflowers.client.model.TinyFlowerModelHolder;
+import co.secretonline.tinyflowers.platform.Services;
 import co.secretonline.tinyflowers.resources.TinyFlowerResources;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -86,18 +87,19 @@ public class TinyGardenBlockEntityRenderer
 			return;
 		}
 
-		Identifier part = switch (index) {
+		Identifier partId = switch (index) {
 			case 1 -> resources.model1();
 			case 2 -> resources.model2();
 			case 3 -> resources.model3();
 			case 4 -> resources.model4();
 			default -> throw new IllegalArgumentException("Invalid flower index " + index);
 		};
-		if (part == null) {
+		if (partId == null) {
 			return;
 		}
 
-		BlockStateModel model = TinyFlowerModelHolder.getModel(part);
+		Minecraft minecraft = Minecraft.getInstance();
+		BlockStateModel model = Services.FLOWER_MODELS.getModel(minecraft, partId);
 		if (model == null) {
 			return;
 		}

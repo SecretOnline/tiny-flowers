@@ -10,10 +10,13 @@ public class FabricTinyFlowers implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		TinyFlowers.initialize();
 
 		DynamicRegistries.registerSynced(ModRegistries.TINY_FLOWER, TinyFlowerData.CODEC);
 
 		FabricCreativeTabEvents.register();
+	}
+
+	static {
+		TinyFlowers.initialize();
 	}
 }

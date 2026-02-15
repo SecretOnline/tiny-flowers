@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class ModBlocks {
 	private static final Identifier TINY_GARDEN_ID = TinyFlowers.id("tiny_garden");
 	public static final Supplier<Block> TINY_GARDEN_BLOCK = Services.REGISTRY.registerBlock(
-		TinyFlowers.id("tiny_garden"),
+		TINY_GARDEN_ID,
 		() -> new TinyGardenBlock(BlockBehaviour.Properties.of()
 			.mapColor(MapColor.PLANT)
 			.noCollision()
