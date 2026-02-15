@@ -19,7 +19,6 @@ import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.NonNull;
 
 public record GardenContentsComponent(Identifier flower1, Identifier flower2, Identifier flower3, Identifier flower4)
@@ -28,7 +27,7 @@ public record GardenContentsComponent(Identifier flower1, Identifier flower2, Id
 	public static final String EMPTY_TEXT = "block.tiny_flowers.tiny_garden.empty";
 
 	@Override
-	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
+	public boolean canSurviveOn(LevelReader level, BlockPos pos) {
 		for (Identifier identifier : new Identifier[] { flower1, flower2, flower3, flower4 }) {
 			if (identifier == null) {
 				continue;
@@ -39,7 +38,7 @@ public record GardenContentsComponent(Identifier flower1, Identifier flower2, Id
 				continue;
 			}
 
-			if (!flowerData.canSurviveOn(state, level, pos)) {
+			if (!flowerData.canSurviveOn(level, pos)) {
 				return false;
 			}
 		}

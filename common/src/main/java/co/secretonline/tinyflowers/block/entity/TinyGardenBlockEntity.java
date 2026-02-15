@@ -66,14 +66,14 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 	}
 
 	@Override
-	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
+	public boolean canSurviveOn(LevelReader level, BlockPos pos) {
 		for (Identifier identifier : this.getFlowers()) {
 			TinyFlowerData flowerData = TinyFlowerData.findById(level.registryAccess(), identifier);
 			if (flowerData == null) {
 				continue;
 			}
 
-			if (!flowerData.canSurviveOn(state, level, pos)) {
+			if (!flowerData.canSurviveOn(level, pos)) {
 				return false;
 			}
 		}

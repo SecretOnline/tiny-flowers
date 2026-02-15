@@ -45,19 +45,17 @@ public class TinyFlowerItem extends BlockItem {
 
 	private boolean checkSupportingBlock(BlockPlaceContext context) {
 		Level level = context.getLevel();
-		RegistryAccess registryAccess = level.registryAccess();
 		ItemStack itemStack = context.getItemInHand();
 		BlockPos supportingPos = context.getClickedPos().below();
-		BlockState supportingBlockState = level.getBlockState(supportingPos);
 
 		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS.get());
 		if (gardenComponent != null) {
-			return gardenComponent.canSurviveOn(supportingBlockState, level, supportingPos);
+			return gardenComponent.canSurviveOn(level, supportingPos);
 		}
 
 		TinyFlowerComponent tinyFlowerComponent = itemStack.get(ModComponents.TINY_FLOWER.get());
 		if (tinyFlowerComponent != null) {
-			return tinyFlowerComponent.canSurviveOn(supportingBlockState, level, supportingPos);
+			return tinyFlowerComponent.canSurviveOn(level, supportingPos);
 		}
 
 		return false;

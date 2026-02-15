@@ -48,8 +48,7 @@ public class FloristsShearsItem extends ShearsItem {
 			// Ensure the block underneath can support the tiny flower variant. This is
 			// likely, given the block was previously holding the original block.
 			BlockPos supportingPos = pos.below();
-			BlockState supportingBlockState = level.getBlockState(supportingPos);
-			if (!prevData.canSurviveOn(supportingBlockState, level, supportingPos)) {
+			if (!prevData.canSurviveOn(level, supportingPos)) {
 				return InteractionResult.FAIL;
 			}
 

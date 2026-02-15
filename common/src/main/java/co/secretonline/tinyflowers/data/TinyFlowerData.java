@@ -73,7 +73,9 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 														 @NonNull List<Behavior> behaviors)
 	implements SuspiciousEffectHolder, Survivable {
 
-	public boolean canSurviveOn(BlockState state, LevelReader level, BlockPos pos) {
+	public boolean canSurviveOn(LevelReader level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+
 		for (Behavior behavior : behaviors) {
 			if (behavior instanceof SturdyPlacementBehavior && state.isFaceSturdy(level, pos, Direction.UP)) {
 				return true;
