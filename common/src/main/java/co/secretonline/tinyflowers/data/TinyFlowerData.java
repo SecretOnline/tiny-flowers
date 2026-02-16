@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
-import co.secretonline.tinyflowers.helper.Survivable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;

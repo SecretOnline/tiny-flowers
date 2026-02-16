@@ -1,18 +1,14 @@
 package co.secretonline.tinyflowers.data.behavior;
 
-import java.util.Optional;
-
+import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -21,6 +17,8 @@ import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
+
+import java.util.Optional;
 
 /**
  * @param when            When this tiny flower will transform into
@@ -42,8 +40,7 @@ public record TransformDayNightBehavior(When when, Identifier turnsInto, Integer
 																				Optional<Identifier> soundEventShort) implements Behavior {
 
 	@Override
-	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level,
-																			 BlockPos pos, RandomSource random) {
+	public boolean shouldActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		TriState openTriState = level.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
 		if (openTriState == TriState.DEFAULT) {
 			return false;
@@ -53,8 +50,7 @@ public record TransformDayNightBehavior(When when, Identifier turnsInto, Integer
 	}
 
 	@Override
-	public void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level,
-																BlockPos pos, RandomSource random) {
+	public void onActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		entity.setFlower(index, this.turnsInto());
 	}
 
@@ -66,8 +62,7 @@ public record TransformDayNightBehavior(When when, Identifier turnsInto, Integer
 	}
 
 	@Override
-	public void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource,
-														boolean isRandomTick) {
+	public void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource, boolean isRandomTick) {
 		if (this.particleColor != 0) {
 			Vec3 center = blockPos.getCenter();
 			double scale = 0.5 + randomSource.nextDouble();
@@ -80,12 +75,8 @@ public record TransformDayNightBehavior(When when, Identifier turnsInto, Integer
 		}
 
 		Optional<Identifier> soundEventId = isRandomTick ? this.soundEventLong : this.soundEventShort;
-		if (soundEventId.isPresent()) {
-			Optional<SoundEvent> soundEvent = BuiltInRegistries.SOUND_EVENT.getOptional(soundEventId.get());
-			if (soundEvent.isPresent()) {
-				serverLevel.playSound(null, blockPos, soundEvent.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-			}
-		}
+		soundEventId.flatMap(BuiltInRegistries.SOUND_EVENT::getOptional)
+			.ifPresent(event -> serverLevel.playSound(null, blockPos, event, SoundSource.BLOCKS, 1.0F, 1.0F));
 	}
 
 	public static final MapCodec<TransformDayNightBehavior> MAP_CODEC = RecordCodecBuilder

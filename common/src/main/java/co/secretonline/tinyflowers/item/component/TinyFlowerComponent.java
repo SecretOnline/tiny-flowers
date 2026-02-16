@@ -3,7 +3,7 @@ package co.secretonline.tinyflowers.item.component;
 import com.mojang.serialization.Codec;
 
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.helper.Survivable;
+import co.secretonline.tinyflowers.data.Survivable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;

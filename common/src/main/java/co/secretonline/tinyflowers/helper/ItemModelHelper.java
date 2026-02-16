@@ -34,10 +34,6 @@ public final class ItemModelHelper {
 	}
 
 	private static ItemModel.Unbaked modelForIdentifier(Identifier id) {
-		return ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(
-			id,
-			TextureMapping.layer0(id),
-			(_, _) -> {
-			}));
+		return ItemModelUtils.plainModel(id);
 	}
 }
