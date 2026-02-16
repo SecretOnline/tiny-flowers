@@ -16,14 +16,18 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+The big headline feature of this release is that this mod can now support having flower types added by other mods! This is something that would have been near-impossible with v1 of the mod, and I'm very glad that it's now possible. There was a big internal rewrite of the mod's code, but it is now easier to add new flowers in a way that doesn't make the game slower and more memory-hungry every time a new one is added.
+
+Oh, and the mod is now available on NeoForge as well as Fabric. That's a big change too.
+
 ### Known Issues
 
-This is a ground-up rewrite of the mod, and is not compatible with any previous versions.
-
-Due to how different v1 is from v2, I wasn't able to find a nice way of upgrading worlds. As such, when you use v2 for the first time in an existing world, all previously made Tiny Flower items and blocks will be removed.
+- Worlds that used v1 of Tiny Flowers will not be upgraded to v2.
+  - Any previously created flower items and blocks will be removed from the world.
 
 ### Added
 
+- Support for NeoForge.
 - After creating Florists' Shears with regular shears and a single dye, you can now use more dyes to re-color your Florists' Shears to almost any color possible.
 - You can now use multiple Tiny Flowers when crafting Suspicious Stew.
   - Adding more of the same type of flower will increase the duration.
@@ -31,13 +35,13 @@ Due to how different v1 is from v2, I wasn't able to find a nice way of upgradin
 - Tiny Cactus Flowers and Leaf Litter can be placed and mixed on top of any block that Leaf Litter can be placed on.
 - For mod developers:
   - This mod is now entirely data-driven. This means you can use JSON files to add new Tiny Flower types.
-  - Read the README in GitHub for more information about what files are required.
+  - Read [the README in GitHub](https://github.com/SecretOnline/tiny-flowers/blob/main/README.md) for more information about what files are required.
   - The `misc/tiny_dirt_flower` directory of this mod's source code contains an example mod containing only JSON and textures.
   - I've also made [a mod generator](https://tiny-flowers-generator.secretonline.co/) to create packs of Tiny Flowers entirely within the browser.
 
 ### Fixed
 
-- Game startup times should be massively improved :)
+- Game startup times should be massively improved.
 - Combining two Florists' Shears together to combine the durability no longer leaves the old shears in the crafting menu.
 
 ## v1.5.1 - 2026-02-02
