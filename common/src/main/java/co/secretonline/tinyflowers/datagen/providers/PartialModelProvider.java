@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.datagen;
+package co.secretonline.tinyflowers.datagen.providers;
 
 /**
  * Minecraft does validation to ensure that model providers provide models for all variations (items, blocks, block states).

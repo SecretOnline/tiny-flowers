@@ -1,7 +1,8 @@
 package co.secretonline.tinyflowers.datagen;
 
-import co.secretonline.tinyflowers.datagen.mods.TinyFlowersDatagenHelper;
-import co.secretonline.tinyflowers.datagen.mods.VanillaDatagenHelper;
+import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
+import co.secretonline.tinyflowers.datagen.mods.TinyFlowersFlowerProvider;
+import co.secretonline.tinyflowers.datagen.mods.VanillaFlowerProvider;
 import co.secretonline.tinyflowers.datagen.providers.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -13,15 +14,15 @@ public class FabricTinyFlowersDataGenerator implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-		pack.addProvider(ItemTagProvider::new);
-		pack.addProvider(BlockTagProvider::new);
-		pack.addProvider(FloristsShearsRecipeProvider::new);
-		pack.addProvider(DefaultModelProvider::new);
+		pack.addProvider(FabricItemTagProvider::new);
+		pack.addProvider(FabricBlockTagProvider::new);
+		pack.addProvider(FabricFloristsShearsRecipeProvider::new);
+		pack.addProvider(FabricDefaultModelProvider::new);
 
-		List<ModDatagenHelper> mods = List.of(
-			new TinyFlowersDatagenHelper(),
-			new VanillaDatagenHelper());
-		for (ModDatagenHelper mod : mods) {
+		List<FlowerProvider> mods = List.of(
+			new TinyFlowersFlowerProvider(),
+			new VanillaFlowerProvider());
+		for (FlowerProvider mod : mods) {
 			pack.addProvider((output,_) -> new FabricModFlowersProvider(mod, output));
 			pack.addProvider((output,_) -> new FabricModModelProvider(mod, output));
 		}

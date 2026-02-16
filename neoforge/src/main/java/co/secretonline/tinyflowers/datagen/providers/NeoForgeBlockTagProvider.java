@@ -11,8 +11,8 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BlockTagProvider extends BlockTagsProvider {
-	public BlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+public class NeoForgeBlockTagProvider extends BlockTagsProvider {
+	public NeoForgeBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(output, lookupProvider, TinyFlowers.MOD_ID);
 	}
 

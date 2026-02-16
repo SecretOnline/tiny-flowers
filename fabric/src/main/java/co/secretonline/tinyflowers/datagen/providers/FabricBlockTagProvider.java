@@ -10,8 +10,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
 import org.jspecify.annotations.NonNull;
 
-public class BlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
-	public BlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class FabricBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
+	public FabricBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 

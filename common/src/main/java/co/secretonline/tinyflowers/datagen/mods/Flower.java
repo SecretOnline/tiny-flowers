@@ -1,26 +1,14 @@
-package co.secretonline.tinyflowers.datagen;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiConsumer;
-
-import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
-import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+package co.secretonline.tinyflowers.datagen.mods;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.data.behavior.Behavior;
-import co.secretonline.tinyflowers.data.behavior.TransformDayNightBehavior;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import co.secretonline.tinyflowers.data.TinyFlowerResources.TintSource;
+import co.secretonline.tinyflowers.data.behavior.Behavior;
+import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
+import co.secretonline.tinyflowers.data.behavior.TransformDayNightBehavior;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Holder;
@@ -34,27 +22,62 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
 import net.minecraft.world.level.block.Block;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-public class TinyFlowersDatagenData {
+import java.util.*;
+import java.util.function.BiConsumer;
+
+public class Flower {
 	private static final String MOD_ID_PREFIX = TinyFlowers.MOD_ID + "/";
 	private static final String BLOCK_MOD_PREFIX = "block/" + MOD_ID_PREFIX;
 
-	private Identifier id;
-	private Identifier itemTexture;
-	private Identifier originalBlockId;
-	private boolean isSegmentable;
 	@NonNull
-	private List<Entry> suspiciousStewEffects;
+	private final Identifier id;
 	@NonNull
-	private List<TagOrElementLocation> canSurviveOn;
-	private TintSource tintSource = TintSource.GRASS;
+	private final Identifier itemTexture;
 	@NonNull
-	private List<Behavior> behaviors;
+	private final Identifier originalBlockId;
+	private final boolean isSegmentable;
 
-	private ModelPart modelPart1;
-	private ModelPart modelPart2;
-	private ModelPart modelPart3;
-	private ModelPart modelPart4;
+	@NonNull
+	private final List<Entry> suspiciousStewEffects;
+	@NonNull
+	private final List<TagOrElementLocation> canSurviveOn;
+	@NonNull
+	private final TintSource tintSource;
+	@NonNull
+	private final List<Behavior> behaviors;
+
+	@NonNull
+	private final ModelPart modelPart1;
+	@NonNull
+	private final ModelPart modelPart2;
+	@NonNull
+	private final ModelPart modelPart3;
+	@NonNull
+	private final ModelPart modelPart4;
+
+	private Flower(@NonNull Identifier id, @NonNull Identifier itemTexture, @NonNull Identifier originalBlockId, boolean isSegmentable,
+								 @NonNull List<Entry> suspiciousStewEffects, @NonNull List<TagOrElementLocation> canSurviveOn,
+								 @NonNull TintSource tintSource, @NonNull List<Behavior> behaviors,
+								 @NonNull ModelPart modelPart1, @NonNull ModelPart modelPart2, @NonNull ModelPart modelPart3, @NonNull ModelPart modelPart4) {
+		this.id = id;
+		this.itemTexture = itemTexture;
+		this.originalBlockId = originalBlockId;
+		this.isSegmentable = isSegmentable;
+
+		this.suspiciousStewEffects = suspiciousStewEffects;
+		this.canSurviveOn = canSurviveOn;
+
+		this.tintSource = tintSource;
+		this.behaviors = behaviors;
+
+		this.modelPart1 = modelPart1;
+		this.modelPart2 = modelPart2;
+		this.modelPart3 = modelPart3;
+		this.modelPart4 = modelPart4;
+	}
 
 	public TinyFlowerData data() {
 		return new TinyFlowerData(id, originalBlockId, isSegmentable, canSurviveOn, suspiciousStewEffects, behaviors);
@@ -62,18 +85,18 @@ public class TinyFlowersDatagenData {
 
 	public TinyFlowerResources resources() {
 		return new TinyFlowerResources(id, itemTexture, tintSource,
-				modelPart1.id().withPrefix(BLOCK_MOD_PREFIX),
-				modelPart2.id().withPrefix(BLOCK_MOD_PREFIX),
-				modelPart3.id().withPrefix(BLOCK_MOD_PREFIX),
-				modelPart4.id().withPrefix(BLOCK_MOD_PREFIX));
+			modelPart1.id().withPrefix(BLOCK_MOD_PREFIX),
+			modelPart2.id().withPrefix(BLOCK_MOD_PREFIX),
+			modelPart3.id().withPrefix(BLOCK_MOD_PREFIX),
+			modelPart4.id().withPrefix(BLOCK_MOD_PREFIX));
 	}
 
 	public ModelParts modelParts() {
 		return new ModelParts(
-				modelPart1,
-				modelPart2,
-				modelPart3,
-				modelPart4);
+			modelPart1,
+			modelPart2,
+			modelPart3,
+			modelPart4);
 	}
 
 	public record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures) {
@@ -83,9 +106,7 @@ public class TinyFlowersDatagenData {
 			jsonObject.addProperty("parent", parent.toString());
 			if (!textures.isEmpty()) {
 				JsonObject texturesObject = new JsonObject();
-				textures.forEach((textureSlot, identifier) -> {
-					texturesObject.addProperty(textureSlot, identifier.toString());
-				});
+				textures.forEach((textureSlot, identifier) -> texturesObject.addProperty(textureSlot, identifier.toString()));
 				jsonObject.add("textures", texturesObject);
 			}
 
@@ -104,49 +125,59 @@ public class TinyFlowersDatagenData {
 		private static final String FLOWERBED_MIDDLE = ("flowerbed_middle");
 		private static final String FLOWERBED_UPPER = ("flowerbed_upper");
 
+		@Nullable
 		private Identifier id;
+		@Nullable
 		private Identifier itemTexture;
+		@Nullable
 		private Identifier originalBlockId;
 		private boolean isSegmentable = false;
+		@NonNull
 		private final List<Entry> suspiciousStewEffects = new ArrayList<>();
+		@NonNull
 		private List<TagOrElementLocation> canSurviveOn = new ArrayList<>(
-				List.of(new TagOrElementLocation(BlockTags.SUPPORTS_VEGETATION.location(), true)));
+			List.of(new TagOrElementLocation(BlockTags.SUPPORTS_VEGETATION.location(), true)));
 		@NonNull
 		private final List<Behavior> behaviors = new ArrayList<>();
 
 		private int layers = 0;
 		private boolean untintedStem = false;
+		@Nullable
 		private Identifier stemTexture = null;
+		@Nullable
 		private Identifier particleTexture = null;
+		@NonNull
 		private final Map<String, Identifier> textureMap = new HashMap<>();
+		@Nullable
 		private Identifier customModel = null;
+		@NonNull
 		private TintSource tintSource = TintSource.GRASS;
 
 		public static Builder ofCustom(Identifier id, Identifier originalBlockId) {
 			return new Builder()
-					.id(id)
-					.itemTexture(id)
-					.originalBlockId(originalBlockId)
-					.layers(id);
+				.id(id)
+				.itemTexture(id)
+				.originalBlockId(originalBlockId)
+				.layers(id);
 		}
 
 		public static Builder ofSegmented(Identifier originalBlockId) {
 			return new Builder()
-					.id(originalBlockId)
-					.itemTexture(originalBlockId)
-					.originalBlockId(originalBlockId)
-					.segmentable()
-					.layers(originalBlockId);
+				.id(originalBlockId)
+				.itemTexture(originalBlockId)
+				.originalBlockId(originalBlockId)
+				.segmentable()
+				.layers(originalBlockId);
 		}
 
 		public static Builder ofStandard(Identifier originalBlockId) {
 			Identifier id = originalBlockId.withPrefix("tiny_");
 
 			return new Builder()
-					.id(id)
-					.itemTexture(id)
-					.originalBlockId(originalBlockId)
-					.layers(id);
+				.id(id)
+				.itemTexture(id)
+				.originalBlockId(originalBlockId)
+				.layers(id);
 		}
 
 		public Builder id(Identifier id) {
@@ -253,43 +284,42 @@ public class TinyFlowersDatagenData {
 			return this;
 		}
 
-		public Builder addTransformDayNightBehaviour(TransformDayNightBehavior.When when, Identifier turnsInto) {
-			return this.addTransformDayNightBehaviour(when, turnsInto, 0, null, null);
+		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, Identifier turnsInto) {
+			return this.addTransformDayNightBehavior(when, turnsInto, 0, null, null);
 		}
 
-		public Builder addTransformDayNightBehaviour(TransformDayNightBehavior.When when, Identifier turnsInto,
-																								 int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
+		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, Identifier turnsInto,
+																								int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
 			Optional<Identifier> longOptional = (soundEventLong == null ? Optional.empty()
-					: Optional.of(soundEventLong.location()));
+				: Optional.of(soundEventLong.location()));
 			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
-					: Optional.of(soundEventShort.location()));
+				: Optional.of(soundEventShort.location()));
 
 			this.behaviors.add(new TransformDayNightBehavior(when, turnsInto, particleColor,
-					longOptional, shortOptional));
+				longOptional, shortOptional));
 
 			return this;
 		}
 
-		public Builder addSturdyPlacementBehaviour() {
+		public Builder addSturdyPlacementBehavior() {
 			this.behaviors.add(new SturdyPlacementBehavior(true));
 
 			return this;
 		}
 
-		public TinyFlowersDatagenData build() {
-			TinyFlowersDatagenData data = new TinyFlowersDatagenData();
-
-			data.id = id;
-			data.itemTexture = itemTexture;
-			data.originalBlockId = originalBlockId;
-			data.isSegmentable = isSegmentable;
-			data.suspiciousStewEffects = suspiciousStewEffects;
-			data.canSurviveOn = canSurviveOn;
-			data.tintSource = tintSource;
-			data.behaviors = behaviors;
-
+		public Flower build() {
 			if (layers == 0 && customModel == null) {
 				throw new Error("TinyFlowerResources.Builder: layers() or special() must be called once.");
+			}
+
+			if (id == null) {
+				throw new Error("TinyFlowerResources.Builder: id is null");
+			}
+			if (itemTexture == null) {
+				throw new Error("TinyFlowerResources.Builder: itemTexture is null");
+			}
+			if (originalBlockId == null) {
+				throw new Error("TinyFlowerResources.Builder: originalBlockId is null");
 			}
 
 			Identifier parentId = null;
@@ -326,12 +356,15 @@ public class TinyFlowersDatagenData {
 				textureMap.put("particle", this.particleTexture);
 			}
 
-			data.modelPart1 = new ModelPart(id.withSuffix("_1"), parentId.withSuffix("_1"), textureMap);
-			data.modelPart2 = new ModelPart(id.withSuffix("_2"), parentId.withSuffix("_2"), textureMap);
-			data.modelPart3 = new ModelPart(id.withSuffix("_3"), parentId.withSuffix("_3"), textureMap);
-			data.modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap);
+			ModelPart modelPart1 = new ModelPart(id.withSuffix("_1"), parentId.withSuffix("_1"), textureMap);
+			ModelPart modelPart2 = new ModelPart(id.withSuffix("_2"), parentId.withSuffix("_2"), textureMap);
+			ModelPart modelPart3 = new ModelPart(id.withSuffix("_3"), parentId.withSuffix("_3"), textureMap);
+			ModelPart modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap);
 
-			return data;
+			return new Flower(id, itemTexture, originalBlockId, isSegmentable,
+				suspiciousStewEffects, canSurviveOn, tintSource, behaviors,
+				modelPart1, modelPart2, modelPart3, modelPart4
+			);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
-import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
-import co.secretonline.tinyflowers.datagen.PartialModelProvider;
+import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -9,9 +8,9 @@ import net.minecraft.data.PackOutput;
 import org.jspecify.annotations.NonNull;
 
 public class NeoForgeModModelProvider extends ModelProvider implements PartialModelProvider {
-	private final ModDatagenHelper modData;
+	private final FlowerProvider modData;
 
-	public NeoForgeModModelProvider(ModDatagenHelper modData, PackOutput output) {
+	public NeoForgeModModelProvider(FlowerProvider modData, PackOutput output) {
 		super(output, modData.getModId());
 
 		this.modData = modData;

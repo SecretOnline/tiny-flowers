@@ -1,4 +1,4 @@
-package co.secretonline.tinyflowers.datagen;
+package co.secretonline.tinyflowers.datagen.mods;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public abstract class ModDatagenHelper {
+public abstract class FlowerProvider {
 	public abstract String getModId();
 
-	public abstract List<co.secretonline.tinyflowers.datagen.TinyFlowersDatagenData> getFlowerData();
+	public abstract List<Flower> getFlowers();
 
 	public void generateBlockStateModels(BiConsumer<Identifier, ModelInstance> modelOutput) {
-		for (TinyFlowersDatagenData tuple : this.getFlowerData()) {
-			TinyFlowersDatagenData.ModelParts models = tuple.modelParts();
+		for (Flower tuple : this.getFlowers()) {
+			Flower.ModelParts models = tuple.modelParts();
 
 			models.part1().outputModel(modelOutput);
 			models.part2().outputModel(modelOutput);
@@ -34,9 +34,9 @@ public abstract class ModDatagenHelper {
 	}
 
 	public void generateItemModels(ItemModelOutput itemModelOutput, BiConsumer<Identifier, ModelInstance> modelOutput) {
-		List<SelectItemModel.SwitchCase<TinyFlowerComponent>> list = this.getFlowerData()
+		List<SelectItemModel.SwitchCase<TinyFlowerComponent>> list = this.getFlowers()
 			.stream()
-			.map(tuple -> tuple.data())
+			.map(Flower::data)
 			.filter(flowerData -> !flowerData.isSegmentable())
 			.map(flowerData -> ItemModelUtils.when(
 				new TinyFlowerComponent(flowerData.id()),
