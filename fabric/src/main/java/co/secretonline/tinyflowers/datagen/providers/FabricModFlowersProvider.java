@@ -2,8 +2,8 @@ package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
-import co.secretonline.tinyflowers.datagen.TinyFlowersDatagenData;
+import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
+import co.secretonline.tinyflowers.datagen.mods.Flower;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.registries.Registries;
@@ -18,12 +18,12 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class FabricModFlowersProvider implements DataProvider {
-	private final ModDatagenHelper modData;
+	private final FlowerProvider modData;
 
 	private final PackOutput.PathProvider tinyFlowersData;
 	private final PackOutput.PathProvider tinyFlowersResources;
 
-	public FabricModFlowersProvider(ModDatagenHelper modData,
+	public FabricModFlowersProvider(FlowerProvider modData,
 																	FabricPackOutput packOutput) {
 
 		this.tinyFlowersData = packOutput.createRegistryElementsPathProvider(ModRegistries.TINY_FLOWER);
@@ -44,7 +44,7 @@ public class FabricModFlowersProvider implements DataProvider {
 		Map<Identifier, TinyFlowerData> flowerVariantData = new HashMap<>();
 		Map<Identifier, TinyFlowerResources> flowerVariantResources = new HashMap<>();
 
-		for (TinyFlowersDatagenData tuple : this.modData.getFlowerData()) {
+		for (Flower tuple : this.modData.getFlowers()) {
 			TinyFlowerData data = tuple.data();
 			TinyFlowerResources resources = tuple.resources();
 

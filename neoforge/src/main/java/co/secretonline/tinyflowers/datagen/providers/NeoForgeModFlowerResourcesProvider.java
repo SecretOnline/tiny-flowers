@@ -2,8 +2,8 @@ package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
-import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
-import co.secretonline.tinyflowers.datagen.TinyFlowersDatagenData;
+import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
+import co.secretonline.tinyflowers.datagen.mods.Flower;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -13,9 +13,9 @@ import org.jspecify.annotations.NonNull;
 import java.util.concurrent.CompletableFuture;
 
 public class NeoForgeModFlowerResourcesProvider extends JsonCodecProvider<TinyFlowerResources> {
-	private final ModDatagenHelper modData;
+	private final FlowerProvider modData;
 
-	public NeoForgeModFlowerResourcesProvider(ModDatagenHelper modData, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+	public NeoForgeModFlowerResourcesProvider(FlowerProvider modData, PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(
 			packOutput,
 			PackOutput.Target.RESOURCE_PACK,
@@ -35,7 +35,7 @@ public class NeoForgeModFlowerResourcesProvider extends JsonCodecProvider<TinyFl
 
 	@Override
 	protected void gather() {
-		for (TinyFlowersDatagenData tuple : this.modData.getFlowerData()) {
+		for (Flower tuple : this.modData.getFlowers()) {
 			this.unconditional(tuple.resources().id(), tuple.resources());
 		}
 	}

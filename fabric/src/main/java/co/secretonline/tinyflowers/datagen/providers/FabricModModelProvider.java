@@ -1,7 +1,6 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
-import co.secretonline.tinyflowers.datagen.ModDatagenHelper;
-import co.secretonline.tinyflowers.datagen.PartialModelProvider;
+import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -9,9 +8,9 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import org.jspecify.annotations.NonNull;
 
 public class FabricModModelProvider extends FabricModelProvider implements PartialModelProvider {
-	private final ModDatagenHelper modData;
+	private final FlowerProvider modData;
 
-	public FabricModModelProvider(ModDatagenHelper modData, FabricPackOutput output) {
+	public FabricModModelProvider(FlowerProvider modData, FabricPackOutput output) {
 		super(output);
 
 		this.modData = modData;

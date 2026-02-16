@@ -11,8 +11,8 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ItemTagProvider extends ItemTagsProvider {
-	public ItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+public class NeoForgeItemTagProvider extends ItemTagsProvider {
+	public NeoForgeItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(output, lookupProvider, TinyFlowers.MOD_ID);
 	}
 

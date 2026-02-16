@@ -1,6 +1,6 @@
 package co.secretonline.tinyflowers.mixin.datagen;
 
-import co.secretonline.tinyflowers.datagen.PartialModelProvider;
+import co.secretonline.tinyflowers.datagen.providers.PartialModelProvider;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.data.models.ModelProvider;
 import org.spongepowered.asm.mixin.Mixin;

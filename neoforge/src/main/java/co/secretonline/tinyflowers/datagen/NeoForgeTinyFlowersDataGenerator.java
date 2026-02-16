@@ -1,7 +1,8 @@
 package co.secretonline.tinyflowers.datagen;
 
-import co.secretonline.tinyflowers.datagen.mods.TinyFlowersDatagenHelper;
-import co.secretonline.tinyflowers.datagen.mods.VanillaDatagenHelper;
+import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
+import co.secretonline.tinyflowers.datagen.mods.TinyFlowersFlowerProvider;
+import co.secretonline.tinyflowers.datagen.mods.VanillaFlowerProvider;
 import co.secretonline.tinyflowers.datagen.providers.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,15 +15,15 @@ public class NeoForgeTinyFlowersDataGenerator {
 
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent.Client event) {
-		event.createProvider(BlockTagProvider::new);
-		event.createProvider(ItemTagProvider::new);
-		event.createProvider(FloristsShearsRecipeProvider::new);
-		event.createProvider(DefaultModelProvider::new);
+		event.createProvider(NeoForgeBlockTagProvider::new);
+		event.createProvider(NeoForgeItemTagProvider::new);
+		event.createProvider(NeoForgeFloristsShearsRecipeProvider::new);
+		event.createProvider(NeoForgeDefaultModelProvider::new);
 
-		List<ModDatagenHelper> mods = List.of(
-			new VanillaDatagenHelper(),
-			new TinyFlowersDatagenHelper());
-		for (ModDatagenHelper mod : mods) {
+		List<FlowerProvider> mods = List.of(
+			new VanillaFlowerProvider(),
+			new TinyFlowersFlowerProvider());
+		for (FlowerProvider mod : mods) {
 			event.createProvider((output, registryLookup) -> new NeoForgeModFlowerDataProvider(mod, output, registryLookup));
 			event.createProvider((output, registryLookup) -> new NeoForgeModFlowerResourcesProvider(mod, output, registryLookup));
 			event.createProvider((output) -> new NeoForgeModModelProvider(mod, output));
