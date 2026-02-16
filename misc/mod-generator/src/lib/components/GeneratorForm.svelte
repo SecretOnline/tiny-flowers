@@ -38,7 +38,7 @@
         parentModel: { type: "prefix", prefix: "" },
         blockTextures: [],
         isExpanded: true,
-        specialFeatures: [],
+        behaviors: [],
       },
     ],
   });
@@ -56,7 +56,7 @@
       parentModel: { type: "prefix", prefix: "" },
       blockTextures: [],
       isExpanded: true,
-      specialFeatures: [],
+      behaviors: [],
     });
   }
 
