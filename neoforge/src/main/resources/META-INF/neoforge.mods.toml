@@ -25,3 +25,6 @@ type="required"
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
+[mc-publish]
+modrinth   = "tiny-flowers"
+curseforge = 1183435
