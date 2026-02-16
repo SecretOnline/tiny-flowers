@@ -2,6 +2,7 @@ package co.secretonline.tinyflowers;
 
 import co.secretonline.tinyflowers.block.entity.ModBlockEntities;
 import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.item.ModCreativeModeTabs;
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
@@ -19,10 +20,11 @@ public class FabricTinyFlowers implements ModInitializer {
 		ModComponents.initialize();
 		ModItems.initialize();
 		ModRecipeSerializers.initialize();
+		ModCreativeModeTabs.initialize();
 
 		DynamicRegistries.registerSynced(ModRegistries.TINY_FLOWER, TinyFlowerData.CODEC);
 
-		FabricCreativeTabHandler.register();
+		FabricCreativeTabHandler.addShearsItems();
 		FabricCreativeTabHandler.addTinyFlowerItems();
 	}
 }
