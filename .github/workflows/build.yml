@@ -44,11 +44,21 @@ jobs:
       - name: Build
         run: ./gradlew clean build
 
-      - name: Upload artifacts
+      - name: Upload Fabric build artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: build
-          path: build/libs/
+          name: build-fabric
+          path: "fabric/build/libs/*.jar"
+          include-hidden-files: true
+          if-no-files-found: error
+
+      - name: Upload Neoforge build artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: build-neoforge
+          path: "neoforge/build/libs/*.jar"
+          include-hidden-files: true
+          if-no-files-found: error
 
   check-datagen:
     name: Check data generation
@@ -79,11 +89,18 @@ jobs:
           java-version: ${{ steps.get-minecraft-version.outputs.java-version }}
           distribution: "zulu"
 
-      - name: Build
-        run: ./gradlew clean runDatagen
+      - name: Clean
+        run: ./gradlew clean
+
+      - name: Run datagen (Fabric)
+        run: ./gradlew runDatagen
+
+      - name: Run datagen (NeoForge)
+        run: ./gradlew runData
 
       - name: Check changes
         run: |
-          git diff --exit-code src/main/generated
+          git diff --exit-code fabric/src/main/generated
+          git diff --exit-code neoforge/src/main/generated
 
   # TODO: add job to do gametest
