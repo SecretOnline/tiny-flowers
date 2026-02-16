@@ -4,6 +4,7 @@ import co.secretonline.tinyflowers.block.ModBlocks;
 import co.secretonline.tinyflowers.block.entity.ModBlockEntities;
 import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
+import co.secretonline.tinyflowers.item.ModCreativeModeTabs;
 import co.secretonline.tinyflowers.item.ModItems;
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.crafting.ModRecipeSerializers;
@@ -11,7 +12,6 @@ import co.secretonline.tinyflowers.platform.NeoForgeRegistryHelper;
 import co.secretonline.tinyflowers.platform.Services;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
@@ -25,14 +25,13 @@ public class NeoForgeTinyFlowers {
 		ModComponents.initialize();
 		ModItems.initialize();
 		ModRecipeSerializers.initialize();
+		ModCreativeModeTabs.initialize();
 
 		if (Services.REGISTRY instanceof NeoForgeRegistryHelper neoForgeRegistryHelper) {
 			neoForgeRegistryHelper.registerToBus(modBus);
 		} else {
 			throw new NullPointerException("Registry helper was not for NeoForge");
 		}
-
-		NeoForgeCreativeTabHandler.registerToBus(modBus);
 	}
 
 	@SubscribeEvent

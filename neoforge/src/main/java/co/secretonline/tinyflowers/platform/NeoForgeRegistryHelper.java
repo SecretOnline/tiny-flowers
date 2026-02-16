@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +24,7 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 	public static final DeferredRegister<Item> ITEM = DeferredRegister.create(BuiltInRegistries.ITEM, TinyFlowers.MOD_ID);
 	public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPE = DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, TinyFlowers.MOD_ID);
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, TinyFlowers.MOD_ID);
+	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, TinyFlowers.MOD_ID);
 
 	public void registerToBus(IEventBus modBus) {
 		BLOCK.register(modBus);
@@ -31,6 +33,7 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 		ITEM.register(modBus);
 		DATA_COMPONENT_TYPE.register(modBus);
 		RECIPE_SERIALIZER.register(modBus);
+		CREATIVE_MODE_TAB.register(modBus);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,6 +55,9 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 		}
 		if (registryEquals(registry, BuiltInRegistries.RECIPE_SERIALIZER)) {
 			return (DeferredRegister<T>) RECIPE_SERIALIZER;
+		}
+		if (registryEquals(registry, BuiltInRegistries.CREATIVE_MODE_TAB)) {
+			return (DeferredRegister<T>) CREATIVE_MODE_TAB;
 		}
 
 		throw new IllegalArgumentException("No registry linked in NeoForge to register type: " + registry.key());
