@@ -51,13 +51,13 @@ public class TransformHelper {
 				continue;
 			}
 
-			for (Behavior feature : flowerData.behaviors()) {
-				if (feature.shouldActivateFeature(gardenBlockEntity, i, currentState, world, pos, random)) {
+			for (Behavior behavior : flowerData.behaviors()) {
+				if (behavior.shouldActivate(gardenBlockEntity, i, currentState, world, pos, random)) {
 					didChange = true;
-					feature.onActivateFeature(gardenBlockEntity, i, currentState, world, pos, random);
+					behavior.onActivate(gardenBlockEntity, i, currentState, world, pos, random);
 
-					if (feature.hasWorldEffect()) {
-						featuresWithWorldEffect.add(feature);
+					if (behavior.hasWorldEffect()) {
+						featuresWithWorldEffect.add(behavior);
 					}
 				}
 			}
@@ -128,7 +128,7 @@ public class TransformHelper {
 					}
 
 					for (Behavior feature : flowerData.behaviors()) {
-						if (feature.shouldActivateFeature(gardenBlockEntity, i, state, world, pos, random)) {
+						if (feature.shouldActivate(gardenBlockEntity, i, state, world, pos, random)) {
 							scheduleBlockTick(world, pos, otherPos, ModBlocks.TINY_GARDEN_BLOCK.get(), random);
 							didNotify = true;
 							break;

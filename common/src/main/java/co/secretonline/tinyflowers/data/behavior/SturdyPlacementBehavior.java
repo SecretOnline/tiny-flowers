@@ -14,12 +14,12 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public record SturdyPlacementBehavior(boolean isReallyCool) implements Behavior {
 	@Override
-	public boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	public boolean shouldActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		return false;
 	}
 
 	@Override
-	public void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	public void onActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 	}
 
 	@Override

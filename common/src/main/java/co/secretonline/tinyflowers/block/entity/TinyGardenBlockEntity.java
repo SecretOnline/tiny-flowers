@@ -11,7 +11,7 @@ import co.secretonline.tinyflowers.item.component.GardenContentsComponent;
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.helper.Survivable;
+import co.secretonline.tinyflowers.data.Survivable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;

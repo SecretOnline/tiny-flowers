@@ -11,23 +11,20 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface Behavior {
-	boolean shouldActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
-																BlockPos pos, RandomSource random);
+	boolean shouldActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random);
 
-	void onActivateFeature(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world,
-												 BlockPos pos, RandomSource random);
+	void onActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random);
 
 	boolean hasWorldEffect();
 
-	void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource,
-										 boolean isRandomTick);
+	void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource, boolean isRandomTick);
 
 	MapCodec<? extends Behavior> getMapCodec();
 
 	Codec<Behavior> CODEC = new ExtraCodecs.LateBoundIdMapper<String, MapCodec<? extends Behavior>>()
-			.put("transform_day_night", TransformDayNightBehavior.MAP_CODEC)
-			.put("transform_weather", TransformWeatherBehavior.MAP_CODEC)
-			.put("sturdy_placement", SturdyPlacementBehavior.MAP_CODEC)
-			.codec(Codec.STRING)
-			.dispatch(Behavior::getMapCodec, (mapCodec) -> mapCodec);
+		.put("transform_day_night", TransformDayNightBehavior.MAP_CODEC)
+		.put("transform_weather", TransformWeatherBehavior.MAP_CODEC)
+		.put("sturdy_placement", SturdyPlacementBehavior.MAP_CODEC)
+		.codec(Codec.STRING)
+		.dispatch(Behavior::getMapCodec, (mapCodec) -> mapCodec);
 }
