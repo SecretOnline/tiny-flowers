@@ -44,8 +44,6 @@ bin
 *.launch
 .settings
 .metadata
-.classpath
-.project
 
 # other
 eclipse
