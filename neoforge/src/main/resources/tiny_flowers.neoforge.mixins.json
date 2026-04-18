@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "co.secretonline.tinyflowers.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "particle.NeoForgeTerrainParticleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

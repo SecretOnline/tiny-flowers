@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_azure_bluet",
+  "original_id": "minecraft:azure_bluet",
+  "suspicious_stew_effects": [
+    {
+      "duration": 220,
+      "id": "minecraft:blindness"
+    }
+  ]
+}

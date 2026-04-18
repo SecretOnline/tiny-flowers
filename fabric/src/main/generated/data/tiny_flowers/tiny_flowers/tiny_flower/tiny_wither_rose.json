@@ -1,0 +1,16 @@
+{
+  "can_survive_on": [
+    "#minecraft:supports_vegetation",
+    "minecraft:netherrack",
+    "minecraft:soul_sand",
+    "minecraft:soul_soil"
+  ],
+  "id": "tiny_flowers:tiny_wither_rose",
+  "original_id": "minecraft:wither_rose",
+  "suspicious_stew_effects": [
+    {
+      "duration": 140,
+      "id": "minecraft:wither"
+    }
+  ]
+}

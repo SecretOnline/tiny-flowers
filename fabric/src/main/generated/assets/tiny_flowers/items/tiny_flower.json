@@ -1,0 +1,131 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_dandelion"
+        },
+        "when": "tiny_flowers:tiny_dandelion"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_poppy"
+        },
+        "when": "tiny_flowers:tiny_poppy"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_blue_orchid"
+        },
+        "when": "tiny_flowers:tiny_blue_orchid"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_allium"
+        },
+        "when": "tiny_flowers:tiny_allium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_azure_bluet"
+        },
+        "when": "tiny_flowers:tiny_azure_bluet"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_red_tulip"
+        },
+        "when": "tiny_flowers:tiny_red_tulip"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_orange_tulip"
+        },
+        "when": "tiny_flowers:tiny_orange_tulip"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_white_tulip"
+        },
+        "when": "tiny_flowers:tiny_white_tulip"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_pink_tulip"
+        },
+        "when": "tiny_flowers:tiny_pink_tulip"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_oxeye_daisy"
+        },
+        "when": "tiny_flowers:tiny_oxeye_daisy"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_cornflower"
+        },
+        "when": "tiny_flowers:tiny_cornflower"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_lily_of_the_valley"
+        },
+        "when": "tiny_flowers:tiny_lily_of_the_valley"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_torchflower"
+        },
+        "when": "tiny_flowers:tiny_torchflower"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_closed_eyeblossom"
+        },
+        "when": "tiny_flowers:tiny_closed_eyeblossom"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_open_eyeblossom"
+        },
+        "when": "tiny_flowers:tiny_open_eyeblossom"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_wither_rose"
+        },
+        "when": "tiny_flowers:tiny_wither_rose"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "tiny_flowers:item/tiny_cactus_flower"
+        },
+        "when": "tiny_flowers:tiny_cactus_flower"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "tiny_flowers:item/tiny_garden"
+    },
+    "property": "tiny_flowers:tiny_flower"
+  }
+}

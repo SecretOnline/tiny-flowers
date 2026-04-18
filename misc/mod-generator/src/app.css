@@ -1,0 +1,232 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-block: 0;
+}
+
+button,
+input,
+select {
+  font-size: inherit;
+  font-family: inherit;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+.file-input-facade {
+  flex-grow: 1;
+  width: unset;
+}
+
+.file-input-facade {
+  padding-inline: 4px;
+  padding-block: 1px;
+}
+
+label:not(.file-input-facade) {
+  font-weight: 600;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.layout-grid {
+  display: grid;
+  gap: 1rem;
+  overflow-x: hidden;
+}
+
+.layout-grid > * {
+  overflow-x: auto;
+}
+
+.inline-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.block-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.input-group {
+  background: #f5f5f5;
+  border: 2px solid lightgrey;
+  padding: 0.5rem;
+}
+
+.input-group-heading {
+  font-weight: 600;
+  margin: 0;
+}
+
+.input-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-inline-start: 0;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-inline: 4px;
+  padding-block: 1px;
+
+  border-width: 2px;
+  border-style: solid;
+  border-inline-start-color: #2079c0;
+  border-block-start-color: #2079c0;
+  border-inline-end-color: #054473;
+  border-block-end-color: #054473;
+  /* 248.09 */
+  background-color: #0167ac;
+  color: white;
+}
+.button:is(:hover, :active, :focus-within) {
+  background-color: #195a8f;
+}
+
+.icon-button,
+.checkbox {
+  margin: 0;
+  padding: 0;
+
+  width: 28px;
+  height: 28px;
+}
+
+.button svg,
+.checkbox svg {
+  fill: currentColor;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.text-input {
+  border-width: 2px;
+  border-style: solid;
+  border-inline-start-color: #aaaaaa;
+  border-block-start-color: #aaaaaa;
+  border-inline-end-color: #d3d3d3;
+  border-block-end-color: #d3d3d3;
+  /* 0 */
+  background-color: #fafafa;
+  color: black;
+}
+.text-input:not(:is(:read-only, :disabled)):is(:hover, :active, :focus-within) {
+  background-color: #e6e6e6;
+}
+.text-input:read-only,
+.text-input:disabled {
+  background-color: transparent;
+  color: #414141;
+}
+
+.checkbox {
+  border-width: 2px;
+  border-style: solid;
+  border-inline-start-color: #2079c0;
+  border-block-start-color: #2079c0;
+  border-inline-end-color: #054473;
+  border-block-end-color: #054473;
+  /* 0 */
+  background-color: #fafafa;
+  color: white;
+}
+.checkbox:not(:is(:disabled)):is(:hover, :active, :focus-within) {
+  background-color: #e6e6e6;
+}
+.checkbox:is(input:checked ~ .checkbox) {
+  border-inline-start-color: #318941;
+  border-block-start-color: #318941;
+  border-inline-end-color: #124f20;
+  border-block-end-color: #124f20;
+  /* 146.85 */
+  background-color: #1b7730;
+}
+.checkbox:is(input:checked ~ .checkbox):not(input:checked ~ :is(:disabled)):is(
+    :hover,
+    :active,
+    :focus-within
+  ) {
+  background-color: #256631;
+}
+.checkbox:is(input:checked ~ :is(:disabled)) {
+  filter: grayscale();
+}
+
+.color-delete {
+  border-inline-start-color: #a65c5a;
+  border-block-start-color: #a65c5a;
+  border-inline-end-color: #6c2829;
+  border-block-end-color: #6c2829;
+  /* 21.72 */
+  background-color: #a23c3f;
+}
+.color-delete:is(:hover, :active, :focus-within) {
+  background-color: #883a3b;
+}
+
+.color-add {
+  border-inline-start-color: #318941;
+  border-block-start-color: #318941;
+  border-inline-end-color: #124f20;
+  border-block-end-color: #124f20;
+  /* 146.85 */
+  background-color: #1b7730;
+}
+.color-add:is(:hover, :active, :focus-within) {
+  background-color: #256631;
+}
+
+.spin {
+  animation: Spin 4s linear infinite;
+}
+
+.slow-spin {
+  animation: Spin 40s linear infinite;
+}
+
+@keyframes Spin {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}

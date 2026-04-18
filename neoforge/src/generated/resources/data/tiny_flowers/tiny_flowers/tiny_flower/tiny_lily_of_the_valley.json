@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_lily_of_the_valley",
+  "original_id": "minecraft:lily_of_the_valley",
+  "suspicious_stew_effects": [
+    {
+      "duration": 220,
+      "id": "minecraft:poison"
+    }
+  ]
+}

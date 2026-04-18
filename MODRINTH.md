@@ -46,7 +46,11 @@ A big thank you to the following people for their work:
 
 - [Lucanoria](https://github.com/Lucanoria) - German (German, Austrian, and Swiss)
 
-If you want to help make this mod easier to use for everyone, then please don't hesitate to create a pull request adding/updating [the language files](https://github.com/SecretOnline/tiny-flowers/tree/main/src/main/resources/assets/tiny-flowers/lang) on GitHub.
+If you want to help make this mod easier to use for everyone, then please don't hesitate to create a pull request adding/updating [the language files](https://github.com/SecretOnline/tiny-flowers/tree/main/src/main/resources/assets/tiny_flowers/lang) on GitHub.
+
+## For mod developers
+
+Want to add your own Tiny Flowers? Check out the [Tiny Flower Pack Generator](https://tiny-flowers-generator.secretonline.co/) or the [documentation in the GitHub README](https://github.com/SecretOnline/tiny-flowers).
 
 ## License
 

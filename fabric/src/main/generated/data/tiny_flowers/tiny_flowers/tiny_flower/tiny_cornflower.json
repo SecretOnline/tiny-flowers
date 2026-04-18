@@ -1,0 +1,10 @@
+{
+  "id": "tiny_flowers:tiny_cornflower",
+  "original_id": "minecraft:cornflower",
+  "suspicious_stew_effects": [
+    {
+      "duration": 100,
+      "id": "minecraft:jump_boost"
+    }
+  ]
+}

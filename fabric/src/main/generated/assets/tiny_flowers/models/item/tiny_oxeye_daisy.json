@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tiny_flowers:item/tiny_oxeye_daisy"
+  }
+}

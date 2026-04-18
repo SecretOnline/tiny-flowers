@@ -1,0 +1,8 @@
+{
+  "id": "minecraft:pink_petals",
+  "item_model": "minecraft:item/pink_petals",
+  "model1": "minecraft:block/tiny_flowers/pink_petals_1",
+  "model2": "minecraft:block/tiny_flowers/pink_petals_2",
+  "model3": "minecraft:block/tiny_flowers/pink_petals_3",
+  "model4": "minecraft:block/tiny_flowers/pink_petals_4"
+}

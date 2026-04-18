@@ -1,0 +1,36 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "tiny_flowers:block/tiny_garden"
+      },
+      "when": {
+        "facing": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny_flowers:block/tiny_garden"
+      },
+      "when": {
+        "facing": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny_flowers:block/tiny_garden"
+      },
+      "when": {
+        "facing": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "tiny_flowers:block/tiny_garden"
+      },
+      "when": {
+        "facing": "west"
+      }
+    }
+  ]
+}

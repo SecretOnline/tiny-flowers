@@ -1,0 +1,10 @@
+{
+  "behaviors": [
+    {
+      "type": "sturdy_placement"
+    }
+  ],
+  "id": "minecraft:leaf_litter",
+  "is_segmented": true,
+  "original_id": "minecraft:leaf_litter"
+}
