@@ -41,19 +41,25 @@
   "icon": "assets/${mod_id}/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["co.secretonline.tinyflowers.FabricTinyFlowers"],
-    "client": ["co.secretonline.tinyflowers.FabricTinyFlowersClient"],
-    "fabric-datagen": ["co.secretonline.tinyflowers.datagen.FabricTinyFlowersDataGenerator"]
+    "main": [
+      "co.secretonline.tinyflowers.FabricTinyFlowers"
+    ],
+    "client": [
+      "co.secretonline.tinyflowers.FabricTinyFlowersClient"
+    ],
+    "fabric-datagen": [
+      "co.secretonline.tinyflowers.datagen.FabricTinyFlowersDataGenerator"
+    ]
   },
   "mixins": [
     "tiny_flowers.mixins.json"
   ],
   "depends": {
-    "java": ">=${java_version}",
+    "java": ">=25",
     "fabric-api": "*"
   },
   "recommends": {
-    "fabricloader": ">=${fabric_loader_version}",
+    "fabricloader": ">=0.19.2",
     "minecraft": "~${minecraft_version}"
   },
   "custom": {
