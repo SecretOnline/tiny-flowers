@@ -127,7 +127,7 @@ async function getArchitecturyVersions() {
   /** @type {{versions:string[]}} */
   const neoforgeData = await neoforgeResponse.json();
   const matchRegex = new RegExp(
-    `^${versionToUpdateSemver.minor}.${versionToUpdateSemver.patch}.`,
+    `^${versionToUpdateSemver.major}.${versionToUpdateSemver.minor}.`,
   );
   const matchingVersions = neoforgeData.versions.filter((version) =>
     matchRegex.test(version),
@@ -135,7 +135,7 @@ async function getArchitecturyVersions() {
   if (matchingVersions.length === 0) {
     throw new Error(`No version for ${versionToUpdate} in Neoforge Maven`);
   }
-  matchingVersions.sort((a, b) => compare(b, a));
+  matchingVersions.sort();
   const neoforgeVersion = matchingVersions[0];
   info(`Found Neoforge data: neoforge ${neoforgeVersion}`);
 
