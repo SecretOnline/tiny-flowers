@@ -14,7 +14,7 @@ So you want to add your own Tiny Flowers? The easiest way to get started is to u
 
 Want a bit more control? The rest of this section explains the JSON files this mod uses.
 
-The files required are split into data and assets. The data files are loaded by the server and synced via a dynamic registry. The asset files are client-only, and affect how the flowers look. Unfortunately, most of the work is in the second half. For each custom file, I have written a Typescript definition, for those proficient in Typescript, and an example JSON file. Alternatively, you can check the source code of this mod for the codec definitions.
+The files required are split into data and assets. The data files are loaded by the server and synced via a dynamic registry. The asset files are client-only, and affect how the flowers look. Most of the work is in the second half. For each custom file, I have written a Typescript definition, for those proficient in Typescript, and an example JSON file. Alternatively, you can check the source code of this mod for the codec definitions.
 
 To keep this README readable, everything in inside the following expandable section:
 
@@ -70,7 +70,7 @@ interface TransformDayNightBehavior {
   sound_event_short?: Identifier;
 }
 
-/** Turns this tiny flower into under specific weather conditions. */
+/** Turns this tiny flower into another under specific weather conditions. */
 interface TransformWeatherBehavior {
   type: "transform_weather";
   /** When the transformation is allowed to take place. */
@@ -90,7 +90,8 @@ interface TransformWeatherBehavior {
   sound_event_short?: Identifier;
 }
 
-/** Allows placement on any sturdy block, similar to Leaf Litter. */
+/** Allows placement on any sturdy block, similar to Leaf Litter.
+ *  */
 interface SturdyPlacementBehavior {
   type: "sturdy_placement";
 }
@@ -186,7 +187,7 @@ Read [Items model definition](https://minecraft.wiki/w/Items_model_definition) o
 
 The path of this file must match the `item_model` key in the main resources file and be referenced in the items file above.
 
-If using `minecraft:item/generated`, the texture referenced in `layer0` should be placed a`<namespace>/textures/item/<id>.png`.
+If using `minecraft:item/generated`, the texture referenced in `layer0` should be placed at `<namespace>/textures/item/<id>.png`.
 
 ![Texture for the Tiny Dirt Flower item.](./misc/tiny_dirt_flower/assets/tiny_dirt_flower/textures/item/tiny_dirt.png)
 
@@ -215,14 +216,12 @@ This mod provides a set of pre-defined models for common configurations. You are
 
 If using one of these models, textured referenced by the layers should be placed at `<namespace>/textures/item/<id>.png`.
 
-If you are making your own models, the following tint sources are mapped to tint indexes:
-
+If you are making your own models, the following tint sources are mapped to tint indexes that can be used on elements of the model:
 
 | `tintindex` | Tint source |
-|-------------|-------------|
+| ----------- | ----------- |
 | 1           | Grass       |
 | 2           | Dry foliage |
-
 
 ![Texture for the Tiny Dirt Flower block.](./misc/tiny_dirt_flower/assets/tiny_dirt_flower/textures/block/tiny_dirt.png)
 
