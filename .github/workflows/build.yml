@@ -45,7 +45,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Upload Fabric build artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: build-fabric
           path: "fabric/build/libs/*.jar"
@@ -53,7 +53,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload Neoforge build artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: build-neoforge
           path: "neoforge/build/libs/*.jar"
