@@ -61,7 +61,6 @@ export interface CombinedFlowerData {
   suspiciousStewEffects: { id: string; duration: number }[];
   behaviors: unknown[];
   itemTexture: File | undefined;
-  tintSource: "grass" | "dry_foliage";
   parentModel: ParentModelType;
   blockTextures: BlockTextureEntry[];
   isExpanded: boolean;

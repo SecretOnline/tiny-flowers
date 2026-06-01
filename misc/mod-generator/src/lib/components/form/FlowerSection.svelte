@@ -554,26 +554,6 @@
       {/if}
     </div>
 
-    <div class="block-group flower-data-tint">
-      <label for="tint-source-{uid}">Tint Source</label>
-      <div class="inline-group">
-        <select
-          class="button"
-          id="tint-source-{uid}"
-          bind:value={flower.tintSource}
-        >
-          <option value="grass">Grass</option>
-          <option value="dry_foliage">Dry Foliage</option>
-        </select>
-      </div>
-      <p>
-        When using the default stem, or any other model that has an element with
-        a <code>tintindex</code>, set which source should be used for the tint.
-        The Tiny Flowers mod currently does not support multiple
-        <code>tintindex</code>es in the same model.
-      </p>
-    </div>
-
     <div class="block-group flower-data-block input-group">
       <h4 class="input-group-heading">Block Textures</h4>
 
@@ -744,7 +724,7 @@
         "original original segmented item"
         "translations translations translations translations"
         "survive survive effects effects"
-        "parent-preset parent-preset parent tint"
+        "parent-preset parent-preset parent parent"
         "block block block block";
     }
   }

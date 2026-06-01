@@ -3,7 +3,6 @@ package co.secretonline.tinyflowers.datagen.mods;
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
-import co.secretonline.tinyflowers.data.TinyFlowerResources.TintSource;
 import co.secretonline.tinyflowers.data.behavior.Behavior;
 import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
 import co.secretonline.tinyflowers.data.behavior.TransformDayNightBehavior;
@@ -45,8 +44,6 @@ public class Flower {
 	@NonNull
 	private final List<TagOrElementLocation> canSurviveOn;
 	@NonNull
-	private final TintSource tintSource;
-	@NonNull
 	private final List<Behavior> behaviors;
 
 	@NonNull
@@ -59,8 +56,7 @@ public class Flower {
 	private final ModelPart modelPart4;
 
 	private Flower(@NonNull Identifier id, @NonNull Identifier itemTexture, @NonNull Identifier originalBlockId, boolean isSegmentable,
-								 @NonNull List<Entry> suspiciousStewEffects, @NonNull List<TagOrElementLocation> canSurviveOn,
-								 @NonNull TintSource tintSource, @NonNull List<Behavior> behaviors,
+								 @NonNull List<Entry> suspiciousStewEffects, @NonNull List<TagOrElementLocation> canSurviveOn, @NonNull List<Behavior> behaviors,
 								 @NonNull ModelPart modelPart1, @NonNull ModelPart modelPart2, @NonNull ModelPart modelPart3, @NonNull ModelPart modelPart4) {
 		this.id = id;
 		this.itemTexture = itemTexture;
@@ -70,7 +66,6 @@ public class Flower {
 		this.suspiciousStewEffects = suspiciousStewEffects;
 		this.canSurviveOn = canSurviveOn;
 
-		this.tintSource = tintSource;
 		this.behaviors = behaviors;
 
 		this.modelPart1 = modelPart1;
@@ -84,7 +79,7 @@ public class Flower {
 	}
 
 	public TinyFlowerResources resources() {
-		return new TinyFlowerResources(id, itemTexture, tintSource,
+		return new TinyFlowerResources(id, itemTexture,
 			modelPart1.id().withPrefix(BLOCK_MOD_PREFIX),
 			modelPart2.id().withPrefix(BLOCK_MOD_PREFIX),
 			modelPart3.id().withPrefix(BLOCK_MOD_PREFIX),
@@ -150,8 +145,6 @@ public class Flower {
 		private final Map<String, Identifier> textureMap = new HashMap<>();
 		@Nullable
 		private Identifier customModel = null;
-		@NonNull
-		private TintSource tintSource = TintSource.GRASS;
 
 		public static Builder ofCustom(Identifier id, Identifier originalBlockId) {
 			return new Builder()
@@ -279,11 +272,6 @@ public class Flower {
 			return this;
 		}
 
-		public Builder tintSource(TintSource tintSource) {
-			this.tintSource = tintSource;
-			return this;
-		}
-
 		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, Identifier turnsInto) {
 			return this.addTransformDayNightBehavior(when, turnsInto, 0, null, null);
 		}
@@ -362,7 +350,7 @@ public class Flower {
 			ModelPart modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap);
 
 			return new Flower(id, itemTexture, originalBlockId, isSegmentable,
-				suspiciousStewEffects, canSurviveOn, tintSource, behaviors,
+				suspiciousStewEffects, canSurviveOn, behaviors,
 				modelPart1, modelPart2, modelPart3, modelPart4
 			);
 		}

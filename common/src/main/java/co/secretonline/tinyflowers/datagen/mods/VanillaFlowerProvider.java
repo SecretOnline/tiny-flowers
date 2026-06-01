@@ -3,7 +3,6 @@ package co.secretonline.tinyflowers.datagen.mods;
 import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.data.TinyFlowerResources.TintSource;
 import net.minecraft.resources.Identifier;
 
 public class VanillaFlowerProvider extends FlowerProvider {
@@ -31,7 +30,6 @@ public class VanillaFlowerProvider extends FlowerProvider {
 				.ofSegmented(Identifier.withDefaultNamespace("leaf_litter"))
 				.addSturdyPlacementBehavior()
 				.customModel(TinyFlowers.id("garden_leaf_litter"))
-				.tintSource(TintSource.DRY_FOLIAGE)
 				.build());
 	}
 }

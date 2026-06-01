@@ -124,8 +124,6 @@ interface TinyFlowerResources {
   id: Identifier;
   /** The item model to use for this type. Usually of the form `<namespace>:item/<id>`. */
   item_model: Identifier;
-  /** How to shade model quads that have a tintindex defined. */
-  tint_source?: "grass" | "dry_foliage";
   /** The block model to render when this type is in the first spot. Usually of the form `<namespace>:block/<id>_1`. */
   model1: Identifier;
   /** The block model to render when this type is in the second spot. Usually of the form `<namespace>:block/<id>_2`. */
@@ -216,6 +214,15 @@ This mod provides a set of pre-defined models for common configurations. You are
 | 2                | `tiny_flowers:block/garden_triple_<index>` | `tiny_flowers:block/garden_triple_untinted_<index>` | `flowerbed`, `flowerbed_middle`, `flowerbed_upper`, `stem`, `particle` |
 
 If using one of these models, textured referenced by the layers should be placed at `<namespace>/textures/item/<id>.png`.
+
+If you are making your own models, the following tint sources are mapped to tint indexes:
+
+
+| `tintindex` | Tint source |
+|-------------|-------------|
+| 1           | Grass       |
+| 2           | Dry foliage |
+
 
 ![Texture for the Tiny Dirt Flower block.](./misc/tiny_dirt_flower/assets/tiny_dirt_flower/textures/block/tiny_dirt.png)
 

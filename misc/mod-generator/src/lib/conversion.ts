@@ -98,8 +98,6 @@ export function convertFormToFiles(state: FormState): AllFiles {
     value.assets.tinyFlowers[flower.id] = {
       id: flower.id,
       item_model: `${flowerNamespace}:item/${flowerPath}`,
-      tint_source:
-        flower.tintSource === "grass" ? undefined : flower.tintSource,
       model1: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_1`,
       model2: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_2`,
       model3: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_3`,
@@ -317,7 +315,6 @@ export function convertFilesToForm(files: AllFiles): FormState {
       canSurviveOn: data.can_survive_on ?? ["#minecraft:supports_vegetation"],
       suspiciousStewEffects: data.suspicious_stew_effects ?? [],
       behaviors: data.behaviors ?? [],
-      tintSource: resources.tint_source ?? "grass",
       itemTexture,
       parentModel,
       blockTextures,
