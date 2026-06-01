@@ -6,6 +6,7 @@
     "block.EyeblossomBlockMixin",
     "block.FlowerbedBlockMixin",
     "block.LeafLitterBlockMixin",
+    "color.BlockColorsMixin",
     "crafting.CrafterBlockMixin",
     "crafting.CrafterMenuMixin",
     "crafting.CraftingMenuMixin",

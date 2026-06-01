@@ -19,13 +19,15 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 	private Identifier flower3 = null;
 	@Nullable
 	private Identifier flower4 = null;
-	@Nullable
-	private BlockAndTintGetter blockAndTintGetter = null;
-	@Nullable
-	private BlockState blockState = null;
+
+	private int[] tintStack = new int[0];
 
 	public Direction getDirection() {
 		return direction;
+	}
+
+	public int[] getTintStack() {
+		return tintStack;
 	}
 
 	public @Nullable Identifier getFlower1() {
@@ -44,14 +46,6 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 		return flower4;
 	}
 
-	public BlockAndTintGetter getBlockAndTintGetter() {
-		if (blockAndTintGetter == null) {
-			return BlockAndTintGetter.EMPTY;
-		}
-
-		return blockAndTintGetter;
-	}
-
 	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
@@ -63,15 +57,7 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 		this.flower4 = flower4;
 	}
 
-	public void setBlockAndTintGetter(@Nullable BlockAndTintGetter getter) {
-		this.blockAndTintGetter = getter;
-	}
-
-	public @Nullable BlockState getBlockState() {
-		return blockState;
-	}
-
-	public void setBlockState(@Nullable BlockState blockState) {
-		this.blockState = blockState;
+	public void setTintStack(int[] tintStack) {
+		this.tintStack = tintStack;
 	}
 }

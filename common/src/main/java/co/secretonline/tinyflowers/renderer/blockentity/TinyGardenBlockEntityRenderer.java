@@ -9,6 +9,8 @@ import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -18,8 +20,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -27,6 +33,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class TinyGardenBlockEntityRenderer
 	implements BlockEntityRenderer<TinyGardenBlockEntity, TinyGardenBlockEntityRenderState> {
@@ -45,17 +52,13 @@ public class TinyGardenBlockEntityRenderer
 	                               @Nullable CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
 
-		state.setBlockState(blockEntity.getBlockState());
-
-		Optional<Direction> facingDirection = state.getBlockState() != null ? state.getBlockState().getOptionalValue(TinyGardenBlock.FACING) : Optional.empty();
+		Optional<Direction> facingDirection = blockEntity.getBlockState().getOptionalValue(TinyGardenBlock.FACING);
 		facingDirection.ifPresent(state::setDirection);
 
 		state.setFlowers(blockEntity.getFlower(1), blockEntity.getFlower(2),
 			blockEntity.getFlower(3), blockEntity.getFlower(4));
 
-		if (blockEntity.getLevel() != null && blockEntity.getLevel().isClientSide()) {
-			state.setBlockAndTintGetter((ClientLevel) blockEntity.getLevel());
-		}
+		state.setTintStack(getTintStack(blockEntity));
 	}
 
 	@Override
@@ -111,23 +114,36 @@ public class TinyGardenBlockEntityRenderer
 			return;
 		}
 
-		int[] tintStack = state.getBlockState() != null
-			? new int[]{TinyGardenColorProvider.getColor(state.getBlockState(), state.getBlockAndTintGetter(), state.blockPos, resources.tintSource())}
-			: new int[0];
-
 		List<BlockStateModelPart> parts = new ArrayList<>();
 		model.collectParts(TinyFlowersClientState.RANDOM, parts);
 
 		submitNodeCollector.submitBlockModel(poseStack, RenderTypes.cutoutMovingBlock(), parts,
-			tintStack, state.lightCoords, 0, 0);
+			state.getTintStack(), state.lightCoords, 0, 0);
 	}
 
 	@Override
 	public int getViewDistance() {
 		// Hopefully this is far enough?
 		// I know the whole reason this exists is for performance, but I think it's a
-		// bit sad if distant gardens aren't rendered in. Expecially since these are
-		// mean to be part of the world, which usually doesn't distance culling.
+		// bit sad if distant gardens aren't rendered in. Especially since these are
+		// meant to be part of the world, which usually doesn't distance culling.
 		return 256;
+	}
+
+	private int[] getTintStack(BlockEntity blockEntity) {
+		Level level = blockEntity.getLevel();
+		BlockState blockState = blockEntity.getBlockState();
+		BlockPos pos = blockEntity.getBlockPos();
+
+		Minecraft minecraft = Minecraft.getInstance();
+		BlockColors blockColors = minecraft.getBlockColors();
+
+		List<BlockTintSource> sources = blockColors.getTintSources(blockState);
+
+		Function<BlockTintSource, Integer> mapper = level instanceof ClientLevel clientLevel
+			? source -> source.colorInWorld(blockState, clientLevel, pos)
+			: source -> source.color(blockState);
+
+		return sources.stream().map(mapper).mapToInt(Integer::intValue).toArray();
 	}
 }
