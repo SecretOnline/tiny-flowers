@@ -16,6 +16,8 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v2.0.0 - 2026-06-01
+
 The big headline feature of this release is that this mod can now support having flower types added by other mods! This is something that would have been near-impossible with v1 of the mod, and I'm very glad that it's now possible. There was a big internal rewrite of the mod's code, but it is now easier to add new flowers in a way that doesn't make the game slower and more memory-hungry every time a new one is added.
 
 Oh, and the mod is now available on NeoForge as well as Fabric. That's a big change too.
