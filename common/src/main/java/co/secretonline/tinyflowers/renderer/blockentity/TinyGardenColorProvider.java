@@ -1,12 +1,12 @@
 package co.secretonline.tinyflowers.renderer.blockentity;
 
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.DryFoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.state.BlockState;

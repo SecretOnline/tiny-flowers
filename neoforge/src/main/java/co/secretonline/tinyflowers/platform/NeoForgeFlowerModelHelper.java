@@ -2,7 +2,7 @@ package co.secretonline.tinyflowers.platform;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.resources.model.ModelDebugName;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.resources.Identifier;
