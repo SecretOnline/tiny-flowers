@@ -58,7 +58,7 @@ public record TransformWeatherBehavior(When when, Identifier turnsInto, Integer 
 	@Override
 	public void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource, boolean isRandomTick) {
 		if (this.particleColor != 0) {
-			Vec3 center = blockPos.getCenter();
+			Vec3 center = Vec3.atCenterOf(blockPos);
 			double scale = 0.5 + randomSource.nextDouble();
 			Vec3 random = new Vec3(randomSource.nextDouble() - 0.5, randomSource.nextDouble() + 1.0,
 				randomSource.nextDouble() - 0.5);

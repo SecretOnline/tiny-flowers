@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
 	private static final Identifier TINY_GARDEN_ID = TinyFlowers.id("tiny_garden");
+	public static final ResourceKey<Block> TINY_GARDEN_KEY = ResourceKey.create(Registries.BLOCK, TINY_GARDEN_ID);
 	public static final Supplier<Block> TINY_GARDEN_BLOCK = Services.REGISTRY.register(
 		BuiltInRegistries.BLOCK,
 		TINY_GARDEN_ID,
@@ -26,7 +27,7 @@ public class ModBlocks {
 			.sound(SoundType.PINK_PETALS)
 			.pushReaction(PushReaction.DESTROY)
 			.randomTicks()
-			.setId(ResourceKey.create(Registries.BLOCK, TINY_GARDEN_ID))));
+			.setId(TINY_GARDEN_KEY)));
 	public static final Supplier<MapCodec<TinyGardenBlock>> TINY_GARDEN_TYPE = Services.REGISTRY.register(
 		BuiltInRegistries.BLOCK_TYPE,
 		TINY_GARDEN_ID,
