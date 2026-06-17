@@ -17,9 +17,9 @@ public class FabricItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
-		valueLookupBuilder(ItemTags.BEE_FOOD).add(ModItems.TINY_FLOWER_ITEM.get());
-		valueLookupBuilder(ItemTags.FLOWERS).add(ModItems.TINY_FLOWER_ITEM.get());
+		tag(ItemTags.BEE_FOOD).add(ModItems.TINY_FLOWER_KEY);
 
-		valueLookupBuilder(ConventionalItemTags.SHEAR_TOOLS).add(ModItems.FLORISTS_SHEARS_ITEM.get());
+		tag(ConventionalItemTags.FLOWERS).add(ModItems.TINY_FLOWER_KEY);
+		tag(ConventionalItemTags.SHEAR_TOOLS).add(ModItems.FLORISTS_SHEARS_KEY);
 	}
 }
