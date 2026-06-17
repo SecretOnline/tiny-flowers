@@ -18,9 +18,9 @@ public class NeoForgeItemTagProvider extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider provider) {
-		this.tag(ItemTags.BEE_FOOD).add(ModItems.TINY_FLOWER_ITEM.get());
-		this.tag(ItemTags.FLOWERS).add(ModItems.TINY_FLOWER_ITEM.get());
+		this.tag(ItemTags.BEE_FOOD).add(ModItems.TINY_FLOWER_KEY);
 
-		this.tag(Tags.Items.TOOLS_SHEAR).add(ModItems.FLORISTS_SHEARS_ITEM.get());
+		this.tag(Tags.Items.FLOWERS).add(ModItems.TINY_FLOWER_KEY);
+		this.tag(Tags.Items.TOOLS_SHEAR).add(ModItems.FLORISTS_SHEARS_KEY);
 	}
 }

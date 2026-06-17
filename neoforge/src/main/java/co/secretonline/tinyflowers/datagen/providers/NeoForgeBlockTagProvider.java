@@ -18,9 +18,9 @@ public class NeoForgeBlockTagProvider extends BlockTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider provider) {
-		this.tag(BlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN_BLOCK.get());
-		this.tag(BlockTags.BEE_ATTRACTIVE).add(ModBlocks.TINY_GARDEN_BLOCK.get());
-		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN_BLOCK.get());
-		this.tag(Tags.Blocks.FLOWERS).add(ModBlocks.TINY_GARDEN_BLOCK.get());
+		this.tag(BlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN_KEY);
+		this.tag(BlockTags.BEE_ATTRACTIVE).add(ModBlocks.TINY_GARDEN_KEY);
+		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN_KEY);
+		this.tag(Tags.Blocks.FLOWERS).add(ModBlocks.TINY_GARDEN_KEY);
 	}
 }

@@ -17,10 +17,10 @@ public class FabricBlockTagProvider extends FabricTagsProvider.BlockTagsProvider
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
-		valueLookupBuilder(BlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN_BLOCK.get());
-		valueLookupBuilder(BlockTags.BEE_ATTRACTIVE).add(ModBlocks.TINY_GARDEN_BLOCK.get());
-		valueLookupBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN_BLOCK.get());
-		valueLookupBuilder(ConventionalBlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN_BLOCK.get());
+		tag(BlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN_KEY);
+		tag(BlockTags.BEE_ATTRACTIVE).add(ModBlocks.TINY_GARDEN_KEY);
+		tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN_KEY);
+		tag(ConventionalBlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN_KEY);
 	}
 
 }
