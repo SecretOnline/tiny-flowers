@@ -37,7 +37,7 @@ jobs:
       release-notes: ${{ steps.changelog.outputs.release-notes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Ensure Gradle wrapper is executable
         run: chmod +x ./gradlew
@@ -184,7 +184,7 @@ jobs:
         loader: ${{ fromJson(needs.release-build.outputs.loaders) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           sparse-checkout: |
             ${{ matrix.loader }}
