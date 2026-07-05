@@ -67,7 +67,12 @@ public class ModItems {
 	public static Item registerGardenBlockItem(String path, Function<Item.Settings, Item.Settings> settings) {
 		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, TinyFlowers.id(path));
 		return Registry.register(Registries.ITEM, itemKey,
-				new BlockItem(ModBlocks.TINY_GARDEN, new Item.Settings()));
+				new BlockItem(ModBlocks.TINY_GARDEN, settings.apply(new Item.Settings())) {
+					@Override
+					public String getTranslationKey() {
+						return "item." + Registries.ITEM.getId(this).toTranslationKey();
+					}
+				});
 	}
 
 	public static void initialize() {

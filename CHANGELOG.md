@@ -16,6 +16,14 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.2.2 - 2026-07-05
+
+This release is for Minecraft 1.21.1 only.
+
+### Fixed
+
+- Tiny Flower items were all named "Tiny Garden"
+
 ## v1.2.1 - 2026-02-02
 
 ### Added
