@@ -2,7 +2,7 @@ package co.secretonline.tinyflowers.item;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.platform.Services;
+import co.secretonline.tinyflowers.platform.ServerServiceLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,7 +25,7 @@ public class ModCreativeModeTabs {
 	public static final ResourceKey<CreativeModeTab> TINY_FLOWERS_TAB_KEY = ResourceKey
 		.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), TINY_FLOWERS_TAB_ID);
 
-	public static final Supplier<CreativeModeTab> TINY_FLOWERS_TAB = Services.REGISTRY.register(
+	public static final Supplier<CreativeModeTab> TINY_FLOWERS_TAB = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.CREATIVE_MODE_TAB,
 		TINY_FLOWERS_TAB_ID,
 		() -> CreativeModeTab

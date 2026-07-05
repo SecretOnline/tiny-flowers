@@ -1,7 +1,7 @@
 package co.secretonline.tinyflowers.item;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.platform.Services;
+import co.secretonline.tinyflowers.platform.ServerServiceLoader;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -18,7 +18,7 @@ public class ModItems {
 
 	public static final Identifier FLORISTS_SHEARS_ID = TinyFlowers.id("florists_shears");
 	public static final ResourceKey<Item> FLORISTS_SHEARS_KEY = ResourceKey.create(Registries.ITEM, FLORISTS_SHEARS_ID);
-	public static final Supplier<Item> FLORISTS_SHEARS_ITEM = Services.REGISTRY.register(
+	public static final Supplier<Item> FLORISTS_SHEARS_ITEM = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.ITEM,
 		FLORISTS_SHEARS_ID,
 		() -> new FloristsShearsItem(
@@ -32,7 +32,7 @@ public class ModItems {
 
 	public static final Identifier TINY_FLOWER_ID = TinyFlowers.id("tiny_flower");
 	public static final ResourceKey<Item> TINY_FLOWER_KEY = ResourceKey.create(Registries.ITEM, TINY_FLOWER_ID);
-	public static final Supplier<Item> TINY_FLOWER_ITEM = Services.REGISTRY.register(
+	public static final Supplier<Item> TINY_FLOWER_ITEM = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.ITEM,
 		TINY_FLOWER_ID,
 		() -> new TinyFlowerItem(

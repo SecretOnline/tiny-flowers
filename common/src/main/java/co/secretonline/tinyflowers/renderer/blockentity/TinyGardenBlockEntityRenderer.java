@@ -1,10 +1,9 @@
 package co.secretonline.tinyflowers.renderer.blockentity;
 
-import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.TinyFlowersClientState;
 import co.secretonline.tinyflowers.block.TinyGardenBlock;
 import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
-import co.secretonline.tinyflowers.platform.Services;
+import co.secretonline.tinyflowers.platform.ClientServiceLoader;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -109,7 +108,7 @@ public class TinyGardenBlockEntityRenderer
 		}
 
 		Minecraft minecraft = Minecraft.getInstance();
-		BlockStateModel model = Services.FLOWER_MODELS.getModel(minecraft, partId);
+		BlockStateModel model = ClientServiceLoader.FLOWER_MODELS.getModel(minecraft, partId);
 		if (model == null) {
 			return;
 		}

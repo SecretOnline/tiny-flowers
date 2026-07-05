@@ -3,7 +3,7 @@ package co.secretonline.tinyflowers.resources;
 import co.secretonline.tinyflowers.TinyFlowersClientState;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import co.secretonline.tinyflowers.helper.FlowerModelHelper;
-import co.secretonline.tinyflowers.platform.Services;
+import co.secretonline.tinyflowers.platform.ClientServiceLoader;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -41,7 +41,7 @@ public class NeoForgeTinyFlowerResourceLoader extends SimplePreparableReloadList
 
 	public void registerModels(ModelEvent.RegisterStandalone event) {
 		for (Identifier id : knownIds) {
-			Services.FLOWER_MODELS.registerModel(id, event);
+			ClientServiceLoader.FLOWER_MODELS.registerModel(id, event);
 		}
 	}
 }

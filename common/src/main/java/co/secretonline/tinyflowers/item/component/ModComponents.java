@@ -1,21 +1,21 @@
 package co.secretonline.tinyflowers.item.component;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import co.secretonline.tinyflowers.platform.Services;
+import co.secretonline.tinyflowers.platform.ServerServiceLoader;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.function.Supplier;
 
 public class ModComponents {
-	public static final Supplier<DataComponentType<TinyFlowerComponent>> TINY_FLOWER = Services.REGISTRY.register(
+	public static final Supplier<DataComponentType<TinyFlowerComponent>> TINY_FLOWER = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.DATA_COMPONENT_TYPE,
 		TinyFlowers.id("tiny_flower"),
 		() -> DataComponentType.<TinyFlowerComponent>builder()
 			.persistent(TinyFlowerComponent.CODEC)
 			.build());
 
-	public static final Supplier<DataComponentType<GardenContentsComponent>> GARDEN_CONTENTS = Services.REGISTRY.register(
+	public static final Supplier<DataComponentType<GardenContentsComponent>> GARDEN_CONTENTS = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.DATA_COMPONENT_TYPE,
 		TinyFlowers.id("garden_contents"),
 		() -> DataComponentType.<GardenContentsComponent>builder()

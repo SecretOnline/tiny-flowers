@@ -9,7 +9,7 @@ import co.secretonline.tinyflowers.item.ModItems;
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.crafting.ModRecipeSerializers;
 import co.secretonline.tinyflowers.platform.NeoForgeRegistryHelper;
-import co.secretonline.tinyflowers.platform.Services;
+import co.secretonline.tinyflowers.platform.ServerServiceLoader;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,7 +27,7 @@ public class NeoForgeTinyFlowers {
 		ModRecipeSerializers.initialize();
 		ModCreativeModeTabs.initialize();
 
-		if (Services.REGISTRY instanceof NeoForgeRegistryHelper neoForgeRegistryHelper) {
+		if (ServerServiceLoader.REGISTRY instanceof NeoForgeRegistryHelper neoForgeRegistryHelper) {
 			neoForgeRegistryHelper.registerToBus(modBus);
 		} else {
 			throw new NullPointerException("Registry helper was not for NeoForge");
