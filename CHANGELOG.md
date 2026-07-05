@@ -16,6 +16,8 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v2.0.1 - 2026-07-05 
+
 ### Fixed
 
 - Crash on dedicated servers
