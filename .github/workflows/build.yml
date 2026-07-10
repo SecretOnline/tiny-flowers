@@ -16,49 +16,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Ensure Gradle wrapper is executable
-        run: chmod +x ./gradlew
-
-      - name: Validate Gradle
-        uses: gradle/actions/wrapper-validation@v6
-
-      - name: Get Minecraft version
-        id: get-minecraft-version
-        run: |
-          minecraft_version=$(grep '^minecraft_version=' gradle.properties | cut -d= -f2)
-          echo "minecraft-version=$minecraft_version" >> "$GITHUB_OUTPUT"
-
-          version_url=$(curl -s https://piston-meta.mojang.com/mc/game/version_manifest_v2.json | jq --raw-output ".versions | map(select(.id == \"$minecraft_version\"))[0].url")
-          java_version=$(curl -s "$version_url" | jq --raw-output '.javaVersion.majorVersion')
-          echo "java-version=$java_version" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Java ${{ steps.get-minecraft-version.outputs.java-version }}
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ steps.get-minecraft-version.outputs.java-version }}
-          distribution: "zulu"
-
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          cache-provider: basic
+        uses: SecretOnline/minecraft-actions/setup-mod-gradle@v2
 
       - name: Build
         run: ./gradlew clean build
 
-      - name: Upload Fabric build artifacts
+      - name: Upload fabric artifacts
         uses: actions/upload-artifact@v7
         with:
           name: build-fabric
-          path: "fabric/build/libs/*.jar"
+          path: fabric/build/libs/
           include-hidden-files: true
           if-no-files-found: error
 
-      - name: Upload Neoforge build artifacts
+      - name: Upload neoforge artifacts
         uses: actions/upload-artifact@v7
         with:
           name: build-neoforge
-          path: "neoforge/build/libs/*.jar"
+          path: neoforge/build/libs/
           include-hidden-files: true
           if-no-files-found: error
 
@@ -69,29 +45,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Ensure Gradle wrapper is executable
-        run: chmod +x ./gradlew
-
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          cache-provider: basic
-
-      - name: Get Minecraft version
-        id: get-minecraft-version
-        run: |
-          minecraft_version=$(grep '^minecraft_version=' gradle.properties | cut -d= -f2)
-          echo "minecraft-version=$minecraft_version" >> "$GITHUB_OUTPUT"
-
-          version_url=$(curl -s https://piston-meta.mojang.com/mc/game/version_manifest_v2.json | jq --raw-output ".versions | map(select(.id == \"$minecraft_version\"))[0].url")
-          java_version=$(curl -s "$version_url" | jq --raw-output '.javaVersion.majorVersion')
-          echo "java-version=$java_version" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Java ${{ steps.get-minecraft-version.outputs.java-version }}
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ steps.get-minecraft-version.outputs.java-version }}
-          distribution: "zulu"
+        uses: SecretOnline/minecraft-actions/setup-mod-gradle@v2
 
       - name: Clean
         run: ./gradlew clean
@@ -104,30 +59,133 @@ jobs:
           git diff --exit-code fabric/src/main/generated
           git diff --exit-code neoforge/src/generated
 
-  mod-generator:
+  get-test-matrix:
+    name: Get test matrix
     runs-on: ubuntu-latest
+    outputs:
+      test-matrix: ${{ steps.get-test-matrix.outputs.test-matrix }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - name: Get versions
+        id: get-test-matrix
+        uses: SecretOnline/minecraft-actions/get-test-matrix@v2
+
+  live-test:
+    name: Test (${{ matrix.loader }}, ${{ matrix.versions.minecraft-version }})
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - get-test-matrix
+    strategy:
+      matrix:
+        versions: ${{ fromJson(needs.get-test-matrix.outputs.test-matrix) }}
+        loader:
+          - fabric
+          - neoforge
+      fail-fast: false
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Install apt packages
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri mesa-utils imagemagick
+
+      - name: Setup Java ${{ matrix.versions.java-version }}
+        id: setup-java
+        uses: actions/setup-java@v5
         with:
-          node-version-file: ".node-version"
-          cache: "npm"
+          java-version: ${{ matrix.versions.java-version }}
+          distribution: zulu
 
-      - name: Install
-        working-directory: misc/mod-generator
-        run: |
-          npm ci
+      - name: Setup server
+        uses: SecretOnline/minecraft-actions/setup-mc-server@v2
+        with:
+          server-directory: server
+          minecraft-version: ${{ matrix.versions.minecraft-version }}
+          loader: ${{ matrix.loader }}
+          accept-eula: true
 
-      - name: Svelte check
-        working-directory: misc/mod-generator
-        run: |
-          npm run check
+      - name: Setup client
+        uses: SecretOnline/minecraft-actions/setup-mc-client@v2
+        with:
+          client-directory: client
+          minecraft-version: ${{ matrix.versions.minecraft-version }}
+          loader: ${{ matrix.loader }}
 
-      - name: Build
-        working-directory: misc/mod-generator
+      - name: Download mod build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: build-${{ matrix.loader }}
+
+      - name: Install mod
         run: |
-          npm run build
-  # TODO: add job to do gametest
+          mkdir -p server/mods
+          mkdir -p client/mods
+
+          mod_file=$(ls -1 | grep ".jar" | grep -Ev "\-(sources|shadow|javadoc).jar" | grep -v "\-dev")
+          cp $mod_file server/mods/
+          cp $mod_file client/mods/
+
+      - name: Install Fabric API
+        if: ${{ matrix.loader == 'fabric' }}
+        run: |
+          fabric_api_url=$(curl -sg -A "secret_online/accessible-step (mc@secretonline.co)" "https://api.modrinth.com/v2/project/P7dR8mSH/version" | jq -r "[.[] | select(.game_versions[] == \"${{ matrix.versions.minecraft-version }}\")][0].files[0].url")
+
+          wget -q -O server/mods/fabric-api.jar "$fabric_api_url"
+          cp server/mods/fabric-api.jar client/mods/fabric-api.jar
+
+          mkdir -p server/mods
+          mkdir -p client/mods
+
+      - name: Run server
+        uses: SecretOnline/minecraft-actions/run-mc-server@v2
+        with:
+          server-directory: server
+          log-file: server/server.log
+
+      - name: Run client
+        id: run-client
+        uses: SecretOnline/minecraft-actions/run-mc-client@v2
+        with:
+          client-directory: client
+          log-file: client/client.log
+          width: 854
+          height: 480
+          server-address: localhost:25565
+
+      - name: Wait for client to fully join
+        run: |
+          sleep 10
+
+      - name: Screenshot Minecraft client
+        id: screenshot
+        uses: SecretOnline/minecraft-actions/screenshot-mc-client@v2
+        with:
+          display: ${{ steps.run-client.outputs.display }}
+          xauthority: ${{ steps.run-client.outputs.xauthority }}
+          artifact-name: client-screenshot-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}
+          add-job-summary: "true"
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: test-logs-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}
+          path: |
+            client/client.log
+            client/logs/*
+            server/server.log
+            server/logs/*
+          retention-days: 7
+
+      - name: Add PR Comment
+        uses: mshick/add-pr-comment@v3
+        if: github.event_name == 'pull_request'
+        with:
+          message-id: "test-screenshot-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}"
+          message: |
+            ## Test screenshot (${{ matrix.loader }}, ${{ matrix.versions.minecraft-version }})
+
+            ![client-screenshot-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}](${{ steps.screenshot.outputs.url }})
