@@ -16,7 +16,13 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
-## v2.0.1 - 2026-07-05 
+## v2.0.2 - 2026-07-11
+
+### Fixed
+
+- Startup crash that only appeared on NeoForge servers
+
+## v2.0.1 - 2026-07-05
 
 ### Fixed
 

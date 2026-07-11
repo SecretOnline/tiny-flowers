@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.resources.VanillaClientListeners;
 
 @Mod(value = TinyFlowers.MOD_ID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = TinyFlowers.MOD_ID)
+@EventBusSubscriber(modid = TinyFlowers.MOD_ID, value = Dist.CLIENT)
 public class NeoForgeTinyFlowersClient {
 	private static final NeoForgeTinyFlowerResourceLoader tinyFlowerResourceLoader = new NeoForgeTinyFlowerResourceLoader();
 
