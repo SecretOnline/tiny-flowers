@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { getAbortSignal } from "svelte";
+  import { extractSwatches } from "../../color";
   import type { CombinedFlowerData, TextureFile } from "../../types/state";
+  import { delay } from "../../util";
   import Add from "../icons/Add.svelte";
-  import Check from "../icons/Check.svelte";
   import Delete from "../icons/Delete.svelte";
-  import Empty from "../icons/Empty.svelte";
   import ExpandDown from "../icons/ExpandDown.svelte";
   import ExpandRight from "../icons/ExpandRight.svelte";
   import Image from "../icons/Image.svelte";
@@ -69,6 +70,35 @@
 
   let { flower = $bindable(), onRemove }: Props = $props();
   const uid = $props.id();
+
+  let originalItemTexture = $state<File>();
+
+  let swatches = $state<string[]>([]);
+
+  $effect(() => {
+    const signal = getAbortSignal();
+    if (!originalItemTexture) {
+      return;
+    }
+    const texture = $state.snapshot(originalItemTexture);
+
+    delay(100, signal).then(
+      async () => {
+        const loadingDelay = delay(150, signal);
+
+        const rgbStrings = await extractSwatches(texture);
+        loadingDelay.then(
+          () => {
+            if (!signal.aborted) {
+              swatches = Array.from(rgbStrings);
+            }
+          },
+          () => {},
+        );
+      },
+      () => {},
+    );
+  });
 
   function addFlowerName() {
     flower.name.push({ language: "", name: "" });
@@ -180,26 +210,50 @@
       </p>
     </div>
 
-    <div class="block-group flower-data-segmented">
-      <label for="is-segmented-{uid}">Is Segmented</label>
+    <div class="block-group flower-data-original-item-texture">
+      <label for="original-texture-{uid}"
+        >(Optional) Original Item Texture</label
+      >
       <div class="inline-group">
         <input
-          type="checkbox"
+          type="file"
           class="visually-hidden"
-          id="is-segmented-{uid}"
-          bind:checked={flower.isSegmented}
+          id="original-texture-{uid}"
+          accept="image/png"
+          bind:files={
+            () => {
+              const dt = new DataTransfer();
+              if (originalItemTexture) {
+                dt.items.add(originalItemTexture);
+              }
+              return dt.files;
+            },
+            (newFiles) => {
+              originalItemTexture = newFiles?.[0] ?? undefined;
+            }
+          }
         />
-        <label class="button checkbox" for="is-segmented-{uid}">
-          {#if flower.isSegmented}
-            <Check />
+        <label class="file-input-facade button" for={`original-texture-${uid}`}>
+          {#if originalItemTexture?.name}
+            <Image /><span>{originalItemTexture.name}</span>
           {:else}
-            <Empty />
+            <ImageUpload /><span>Browse...</span>
           {/if}
         </label>
       </div>
+
+      <label class="image-preview-label" for="original-texture-{uid}">
+        <ImagePreview
+          file={originalItemTexture}
+          alt={flower.name.find((e) => e.language === "en_us")?.name ??
+            flower.id}
+        />
+      </label>
+
       <p>
-        Check this box if the original flower is made of multiple parts (e.g.
-        Pink Petals, Wildflowers, or Leaf Litter).
+        This field is optional and is not saved with the generated mod. Upload
+        the original item texture here to get color palette suggestions in
+        texture editors.
       </p>
     </div>
 
@@ -592,7 +646,7 @@
               {hasFileTexture}
               {hasCreateTexture}
               blockId={flower.id}
-              itemTexture={flower.itemTexture}
+              {swatches}
               onRemove={() => removeBlockTexture(i)}
             />
           {/each}
@@ -673,17 +727,14 @@
   .flower-data-original {
     grid-area: original;
   }
-  .flower-data-segmented {
-    grid-area: segmented;
+  .flower-data-original-item-texture {
+    grid-area: original-texture;
   }
   .flower-data-survive {
     grid-area: survive;
   }
   .flower-data-item {
     grid-area: item;
-  }
-  .flower-data-tint {
-    grid-area: tint;
   }
   .flower-data-effects {
     grid-area: effects;
@@ -704,7 +755,7 @@
       grid-template-areas:
         "expand expand"
         "id id"
-        "original segmented"
+        "original original-texture"
         "item item"
         "translations translations"
         "survive survive"
@@ -721,7 +772,7 @@
       grid-template-areas:
         "expand expand expand expand"
         "id id id id"
-        "original original segmented item"
+        "original original original-texture item"
         "translations translations translations translations"
         "survive survive effects effects"
         "parent-preset parent-preset parent parent"

@@ -6,7 +6,7 @@
     convertFormToFiles,
     convertZipToFiles,
   } from "../conversion";
-  import type { FormState } from "../types/state";
+  import type { CombinedFlowerData, FormState } from "../types/state";
   import FlowerSection from "./form/FlowerSection.svelte";
   import MetadataSection from "./form/MetadataSection.svelte";
   import Add from "./icons/Add.svelte";
@@ -41,22 +41,6 @@
       },
     ],
   });
-
-  function addFlower() {
-    formState.flowers.push({
-      id: "",
-      name: [{ language: "en_us", name: "" }],
-      originalId: "",
-      isSegmented: false,
-      canSurviveOn: ["#minecraft:supports_vegetation"],
-      suspiciousStewEffects: [],
-      itemTexture: undefined,
-      parentModel: { type: "prefix", prefix: "" },
-      blockTextures: [],
-      isExpanded: true,
-      behaviors: [],
-    });
-  }
 
   function removeFlower(index: number) {
     formState.flowers.splice(index, 1);
@@ -188,9 +172,48 @@
       />
     {/each}
 
-    <button class="button color-add" type="button" onclick={() => addFlower()}>
-      <Add /><span>Add new flower</span>
-    </button>
+    <div class="inline-group">
+      <button
+        class="button color-add"
+        type="button"
+        onclick={() =>
+          formState.flowers.push({
+            id: "",
+            name: [{ language: "en_us", name: "" }],
+            originalId: "",
+            isSegmented: false,
+            canSurviveOn: ["#minecraft:supports_vegetation"],
+            suspiciousStewEffects: [],
+            itemTexture: undefined,
+            parentModel: { type: "prefix", prefix: "" },
+            blockTextures: [],
+            isExpanded: true,
+            behaviors: [],
+          })}
+      >
+        <Add /><span>Add new tiny flower</span>
+      </button>
+      <button
+        class="button color-add"
+        type="button"
+        onclick={() =>
+          formState.flowers.push({
+            id: "",
+            name: [{ language: "en_us", name: "" }],
+            originalId: "",
+            isSegmented: true,
+            canSurviveOn: ["#minecraft:supports_vegetation"],
+            suspiciousStewEffects: [],
+            itemTexture: undefined,
+            parentModel: { type: "prefix", prefix: "" },
+            blockTextures: [],
+            isExpanded: true,
+            behaviors: [],
+          })}
+      >
+        <Add /><span>Add new segmented flower</span>
+      </button>
+    </div>
   </section>
 </div>
 

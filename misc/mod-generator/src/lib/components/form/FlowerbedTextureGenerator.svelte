@@ -5,12 +5,13 @@
   import grassOnly from "../../../assets/generator/grass-only.png";
   import stems from "../../../assets/generator/stems.png";
   import title from "../../../assets/generator/title-only.png";
-  import { clusterColors, delay, packRgb, toHsl, unpackRgb } from "../../util";
+  import { delay } from "../../util";
   import StyledColorPicker from "../color-picker/StyledColorPicker.svelte";
   import Image from "../icons/Image.svelte";
   import ImageUpload from "../icons/ImageUpload.svelte";
   import Progress from "../icons/Progress.svelte";
   import type { TextureCreate } from "../../types/state";
+  import { extractSwatches } from "../../color";
 
   const TEXTURE_SIZE = 16;
 
@@ -215,11 +216,11 @@
 
   interface Props {
     template: TextureCreate["template"];
+    swatches?: string[];
     onGenerate?: (file: File) => void;
-    itemTexture?: File;
   }
 
-  let { template, onGenerate, itemTexture }: Props = $props();
+  let { template, onGenerate, swatches }: Props = $props();
 
   let color1 = $state("#E0E0E0");
   let color2 = $state("#D0D0D0");
@@ -272,103 +273,6 @@
           () => {
             if (!signal.aborted) {
               onGenerate?.(file);
-            }
-          },
-          () => {},
-        );
-      },
-      () => {},
-    );
-  });
-
-  let swatches = $state<string[]>([]);
-
-  $effect(() => {
-    const signal = getAbortSignal();
-
-    if (!itemTexture) {
-      return;
-    }
-
-    delay(100, signal).then(
-      async () => {
-        const loadingDelay = delay(150, signal);
-
-        const itemTextureBitmap = await window.createImageBitmap(itemTexture);
-
-        const canvas = new OffscreenCanvas(
-          itemTextureBitmap.width,
-          itemTextureBitmap.height,
-        );
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
-          throw new Error("Unable to get canvas context");
-        }
-
-        ctx.drawImage(
-          itemTextureBitmap,
-          0,
-          0,
-          itemTextureBitmap.width,
-          itemTextureBitmap.height,
-        );
-
-        const imageData = ctx.getImageData(
-          0,
-          0,
-          itemTextureBitmap.width,
-          itemTextureBitmap.height,
-          { colorSpace: "srgb" },
-        );
-
-        const colorSet = new Set<number>();
-        for (let row = 0; row < itemTextureBitmap.height; row++) {
-          for (let column = 0; column < itemTextureBitmap.width; column++) {
-            const startIndex = (row * itemTextureBitmap.width + column) * 4;
-            const r = imageData.data[startIndex];
-            const g = imageData.data[startIndex + 1];
-            const b = imageData.data[startIndex + 2];
-            const a = imageData.data[startIndex + 3];
-
-            if (a === 0) {
-              // Pixel is transparent, skip.
-              continue;
-            }
-
-            const hsl = toHsl(r, g, b);
-            if (hsl.h > 75 && hsl.h < 155 && hsl.s > 0.4) {
-              // Pixel is a vibrant green, skip.
-              continue;
-            }
-
-            colorSet.add(packRgb(r, g, b));
-          }
-        }
-
-        // If there are too many colours, try and cluster them. This is done by lowering the
-        // threshold iteratively until there are at least 7 colours. It may turn out this is
-        // never the case, in which case we just take whatever is last.
-        const colorList = Array.from(colorSet);
-        let finalColors = colorList;
-        if (finalColors.length > 6) {
-          let threshold = 24;
-
-          finalColors = clusterColors(colorList, threshold);
-
-          while (finalColors.length < 7 && threshold >= 4) {
-            threshold -= 2;
-            finalColors = clusterColors(colorList, threshold);
-          }
-        }
-
-        const rgbStrings = finalColors.map(
-          (packed) => `#${packed.toString(16).padStart(6, "0")}`,
-        );
-
-        loadingDelay.then(
-          () => {
-            if (!signal.aborted) {
-              swatches = Array.from(rgbStrings);
             }
           },
           () => {},

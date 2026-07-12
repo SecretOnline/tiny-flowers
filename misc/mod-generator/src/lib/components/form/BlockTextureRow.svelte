@@ -12,7 +12,7 @@
     blockId: string;
     hasFileTexture: boolean;
     hasCreateTexture: boolean;
-    itemTexture?: File;
+    swatches?: string[];
     onRemove?: () => void;
   }
 
@@ -21,7 +21,7 @@
     blockId,
     hasFileTexture,
     hasCreateTexture,
-    itemTexture,
+    swatches,
     onRemove,
   }: Props = $props();
   const uid = $props.id();
@@ -142,7 +142,7 @@
               entry.texture.file = file;
             }
           }}
-          {itemTexture}
+          {swatches}
         />
       {/if}
     </td>
