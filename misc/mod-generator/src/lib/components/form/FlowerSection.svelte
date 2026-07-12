@@ -2,7 +2,7 @@
   import { getAbortSignal } from "svelte";
   import { extractSwatches } from "../../color";
   import type { CombinedFlowerData, TextureFile } from "../../types/state";
-  import { delay } from "../../util";
+  import { delay, identifierNamespace, identifierPath } from "../../util";
   import Add from "../icons/Add.svelte";
   import Delete from "../icons/Delete.svelte";
   import ExpandDown from "../icons/ExpandDown.svelte";
@@ -75,6 +75,19 @@
 
   let swatches = $state<string[]>([]);
 
+  function getGeneratedParentModelPrefix(id: string) {
+    return `${identifierNamespace(id)}:block/${identifierPath(id)}`;
+  }
+
+  let didEditOriginalId = $state(
+    flower.originalId !== "" && flower.originalId !== flower.id,
+  );
+  let didEditParentModelPrefix = $state(
+    flower.parentModel.type === "prefix" &&
+      flower.parentModel.prefix !== "" &&
+      flower.parentModel.prefix !== getGeneratedParentModelPrefix(flower.id),
+  );
+
   $effect(() => {
     const signal = getAbortSignal();
     if (!originalItemTexture) {
@@ -86,7 +99,7 @@
       async () => {
         const loadingDelay = delay(150, signal);
 
-        const rgbStrings = await extractSwatches(texture);
+        const rgbStrings = await extractSwatches(texture, 7);
         loadingDelay.then(
           () => {
             if (!signal.aborted) {
@@ -187,7 +200,24 @@
           type="text"
           class="text-input"
           id="flower-id-{uid}"
-          bind:value={flower.id}
+          bind:value={
+            () => flower.id,
+            (value) => {
+              flower.id = value;
+
+              if (!didEditOriginalId) {
+                flower.originalId = value;
+              }
+              if (
+                flower.isSegmented &&
+                !didEditParentModelPrefix &&
+                flower.parentModel.type === "prefix"
+              ) {
+                flower.parentModel.prefix =
+                  getGeneratedParentModelPrefix(value);
+              }
+            }
+          }
           placeholder="your_mod_id:tiny_flower_id"
         />
       </div>
@@ -200,7 +230,13 @@
           type="text"
           class="text-input"
           id="original-id-{uid}"
-          bind:value={flower.originalId}
+          bind:value={
+            () => flower.originalId,
+            (value) => {
+              flower.originalId = value;
+              didEditOriginalId = true;
+            }
+          }
           placeholder="your_mod_id:flower_id"
         />
       </div>
@@ -524,33 +560,63 @@
         <select
           class="button"
           id="parent-model-type-{uid}"
-          value={flower.parentModel.type}
-          onchange={(event) => {
-            if (event.currentTarget.value === "prefix") {
-              flower.parentModel = { type: "prefix", prefix: "" };
-            } else if (event.currentTarget.value === "custom") {
-              if (
-                flower.parentModel.type === "prefix" &&
-                flower.parentModel.prefix
-              ) {
-                flower.parentModel = {
-                  type: "custom",
-                  model1: `${flower.parentModel.prefix}_1`,
-                  model2: `${flower.parentModel.prefix}_2`,
-                  model3: `${flower.parentModel.prefix}_3`,
-                  model4: `${flower.parentModel.prefix}_4`,
-                };
-              } else {
-                flower.parentModel = {
-                  type: "custom",
-                  model1: "",
-                  model2: "",
-                  model3: "",
-                  model4: "",
-                };
+          bind:value={
+            () => flower.parentModel.type,
+            (value) => {
+              if (value === "prefix") {
+                if (flower.parentModel.type === "custom") {
+                  // Try set parent prefix based on first model
+                  const modelMatch =
+                    flower.parentModel.model1.match(/^(.*)_1$/);
+                  if (modelMatch) {
+                    flower.parentModel = {
+                      type: "prefix",
+                      prefix: modelMatch[1],
+                    };
+
+                    // If the parent prefix is the same as the generated ID, keep it in sync with the id input.
+                    if (
+                      flower.isSegmented &&
+                      modelMatch[1] === getGeneratedParentModelPrefix(flower.id)
+                    ) {
+                      didEditParentModelPrefix = false;
+                    }
+                  } else {
+                    flower.parentModel = {
+                      type: "prefix",
+                      prefix: getGeneratedParentModelPrefix(flower.id),
+                    };
+                  }
+                } else {
+                  flower.parentModel = {
+                    type: "prefix",
+                    prefix: getGeneratedParentModelPrefix(flower.id),
+                  };
+                }
+              } else if (value === "custom") {
+                if (
+                  flower.parentModel.type === "prefix" &&
+                  flower.parentModel.prefix !== ""
+                ) {
+                  flower.parentModel = {
+                    type: "custom",
+                    model1: `${flower.parentModel.prefix}_1`,
+                    model2: `${flower.parentModel.prefix}_2`,
+                    model3: `${flower.parentModel.prefix}_3`,
+                    model4: `${flower.parentModel.prefix}_4`,
+                  };
+                } else {
+                  flower.parentModel = {
+                    type: "custom",
+                    model1: "",
+                    model2: "",
+                    model3: "",
+                    model4: "",
+                  };
+                }
               }
             }
-          }}
+          }
         >
           <option value="prefix">Prefix</option>
           <option value="custom">Custom</option>
@@ -564,7 +630,19 @@
             class="text-input"
             id="parent-model-prefix-{uid}"
             placeholder="namespace:block/identifier"
-            bind:value={flower.parentModel.prefix}
+            bind:value={
+              () =>
+                flower.parentModel.type === "prefix"
+                  ? flower.parentModel.prefix
+                  : "",
+              (value) => {
+                // Type guards needed to make Typescript happy, this branch is only possible when the type is `prefix`
+                if (flower.parentModel.type === "prefix") {
+                  flower.parentModel.prefix = value;
+                }
+                didEditParentModelPrefix = true;
+              }
+            }
           />
         </div>
         <p>
@@ -689,7 +767,18 @@
     <h4 class="expand-heading expand-align-top">
       {flowerName}
     </h4>
-    <ImagePreview file={previewTexture} alt={flowerName} />
+    {#if flower.isSegmented}
+      <span>(Segmented)</span>
+    {:else}
+      {#if originalItemTexture}
+        <ImagePreview
+          file={originalItemTexture}
+          alt={`Original ${flowerName}`}
+        />
+        <span>→</span>
+      {/if}
+      <ImagePreview file={previewTexture} alt={flowerName} />
+    {/if}
     <button
       class="button icon-button color-delete expand-align-top"
       type="button"

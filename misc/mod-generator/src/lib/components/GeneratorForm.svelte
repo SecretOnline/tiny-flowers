@@ -199,7 +199,7 @@
         onclick={() =>
           formState.flowers.push({
             id: "",
-            name: [{ language: "en_us", name: "" }],
+            name: [],
             originalId: "",
             isSegmented: true,
             canSurviveOn: ["#minecraft:supports_vegetation"],

@@ -1,17 +1,8 @@
 <script lang="ts">
   import { getAbortSignal } from "svelte";
-  import bg from "../../../assets/generator/bg.png";
-  import defaultFlowers from "../../../assets/generator/default-flowers.png";
-  import grassOnly from "../../../assets/generator/grass-only.png";
-  import stems from "../../../assets/generator/stems.png";
-  import title from "../../../assets/generator/title-only.png";
+  import type { TextureCreate } from "../../types/state";
   import { delay } from "../../util";
   import StyledColorPicker from "../color-picker/StyledColorPicker.svelte";
-  import Image from "../icons/Image.svelte";
-  import ImageUpload from "../icons/ImageUpload.svelte";
-  import Progress from "../icons/Progress.svelte";
-  import type { TextureCreate } from "../../types/state";
-  import { extractSwatches } from "../../color";
 
   const TEXTURE_SIZE = 16;
 

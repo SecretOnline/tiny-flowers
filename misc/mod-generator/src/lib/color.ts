@@ -135,7 +135,10 @@ export function clusterColors(
   return finalColors;
 }
 
-export async function extractSwatches(itemTexture: File): Promise<string[]> {
+export async function extractSwatches(
+  itemTexture: File,
+  targetCount: number,
+): Promise<string[]> {
   const itemTextureBitmap = await window.createImageBitmap(itemTexture);
 
   const canvas = new OffscreenCanvas(
@@ -192,12 +195,12 @@ export async function extractSwatches(itemTexture: File): Promise<string[]> {
   // never the case, in which case we just take whatever is last.
   const colorList = Array.from(colorSet);
   let finalColors = colorList;
-  if (finalColors.length > 6) {
+  if (finalColors.length > targetCount) {
     let threshold = 24;
 
     finalColors = clusterColors(colorList, threshold);
 
-    while (finalColors.length < 7 && threshold >= 4) {
+    while (finalColors.length < targetCount && threshold >= 4) {
       threshold -= 2;
       finalColors = clusterColors(colorList, threshold);
     }
