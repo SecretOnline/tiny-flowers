@@ -322,6 +322,7 @@
       <StyledColorPicker bind:color />
     </div>
     <div class="inline-group">
+      <span>Flower textures:</span>
       <input
         type="file"
         class="visually-hidden"
@@ -340,6 +341,13 @@
           }
         }
       />
+      <label class="button icon-button" for="generator-flower-1">
+        {#if flower1}
+          <Image />
+        {:else}
+          <ImageUpload />
+        {/if}
+      </label>
       <input
         type="file"
         class="visually-hidden"
@@ -358,6 +366,13 @@
           }
         }
       />
+      <label class="button icon-button" for="generator-flower-2">
+        {#if flower2}
+          <Image />
+        {:else}
+          <ImageUpload />
+        {/if}
+      </label>
       <input
         type="file"
         class="visually-hidden"
@@ -376,6 +391,13 @@
           }
         }
       />
+      <label class="button icon-button" for="generator-flower-3">
+        {#if flower3}
+          <Image />
+        {:else}
+          <ImageUpload />
+        {/if}
+      </label>
       <input
         type="file"
         class="visually-hidden"
@@ -394,28 +416,6 @@
           }
         }
       />
-      <span>Flower textures:</span>
-      <label class="button icon-button" for="generator-flower-1">
-        {#if flower1}
-          <Image />
-        {:else}
-          <ImageUpload />
-        {/if}
-      </label>
-      <label class="button icon-button" for="generator-flower-2">
-        {#if flower2}
-          <Image />
-        {:else}
-          <ImageUpload />
-        {/if}
-      </label>
-      <label class="button icon-button" for="generator-flower-3">
-        {#if flower3}
-          <Image />
-        {:else}
-          <ImageUpload />
-        {/if}
-      </label>
       <label class="button icon-button" for="generator-flower-4">
         {#if flower4}
           <Image />

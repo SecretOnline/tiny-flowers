@@ -35,8 +35,8 @@
 
   .image-preview {
     aspect-ratio: 1/1;
-    width: 64px;
-    height: 64px;
+    width: var(--preview-size, 64px);
+    height: var(--preview-size, 64px);
     image-rendering: pixelated;
     background-color: #e9e9e9;
   }

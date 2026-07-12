@@ -116,8 +116,14 @@ label:not(.file-input-facade) {
   background-color: #0167ac;
   color: white;
 }
+input + .file-input-facade.button:is(:hover, :active, :focus-within),
+input:is(:hover, :active, :focus-within) + .file-input-facade.button,
 .button:is(:hover, :active, :focus-within) {
   background-color: #195a8f;
+}
+input:focus-visible + label.button:is(.file-input-facade, .icon-button),
+.button:focus-visible {
+  outline: 2px solid #0060df;
 }
 
 .icon-button,
@@ -137,7 +143,7 @@ label:not(.file-input-facade) {
   flex-shrink: 0;
 }
 
-.text-input {
+.text-input:not(:is(.color-picker, .styled-color-picker) .text-input) {
   border-width: 2px;
   border-style: solid;
   border-inline-start-color: #aaaaaa;
@@ -148,11 +154,13 @@ label:not(.file-input-facade) {
   background-color: #fafafa;
   color: black;
 }
-.text-input:not(:is(:read-only, :disabled)):is(:hover, :active, :focus-within) {
+.text-input:not(:is(.color-picker, .styled-color-picker) .text-input):not(
+    :is(:read-only, :disabled)
+  ):is(:hover, :active, :focus-within) {
   background-color: #e6e6e6;
 }
-.text-input:read-only,
-.text-input:disabled {
+.text-input:not(:is(.color-picker, .styled-color-picker) .text-input):read-only,
+.text-input:not(:is(.color-picker, .styled-color-picker) .text-input):disabled {
   background-color: transparent;
   color: #414141;
 }
@@ -212,6 +220,18 @@ label:not(.file-input-facade) {
 }
 .color-add:is(:hover, :active, :focus-within) {
   background-color: #256631;
+}
+
+.color-disabled {
+  border-inline-start-color: #747474;
+  border-block-start-color: #747474;
+  border-inline-end-color: #424242;
+  border-block-end-color: #424242;
+  /* 146.85 */
+  background-color: #636363;
+}
+.color-disabled:is(:hover, :active, :focus-within) {
+  background-color: #565656;
 }
 
 .spin {

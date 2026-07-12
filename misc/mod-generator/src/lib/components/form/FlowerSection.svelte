@@ -4,6 +4,8 @@
   import type { CombinedFlowerData, TextureFile } from "../../types/state";
   import { delay, identifierNamespace, identifierPath } from "../../util";
   import Add from "../icons/Add.svelte";
+  import Brush from "../icons/Brush.svelte";
+  import Close from "../icons/Close.svelte";
   import Delete from "../icons/Delete.svelte";
   import ExpandDown from "../icons/ExpandDown.svelte";
   import ExpandRight from "../icons/ExpandRight.svelte";
@@ -11,6 +13,7 @@
   import ImageUpload from "../icons/ImageUpload.svelte";
   import ImagePreview from "../ImagePreview.svelte";
   import BlockTextureRow from "./BlockTextureRow.svelte";
+  import IconTextureEditor from "./IconTextureEditor.svelte";
 
   const PREDEFINED_BLOCK_MODELS = [
     {
@@ -72,8 +75,8 @@
   const uid = $props.id();
 
   let originalItemTexture = $state<File>();
-
   let swatches = $state<string[]>([]);
+  let isEditorOpen = $state(false);
 
   function getGeneratedParentModelPrefix(id: string) {
     return `${identifierNamespace(id)}:block/${identifierPath(id)}`;
@@ -329,6 +332,24 @@
           </label>
         </div>
 
+        {#if isEditorOpen}
+          <button
+            type="button"
+            class="button"
+            onclick={() => (isEditorOpen = false)}
+          >
+            <Close /><span>Close editor</span>
+          </button>
+        {:else}
+          <button
+            type="button"
+            class="button"
+            onclick={() => (isEditorOpen = true)}
+          >
+            <Brush /><span>Edit</span>
+          </button>
+        {/if}
+
         <label class="image-preview-label" for="item-texture-{uid}">
           <ImagePreview
             file={flower.itemTexture}
@@ -336,6 +357,16 @@
               flower.id}
           />
         </label>
+      </div>
+    {/if}
+
+    {#if isEditorOpen}
+      <div class="block-group flower-data-texture-editor">
+        <IconTextureEditor
+          original={originalItemTexture}
+          bind:value={flower.itemTexture}
+          {swatches}
+        />
       </div>
     {/if}
 
@@ -805,7 +836,7 @@
 
   .flower-data-section {
     grid-template-areas:
-      "expand" "id" "original" "segmented" "item" "translations"
+      "expand" "id" "original" "segmented" "original-texture" "item" "texture-editor" "translations"
       "survive" "effects" "parent-preset" "parent" "tint" "block";
   }
 
@@ -823,6 +854,9 @@
   }
   .flower-data-original-item-texture {
     grid-area: original-texture;
+  }
+  .flower-data-texture-editor {
+    grid-area: texture-editor;
   }
   .flower-data-survive {
     grid-area: survive;
@@ -849,8 +883,9 @@
       grid-template-areas:
         "expand expand"
         "id id"
-        "original original-texture"
-        "item item"
+        "original original"
+        "original-texture item"
+        "texture-editor texture-editor"
         "translations translations"
         "survive survive"
         "effects effects"
@@ -867,6 +902,7 @@
         "expand expand expand expand"
         "id id id id"
         "original original original-texture item"
+        "texture-editor texture-editor texture-editor texture-editor"
         "translations translations translations translations"
         "survive survive effects effects"
         "parent-preset parent-preset parent parent"
