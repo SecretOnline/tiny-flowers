@@ -143,7 +143,7 @@
   let flowerName = $derived(
     flower.name.find((lang) => lang.language === "en_us")?.name ||
       flower.id ||
-      "New flower",
+      (flower.isSegmented ? "New segmented flower" : "New flower"),
   );
 
   let hasFileTexture = $derived(
@@ -210,52 +210,57 @@
       </p>
     </div>
 
-    <div class="block-group flower-data-original-item-texture">
-      <label for="original-texture-{uid}"
-        >(Optional) Original Item Texture</label
-      >
-      <div class="inline-group">
-        <input
-          type="file"
-          class="visually-hidden"
-          id="original-texture-{uid}"
-          accept="image/png"
-          bind:files={
-            () => {
-              const dt = new DataTransfer();
-              if (originalItemTexture) {
-                dt.items.add(originalItemTexture);
+    {#if !flower.isSegmented}
+      <div class="block-group flower-data-original-item-texture">
+        <label for="original-texture-{uid}"
+          >(Optional) Original Item Texture</label
+        >
+        <div class="inline-group">
+          <input
+            type="file"
+            class="visually-hidden"
+            id="original-texture-{uid}"
+            accept="image/png"
+            bind:files={
+              () => {
+                const dt = new DataTransfer();
+                if (originalItemTexture) {
+                  dt.items.add(originalItemTexture);
+                }
+                return dt.files;
+              },
+              (newFiles) => {
+                originalItemTexture = newFiles?.[0] ?? undefined;
               }
-              return dt.files;
-            },
-            (newFiles) => {
-              originalItemTexture = newFiles?.[0] ?? undefined;
             }
-          }
-        />
-        <label class="file-input-facade button" for={`original-texture-${uid}`}>
-          {#if originalItemTexture?.name}
-            <Image /><span>{originalItemTexture.name}</span>
-          {:else}
-            <ImageUpload /><span>Browse...</span>
-          {/if}
+          />
+          <label
+            class="file-input-facade button"
+            for={`original-texture-${uid}`}
+          >
+            {#if originalItemTexture?.name}
+              <Image /><span>{originalItemTexture.name}</span>
+            {:else}
+              <ImageUpload /><span>Browse...</span>
+            {/if}
+          </label>
+        </div>
+
+        <label class="image-preview-label" for="original-texture-{uid}">
+          <ImagePreview
+            file={originalItemTexture}
+            alt={flower.name.find((e) => e.language === "en_us")?.name ??
+              flower.id}
+          />
         </label>
+
+        <p>
+          Upload the original item texture here to get color palette suggestions
+          in texture editors. This file is optional, and is not exported when
+          downloading.
+        </p>
       </div>
-
-      <label class="image-preview-label" for="original-texture-{uid}">
-        <ImagePreview
-          file={originalItemTexture}
-          alt={flower.name.find((e) => e.language === "en_us")?.name ??
-            flower.id}
-        />
-      </label>
-
-      <p>
-        This field is optional and is not saved with the generated mod. Upload
-        the original item texture here to get color palette suggestions in
-        texture editors.
-      </p>
-    </div>
+    {/if}
 
     {#if !flower.isSegmented}
       <div class="block-group flower-data-item">
