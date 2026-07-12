@@ -180,11 +180,11 @@ export async function extractSwatches(
         continue;
       }
 
-      const hsl = toHsl(r, g, b);
-      if (hsl.h > 75 && hsl.h < 155 && hsl.s > 0.4) {
-        // Pixel is a vibrant green, skip.
-        continue;
-      }
+      // const hsl = toHsl(r, g, b);
+      // if (hsl.h > 75 && hsl.h < 155 && hsl.s > 0.4) {
+      //   // Pixel is a vibrant green, skip.
+      //   continue;
+      // }
 
       colorSet.add(packRgb(r, g, b));
     }
