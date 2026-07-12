@@ -106,6 +106,10 @@ export function convertFormToFiles(state: FormState): AllFiles {
 
     const flowerLangKey = `block.${flowerNamespace}.${flowerPath}`;
     for (const { language, name } of flower.name) {
+      if (name === "") {
+        continue;
+      }
+
       if (!value.assets.lang[language]) {
         value.assets.lang[language] = {};
       }
@@ -185,13 +189,15 @@ export function convertFormToFiles(state: FormState): AllFiles {
       };
     }
 
-    cases.push({
-      model: {
-        type: "minecraft:model",
-        model: `${flowerNamespace}:item/${flowerPath}`,
-      },
-      when: `${flowerNamespace}:${flowerPath}`,
-    });
+    if (!flower.isSegmented) {
+      cases.push({
+        model: {
+          type: "minecraft:model",
+          model: `${flowerNamespace}:item/${flowerPath}`,
+        },
+        when: `${flowerNamespace}:${flowerPath}`,
+      });
+    }
   }
 
   return value;
@@ -234,7 +240,23 @@ export function convertFilesToForm(files: AllFiles): FormState {
     const model3 = files.assets.models.block[resources.model3];
     const model4 = files.assets.models.block[resources.model4];
     if (!(model1 && model2 && model3 && model4)) {
-      throw new Error(`Flower ${data.id} has a missing block model`);
+      const missingIdSet = [];
+      if (!model1) {
+        missingIdSet.push(resources.model1);
+      }
+      if (!model2) {
+        missingIdSet.push(resources.model2);
+      }
+      if (!model3) {
+        missingIdSet.push(resources.model3);
+      }
+      if (!model4) {
+        missingIdSet.push(resources.model4);
+      }
+
+      throw new Error(
+        `Flower ${data.id} has missing block models (${missingIdSet.join(", ")})`,
+      );
     }
 
     let parentModel: ParentModelType;
@@ -466,7 +488,10 @@ export async function convertFilesToZip(files: AllFiles): Promise<File> {
     );
   }
 
-  if (files.assets.items.tiny_flower) {
+  if (
+    files.assets.items.tiny_flower &&
+    files.assets.items.tiny_flower.model.cases.length > 0
+  ) {
     appendJson(
       getZipDir("items", files.fabricModJson.id),
       files.assets.items.tiny_flower,
