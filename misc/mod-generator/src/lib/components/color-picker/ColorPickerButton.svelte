@@ -47,7 +47,10 @@
       onmousedown={preventDefault}
       aria-haspopup="dialog"
     />
-    <div class="button icon-button color-button" style="--color: {hex}">
+    <div
+      class="button icon-button color-dynamic"
+      style="--dynamic-color: {hex}"
+    >
       <Palette />
     </div>
   </div>
@@ -81,19 +84,5 @@
     height: 1px;
     flex-shrink: 0;
     opacity: 0;
-  }
-
-  .color-button {
-    --solid: color(from var(--color) srgb r g b / 1);
-    --light: color-mix(in hsl shorter hue, var(--solid) 100%, #9b9b9b 50%);
-    --dark: color-mix(in hsl shorter hue, var(--solid) 100%, #282828 50%);
-
-    border-inline-start-color: var(--light, #2079c0);
-    border-block-start-color: var(--light, #2079c0);
-    border-inline-end-color: var(--dark, #054473);
-    border-block-end-color: var(--dark, #054473);
-    background-color: var(--solid, #0167ac);
-
-    color: contrast-color(var(--dark));
   }
 </style>

@@ -9,6 +9,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* 248.09 */
+  --control-background-color: #0167ac;
+  --control-background-color-hover: #195a8f;
+  --control-border-color-light: #2079c0;
+  --control-border-color-dark: #054473;
 }
 
 * {
@@ -108,18 +114,17 @@ label:not(.file-input-facade) {
 
   border-width: 2px;
   border-style: solid;
-  border-inline-start-color: #2079c0;
-  border-block-start-color: #2079c0;
-  border-inline-end-color: #054473;
-  border-block-end-color: #054473;
-  /* 248.09 */
-  background-color: #0167ac;
+  border-inline-start-color: var(--control-border-color-light);
+  border-block-start-color: var(--control-border-color-light);
+  border-inline-end-color: var(--control-border-color-dark);
+  border-block-end-color: var(--control-border-color-dark);
+  background-color: var(--control-background-color);
   color: white;
 }
 input + .file-input-facade.button:is(:hover, :active, :focus-within),
 input:is(:hover, :active, :focus-within) + .file-input-facade.button,
 .button:is(:hover, :active, :focus-within) {
-  background-color: #195a8f;
+  background-color: var(--control-background-color-hover);
 }
 input:focus-visible + label.button:is(.file-input-facade, .icon-button),
 .button:focus-visible {
@@ -146,18 +151,23 @@ input:focus-visible + label.button:is(.file-input-facade, .icon-button),
 .text-input:not(:is(.color-picker, .styled-color-picker) .text-input) {
   border-width: 2px;
   border-style: solid;
-  border-inline-start-color: #aaaaaa;
-  border-block-start-color: #aaaaaa;
-  border-inline-end-color: #d3d3d3;
-  border-block-end-color: #d3d3d3;
-  /* 0 */
-  background-color: #fafafa;
+
+  --control-background-color: #fafafa;
+  --control-background-color-hover: #e6e6e6;
+  --control-border-color-light: #aaaaaa;
+  --control-border-color-dark: #d3d3d3;
+
+  border-inline-start-color: var(--control-border-color-light);
+  border-block-start-color: var(--control-border-color-light);
+  border-inline-end-color: var(--control-border-color-dark);
+  border-block-end-color: var(--control-border-color-dark);
+  background-color: var(--control-background-color);
   color: black;
 }
 .text-input:not(:is(.color-picker, .styled-color-picker) .text-input):not(
     :is(:read-only, :disabled)
   ):is(:hover, :active, :focus-within) {
-  background-color: #e6e6e6;
+  background-color: var(--control-background-color-hover);
 }
 .text-input:not(:is(.color-picker, .styled-color-picker) .text-input):read-only,
 .text-input:not(:is(.color-picker, .styled-color-picker) .text-input):disabled {
@@ -168,70 +178,85 @@ input:focus-visible + label.button:is(.file-input-facade, .icon-button),
 .checkbox {
   border-width: 2px;
   border-style: solid;
-  border-inline-start-color: #2079c0;
-  border-block-start-color: #2079c0;
-  border-inline-end-color: #054473;
-  border-block-end-color: #054473;
-  /* 0 */
-  background-color: #fafafa;
+
+  --control-background-color: #fafafa;
+  --control-background-color-hover: #e6e6e6;
+  --control-border-color-light: #2079c0;
+  --control-border-color-dark: #054473;
+
+  border-inline-start-color: var(--control-border-color-light);
+  border-block-start-color: var(--control-border-color-light);
+  border-inline-end-color: var(--control-border-color-dark);
+  border-block-end-color: var(--control-border-color-dark);
+  background-color: var(--control-background-color);
   color: white;
 }
 .checkbox:not(:is(:disabled)):is(:hover, :active, :focus-within) {
-  background-color: #e6e6e6;
+  background-color: var(--control-background-color-hover);
 }
 .checkbox:is(input:checked ~ .checkbox) {
-  border-inline-start-color: #318941;
-  border-block-start-color: #318941;
-  border-inline-end-color: #124f20;
-  border-block-end-color: #124f20;
-  /* 146.85 */
-  background-color: #1b7730;
+  --control-background-color: #1b7730;
+  --control-background-color-hover: #256631;
+  --control-border-color-light: #318941;
+  --control-border-color-dark: #124f20;
 }
 .checkbox:is(input:checked ~ .checkbox):not(input:checked ~ :is(:disabled)):is(
     :hover,
     :active,
     :focus-within
   ) {
-  background-color: #256631;
+  --control-background-color: #256631;
 }
 .checkbox:is(input:checked ~ :is(:disabled)) {
   filter: grayscale();
 }
 
 .color-delete {
-  border-inline-start-color: #a65c5a;
-  border-block-start-color: #a65c5a;
-  border-inline-end-color: #6c2829;
-  border-block-end-color: #6c2829;
-  /* 21.72 */
-  background-color: #a23c3f;
-}
-.color-delete:is(:hover, :active, :focus-within) {
-  background-color: #883a3b;
+  --control-background-color: #a23c3f;
+  --control-background-color-hover: #883a3b;
+  --control-border-color-light: #a65c5a;
+  --control-border-color-dark: #6c2829;
 }
 
 .color-add {
-  border-inline-start-color: #318941;
-  border-block-start-color: #318941;
-  border-inline-end-color: #124f20;
-  border-block-end-color: #124f20;
-  /* 146.85 */
-  background-color: #1b7730;
-}
-.color-add:is(:hover, :active, :focus-within) {
-  background-color: #256631;
+  --control-background-color: #1b7730;
+  --control-background-color-hover: #256631;
+  --control-border-color-light: #318941;
+  --control-border-color-dark: #124f20;
 }
 
 .color-disabled {
-  border-inline-start-color: #747474;
-  border-block-start-color: #747474;
-  border-inline-end-color: #424242;
-  border-block-end-color: #424242;
-  /* 146.85 */
-  background-color: #636363;
+  --control-background-color: #636363;
+  --control-background-color-hover: #565656;
+  --control-border-color-light: #747474;
+  --control-border-color-dark: #424242;
 }
-.color-disabled:is(:hover, :active, :focus-within) {
-  background-color: #565656;
+
+.color-dynamic {
+  --dynamic-solid: color(from var(--dynamic-color) srgb r g b / 1);
+  --dynamic-hover: color-mix(
+    in hsl shorter hue,
+    var(--dynamic-solid) 100%,
+    #666666 50%
+  );
+  --dynamic-light: color-mix(
+    in hsl shorter hue,
+    var(--dynamic-solid) 100%,
+    #9b9b9b 50%
+  );
+  --dynamic-dark: color-mix(
+    in hsl shorter hue,
+    var(--dynamic-solid) 100%,
+    #282828 50%
+  );
+
+  --control-background-color: var(--dynamic-solid, #0167ac);
+  --control-background-color-hover: var(--dynamic-hover, #195a8f);
+  --control-border-color-light: var(--dynamic-light, #2079c0);
+  --control-border-color-dark: var(--dynamic-dark, #054473);
+
+  color: #fff;
+  color: contrast-color(var(--dynamic-dark));
 }
 
 .spin {

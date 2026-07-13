@@ -102,7 +102,7 @@
       async () => {
         const loadingDelay = delay(150, signal);
 
-        const rgbStrings = await extractSwatches(texture, 7);
+        const rgbStrings = await extractSwatches(texture, 14);
         loadingDelay.then(
           () => {
             if (!signal.aborted) {
