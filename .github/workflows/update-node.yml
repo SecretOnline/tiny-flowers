@@ -6,6 +6,8 @@ on:
     - cron: "0 6 1 * *"
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   update-node:
     runs-on: ubuntu-latest
@@ -13,8 +15,14 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update schema
         id: node-version
@@ -26,14 +34,19 @@ jobs:
           echo "major=$major" >> $GITHUB_OUTPUT
 
       - name: Update .node-version
-        run: echo "v${{ steps.node-version.outputs.latest }}" > .node-version
+        env:
+          LATEST: ${{ steps.node-version.outputs.latest }}
+        run: echo "v${LATEST}" > .node-version
 
       - name: Update @types/node package
         if: hashFiles('tsconfig.json') != ''
-        run: npm install --save-dev @types/node@${{ steps.node-version.outputs.major }}
+        env:
+          MAJOR: ${{ steps.node-version.outputs.major }}
+        # zizmor: ignore[adhoc-packages] This is intentional
+        run: npm install --save-dev @types/node@${MAJOR}
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           add-paths: |
             .node-version
