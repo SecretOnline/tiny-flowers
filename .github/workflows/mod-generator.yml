@@ -30,6 +30,7 @@ jobs:
         with:
           node-version-file: ".node-version"
           cache: "npm"
+          cache-dependency-path: misc/mod-generator
 
       - name: Install
         working-directory: misc/mod-generator
