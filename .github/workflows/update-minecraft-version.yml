@@ -23,7 +23,7 @@ jobs:
     name: Update Minecraft Version
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
@@ -35,9 +35,9 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Fetch versions
+      - name: Fetch mod loader versions
         id: versions
-        uses: SecretOnline/minecraft-actions/get-update-versions@864a0633b94cd154060d164282f5afc2d77802a9 # v2.1.1
+        uses: SecretOnline/minecraft-actions/get-update-versions@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
         with:
           minecraft-version: ${{ inputs.minecraft-version }}
 
@@ -51,18 +51,19 @@ jobs:
           FABRIC_API_VERSION: ${{ steps.versions.outputs.fabric-api-version }}
           FABRIC_LOADER_VERSION: ${{ steps.versions.outputs.fabric-loader-version }}
         run: |
-          sed -i 's/^java_version=.*/java_version=${JAVA_VERSION}/' gradle.properties
-          sed -i 's/^minecraft_version=.*/minecraft_version=${MINECRAFT_VERSION}/' gradle.properties
-          sed -i 's/^minecraft_version_range=.*/minecraft_version_range=[${NUMERIC_VERSION},)/' gradle.properties
-          sed -i 's/^neo_form_version=.*/neo_form_version=${NEOFORM_VERSION}/' gradle.properties
-          sed -i 's/^neoforge_version=.*/neoforge_version=${NEOFORGE_VERSION}/' gradle.properties
-          sed -i 's/^fabric_version=.*/fabric_version=${FABRIC_API_VERSION}/' gradle.properties
-          sed -i 's/^fabric_loader_version=.*/fabric_loader_version=${FABRIC_LOADER_VERSION}/' gradle.properties
+          sed -i "s/^java_version=.*/java_version=${JAVA_VERSION}/" gradle.properties
+          sed -i "s/^minecraft_version=.*/minecraft_version=${MINECRAFT_VERSION}/" gradle.properties
+          sed -i "s/^minecraft_version_range=.*/minecraft_version_range=[${NUMERIC_VERSION},)/" gradle.properties
+          sed -i "s/^neo_form_version=.*/neo_form_version=${NEOFORM_VERSION}/" gradle.properties
+          sed -i "s/^neoforge_version=.*/neoforge_version=${NEOFORGE_VERSION}/" gradle.properties
+          sed -i "s/^fabric_version=.*/fabric_version=${FABRIC_API_VERSION}/" gradle.properties
+          sed -i "s/^fabric_loader_version=.*/fabric_loader_version=${FABRIC_LOADER_VERSION}/" gradle.properties
 
       - name: Create standalone branch
         if: inputs.branch-only
         env:
           MINECRAFT_VERSION: ${{ steps.versions.outputs.minecraft-version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
@@ -70,6 +71,8 @@ jobs:
           git checkout -b auto-update/${MINECRAFT_VERSION}
           git add gradle.properties
           git commit -m "Update to Minecraft ${MINECRAFT_VERSION}"
+
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push --force origin auto-update/${MINECRAFT_VERSION}
 
       - name: Prepare PR body
@@ -82,19 +85,19 @@ jobs:
           FABRIC_LOADER_VERSION: ${{ steps.versions.outputs.fabric-loader-version }}
           FABRIC_API_VERSION: ${{ steps.versions.outputs.fabric-api-version }}
         run: |
-          cat << 'EOF' > pr-body.md
+          cat << EOF > pr-body.md
           This PR contains automated updates from the update-minecraft-version workflow.
 
           ## Updates
 
           |Component|Version|
           |---|---|
-          |Minecraft|`${MINECRAFT_VERSION}`|
-          |Java|`${JAVA_VERSION}`|
-          |NeoForm|`${NEOFORM_VERSION}`|
-          |NeoForge|`${NEOFORGE_VERSION}`|
-          |Fabric Loader|`${FABRIC_LOADER_VERSION}`|
-          |Fabric API|`${FABRIC_API_VERSION}`|
+          |Minecraft|\`${MINECRAFT_VERSION}\`|
+          |Java|\`${JAVA_VERSION}\`|
+          |NeoForm|\`${NEOFORM_VERSION}\`|
+          |NeoForge|\`${NEOFORGE_VERSION}\`|
+          |Fabric Loader|\`${FABRIC_LOADER_VERSION}\`|
+          |Fabric API|\`${FABRIC_API_VERSION}\`|
 
           ## Remember to check!
 
