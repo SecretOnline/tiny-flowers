@@ -36,6 +36,8 @@ jobs:
 
       - name: Get deploy info
         id: deploy-info
+        env:
+          VERSION: ${{ inputs.version }}
         run: |
           modrinth_project_id=$(grep '^modrinth_project_id=' gradle.properties | cut -d= -f2)
           icon_url=$(curl -A "secret_online/mod-release (mc@secretonline.co)" "https://api.modrinth.com/v2/project/${modrinth_project_id}" | jq --raw-output ".icon_url")
@@ -55,10 +57,10 @@ jobs:
 
       - name: Publish
         env:
-          VERSION: ${{ inputs.version }}
           IS_RELEASE: ${{ inputs.is-release }}
           RELEASE_NOTES: ${{ steps.changelog.outputs.release-notes }}
           ICON_URL: ${{ steps.deploy-info.outputs.icon-url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

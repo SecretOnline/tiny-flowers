@@ -28,6 +28,8 @@ publishMods {
 	curseforge("curseforgeFabric") {
 		from cfOptions
 		file project(":fabric")
+		version = "v${providers.gradleProperty("version").get()}-fabric"
+		displayName = "${providers.gradleProperty("mod_name").get()} v${providers.gradleProperty("version").get()} for Fabric"
 		modLoaders.add("fabric")
 		requires {
 			slug = "fabric-api"
@@ -36,28 +38,38 @@ publishMods {
 	curseforge("curseforgeNeoforge") {
 		from cfOptions
 		file project(":neoforge")
+		version = "v${providers.gradleProperty("version").get()}-neoforge"
+		displayName = "${providers.gradleProperty("mod_name").get()} v${providers.gradleProperty("version").get()} for NeoForge"
+		// Ordering for CurseForge
+		type = BETA
 		modLoaders.add("neoforge")
 	}
 
 	modrinth("modrinthFabric") {
 		from mrOptions
 		file project(":fabric")
+		version = "v${providers.gradleProperty("version").get()}-fabric"
+		displayName = "${providers.gradleProperty("mod_name").get()} v${providers.gradleProperty("version").get()} for Fabric"
 		modLoaders.add("fabric")
 		requires {
 			slug = "fabric-api"
 		}
+		announcementTitle = "Fabric"
 	}
 	modrinth("modrinthNeoforge") {
 		from mrOptions
 		file project(":neoforge")
+		version = "v${providers.gradleProperty("version").get()}-neoforge"
+		displayName = "${providers.gradleProperty("mod_name").get()} v${providers.gradleProperty("version").get()} for NeoForge"
 		modLoaders.add("neoforge")
+		announcementTitle = "NeoForge"
 	}
 
 	github {
 		accessToken = providers.environmentVariable("GITHUB_TOKEN").getOrElse("INVALID")
 		repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("INVALID")
 		commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("main")
-		tagName = "v${providers.gradleProperty("version")}"
+		tagName = "v${providers.gradleProperty("version").get()}"
 
 		allowEmptyFiles = true
 	}
@@ -79,7 +91,7 @@ publishMods {
 		dryRunWebhookUrl = providers.environmentVariable("DISCORD_WEBHOOK_URL_DRY_RUN")
 		username = providers.gradleProperty("mod_name")
 		avatarUrl = providers.environmentVariable("ICON_URL").getOrNull()
-		content = "${providers.gradleProperty("mod_name")} v${providers.gradleProperty("version")} has been released!"
+		content = "${providers.gradleProperty("mod_name").get()} v${providers.gradleProperty("version").get()} has been released!"
 		setPlatforms(publishMods.platforms.modrinthFabric, publishMods.platforms.modrinthNeoforge)
 
 		style {
