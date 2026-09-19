@@ -16,6 +16,16 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v2.0.3 - 2026-09-19
+
+### Updated
+
+- Updated to 26.3
+
+### Changed
+
+- Suspicious Stew recipe now requires two of any mushroom, to match the vanilla recipe.
+
 ## v2.0.2 - 2026-07-11
 
 ### Fixed
