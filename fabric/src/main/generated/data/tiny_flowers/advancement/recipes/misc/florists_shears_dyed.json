@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:florists_shears_dyed"
+        "recipes": "tiny_flowers:florists_shears_dyed"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:florists_shears_dyed"
+      "tiny_flowers:florists_shears_dyed"
     ]
   }
 }

@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
-
-import com.mojang.serialization.MapCodec;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.item.component.GardenContentsComponent;
@@ -34,14 +33,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SegmentableBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -57,7 +48,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.NonNull;
 
 public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBlock {
-	public static final MapCodec<TinyGardenBlock> CODEC = simpleCodec(TinyGardenBlock::new);
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	private static final BiFunction<Direction, Integer, VoxelShape> FACING_AND_AMOUNT_TO_SHAPE = Util.memoize(
@@ -155,10 +145,8 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	@Override
 	public boolean canBeReplaced(@NonNull BlockState state, BlockPlaceContext context) {
 		return !context.isSecondaryUseActive()
-				&& (TinyFlowerData.findByItemStack(context.getLevel().registryAccess(), context.getItemInHand()) != null)
-				&& hasFreeSpace(context.getLevel(), context.getClickedPos())
-						? true
-						: super.canBeReplaced(state, context);
+			&& (TinyFlowerData.findByItemStack(context.getLevel().registryAccess(), context.getItemInHand()) != null)
+			&& hasFreeSpace(context.getLevel(), context.getClickedPos()) || super.canBeReplaced(state, context);
 	}
 
 	@Override
@@ -300,19 +288,18 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, @NonNull RandomSource randomSource, @NonNull BlockPos pos, @NonNull BlockState blockState) {
-		return level.getBlockEntity(pos) instanceof TinyGardenBlockEntity;
+	public boolean isValidBonemealTarget(LevelReader levelReader, @NonNull BlockPos blockPos, @NonNull BlockState blockState, @NonNull BonemealSource bonemealSource) {
+		return levelReader.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity;
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, @NonNull BlockPos pos, @NonNull BlockState blockState) {
-		return level.getBlockEntity(pos) instanceof TinyGardenBlockEntity;
+	public boolean isBonemealSuccess(Level level, @NonNull RandomSource randomSource, @NonNull BlockPos blockPos, @NonNull BlockState blockState, @NonNull BonemealSource bonemealSource) {
+		return level.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel serverLevel, @NonNull RandomSource randomSource, @NonNull BlockPos pos,
-															@NonNull BlockState blockState) {
-		if (!(serverLevel.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+	public void performBonemeal(ServerLevel serverLevel, @NonNull RandomSource randomSource, @NonNull BlockPos blockPos, @NonNull BlockState blockState, @NonNull BonemealSource bonemealSource) {
+		if (!(serverLevel.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 			return;
 		}
 
@@ -329,13 +316,13 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			// Drop an item based on the variants in the garden. At this stage we can assume
 			// that the garden is full.
 			ItemStack stack = new ItemStack(
-					BuiltInRegistries.ITEM.wrapAsHolder(ModItems.TINY_FLOWER_ITEM.get()),
-					4,
-					DataComponentPatch.builder()
-							.set(ModComponents.TINY_FLOWER.get(), new TinyFlowerComponent(randomId))
-							.build());
+				BuiltInRegistries.ITEM.wrapAsHolder(ModItems.TINY_FLOWER_ITEM.get()),
+				4,
+				DataComponentPatch.builder()
+					.set(ModComponents.TINY_FLOWER.get(), new TinyFlowerComponent(randomId))
+					.build());
 
-			popResource(serverLevel, pos, stack);
+			popResource(serverLevel, blockPos, stack);
 		}
 	}
 
@@ -344,8 +331,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	protected boolean isPathfindable(@NonNull BlockState blockState, @NonNull PathComputationType pathComputationType) {
-		return pathComputationType == PathComputationType.AIR && !this.hasCollision ? true
-				: super.isPathfindable(blockState, pathComputationType);
+		return pathComputationType == PathComputationType.AIR && !this.hasCollision || super.isPathfindable(blockState, pathComputationType);
 	}
 
 	@Override
@@ -400,15 +386,9 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 				(gardenBlockEntity.getFlower(4) != null ? 8 : 0);
 	}
 
-	@Override
-	protected @NonNull MapCodec<? extends BaseEntityBlock> codec() {
-		return CODEC;
-	}
-
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(@NonNull BlockPos pos, @NonNull BlockState state) {
 		return new TinyGardenBlockEntity(pos, state);
 	}
-
 }

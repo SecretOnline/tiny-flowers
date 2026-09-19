@@ -25,13 +25,9 @@ public class ModBlocks {
 			.mapColor(MapColor.PLANT)
 			.noCollision()
 			.sound(SoundType.PINK_PETALS)
-			.pushReaction(PushReaction.DESTROY)
+			.pushReaction(PushReaction.POPPED)
 			.randomTicks()
 			.setId(TINY_GARDEN_KEY)));
-	public static final Supplier<MapCodec<TinyGardenBlock>> TINY_GARDEN_TYPE = ServerServiceLoader.REGISTRY.register(
-		BuiltInRegistries.BLOCK_TYPE,
-		TINY_GARDEN_ID,
-		() -> TinyGardenBlock.CODEC);
 
 	public static void initialize() {
 	}
