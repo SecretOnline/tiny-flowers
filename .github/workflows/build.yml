@@ -120,7 +120,7 @@ jobs:
           egress-policy: audit
 
       - name: Install apt packages
-        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri mesa-utils imagemagick
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri mesa-utils imagemagick mesa-vulkan-drivers
 
       - name: Setup Java ${{ matrix.versions.java-version }}
         id: setup-java
