@@ -180,11 +180,19 @@ jobs:
       matrix:
         loader: ${{ fromJson(needs.release-build.outputs.loaders) }}
     permissions:
+      contents: read
       actions: read
     steps:
       - uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
         with:
           egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: |
+            ${{ matrix.loader }}
+          persist-credentials: false
 
       - name: Download ${{ matrix.loader }} build artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -196,12 +204,16 @@ jobs:
         env:
           LOADER: ${{ matrix.loader }}
         run: |
+          # Delete everything that's not required.
+          # This is mostly for running locally with act, which doesn't seem to do sparse checkouts.
+          find . -maxdepth 1 -type f -delete
+          find . -maxdepth 1 -type d | grep -Ev '^\.(/\.|/${LOADER}|$)' | xargs rm -rf
+
+          # Move files for mc-publish action to correctly pick them up.
           mv ${LOADER}/* .
-          mkdir -p src/main/resources
-          mv build/resources/main/* src/main/resources
 
           # Delete extra jars. Note: If a release ends with one of these suffixes then this will fail, but that's a future problem.
-          find build/libs -type f \( -name '*-dev.jar' -o -name '*-sources.jar' -o -name '*-javadoc.jar' -o -name '*-shadow.jar' \) -delete
+          find build/libs -type f \( -name '*-dev.jar' -o -name '*-sources.jar' -o -name '*-javadoc.jar' -o -name '*-shadow.jar' -o -name 'buildSrc.jar' \) -delete
 
       - name: Create Modrinth Release
         id: modrinth-release
