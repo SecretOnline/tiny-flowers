@@ -21,6 +21,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -48,13 +49,11 @@ public class TinyFlowerStewRecipe extends CustomRecipeWithProvider {
 		}
 
 		boolean hasBowl = false;
-		boolean hasBrownMushroom = false;
-		boolean hasRedMushroom = false;
+		int mushroomCount = 0;
 		boolean hasAtLeastOneTinyFlower = false;
 
 		for (ItemStack itemStack : recipeInput.items()) {
-			// Ensure exactly one of each of bowl, red shroom, and brown shroom are in the
-			// list.
+			// Ensure exactly one bowl and exactly two mushrooms are in the list.
 			if (itemStack.isEmpty()) {
 				continue;
 			}
@@ -67,20 +66,12 @@ public class TinyFlowerStewRecipe extends CustomRecipeWithProvider {
 				hasBowl = true;
 				continue;
 			}
-			if (itemStack.is(Items.BROWN_MUSHROOM)) {
-				if (hasBrownMushroom) {
+			if (itemStack.is(ItemTags.MUSHROOMS)) {
+				mushroomCount++;
+				if (mushroomCount > 2) {
 					return false;
 				}
 
-				hasBrownMushroom = true;
-				continue;
-			}
-			if (itemStack.is(Items.RED_MUSHROOM)) {
-				if (hasRedMushroom) {
-					return false;
-				}
-
-				hasRedMushroom = true;
 				continue;
 			}
 
@@ -91,7 +82,7 @@ public class TinyFlowerStewRecipe extends CustomRecipeWithProvider {
 			hasAtLeastOneTinyFlower = true;
 		}
 
-		return hasBowl && hasBrownMushroom && hasRedMushroom && hasAtLeastOneTinyFlower;
+		return hasBowl && mushroomCount == 2 && hasAtLeastOneTinyFlower;
 	}
 
 	@Override
