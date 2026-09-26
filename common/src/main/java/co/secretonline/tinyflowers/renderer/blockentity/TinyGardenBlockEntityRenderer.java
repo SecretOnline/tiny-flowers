@@ -54,8 +54,8 @@ public class TinyGardenBlockEntityRenderer
 		Optional<Direction> facingDirection = blockEntity.getBlockState().getOptionalValue(TinyGardenBlock.FACING);
 		facingDirection.ifPresent(state::setDirection);
 
-		state.setFlowers(blockEntity.getFlower(1), blockEntity.getFlower(2),
-			blockEntity.getFlower(3), blockEntity.getFlower(4));
+		state.setFlowers(blockEntity.getFlower(0), blockEntity.getFlower(1),
+			blockEntity.getFlower(2), blockEntity.getFlower(3));
 
 		state.setTintStack(getTintStack(blockEntity));
 	}
@@ -70,10 +70,10 @@ public class TinyGardenBlockEntityRenderer
 		poseStack.rotateDegrees(Axis.YP, 180 - rotationDegrees);
 		poseStack.translate(-0.5, 0, -0.5);
 
+		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 0);
 		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 1);
 		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 2);
 		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 3);
-		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 4);
 
 		poseStack.popPose();
 	}
@@ -81,10 +81,10 @@ public class TinyGardenBlockEntityRenderer
 	private void submitPartForFlowerIndex(TinyGardenBlockEntityRenderState state, PoseStack poseStack,
 	                                      SubmitNodeCollector submitNodeCollector, int index) {
 		Identifier id = switch (index) {
-			case 1 -> state.getFlower1();
-			case 2 -> state.getFlower2();
-			case 3 -> state.getFlower3();
-			case 4 -> state.getFlower4();
+			case 0 -> state.getFlower1();
+			case 1 -> state.getFlower2();
+			case 2 -> state.getFlower3();
+			case 3 -> state.getFlower4();
 			default -> throw new IllegalArgumentException("Invalid flower index " + index);
 		};
 		if (id == null) {
@@ -97,10 +97,10 @@ public class TinyGardenBlockEntityRenderer
 		}
 
 		Identifier partId = switch (index) {
-			case 1 -> resources.model1();
-			case 2 -> resources.model2();
-			case 3 -> resources.model3();
-			case 4 -> resources.model4();
+			case 0 -> resources.model1();
+			case 1 -> resources.model2();
+			case 2 -> resources.model3();
+			case 3 -> resources.model4();
 			default -> throw new IllegalArgumentException("Invalid flower index " + index);
 		};
 		if (partId == null) {

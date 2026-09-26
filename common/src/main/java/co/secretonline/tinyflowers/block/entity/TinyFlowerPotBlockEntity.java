@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.block.entity;
 
+import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
 import net.minecraft.core.BlockPos;
@@ -19,12 +20,30 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-public class TinyFlowerPotBlockEntity extends BlockEntity {
+public class TinyFlowerPotBlockEntity extends BlockEntity implements TinyFlowerHolder {
 	@Nullable
 	private Identifier flower;
 
 	public TinyFlowerPotBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.TINY_FLOWER_POT_BLOCK_ENTITY.get(), pos, state);
+	}
+
+	@Override
+	public int getSize() {
+		return 1;
+	}
+
+	@Override
+	@Nullable
+	public Identifier getFlower(int index) {
+		return index == 0 ? flower : null;
+	}
+
+	@Override
+	public void setFlower(int index, @Nullable Identifier id) {
+		if (index == 0) {
+			this.setFlower(id);
+		}
 	}
 
 	@Nullable

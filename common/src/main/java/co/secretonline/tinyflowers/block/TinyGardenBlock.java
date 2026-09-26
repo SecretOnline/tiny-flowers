@@ -64,7 +64,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			};
 			VoxelShape voxelShape = Shapes.empty();
 
-			for (int i = 0; i < TinyGardenBlockEntity.NUM_SLOTS; i++) {
+			for (int i = 0; i < TinyGardenBlockEntity.NUM_TINY_FLOWER_SLOTS; i++) {
 				if ((bitmap & (1 << i)) > 0) {
 					int j = Math.floorMod(i - facing.get2DDataValue(), 4);
 					voxelShape = Shapes.or(voxelShape, voxelShapes[j]);
@@ -90,7 +90,6 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 		}
 
 		BlockPos supportingPos = blockPos.below();
-		BlockState belowBlockState = levelReader.getBlockState(supportingPos);
 		return gardenBlockEntity.canSurviveOn(levelReader, supportingPos);
 	}
 
@@ -311,7 +310,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 		Identifier randomId = Util.getRandom(flowers, randomSource);
 
-		// Try add flow to garden, otherwise pop an item out.
+		// Try to add flower to garden, otherwise pop an item out.
 		if (!gardenBlockEntity.addFlower(randomId)) {
 			// Drop an item based on the variants in the garden. At this stage we can assume
 			// that the garden is full.
@@ -359,14 +358,11 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 	private static boolean hasFreeSpace(BlockGetter world, BlockPos pos) {
 		if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
-			// If there's no block entity, try prevent anything from trying to write to it
+			// If there's no block entity, try to prevent anything from trying to write to it
 			return false;
 		}
 
-		return gardenBlockEntity.getFlower(1) == null ||
-				gardenBlockEntity.getFlower(2) == null ||
-				gardenBlockEntity.getFlower(3) == null ||
-				gardenBlockEntity.getFlower(4) == null;
+		return !gardenBlockEntity.isFull();
 	}
 
 	/**
@@ -380,10 +376,10 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 			return -1;
 		}
 
-		return (gardenBlockEntity.getFlower(1) != null ? 1 : 0) +
-				(gardenBlockEntity.getFlower(2) != null ? 2 : 0) +
-				(gardenBlockEntity.getFlower(3) != null ? 4 : 0) +
-				(gardenBlockEntity.getFlower(4) != null ? 8 : 0);
+		return (gardenBlockEntity.getFlower(0) != null ? 1 : 0) +
+				(gardenBlockEntity.getFlower(1) != null ? 2 : 0) +
+				(gardenBlockEntity.getFlower(2) != null ? 4 : 0) +
+				(gardenBlockEntity.getFlower(3) != null ? 8 : 0);
 	}
 
 	@Nullable

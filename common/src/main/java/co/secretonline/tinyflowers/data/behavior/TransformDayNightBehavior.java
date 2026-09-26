@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers.data.behavior;
 
 import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
+import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -40,7 +41,7 @@ public record TransformDayNightBehavior(When when, Identifier turnsInto, Integer
 																				Optional<Identifier> soundEventShort) implements Behavior {
 
 	@Override
-	public boolean shouldActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+	public boolean shouldActivate(TinyFlowerHolder flowerHolder, int index, BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		TriState openTriState = level.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
 		if (openTriState == TriState.DEFAULT) {
 			return false;
@@ -50,8 +51,8 @@ public record TransformDayNightBehavior(When when, Identifier turnsInto, Integer
 	}
 
 	@Override
-	public void onActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		entity.setFlower(index, this.turnsInto());
+	public void onActivate(TinyFlowerHolder flowerHolder, int index, BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		flowerHolder.setFlower(index, this.turnsInto());
 	}
 
 	@Override

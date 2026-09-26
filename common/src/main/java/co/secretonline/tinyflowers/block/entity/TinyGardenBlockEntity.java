@@ -3,6 +3,7 @@ package co.secretonline.tinyflowers.block.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +31,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 
-public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
-	public static final int NUM_SLOTS = 4;
+public class TinyGardenBlockEntity extends BlockEntity implements Survivable, TinyFlowerHolder {
+	public static final int NUM_TINY_FLOWER_SLOTS = 4;
 
 	@Nullable
 	private Identifier flower1 = null;
@@ -47,7 +48,7 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 	}
 
 	public List<Identifier> getFlowers() {
-		List<Identifier> list = new ArrayList<>(NUM_SLOTS);
+		List<Identifier> list = new ArrayList<>(NUM_TINY_FLOWER_SLOTS);
 
 		if (flower1 != null) {
 			list.add(flower1);
@@ -81,29 +82,34 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 		return true;
 	}
 
+	@Override
+	public int getSize() {
+		return NUM_TINY_FLOWER_SLOTS;
+	}
+
 	@Nullable
 	public Identifier getFlower(int index) {
 		return switch (index) {
-			case 1 -> flower1;
-			case 2 -> flower2;
-			case 3 -> flower3;
-			case 4 -> flower4;
+			case 0 -> flower1;
+			case 1 -> flower2;
+			case 2 -> flower3;
+			case 3 -> flower4;
 			default -> throw new IndexOutOfBoundsException(index);
 		};
 	}
 
 	public void setFlower(int index, @Nullable Identifier id) {
 		switch (index) {
-			case 1:
+			case 0:
 				flower1 = id;
 				break;
-			case 2:
+			case 1:
 				flower2 = id;
 				break;
-			case 3:
+			case 2:
 				flower3 = id;
 				break;
-			case 4:
+			case 3:
 				flower4 = id;
 				break;
 			default:
@@ -115,37 +121,23 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 
 	public boolean addFlower(Identifier newId) {
 		if (flower1 == null) {
-			setFlower(1, newId);
+			setFlower(0, newId);
 			return true;
 		}
 		if (flower2 == null) {
-			setFlower(2, newId);
+			setFlower(1, newId);
 			return true;
 		}
 		if (flower3 == null) {
-			setFlower(3, newId);
+			setFlower(2, newId);
 			return true;
 		}
 		if (flower4 == null) {
-			setFlower(4, newId);
+			setFlower(3, newId);
 			return true;
 		}
 
 		return false;
-	}
-
-	public boolean isEmpty() {
-		return flower1 == null &&
-			flower2 == null &&
-			flower3 == null &&
-			flower4 == null;
-	}
-
-	public boolean isFull() {
-		return flower1 != null &&
-			flower2 != null &&
-			flower3 != null &&
-			flower4 != null;
 	}
 
 	@Override
@@ -184,10 +176,10 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 
 		GardenContentsComponent gardenComponent = dataComponentGetter.get(ModComponents.GARDEN_CONTENTS.get());
 		if (gardenComponent != null) {
-			setFlower(1, gardenComponent.flower1());
-			setFlower(2, gardenComponent.flower2());
-			setFlower(3, gardenComponent.flower3());
-			setFlower(4, gardenComponent.flower4());
+			setFlower(0, gardenComponent.flower1());
+			setFlower(1, gardenComponent.flower2());
+			setFlower(2, gardenComponent.flower3());
+			setFlower(3, gardenComponent.flower4());
 		} else {
 			TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER.get());
 			if (itemComponent != null) {
@@ -230,12 +222,12 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable {
 		Identifier id = tinyFlowerData.id();
 		int amount = block instanceof SegmentableBlock segmentedBlock
 			? state.getValue(segmentedBlock.getSegmentAmountProperty())
-			: NUM_SLOTS;
+			: NUM_TINY_FLOWER_SLOTS;
 
-		setFlower(1, amount >= 1 ? id : null);
-		setFlower(2, amount >= 2 ? id : null);
-		setFlower(3, amount >= 3 ? id : null);
-		setFlower(4, amount >= 4 ? id : null);
+		setFlower(0, amount >= 1 ? id : null);
+		setFlower(1, amount >= 2 ? id : null);
+		setFlower(2, amount >= 3 ? id : null);
+		setFlower(3, amount >= 4 ? id : null);
 
 		return true;
 	}

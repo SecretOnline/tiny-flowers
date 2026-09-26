@@ -3,6 +3,7 @@ package co.secretonline.tinyflowers.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import org.jetbrains.annotations.Nullable;
 
 import co.secretonline.tinyflowers.block.ModBlocks;
@@ -22,11 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 public class TransformHelper {
-
-	public static boolean canTransform(BlockState currentState, ServerLevel world, BlockPos pos) {
-
-	}
-
 	public static boolean doTransformTick(BlockState currentState, ServerLevel world, BlockPos pos, RandomSource random,
 																				boolean isRandomTick) {
 		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
@@ -36,15 +32,17 @@ public class TransformHelper {
 
 		boolean didChange = false;
 
-		if (!(world.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
+		if (!(world.getBlockEntity(pos) instanceof TinyFlowerHolder flowerHolder)) {
 			// If there's no block entity, don't do anything
 			return false;
 		}
 
 		List<Behavior> featuresWithWorldEffect = new ArrayList<>();
-		for (int i = 1; i <= 4; i++) {
+
+		int size = flowerHolder.getSize();
+		for (int i = 0; i < size; i++) {
 			@Nullable
-			Identifier flowerId = gardenBlockEntity.getFlower(i);
+			Identifier flowerId = flowerHolder.getFlower(i);
 			if (flowerId == null) {
 				continue;
 			}
@@ -56,9 +54,9 @@ public class TransformHelper {
 			}
 
 			for (Behavior behavior : flowerData.behaviors()) {
-				if (behavior.shouldActivate(gardenBlockEntity, i, currentState, world, pos, random)) {
+				if (behavior.shouldActivate(flowerHolder, i, currentState, world, pos, random)) {
 					didChange = true;
-					behavior.onActivate(gardenBlockEntity, i, currentState, world, pos, random);
+					behavior.onActivate(flowerHolder, i, currentState, world, pos, random);
 
 					if (behavior.hasWorldEffect()) {
 						featuresWithWorldEffect.add(behavior);
@@ -116,9 +114,9 @@ public class TransformHelper {
 					return;
 				}
 
-				// Tiny Gardens should also recieve updates if they have eyeblossoms.
+				// Tiny Gardens should also receive updates if they have any flowers that can activate.
 				boolean didNotify = false;
-				for (int i = 1; i <= 4; i++) {
+				for (int i = 0; i < gardenBlockEntity.getSize(); i++) {
 					@Nullable
 					Identifier flowerId = gardenBlockEntity.getFlower(i);
 					if (flowerId == null) {

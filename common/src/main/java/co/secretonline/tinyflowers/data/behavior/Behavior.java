@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.data.behavior;
 
+import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 
@@ -11,9 +12,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface Behavior {
-	boolean shouldActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random);
+	boolean shouldActivate(TinyFlowerHolder flowerHolder, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random);
 
-	void onActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random);
+	void onActivate(TinyFlowerHolder flowerHolder, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random);
 
 	boolean hasWorldEffect();
 

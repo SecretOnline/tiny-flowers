@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers.data.behavior;
 
 import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
+import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -14,12 +15,12 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public record SturdyPlacementBehavior(boolean isReallyCool) implements Behavior {
 	@Override
-	public boolean shouldActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	public boolean shouldActivate(TinyFlowerHolder flowerHolder, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		return false;
 	}
 
 	@Override
-	public void onActivate(TinyGardenBlockEntity entity, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	public void onActivate(TinyFlowerHolder flowerHolder, int index, BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 	}
 
 	@Override
