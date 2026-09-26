@@ -80,6 +80,7 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable, Ti
 			this.flowers[index] = id;
 
 			this.markUpdated();
+			return;
 		}
 
 		throw new IndexOutOfBoundsException(index);

@@ -35,7 +35,7 @@ public class ModBlocks {
 	public static final Supplier<Block> TINY_FLOWER_POT_BLOCK = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.BLOCK,
 		TINY_FLOWER_POT_ID,
-		() -> new TinyGardenBlock(BlockBehaviour.Properties.of()
+		() -> new TinyFlowerPotBlock(BlockBehaviour.Properties.of()
 			.instabreak()
 			.noOcclusion()
 			.pushReaction(PushReaction.POPPED)

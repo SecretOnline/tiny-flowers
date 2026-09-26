@@ -57,7 +57,7 @@ public class TinyFlowerPotBlockEntityRenderer
 										 @NonNull SubmitNodeCollector submitNodeCollector, @NonNull CameraRenderState cameraRenderState) {
 		poseStack.pushPose();
 
-		poseStack.translate(0.5, 0, 0.5);
+		poseStack.translate(0.25, 0.25, 0.25);
 
 		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector);
 

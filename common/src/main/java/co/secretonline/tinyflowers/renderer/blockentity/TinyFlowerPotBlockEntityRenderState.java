@@ -2,10 +2,10 @@ package co.secretonline.tinyflowers.renderer.blockentity;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.resources.Identifier;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public class TinyFlowerPotBlockEntityRenderState extends BlockEntityRenderState {
-	@NonNull
+	@Nullable
 	private Identifier flower = null;
 
 	private int[] tintStack = new int[0];
@@ -14,11 +14,11 @@ public class TinyFlowerPotBlockEntityRenderState extends BlockEntityRenderState 
 		return tintStack;
 	}
 
-	public @NonNull Identifier getFlower() {
+	public @Nullable Identifier getFlower() {
 		return flower;
 	}
 
-	public void setFlower(@NonNull Identifier flower) {
+	public void setFlower(@Nullable Identifier flower) {
 		this.flower = flower;
 	}
 

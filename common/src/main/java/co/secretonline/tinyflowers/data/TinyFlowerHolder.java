@@ -27,11 +27,11 @@ public interface TinyFlowerHolder {
 		int size = getSize();
 
 		for (int i = 0; i < size; i++) {
-			if (getFlower(i) == null) {
-				return true;
+			if (getFlower(i) != null) {
+				return false;
 			}
 		}
 
-		return false;
+		return true;
 	}
 }
