@@ -269,14 +269,14 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 
 	@Override
 	protected void randomTick(@NonNull BlockState state, @NonNull ServerLevel world, @NonNull BlockPos pos, @NonNull RandomSource random) {
-		TransformHelper.doTransformTick(state, world, pos, random, true);
+		TransformHelper.doTransformTick(state, world, pos, random, true, true);
 
 		super.randomTick(state, world, pos, random);
 	}
 
 	@Override
 	protected void tick(@NonNull BlockState state, @NonNull ServerLevel world, @NonNull BlockPos pos, @NonNull RandomSource random) {
-		TransformHelper.doTransformTick(state, world, pos, random, false);
+		TransformHelper.doTransformTick(state, world, pos, random, false, true);
 
 		super.tick(state, world, pos, random);
 	}

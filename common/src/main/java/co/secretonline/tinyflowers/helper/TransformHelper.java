@@ -24,7 +24,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 public class TransformHelper {
 	public static boolean doTransformTick(BlockState currentState, ServerLevel world, BlockPos pos, RandomSource random,
-																				boolean isRandomTick) {
+																				boolean isRandomTick, boolean shouldNotifyNearby) {
 		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);
 		if (openTriState == TriState.DEFAULT) {
 			return false;
@@ -69,7 +69,9 @@ public class TransformHelper {
 			world.setBlock(pos, currentState, Block.UPDATE_CLIENTS);
 			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(currentState));
 
-			TransformHelper.notifyNearbyBlocks(currentState, world, pos, random);
+			if (shouldNotifyNearby) {
+				TransformHelper.notifyNearbyBlocks(currentState, world, pos, random);
+			}
 
 			if (!featuresWithWorldEffect.isEmpty()) {
 				Behavior randomChange = Util.getRandom(featuresWithWorldEffect, random);

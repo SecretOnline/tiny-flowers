@@ -39,6 +39,7 @@ public class ModBlocks {
 			.instabreak()
 			.noOcclusion()
 			.pushReaction(PushReaction.POPPED)
+			.randomTicks()
 			.setId(TINY_FLOWER_POT_KEY)));
 
 	public static void initialize() {

@@ -5,6 +5,7 @@
   "mixins": [
     "block.EyeblossomBlockMixin",
     "block.FlowerbedBlockMixin",
+    "block.FlowerPotBlockAccessor",
     "block.LeafLitterBlockMixin",
     "color.BlockColorsMixin",
     "crafting.CrafterBlockMixin",
