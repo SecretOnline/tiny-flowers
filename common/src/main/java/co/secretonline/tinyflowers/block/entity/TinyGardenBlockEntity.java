@@ -1,7 +1,8 @@
 package co.secretonline.tinyflowers.block.entity;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import net.minecraft.world.level.Level;
@@ -34,36 +35,14 @@ import org.jspecify.annotations.NonNull;
 public class TinyGardenBlockEntity extends BlockEntity implements Survivable, TinyFlowerHolder {
 	public static final int NUM_TINY_FLOWER_SLOTS = 4;
 
-	@Nullable
-	private Identifier flower1 = null;
-	@Nullable
-	private Identifier flower2 = null;
-	@Nullable
-	private Identifier flower3 = null;
-	@Nullable
-	private Identifier flower4 = null;
+	private final Identifier[] flowers = new Identifier[4];
 
 	public TinyGardenBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.TINY_GARDEN_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public List<Identifier> getFlowers() {
-		List<Identifier> list = new ArrayList<>(NUM_TINY_FLOWER_SLOTS);
-
-		if (flower1 != null) {
-			list.add(flower1);
-		}
-		if (flower2 != null) {
-			list.add(flower2);
-		}
-		if (flower3 != null) {
-			list.add(flower3);
-		}
-		if (flower4 != null) {
-			list.add(flower4);
-		}
-
-		return list;
+		return Arrays.stream(flowers).filter(Objects::nonNull).toList();
 	}
 
 	@Override
@@ -89,52 +68,30 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable, Ti
 
 	@Nullable
 	public Identifier getFlower(int index) {
-		return switch (index) {
-			case 0 -> flower1;
-			case 1 -> flower2;
-			case 2 -> flower3;
-			case 3 -> flower4;
-			default -> throw new IndexOutOfBoundsException(index);
-		};
+		if (index >= 0 && index < getSize()) {
+			return flowers[index];
+		}
+
+		throw new IndexOutOfBoundsException(index);
 	}
 
 	public void setFlower(int index, @Nullable Identifier id) {
-		switch (index) {
-			case 0:
-				flower1 = id;
-				break;
-			case 1:
-				flower2 = id;
-				break;
-			case 2:
-				flower3 = id;
-				break;
-			case 3:
-				flower4 = id;
-				break;
-			default:
-				throw new IndexOutOfBoundsException(index);
+		if (index >= 0 && index < getSize()) {
+			this.flowers[index] = id;
+
+			this.markUpdated();
 		}
 
-		this.markUpdated();
+		throw new IndexOutOfBoundsException(index);
 	}
 
 	public boolean addFlower(Identifier newId) {
-		if (flower1 == null) {
-			setFlower(0, newId);
-			return true;
-		}
-		if (flower2 == null) {
-			setFlower(1, newId);
-			return true;
-		}
-		if (flower3 == null) {
-			setFlower(2, newId);
-			return true;
-		}
-		if (flower4 == null) {
-			setFlower(3, newId);
-			return true;
+		int size = getSize();
+		for (int i = 0; i < size; i++) {
+			if (flowers[i] == null) {
+				setFlower(i, newId);
+				return true;
+			}
 		}
 
 		return false;
@@ -144,20 +101,20 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable, Ti
 	protected void saveAdditional(@NonNull ValueOutput writeView) {
 		super.saveAdditional(writeView);
 
-		writeView.storeNullable("flower_1", Identifier.CODEC, flower1);
-		writeView.storeNullable("flower_2", Identifier.CODEC, flower2);
-		writeView.storeNullable("flower_3", Identifier.CODEC, flower3);
-		writeView.storeNullable("flower_4", Identifier.CODEC, flower4);
+		int size = getSize();
+		for (int i = 0; i < size; i++) {
+			writeView.storeNullable("flower_" + (i + 1), Identifier.CODEC, getFlower(i));
+		}
 	}
 
 	@Override
 	protected void loadAdditional(@NonNull ValueInput readView) {
 		super.loadAdditional(readView);
 
-		flower1 = readView.read("flower_1", Identifier.CODEC).orElse(null);
-		flower2 = readView.read("flower_2", Identifier.CODEC).orElse(null);
-		flower3 = readView.read("flower_3", Identifier.CODEC).orElse(null);
-		flower4 = readView.read("flower_4", Identifier.CODEC).orElse(null);
+		int size = getSize();
+		for (int i = 0; i < size; i++) {
+			flowers[i] = readView.read("flower_" + (i + 1), Identifier.CODEC).orElse(null);
+		}
 	}
 
 	@Override
@@ -192,15 +149,16 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable, Ti
 	protected void collectImplicitComponents(@NonNull Builder builder) {
 		super.collectImplicitComponents(builder);
 
-		builder.set(ModComponents.GARDEN_CONTENTS.get(), new GardenContentsComponent(flower1, flower2, flower3, flower4));
+		builder.set(ModComponents.GARDEN_CONTENTS.get(), new GardenContentsComponent(flowers[0], flowers[1], flowers[2], flowers[3]));
 	}
 
 	@Override
-	public void removeComponentsFromTag(ValueOutput valueOutput) {
-		valueOutput.discard("flower1");
-		valueOutput.discard("flower2");
-		valueOutput.discard("flower3");
-		valueOutput.discard("flower4");
+	public void removeComponentsFromTag(@NonNull ValueOutput valueOutput) {
+		int size = getSize();
+
+		for (int i = 0; i < size; i++) {
+			valueOutput.discard("flower_" + (i + 1));
+		}
 	}
 
 	private void markUpdated() {
@@ -219,15 +177,16 @@ public class TinyGardenBlockEntity extends BlockEntity implements Survivable, Ti
 			return false;
 		}
 
+		int size = getSize();
 		Identifier id = tinyFlowerData.id();
 		int amount = block instanceof SegmentableBlock segmentedBlock
 			? state.getValue(segmentedBlock.getSegmentAmountProperty())
-			: NUM_TINY_FLOWER_SLOTS;
+			: size;
 
-		setFlower(0, amount >= 1 ? id : null);
-		setFlower(1, amount >= 2 ? id : null);
-		setFlower(2, amount >= 3 ? id : null);
-		setFlower(3, amount >= 4 ? id : null);
+
+		for (int i = 0; i < size; i++) {
+			setFlower(i, amount > i ? id : null);
+		}
 
 		return true;
 	}
