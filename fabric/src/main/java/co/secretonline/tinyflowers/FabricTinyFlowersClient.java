@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers;
 
 import co.secretonline.tinyflowers.block.entity.ModBlockEntities;
+import co.secretonline.tinyflowers.renderer.blockentity.TinyFlowerPotBlockEntityRenderer;
 import co.secretonline.tinyflowers.renderer.blockentity.TinyGardenBlockEntityRenderer;
 import co.secretonline.tinyflowers.renderer.item.ModSelectItemModelProperties;
 import co.secretonline.tinyflowers.resources.FabricFlowerModelDataLoader;
@@ -14,7 +15,9 @@ public class FabricTinyFlowersClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		SelectItemModelProperties.ID_MAPPER.put(ModSelectItemModelProperties.TINY_FLOWER_PROPERTY_ID, ModSelectItemModelProperties.TINY_FLOWER_PROPERTY);
+
 		BlockEntityRenderers.register(ModBlockEntities.TINY_GARDEN_BLOCK_ENTITY.get(), TinyGardenBlockEntityRenderer::new);
+		BlockEntityRenderers.register(ModBlockEntities.TINY_FLOWER_POT_BLOCK_ENTITY.get(), TinyFlowerPotBlockEntityRenderer::new);
 
 		ModelLoadingPluginManager.registerPlugin(new FabricFlowerModelDataLoader(), new FabricFlowerModelLoadingPlugin());
 	}

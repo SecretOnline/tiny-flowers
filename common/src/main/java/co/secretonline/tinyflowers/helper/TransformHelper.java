@@ -23,6 +23,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 public class TransformHelper {
 
+	public static boolean canTransform(BlockState currentState, ServerLevel world, BlockPos pos) {
+
+	}
+
 	public static boolean doTransformTick(BlockState currentState, ServerLevel world, BlockPos pos, RandomSource random,
 																				boolean isRandomTick) {
 		TriState openTriState = world.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos);

@@ -29,6 +29,18 @@ public class ModBlocks {
 			.randomTicks()
 			.setId(TINY_GARDEN_KEY)));
 
+
+	private static final Identifier TINY_FLOWER_POT_ID = TinyFlowers.id("tiny_flower_pot");
+	public static final ResourceKey<Block> TINY_FLOWER_POT_KEY = ResourceKey.create(Registries.BLOCK, TINY_FLOWER_POT_ID);
+	public static final Supplier<Block> TINY_FLOWER_POT_BLOCK = ServerServiceLoader.REGISTRY.register(
+		BuiltInRegistries.BLOCK,
+		TINY_FLOWER_POT_ID,
+		() -> new TinyGardenBlock(BlockBehaviour.Properties.of()
+			.instabreak()
+			.noOcclusion()
+			.pushReaction(PushReaction.POPPED)
+			.setId(TINY_FLOWER_POT_KEY)));
+
 	public static void initialize() {
 	}
 }

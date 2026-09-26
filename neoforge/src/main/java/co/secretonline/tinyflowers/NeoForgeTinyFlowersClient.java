@@ -1,6 +1,7 @@
 package co.secretonline.tinyflowers;
 
 import co.secretonline.tinyflowers.block.entity.ModBlockEntities;
+import co.secretonline.tinyflowers.renderer.blockentity.TinyFlowerPotBlockEntityRenderer;
 import co.secretonline.tinyflowers.renderer.blockentity.TinyGardenBlockEntityRenderer;
 import co.secretonline.tinyflowers.renderer.item.ModSelectItemModelProperties;
 import co.secretonline.tinyflowers.resources.NeoForgeTinyFlowerResourceLoader;
@@ -25,6 +26,7 @@ public class NeoForgeTinyFlowersClient {
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(ModBlockEntities.TINY_GARDEN_BLOCK_ENTITY.get(), TinyGardenBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.TINY_FLOWER_POT_BLOCK_ENTITY.get(), TinyFlowerPotBlockEntityRenderer::new);
 	}
 
 	@SubscribeEvent
