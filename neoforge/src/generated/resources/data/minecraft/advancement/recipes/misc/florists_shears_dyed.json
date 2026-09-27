@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shears": {
+    "has_florists_shears": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:shears"
+            "items": "tiny_flowers:florists_shears"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "tiny_flowers:florists_shears_gray"
+        "recipe": "minecraft:florists_shears_dyed"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shears"
+      "has_florists_shears"
     ]
   ],
   "rewards": {
     "recipes": [
-      "tiny_flowers:florists_shears_gray"
+      "minecraft:florists_shears_dyed"
     ]
   }
 }
