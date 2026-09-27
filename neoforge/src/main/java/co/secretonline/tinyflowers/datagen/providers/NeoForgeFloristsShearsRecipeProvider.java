@@ -1,23 +1,19 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.MultiRegistryBootstrap;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
-public class NeoForgeFloristsShearsRecipeProvider extends FloristsShearsRecipeProvider {
+public class NeoForgeFloristsShearsRecipeProvider extends RecipeProvider.Runner {
 	private static final Map<DyeColor, TagKey<Item>> COLOR_TAGS = Map.ofEntries(
 		Map.entry(DyeColor.WHITE, Tags.Items.DYES_WHITE),
 		Map.entry(DyeColor.ORANGE, Tags.Items.DYES_ORANGE),
@@ -36,23 +32,17 @@ public class NeoForgeFloristsShearsRecipeProvider extends FloristsShearsRecipePr
 		Map.entry(DyeColor.RED, Tags.Items.DYES_RED),
 		Map.entry(DyeColor.BLACK, Tags.Items.DYES_BLACK));
 
-	public NeoForgeFloristsShearsRecipeProvider(@NonNull BootstrapContext<Recipe<?>> recipes, @NonNull BootstrapContext<Advancement> advancements) {
-		super(recipes, advancements, COLOR_TAGS);
+	public NeoForgeFloristsShearsRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+		super(output, registriesFuture);
 	}
 
-	public static MultiRegistryBootstrap create() {
-		return new MultiRegistryBootstrap() {
-			@Override
-			public Set<ResourceKey<? extends Registry<?>>> requestedRegistries() {
-				// Return the registries we are adding entries to.
-				return Set.of(Registries.RECIPE, Registries.ADVANCEMENT);
-			}
+	@Override
+	protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider registryLookup, @NonNull RecipeOutput exporter) {
+		return new FloristsShearsRecipeProvider(registryLookup, exporter, COLOR_TAGS);
+	}
 
-			@Override
-			public void run(MultiRegistryBootstrap.BootstrapGetter registries) {
-				// Run the recipe provider.
-				new NeoForgeFloristsShearsRecipeProvider(registries.get(Registries.RECIPE), registries.get(Registries.ADVANCEMENT)).buildRecipes();
-			}
-		};
+	@Override
+	public @NonNull String getName() {
+		return "FloristsShearsRecipeProvider";
 	}
 }
