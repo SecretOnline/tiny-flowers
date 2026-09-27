@@ -20,6 +20,10 @@ The versioning scheme is listed in the README.
 
 - Tiny Flowers can now be placed inside Flower Pots.
 
+### Changed
+
+- Tiny Poppies' height has been knocked down a pixel or two.
+
 ## v2.0.3 - 2026-09-19
 
 ### Updated
