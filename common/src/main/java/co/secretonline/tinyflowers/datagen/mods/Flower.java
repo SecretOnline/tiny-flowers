@@ -354,15 +354,10 @@ public class Flower {
 			if (originalBlockId == null) {
 				throw new Error(errorPrefix + "TinyFlowerResources.Builder: originalBlockId is null");
 			}
-			if (customModel != null && canBePotted && customModelPotted == null) {
-				throw new Error(errorPrefix + "Either a potted model must be provided or flower pot must be disabled when using custom models.");
-			}
 
 			Identifier parentId = null;
-			Identifier parentPottedId = null;
 			if (customModel != null) {
 				parentId = customModel;
-				parentPottedId = customModelPotted;
 			} else if (layers == 1) {
 				if (untintedStem) {
 					parentId = TinyFlowers.id("block/garden_untinted");
@@ -401,8 +396,8 @@ public class Flower {
 
 			ModelPart modelPartPotted = null;
 			if (canBePotted) {
-				if (customModel != null) {
-					modelPartPotted = new ModelPart(id.withSuffix("_potted"), parentPottedId, textureMap);
+				if (customModelPotted != null) {
+					modelPartPotted = new ModelPart(id.withSuffix("_potted"), customModelPotted, textureMap);
 				} else {
 					modelPartPotted = new ModelPart(id.withSuffix("_potted"), parentId.withSuffix("_potted"), textureMap);
 				}

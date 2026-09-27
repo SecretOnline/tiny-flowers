@@ -71,7 +71,6 @@ public class TinyFlowerPotBlockEntityRenderer
 		Optional<Identifier> modelPotted = resources.modelPotted();
 		if (modelPotted.isPresent()) {
 			// Render model on top of flower pot
-			poseStack.translate(0.5, 0, 0.5);
 			submitPartId(blockEntityRenderState, poseStack, modelPotted.get(), submitNodeCollector);
 		} else {
 			// Fallback for if there's no specific model for this Tiny Flower type

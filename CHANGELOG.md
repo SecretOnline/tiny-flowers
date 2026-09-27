@@ -16,6 +16,10 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+### Added
+
+- Tiny Flowers can now be placed inside Flower Pots.
+
 ## v2.0.3 - 2026-09-19
 
 ### Updated

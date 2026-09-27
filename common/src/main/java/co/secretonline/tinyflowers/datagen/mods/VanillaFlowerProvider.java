@@ -17,12 +17,14 @@ public class VanillaFlowerProvider extends FlowerProvider {
 			Flower.Builder
 				.ofSegmented(Identifier.withDefaultNamespace("pink_petals"))
 				.customModel(Identifier.withDefaultNamespace("flowerbed"))
+				.customPottedModel(TinyFlowers.id("garden_potted"))
 				.stemTexture(Identifier.withDefaultNamespace("pink_petals_stem"))
 				.particleTexture(Identifier.withDefaultNamespace("pink_petals"))
 				.build(),
 			Flower.Builder
 				.ofSegmented(Identifier.withDefaultNamespace("wildflowers"))
 				.customModel(Identifier.withDefaultNamespace("flowerbed"))
+				.customPottedModel(TinyFlowers.id("garden_potted"))
 				.stemTexture(Identifier.withDefaultNamespace("pink_petals_stem"))
 				.particleTexture(Identifier.withDefaultNamespace("wildflowers"))
 				.build(),
@@ -30,6 +32,7 @@ public class VanillaFlowerProvider extends FlowerProvider {
 				.ofSegmented(Identifier.withDefaultNamespace("leaf_litter"))
 				.addSturdyPlacementBehavior()
 				.customModel(TinyFlowers.id("garden_leaf_litter"))
+				.customPottedModel(TinyFlowers.id("garden_leaf_litter_potted"))
 				.build());
 	}
 }
