@@ -67,7 +67,7 @@ public class TinyGardenBlockEntityRenderer
 
 		poseStack.translate(0.5, 0, 0.5);
 		float rotationDegrees = Direction.getYRot(blockEntityRenderState.getDirection());
-		poseStack.rotateDegrees(Axis.YP, 180 - rotationDegrees);
+		poseStack.mulPose(Axis.YP.rotationDegrees(180 - rotationDegrees));
 		poseStack.translate(-0.5, 0, -0.5);
 
 		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 0);

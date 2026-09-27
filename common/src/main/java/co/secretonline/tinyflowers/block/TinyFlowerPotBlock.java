@@ -4,13 +4,13 @@ import co.secretonline.tinyflowers.block.entity.TinyFlowerPotBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.helper.TransformHelper;
 import co.secretonline.tinyflowers.mixin.block.FlowerPotBlockAccessor;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TinyFlowerPotBlock extends BaseEntityBlock {
+	public static final MapCodec<TinyFlowerPotBlock> CODEC = simpleCodec(TinyFlowerPotBlock::new);
 	private static final VoxelShape SHAPE = Block.column(6.0, 0.0, 6.0);
 
 	protected TinyFlowerPotBlock(Properties properties) {
@@ -138,7 +139,7 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 
 		ItemStack plant = flowerData.getItemStack(1);
 		if (!player.addItem(plant)) {
-			player.drop(plant, false, Prediction.PREDICTED);
+			player.drop(plant, false);
 		}
 
 		// Revert to default flower pot when item is removed
@@ -214,4 +215,10 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 
 		return itemStacks;
 	}
+
+	@Override
+	protected @NonNull MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
 }

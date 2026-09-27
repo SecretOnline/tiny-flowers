@@ -1,18 +1,14 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.item.ModItems;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -22,16 +18,14 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.Recipe;
-import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
-import java.util.Set;
 
 public class FloristsShearsRecipeProvider extends RecipeProvider {
 	private final Map<DyeColor, TagKey<Item>> colorMap;
 
-	public FloristsShearsRecipeProvider(@NonNull BootstrapContext<Recipe<?>> recipes, @NonNull BootstrapContext<Advancement> advancements, Map<DyeColor, TagKey<Item>> colorMap) {
-		super(recipes, advancements);
+	public FloristsShearsRecipeProvider(HolderLookup.Provider registries, RecipeOutput output, Map<DyeColor, TagKey<Item>> colorMap) {
+		super(registries, output);
 		this.colorMap = colorMap;
 	}
 
