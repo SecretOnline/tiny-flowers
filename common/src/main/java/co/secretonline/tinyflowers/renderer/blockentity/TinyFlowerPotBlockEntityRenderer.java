@@ -28,6 +28,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class TinyFlowerPotBlockEntityRenderer
@@ -53,20 +54,9 @@ public class TinyFlowerPotBlockEntityRenderer
 	}
 
 	@Override
-	public void submit(@NonNull TinyFlowerPotBlockEntityRenderState blockEntityRenderState, PoseStack poseStack,
+	public void submit(@NonNull TinyFlowerPotBlockEntityRenderState blockEntityRenderState, @NonNull PoseStack poseStack,
 										 @NonNull SubmitNodeCollector submitNodeCollector, @NonNull CameraRenderState cameraRenderState) {
-		poseStack.pushPose();
-
-		poseStack.translate(0.25, 0.25, 0.25);
-
-		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector);
-
-		poseStack.popPose();
-	}
-
-	private void submitPartForFlowerIndex(TinyFlowerPotBlockEntityRenderState state, PoseStack poseStack,
-	                                      SubmitNodeCollector submitNodeCollector) {
-		Identifier id = state.getFlower();
+		Identifier id = blockEntityRenderState.getFlower();
 		if (id == null) {
 			return;
 		}
@@ -76,11 +66,25 @@ public class TinyFlowerPotBlockEntityRenderer
 			return;
 		}
 
-		Identifier partId = resources.model1();
-		if (partId == null) {
-			return;
+		poseStack.pushPose();
+
+		Optional<Identifier> modelPotted = resources.modelPotted();
+		if (modelPotted.isPresent()) {
+			// Render model on top of flower pot
+			poseStack.translate(0.5, 0, 0.5);
+			submitPartId(blockEntityRenderState, poseStack, modelPotted.get(), submitNodeCollector);
+		} else {
+			// Fallback for if there's no specific model for this Tiny Flower type
+			poseStack.translate(0.25, 0.25, 0.25);
+			submitPartId(blockEntityRenderState, poseStack, resources.model1(), submitNodeCollector);
 		}
 
+		poseStack.popPose();
+	}
+
+	private void submitPartId(TinyFlowerPotBlockEntityRenderState state, PoseStack poseStack,
+														Identifier partId,
+														SubmitNodeCollector submitNodeCollector) {
 		Minecraft minecraft = Minecraft.getInstance();
 		BlockStateModel model = ClientServiceLoader.FLOWER_MODELS.getModel(minecraft, partId);
 		if (model == null) {
@@ -96,11 +100,7 @@ public class TinyFlowerPotBlockEntityRenderer
 
 	@Override
 	public int getViewDistance() {
-		// Hopefully this is far enough?
-		// I know the whole reason this exists is for performance, but I think it's a
-		// bit sad if distant gardens aren't rendered in. Especially since these are
-		// meant to be part of the world, which usually doesn't distance culling.
-		return 256;
+		return 64;
 	}
 
 	private int[] getTintStack(BlockEntity blockEntity) {

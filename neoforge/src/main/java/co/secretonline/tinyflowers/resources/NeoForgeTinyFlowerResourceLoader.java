@@ -30,6 +30,10 @@ public class NeoForgeTinyFlowerResourceLoader extends SimplePreparableReloadList
 			knownIds.add(flowerResources.model2());
 			knownIds.add(flowerResources.model3());
 			knownIds.add(flowerResources.model4());
+
+			if (flowerResources.modelPotted().isPresent()) {
+				knownIds.add(flowerResources.modelPotted().get());
+			}
 		}
 
 		return resources;

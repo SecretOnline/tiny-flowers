@@ -24,6 +24,10 @@ public class FabricFlowerModelLoadingPlugin
 			ClientServiceLoader.FLOWER_MODELS.registerModel(resources.model2(), pluginContext);
 			ClientServiceLoader.FLOWER_MODELS.registerModel(resources.model3(), pluginContext);
 			ClientServiceLoader.FLOWER_MODELS.registerModel(resources.model4(), pluginContext);
+
+			if (resources.modelPotted().isPresent()) {
+				ClientServiceLoader.FLOWER_MODELS.registerModel(resources.modelPotted().get(), pluginContext);
+			}
 		}
 	}
 }

@@ -37,6 +37,8 @@ interface TinyFlowerData {
   original_id: Identifier;
   /** Optional. Whether the original block is segmentable like Pink Petals or Wildflowers. Defaults to false. */
   is_segmented?: boolean;
+  /** Optional. Whether the variant can be placed in a Flower Pot. Defaults to true. */
+  can_be_potted?: boolean;
   /** Optional. List of block IDs or tags that this tiny flower can be placed on. Defaults to `#minecraft:supports_vegetation`. */
   can_survive_on?: (Identifier | TagKey)[];
   /** Optional. List of mob effects to be applied if consumed in Suspicious Stew. Defaults to an empty list. */
@@ -133,6 +135,8 @@ interface TinyFlowerResources {
   model3: Identifier;
   /** The block model to render when this type is in the fourth spot. Usually of the form `<namespace>:block/<id>_4`. */
   model4: Identifier;
+  /** The block model to render when this type is placed in a Flower Pot. Does not need to include the Flower Pot model. Usually of the form `<namespace>:block/<id>_potted`. */
+  model_potted: Identifier;
 }
 ```
 
@@ -143,7 +147,8 @@ interface TinyFlowerResources {
   "model1": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_1",
   "model2": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_2",
   "model3": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_3",
-  "model4": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_4"
+  "model4": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_4",
+  "model_potted": "tiny_dirt_flower:block/tiny_flowers/tiny_dirt_potted"
 }
 ```
 

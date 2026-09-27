@@ -4,11 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.StringRepresentable;
-import org.jspecify.annotations.NonNull;
+
+import java.util.Optional;
 
 public record TinyFlowerResources(Identifier id, Identifier itemModel,
-		Identifier model1, Identifier model2, Identifier model3, Identifier model4) {
+		Identifier model1, Identifier model2, Identifier model3, Identifier model4, Optional<Identifier> modelPotted) {
 
 	public static final Codec<TinyFlowerResources> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerResources::id),
@@ -16,6 +16,7 @@ public record TinyFlowerResources(Identifier id, Identifier itemModel,
 			Identifier.CODEC.fieldOf("model1").forGetter(TinyFlowerResources::model1),
 			Identifier.CODEC.fieldOf("model2").forGetter(TinyFlowerResources::model2),
 			Identifier.CODEC.fieldOf("model3").forGetter(TinyFlowerResources::model3),
-			Identifier.CODEC.fieldOf("model4").forGetter(TinyFlowerResources::model4))
+			Identifier.CODEC.fieldOf("model4").forGetter(TinyFlowerResources::model4),
+			Identifier.CODEC.optionalFieldOf("model_potted").forGetter(TinyFlowerResources::modelPotted))
 			.apply(instance, TinyFlowerResources::new));
 }

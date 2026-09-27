@@ -81,7 +81,7 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 		if (newContents.isAir()) {
 			// No match in vanilla, check Tiny Flowers
 			TinyFlowerData flowerData = TinyFlowerData.findByItemStack(level.registryAccess(), itemStack);
-			if (flowerData == null) {
+			if (flowerData == null || !flowerData.canBePotted()) {
 				// No match for tiny flowers either, do vanilla's fallback.
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			}

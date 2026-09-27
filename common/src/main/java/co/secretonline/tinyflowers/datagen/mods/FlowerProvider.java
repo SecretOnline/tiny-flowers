@@ -31,6 +31,9 @@ public abstract class FlowerProvider {
 			models.part2().outputModel(modelOutput);
 			models.part3().outputModel(modelOutput);
 			models.part4().outputModel(modelOutput);
+			if (models.partPotted() != null) {
+				models.partPotted().outputModel(modelOutput);
+			}
 		}
 	}
 

@@ -6,6 +6,7 @@ import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import co.secretonline.tinyflowers.data.behavior.Behavior;
 import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
 import co.secretonline.tinyflowers.data.behavior.TransformDayNightBehavior;
+import co.secretonline.tinyflowers.data.behavior.TransformWeatherBehavior;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.data.models.model.ModelInstance;
@@ -38,6 +39,7 @@ public class Flower {
 	@NonNull
 	private final Identifier originalBlockId;
 	private final boolean isSegmentable;
+	private final boolean canBePotted;
 
 	@NonNull
 	private final List<Entry> suspiciousStewEffects;
@@ -54,14 +56,17 @@ public class Flower {
 	private final ModelPart modelPart3;
 	@NonNull
 	private final ModelPart modelPart4;
+	@Nullable
+	private final ModelPart modelPartPotted;
 
-	private Flower(@NonNull Identifier id, @NonNull Identifier itemTexture, @NonNull Identifier originalBlockId, boolean isSegmentable,
+	private Flower(@NonNull Identifier id, @NonNull Identifier itemTexture, @NonNull Identifier originalBlockId, boolean isSegmentable, boolean canBePotted,
 								 @NonNull List<Entry> suspiciousStewEffects, @NonNull List<TagOrElementLocation> canSurviveOn, @NonNull List<Behavior> behaviors,
-								 @NonNull ModelPart modelPart1, @NonNull ModelPart modelPart2, @NonNull ModelPart modelPart3, @NonNull ModelPart modelPart4) {
+								 @NonNull ModelPart modelPart1, @NonNull ModelPart modelPart2, @NonNull ModelPart modelPart3, @NonNull ModelPart modelPart4, @Nullable ModelPart modelPartPotted) {
 		this.id = id;
 		this.itemTexture = itemTexture;
 		this.originalBlockId = originalBlockId;
 		this.isSegmentable = isSegmentable;
+		this.canBePotted = canBePotted;
 
 		this.suspiciousStewEffects = suspiciousStewEffects;
 		this.canSurviveOn = canSurviveOn;
@@ -72,18 +77,25 @@ public class Flower {
 		this.modelPart2 = modelPart2;
 		this.modelPart3 = modelPart3;
 		this.modelPart4 = modelPart4;
+		this.modelPartPotted = modelPartPotted;
 	}
 
 	public TinyFlowerData data() {
-		return new TinyFlowerData(id, originalBlockId, isSegmentable, canSurviveOn, suspiciousStewEffects, behaviors);
+		return new TinyFlowerData(id, originalBlockId, isSegmentable, canBePotted, canSurviveOn, suspiciousStewEffects, behaviors);
 	}
 
 	public TinyFlowerResources resources() {
+
+
 		return new TinyFlowerResources(id, itemTexture,
 			modelPart1.id().withPrefix(BLOCK_MOD_PREFIX),
 			modelPart2.id().withPrefix(BLOCK_MOD_PREFIX),
 			modelPart3.id().withPrefix(BLOCK_MOD_PREFIX),
-			modelPart4.id().withPrefix(BLOCK_MOD_PREFIX));
+			modelPart4.id().withPrefix(BLOCK_MOD_PREFIX),
+			Optional.ofNullable(modelPartPotted == null
+				? null
+				: modelPartPotted.id().withPrefix(BLOCK_MOD_PREFIX))
+		);
 	}
 
 	public ModelParts modelParts() {
@@ -91,7 +103,8 @@ public class Flower {
 			modelPart1,
 			modelPart2,
 			modelPart3,
-			modelPart4);
+			modelPart4,
+			modelPartPotted);
 	}
 
 	public record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures) {
@@ -113,7 +126,9 @@ public class Flower {
 		}
 	}
 
-	public record ModelParts(ModelPart part1, ModelPart part2, ModelPart part3, ModelPart part4) {
+	public record ModelParts(@NonNull ModelPart part1, @NonNull ModelPart part2,
+													 @NonNull ModelPart part3, @NonNull ModelPart part4,
+													 @Nullable ModelPart partPotted) {
 	}
 
 	public static class Builder {
@@ -127,6 +142,7 @@ public class Flower {
 		@Nullable
 		private Identifier originalBlockId;
 		private boolean isSegmentable = false;
+		private boolean canBePotted = true;
 		@NonNull
 		private final List<Entry> suspiciousStewEffects = new ArrayList<>();
 		@NonNull
@@ -145,6 +161,8 @@ public class Flower {
 		private final Map<String, Identifier> textureMap = new HashMap<>();
 		@Nullable
 		private Identifier customModel = null;
+		@Nullable
+		private Identifier customModelPotted = null;
 
 		public static Builder ofCustom(Identifier id, Identifier originalBlockId) {
 			return new Builder()
@@ -185,6 +203,11 @@ public class Flower {
 
 		public Builder segmentable() {
 			this.isSegmentable = true;
+			return this;
+		}
+
+		public Builder noFlowerPot() {
+			this.canBePotted = false;
 			return this;
 		}
 
@@ -272,6 +295,11 @@ public class Flower {
 			return this;
 		}
 
+		public Builder customPottedModel(Identifier modelPotted) {
+			this.customModelPotted = modelPotted.withPrefix("block/");
+			return this;
+		}
+
 		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, Identifier turnsInto) {
 			return this.addTransformDayNightBehavior(when, turnsInto, 0, null, null);
 		}
@@ -289,6 +317,23 @@ public class Flower {
 			return this;
 		}
 
+		public Builder addTransformWeatherBehavior(TransformWeatherBehavior.When when, Identifier turnsInto) {
+			return this.addTransformWeatherBehavior(when, turnsInto, 0, null, null);
+		}
+
+		public Builder addTransformWeatherBehavior(TransformWeatherBehavior.When when, Identifier turnsInto,
+																							 int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
+			Optional<Identifier> longOptional = (soundEventLong == null ? Optional.empty()
+				: Optional.of(soundEventLong.location()));
+			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
+				: Optional.of(soundEventShort.location()));
+
+			this.behaviors.add(new TransformWeatherBehavior(when, turnsInto, particleColor,
+				longOptional, shortOptional));
+
+			return this;
+		}
+
 		public Builder addSturdyPlacementBehavior() {
 			this.behaviors.add(new SturdyPlacementBehavior(true));
 
@@ -296,23 +341,28 @@ public class Flower {
 		}
 
 		public Flower build() {
+			String errorPrefix = "TinyFlowerResources.Builder (" + id + "): ";
 			if (layers == 0 && customModel == null) {
-				throw new Error("TinyFlowerResources.Builder: layers() or special() must be called once.");
+				throw new Error(errorPrefix + "layers() or customModel() must be called once.");
 			}
-
 			if (id == null) {
-				throw new Error("TinyFlowerResources.Builder: id is null");
+				throw new Error(errorPrefix + "TinyFlowerResources.Builder: id is null");
 			}
 			if (itemTexture == null) {
-				throw new Error("TinyFlowerResources.Builder: itemTexture is null");
+				throw new Error(errorPrefix + "TinyFlowerResources.Builder: itemTexture is null");
 			}
 			if (originalBlockId == null) {
-				throw new Error("TinyFlowerResources.Builder: originalBlockId is null");
+				throw new Error(errorPrefix + "TinyFlowerResources.Builder: originalBlockId is null");
+			}
+			if (customModel != null && canBePotted && customModelPotted == null) {
+				throw new Error(errorPrefix + "Either a potted model must be provided or flower pot must be disabled when using custom models.");
 			}
 
 			Identifier parentId = null;
+			Identifier parentPottedId = null;
 			if (customModel != null) {
 				parentId = customModel;
+				parentPottedId = customModelPotted;
 			} else if (layers == 1) {
 				if (untintedStem) {
 					parentId = TinyFlowers.id("block/garden_untinted");
@@ -349,9 +399,19 @@ public class Flower {
 			ModelPart modelPart3 = new ModelPart(id.withSuffix("_3"), parentId.withSuffix("_3"), textureMap);
 			ModelPart modelPart4 = new ModelPart(id.withSuffix("_4"), parentId.withSuffix("_4"), textureMap);
 
-			return new Flower(id, itemTexture, originalBlockId, isSegmentable,
+			ModelPart modelPartPotted = null;
+			if (canBePotted) {
+				if (customModel != null) {
+					modelPartPotted = new ModelPart(id.withSuffix("_potted"), parentPottedId, textureMap);
+				} else {
+					modelPartPotted = new ModelPart(id.withSuffix("_potted"), parentId.withSuffix("_potted"), textureMap);
+				}
+			}
+
+			return new Flower(id, itemTexture, originalBlockId, isSegmentable, canBePotted,
 				suspiciousStewEffects, canSurviveOn, behaviors,
-				modelPart1, modelPart2, modelPart3, modelPart4
+				modelPart1, modelPart2, modelPart3, modelPart4,
+				modelPartPotted
 			);
 		}
 	}

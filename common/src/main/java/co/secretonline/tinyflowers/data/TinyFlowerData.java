@@ -59,6 +59,7 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
  *                              for creating Tiny Flowers of this type, as the item
  *                              already exists.
  *                              </ul>
+ * @param canBePotted           Whether this variant can be place in a Flower Pot.
  * @param canSurviveOn          Block IDs or #-prefixed tags for what blocks this
  *                              flower
  *                              type can be placed on. This defaults to the
@@ -66,7 +67,7 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
  * @param suspiciousStewEffects A potion effect for Suspicious Stew.
  * @param behaviors       Any special features this flower type might have.
  */
-public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSegmentable,
+public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSegmentable, boolean canBePotted,
 														 @NonNull List<TagOrElementLocation> canSurviveOn,
 														 @NonNull List<Entry> suspiciousStewEffects,
 														 @NonNull List<Behavior> behaviors)
@@ -180,6 +181,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerData::id),
 			Identifier.CODEC.fieldOf("original_id").forGetter(TinyFlowerData::originalId),
 			Codec.BOOL.optionalFieldOf("is_segmented", false).forGetter(TinyFlowerData::isSegmentable),
+			Codec.BOOL.optionalFieldOf("can_be_potted", true).forGetter(TinyFlowerData::canBePotted),
 			ExtraCodecs.TAG_OR_ELEMENT_ID.listOf()
 				.optionalFieldOf("can_survive_on",
 					List.of(new TagOrElementLocation(BlockTags.SUPPORTS_VEGETATION.location(), true)))

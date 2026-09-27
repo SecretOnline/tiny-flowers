@@ -40,7 +40,7 @@ public class FlowerPotBlockMixin {
 		}
 
 		TinyFlowerData flowerData = TinyFlowerData.findByItemStack(level.registryAccess(), itemStack);
-		if (flowerData == null) {
+		if (flowerData == null || !flowerData.canBePotted()) {
 			// No match for tiny flowers either, continue vanilla code
 			return;
 		}

@@ -22,5 +22,6 @@ public class BlockColorsMixin {
 	@Inject(method = "createDefault", at = @At("RETURN"))
 	private static void injectCreateDefault(CallbackInfoReturnable<BlockColors> cir, @Local(name = "colors") BlockColors colors) {
 		colors.register(List.of(BLANK_LAYER, BlockTintSources.grass(), BlockTintSources.dryFoliage()), ModBlocks.TINY_GARDEN_BLOCK.get());
+		colors.register(List.of(BLANK_LAYER, BlockTintSources.grass(), BlockTintSources.dryFoliage()), ModBlocks.TINY_FLOWER_POT_BLOCK.get());
 	}
 }
