@@ -4,5 +4,6 @@
   "model1": "tiny_flowers:block/tiny_flowers/tiny_allium_1",
   "model2": "tiny_flowers:block/tiny_flowers/tiny_allium_2",
   "model3": "tiny_flowers:block/tiny_flowers/tiny_allium_3",
-  "model4": "tiny_flowers:block/tiny_flowers/tiny_allium_4"
+  "model4": "tiny_flowers:block/tiny_flowers/tiny_allium_4",
+  "model_potted": "tiny_flowers:block/tiny_flowers/tiny_allium_potted"
 }

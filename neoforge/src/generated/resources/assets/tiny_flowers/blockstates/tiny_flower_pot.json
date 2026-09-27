@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tiny_flowers:block/tiny_flower_pot"
+    }
+  }
+}

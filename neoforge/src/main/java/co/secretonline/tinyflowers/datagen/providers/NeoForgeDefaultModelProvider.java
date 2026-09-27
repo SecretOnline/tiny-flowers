@@ -9,6 +9,7 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.DyeColor;
@@ -42,6 +43,11 @@ public class NeoForgeDefaultModelProvider extends ModelProvider {
 		}
 
 		blockStateModelGenerator.blockStateOutput.accept(definitionCreator);
+
+		MultiVariantGenerator flowerPotGenerator = BlockModelGenerators.createSimpleBlock(
+			ModBlocks.TINY_FLOWER_POT_BLOCK.get(),
+			BlockModelGenerators.plainVariant(TinyFlowers.id("block/tiny_flower_pot")));
+		blockStateModelGenerator.blockStateOutput.accept(flowerPotGenerator);
 	}
 
 	public void generateItemModels(ItemModelGenerators itemModelGenerator) {
