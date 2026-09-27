@@ -14,7 +14,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.neoforged.neoforge.registries.NewDatapackRegistryEvent;
 
 @Mod(value = TinyFlowers.MOD_ID)
 @EventBusSubscriber(modid = TinyFlowers.MOD_ID)
@@ -35,7 +35,7 @@ public class NeoForgeTinyFlowers {
 	}
 
 	@SubscribeEvent
-	public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(ModRegistries.TINY_FLOWER, TinyFlowerData.CODEC, TinyFlowerData.CODEC);
+	public static void registerDatapackRegistries(NewDatapackRegistryEvent event) {
+		event.worldRegistry(ModRegistries.TINY_FLOWER, TinyFlowerData.CODEC, TinyFlowerData.CODEC);
 	}
 }
