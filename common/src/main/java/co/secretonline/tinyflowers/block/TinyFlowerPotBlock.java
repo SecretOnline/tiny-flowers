@@ -90,9 +90,23 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 				return InteractionResult.CONSUME;
 			}
 
+			if (potBlockEntity.getFlower() != null) {
+				// Pot already has a flower, so do nothing
+				return InteractionResult.CONSUME;
+			}
+
 			potBlockEntity.setFlower(flowerData.id());
 		} else {
-			// Matched an actual potted plant type, replace block with that.
+			if (!(level.getBlockEntity(pos) instanceof TinyFlowerPotBlockEntity potBlockEntity)) {
+				return InteractionResult.CONSUME;
+			}
+
+			if (potBlockEntity.getFlower() != null) {
+				// Pot already has a flower, so do nothing
+				return InteractionResult.CONSUME;
+			}
+
+			// Matched an actual potted plant type, ensu
 			level.setBlockAndUpdate(pos, newContents);
 		}
 

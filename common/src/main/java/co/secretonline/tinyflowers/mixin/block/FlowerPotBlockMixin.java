@@ -45,6 +45,12 @@ public class FlowerPotBlockMixin {
 			return;
 		}
 
+		if (!((FlowerPotBlockAccessor)this).tinyFlowers$isEmpty()) {
+			// Flower Pot is already full, so don't do anything
+			cir.setReturnValue(InteractionResult.CONSUME);
+			return;
+		}
+
 		BlockState newBlockState = ModBlocks.TINY_FLOWER_POT_BLOCK.get().defaultBlockState();
 		level.setBlockAndUpdate(pos, newBlockState);
 
