@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_dye",
+  "category": "misc",
   "dye": "#minecraft:dyes",
   "group": "florists_shears_dyed",
   "result": {

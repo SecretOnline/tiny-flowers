@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipes": "tiny_flowers:florists_shears_pink"
+        "recipe": "tiny_flowers:florists_shears_pink"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
