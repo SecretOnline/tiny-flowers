@@ -47,6 +47,7 @@ export interface TinyFlowerDataJson {
   id: string;
   original_id: string;
   is_segmented?: boolean;
+  can_be_potted?: boolean;
   can_survive_on?: string[];
   suspicious_stew_effects?: {
     id: string;
@@ -63,6 +64,7 @@ export interface TinyFlowerResourcesJson {
   model2: string;
   model3: string;
   model4: string;
+  model_potted?: string;
 }
 
 export interface LanguageJson {

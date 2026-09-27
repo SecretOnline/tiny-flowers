@@ -88,6 +88,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
           ? undefined
           : flower.canSurviveOn,
       is_segmented: flower.isSegmented ? true : undefined,
+      can_be_potted: flower.canBePotted ? undefined : false,
       suspicious_stew_effects:
         flower.suspiciousStewEffects.length === 0
           ? undefined
@@ -102,6 +103,9 @@ export function convertFormToFiles(state: FormState): AllFiles {
       model2: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_2`,
       model3: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_3`,
       model4: `${flowerNamespace}:block/tiny_flowers/${flowerPath}_4`,
+      model_potted: flower.canBePotted
+        ? `${flowerNamespace}:block/tiny_flowers/${flowerPath}_potted`
+        : undefined,
     };
 
     const flowerLangKey = `block.${flowerNamespace}.${flowerPath}`;
@@ -132,7 +136,7 @@ export function convertFormToFiles(state: FormState): AllFiles {
       }
     }
 
-    function blockModelId(index: number) {
+    function blockModelId(index: number | "potted") {
       return `${flowerNamespace}:block/tiny_flowers/${flowerPath}_${index}`;
     }
     function blockModelContent(index: number): BlockModelGeneratedJson {
@@ -172,10 +176,37 @@ export function convertFormToFiles(state: FormState): AllFiles {
         textures: textureMap,
       };
     }
+    function pottedModelContent(): BlockModelGeneratedJson | undefined {
+      let modelString;
+      switch (flower.parentModel.type) {
+        case "prefix":
+          modelString = `${flower.parentModel.prefix}_potted`;
+          break;
+        case "custom":
+          modelString = flower.parentModel.modelPotted;
+          break;
+        default:
+          throw new Error(
+            `Unknown model parent type ${
+              (flower.parentModel as any).type
+            } for flower ${flower.id}`,
+          );
+      }
+
+      return modelString
+        ? {
+            parent: modelString,
+            textures: textureMap,
+          }
+        : undefined;
+    }
     value.assets.models.block[blockModelId(1)] = blockModelContent(1);
     value.assets.models.block[blockModelId(2)] = blockModelContent(2);
     value.assets.models.block[blockModelId(3)] = blockModelContent(3);
     value.assets.models.block[blockModelId(4)] = blockModelContent(4);
+    value.assets.models.block[blockModelId("potted")] = flower.canBePotted
+      ? pottedModelContent()
+      : undefined;
 
     if (flower.itemTexture) {
       value.assets.textures.item[flower.id] = flower.itemTexture;
@@ -239,6 +270,9 @@ export function convertFilesToForm(files: AllFiles): FormState {
     const model2 = files.assets.models.block[resources.model2];
     const model3 = files.assets.models.block[resources.model3];
     const model4 = files.assets.models.block[resources.model4];
+    const modelPotted = resources.model_potted
+      ? files.assets.models.block[resources.model_potted]
+      : undefined;
     if (!(model1 && model2 && model3 && model4)) {
       const missingIdSet = [];
       if (!model1) {
@@ -265,7 +299,11 @@ export function convertFilesToForm(files: AllFiles): FormState {
       model1ParentMatch &&
       model2.parent.match(new RegExp(`^${model1ParentMatch[1]}_2$`)) &&
       model3.parent.match(new RegExp(`^${model1ParentMatch[1]}_3$`)) &&
-      model4.parent.match(new RegExp(`^${model1ParentMatch[1]}_4$`))
+      model4.parent.match(new RegExp(`^${model1ParentMatch[1]}_4$`)) &&
+      (modelPotted?.parent.match(
+        new RegExp(`^${model1ParentMatch[1]}_potted$`),
+      ) ??
+        true)
     ) {
       parentModel = {
         type: "prefix",
@@ -278,6 +316,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
         model2: model2.parent,
         model3: model3.parent,
         model4: model4.parent,
+        modelPotted: modelPotted?.parent,
       };
     }
 
@@ -334,6 +373,7 @@ export function convertFilesToForm(files: AllFiles): FormState {
       name: nameList,
       originalId: data.original_id,
       isSegmented: data.is_segmented ?? false,
+      canBePotted: data.can_be_potted ?? true,
       canSurviveOn: data.can_survive_on ?? ["#minecraft:supports_vegetation"],
       suspiciousStewEffects: data.suspicious_stew_effects ?? [],
       behaviors: data.behaviors ?? [],

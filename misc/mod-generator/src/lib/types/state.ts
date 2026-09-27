@@ -48,6 +48,7 @@ export interface ParentModelCustom {
   model2: string;
   model3: string;
   model4: string;
+  modelPotted?: string;
 }
 
 export type ParentModelType = ParentModelPrefix | ParentModelCustom;
@@ -57,6 +58,7 @@ export interface CombinedFlowerData {
   name: { language: string; name: string }[];
   originalId: string;
   isSegmented: boolean;
+  canBePotted: boolean;
   canSurviveOn: string[];
   suspiciousStewEffects: { id: string; duration: number }[];
   behaviors: unknown[];

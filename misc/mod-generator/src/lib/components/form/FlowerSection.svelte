@@ -14,6 +14,8 @@
   import ImagePreview from "../ImagePreview.svelte";
   import BlockTextureRow from "./BlockTextureRow.svelte";
   import IconTextureEditor from "./IconTextureEditor.svelte";
+  import Check from "../icons/Check.svelte";
+  import Empty from "../icons/Empty.svelte";
 
   const PREDEFINED_BLOCK_MODELS = [
     {
@@ -224,6 +226,28 @@
           placeholder="your_mod_id:tiny_flower_id"
         />
       </div>
+    </div>
+
+    <div class="block-group flower-data-potted">
+      <label for="can-be-potted-{uid}">Flower Pot?</label>
+      <div class="inline-group">
+        <input
+          type="checkbox"
+          class="visually-hidden"
+          id="can-be-potted-{uid}"
+          bind:checked={flower.canBePotted}
+        />
+        <label class="button checkbox" for="can-be-potted-{uid}">
+          {#if flower.canBePotted}
+            <Check />
+          {:else}
+            <Empty />
+          {/if}
+        </label>
+      </div>
+      <p>
+        Whether this flower type should be able to be placed in a Flower Pot.
+      </p>
     </div>
 
     <div class="block-group flower-data-original">
@@ -635,6 +659,9 @@
                     model2: `${flower.parentModel.prefix}_2`,
                     model3: `${flower.parentModel.prefix}_3`,
                     model4: `${flower.parentModel.prefix}_4`,
+                    modelPotted: flower.canBePotted
+                      ? `${flower.parentModel.prefix}_potted`
+                      : undefined,
                   };
                 } else {
                   flower.parentModel = {
@@ -643,6 +670,7 @@
                     model2: "",
                     model3: "",
                     model4: "",
+                    modelPotted: "",
                   };
                 }
               }
@@ -676,12 +704,21 @@
             }
           />
         </div>
-        <p>
-          This generator will generate 4 block models, with parents of <code
-            >{prefix}_1</code
-          >, <code>{prefix}_2</code>, <code>{prefix}_3</code>, and
-          <code>{prefix}_4</code>.
-        </p>
+        {#if flower.canBePotted}
+          <p>
+            This generator will generate 5 block models, with parents of <code
+              >{prefix}_1</code
+            >, <code>{prefix}_2</code>, <code>{prefix}_3</code>,
+            <code>{prefix}_4</code>, and <code>{prefix}_potted</code>.
+          </p>
+        {:else}
+          <p>
+            This generator will generate 4 block models, with parents of <code
+              >{prefix}_1</code
+            >, <code>{prefix}_2</code>, <code>{prefix}_3</code>, and
+            <code>{prefix}_4</code>.
+          </p>
+        {/if}
       {:else if flower.parentModel.type === "custom"}
         <div class="inline-group">
           <input
@@ -717,6 +754,15 @@
             id="parent-model-4-{uid}"
             placeholder="namespace:block/identifier_4"
             bind:value={flower.parentModel.model4}
+          />
+        </div>
+        <div class="inline-group">
+          <input
+            type="text"
+            class="text-input"
+            id="parent-model-potted-{uid}"
+            placeholder="namespace:block/identifier_potted"
+            bind:value={flower.parentModel.modelPotted}
           />
         </div>
       {/if}
@@ -836,7 +882,7 @@
 
   .flower-data-section {
     grid-template-areas:
-      "expand" "id" "original" "segmented" "original-texture" "item" "texture-editor" "translations"
+      "expand" "id" "original" "potted" "segmented" "original-texture" "item" "texture-editor" "translations"
       "survive" "effects" "parent-preset" "parent" "tint" "block";
   }
 
@@ -848,6 +894,9 @@
   }
   .flower-data-translations {
     grid-area: translations;
+  }
+  .flower-data-potted {
+    grid-area: potted;
   }
   .flower-data-original {
     grid-area: original;
@@ -884,6 +933,7 @@
         "expand expand"
         "id id"
         "original original"
+        "potted potted"
         "original-texture item"
         "texture-editor texture-editor"
         "translations translations"
@@ -900,7 +950,7 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       grid-template-areas:
         "expand expand expand expand"
-        "id id id id"
+        "id id id potted"
         "original original original-texture item"
         "texture-editor texture-editor texture-editor texture-editor"
         "translations translations translations translations"
