@@ -25,9 +25,14 @@ public class ModBlocks {
 			.mapColor(MapColor.PLANT)
 			.noCollision()
 			.sound(SoundType.PINK_PETALS)
-			.pushReaction(PushReaction.POPPED)
+			.pushReaction(PushReaction.DESTROY)
 			.randomTicks()
 			.setId(TINY_GARDEN_KEY)));
+	public static final Supplier<MapCodec<TinyGardenBlock>> TINY_GARDEN_TYPE = ServerServiceLoader.REGISTRY.register(
+		BuiltInRegistries.BLOCK_TYPE,
+		TINY_GARDEN_ID,
+		() -> TinyGardenBlock.CODEC);
+
 
 
 	private static final Identifier TINY_FLOWER_POT_ID = TinyFlowers.id("tiny_flower_pot");
@@ -38,9 +43,13 @@ public class ModBlocks {
 		() -> new TinyFlowerPotBlock(BlockBehaviour.Properties.of()
 			.instabreak()
 			.noOcclusion()
-			.pushReaction(PushReaction.POPPED)
+			.pushReaction(PushReaction.DESTROY)
 			.randomTicks()
 			.setId(TINY_FLOWER_POT_KEY)));
+	public static final Supplier<MapCodec<TinyFlowerPotBlock>> TINY_FLOWER_POT_TYPE = ServerServiceLoader.REGISTRY.register(
+		BuiltInRegistries.BLOCK_TYPE,
+		TINY_FLOWER_POT_ID,
+		() -> TinyFlowerPotBlock.CODEC);
 
 	public static void initialize() {
 	}
