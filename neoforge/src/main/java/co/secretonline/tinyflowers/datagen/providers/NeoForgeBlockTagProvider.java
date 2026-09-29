@@ -2,6 +2,7 @@ package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.tags.ModBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -22,5 +23,7 @@ public class NeoForgeBlockTagProvider extends BlockTagsProvider {
 		this.tag(BlockTags.BEE_ATTRACTIVE).add(ModBlocks.TINY_GARDEN_KEY);
 		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN_KEY);
 		this.tag(Tags.Blocks.FLOWERS).add(ModBlocks.TINY_GARDEN_KEY);
+
+		tag(ModBlockTags.SUPPORTS_VEGETATION).addTag(BlockTags.SUPPORTS_VEGETATION);
 	}
 }

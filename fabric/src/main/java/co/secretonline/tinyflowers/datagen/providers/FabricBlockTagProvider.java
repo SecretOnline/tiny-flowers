@@ -3,6 +3,7 @@ package co.secretonline.tinyflowers.datagen.providers;
 import java.util.concurrent.CompletableFuture;
 
 import co.secretonline.tinyflowers.block.ModBlocks;
+import co.secretonline.tinyflowers.tags.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -21,6 +22,8 @@ public class FabricBlockTagProvider extends FabricTagsProvider.BlockTagsProvider
 		tag(BlockTags.BEE_ATTRACTIVE).add(ModBlocks.TINY_GARDEN_KEY);
 		tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.TINY_GARDEN_KEY);
 		tag(ConventionalBlockTags.FLOWERS).add(ModBlocks.TINY_GARDEN_KEY);
+
+		tag(ModBlockTags.SUPPORTS_VEGETATION).forceAddTag(BlockTags.SUPPORTS_VEGETATION);
 	}
 
 }

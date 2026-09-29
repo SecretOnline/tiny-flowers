@@ -1,6 +1,6 @@
 {
   "can_survive_on": [
-    "#minecraft:supports_vegetation",
+    "#tiny_flowers:supports_vegetation",
     "minecraft:netherrack",
     "minecraft:soul_sand",
     "minecraft:soul_soil"

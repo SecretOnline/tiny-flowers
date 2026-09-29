@@ -19,6 +19,10 @@ The versioning scheme is listed in the README.
 ### Added
 
 - Tiny Flowers can now be placed inside Flower Pots.
+- New `#tiny_flowers:supports_vegetation` block tag.
+  - For now this follows Vanilla's `#minecraft:supports_vegetation`, but is here to better support versions prior to 26.1 when the tag was added.
+  - Adding new blocks to this tag means that most Tiny Flowers can be placed on them, but not other vegetation (like grasses and regular flowers).
+  - This is now the default tag that's used when a flower variant does not specify and tags.
 
 ### Changed
 

@@ -7,6 +7,7 @@ import co.secretonline.tinyflowers.data.behavior.Behavior;
 import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
 import co.secretonline.tinyflowers.data.behavior.TransformDayNightBehavior;
 import co.secretonline.tinyflowers.data.behavior.TransformWeatherBehavior;
+import co.secretonline.tinyflowers.tags.ModBlockTags;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.data.models.model.ModelInstance;
@@ -147,7 +148,7 @@ public class Flower {
 		private final List<Entry> suspiciousStewEffects = new ArrayList<>();
 		@NonNull
 		private List<TagOrElementLocation> canSurviveOn = new ArrayList<>(
-			List.of(new TagOrElementLocation(BlockTags.SUPPORTS_VEGETATION.location(), true)));
+			List.of(new TagOrElementLocation(ModBlockTags.SUPPORTS_VEGETATION.location(), true)));
 		@NonNull
 		private final List<Behavior> behaviors = new ArrayList<>();
 

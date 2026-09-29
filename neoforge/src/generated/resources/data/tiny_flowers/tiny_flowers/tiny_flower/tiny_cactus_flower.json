@@ -5,7 +5,7 @@
     }
   ],
   "can_survive_on": [
-    "#minecraft:supports_vegetation",
+    "#tiny_flowers:supports_vegetation",
     "#minecraft:sand",
     "minecraft:sandstone",
     "minecraft:red_sandstone"

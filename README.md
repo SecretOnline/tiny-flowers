@@ -39,7 +39,7 @@ interface TinyFlowerData {
   is_segmented?: boolean;
   /** Optional. Whether the variant can be placed in a Flower Pot. Defaults to true. */
   can_be_potted?: boolean;
-  /** Optional. List of block IDs or tags that this tiny flower can be placed on. Defaults to `#minecraft:supports_vegetation`. */
+  /** Optional. List of block IDs or tags that this tiny flower can be placed on. Defaults to `#tiny_flowers:supports_vegetation`. */
   can_survive_on?: (Identifier | TagKey)[];
   /** Optional. List of mob effects to be applied if consumed in Suspicious Stew. Defaults to an empty list. */
   suspicious_stew_effects?: {
