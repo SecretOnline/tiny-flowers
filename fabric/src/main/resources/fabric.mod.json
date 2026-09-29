@@ -60,7 +60,7 @@
   },
   "recommends": {
     "fabricloader": ">=0.19.2",
-    "minecraft": "~${minecraft_version}"
+    "minecraft": "${minecraft_version}"
   },
   "custom": {
     "mc-publish": {
