@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_dye",
-  "dye": "#minecraft:dyes",
-  "group": "florists_shears_dyed",
-  "result": {
-    "id": "tiny_flowers:florists_shears"
-  },
-  "target": "tiny_flowers:florists_shears"
-}
