@@ -18,6 +18,12 @@ The versioning scheme is listed in the README.
 
 ## v2.1.0 - 2026-10-17
 
+### Known Issues
+
+- This is the first 2.x.x release for 1.21.1 and 1.21.11. It is **not** compatible with existing worlds.
+  - Upgrading an existing world will cause all Tiny Flowers items and blocks to disappear from your world.
+- Only one type of tint can exist per flower model part. If a model part declares multiple `tintindex` values in its definition, the first one will be used.
+
 ### Added
 
 - Tiny Flowers can now be placed inside Flower Pots.
