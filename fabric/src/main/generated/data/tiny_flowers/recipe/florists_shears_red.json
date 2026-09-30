@@ -7,9 +7,7 @@
     "#c:dyes/red"
   ],
   "result": {
-    "components": {
-      "minecraft:dyed_color": -5231066
-    },
+    "count": 1,
     "id": "tiny_flowers:florists_shears"
   }
 }
