@@ -52,10 +52,12 @@
     ]
   },
   "mixins": [
-    "tiny_flowers.mixins.json"
+    "tiny_flowers.mixins.json",
+    "tiny_flowers.fabric.mixins.json"
   ],
+  "accessWidener": "tiny_flowers.accesswidener",
   "depends": {
-    "java": ">=25",
+    "java": ">=21",
     "fabric-api": "*"
   },
   "recommends": {

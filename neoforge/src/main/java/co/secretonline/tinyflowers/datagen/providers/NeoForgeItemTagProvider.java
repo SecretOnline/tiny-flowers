@@ -22,5 +22,7 @@ public class NeoForgeItemTagProvider extends ItemTagsProvider {
 
 		this.tag(Tags.Items.FLOWERS).add(ModItems.TINY_FLOWER_ITEM.get());
 		this.tag(Tags.Items.TOOLS_SHEAR).add(ModItems.FLORISTS_SHEARS_ITEM.get());
+
+		this.tag(ItemTags.DYEABLE).add(ModItems.FLORISTS_SHEARS_ITEM.get());
 	}
 }

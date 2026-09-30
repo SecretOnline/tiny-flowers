@@ -1,30 +1,26 @@
 package co.secretonline.tinyflowers.item.crafting;
 
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CustomRecipe;
 import org.jspecify.annotations.NonNull;
-
-import com.mojang.serialization.MapCodec;
 
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.item.ModItems;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class ShearTinyFlowersRecipe extends CustomRecipeWithProvider {
-	public static final ShearTinyFlowersRecipe INSTANCE = new ShearTinyFlowersRecipe();
-	public static final MapCodec<ShearTinyFlowersRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
-	public static final StreamCodec<RegistryFriendlyByteBuf, ShearTinyFlowersRecipe> STREAM_CODEC = StreamCodec
-		.unit(INSTANCE);
-	public static final RecipeSerializer<ShearTinyFlowersRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC,
-		STREAM_CODEC);
+public class ShearTinyFlowersRecipe extends CustomRecipe {
+	public static final RecipeSerializer<ShearTinyFlowersRecipe> SERIALIZER = new CustomRecipe.Serializer<>(ShearTinyFlowersRecipe::new);
+
+	public ShearTinyFlowersRecipe(CraftingBookCategory category) {
+		super(category);
+	}
 
 	@Override
 	public boolean matches(CraftingInput recipeInput, @NonNull Level level) {
@@ -77,7 +73,7 @@ public class ShearTinyFlowersRecipe extends CustomRecipeWithProvider {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput recipeInput, Provider provider) {
+	public @NonNull ItemStack assemble(CraftingInput recipeInput, @NonNull Provider provider) {
 
 		for (ItemStack itemStack : recipeInput.items()) {
 			if (itemStack.getItem() instanceof BlockItem blockItem) {
@@ -113,9 +109,9 @@ public class ShearTinyFlowersRecipe extends CustomRecipeWithProvider {
 					nonNullList.set(i, ItemStack.EMPTY);
 				}
 			} else {
-				ItemStackTemplate remainder = itemStack.getItem().getCraftingRemainder();
-				if (remainder != null) {
-					nonNullList.set(i, remainder.create());
+				ItemStack remainder = itemStack.getItem().getCraftingRemainder();
+				if (!remainder.isEmpty()) {
+					nonNullList.set(i, remainder);
 				}
 			}
 		}

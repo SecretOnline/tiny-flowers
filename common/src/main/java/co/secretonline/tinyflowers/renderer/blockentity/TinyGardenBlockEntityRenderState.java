@@ -1,7 +1,5 @@
 package co.secretonline.tinyflowers.renderer.blockentity;
 
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
