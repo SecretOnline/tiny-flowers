@@ -5,7 +5,7 @@ import co.secretonline.tinyflowers.block.ModBlocks;
 import co.secretonline.tinyflowers.block.TinyGardenBlock;
 import co.secretonline.tinyflowers.item.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.color.item.Dye;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -20,7 +20,7 @@ public class FabricDefaultModelProvider extends FabricModelProvider {
 			Direction.NORTH, Direction.EAST,
 			Direction.SOUTH, Direction.WEST, };
 
-	public FabricDefaultModelProvider(FabricPackOutput generator) {
+	public FabricDefaultModelProvider(FabricDataOutput generator) {
 		super(generator);
 	}
 

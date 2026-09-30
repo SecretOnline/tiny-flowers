@@ -2,17 +2,17 @@ package co.secretonline.tinyflowers;
 
 import co.secretonline.tinyflowers.item.ModCreativeModeTabs;
 import co.secretonline.tinyflowers.item.ModItems;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
 
 public class FabricCreativeTabHandler {
 
 	public static void addShearsItems() {
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register((itemGroup) -> itemGroup.accept(ModItems.FLORISTS_SHEARS_ITEM.get()));
-		CreativeModeTabEvents.modifyOutputEvent(ModCreativeModeTabs.TINY_FLOWERS_TAB_KEY)
+		ItemGroupEvents.modifyEntriesEvent(ModCreativeModeTabs.TINY_FLOWERS_TAB_KEY)
 			.register((itemGroup) -> itemGroup.accept(ModItems.FLORISTS_SHEARS_ITEM.get()));
 	}
 
@@ -24,9 +24,9 @@ public class FabricCreativeTabHandler {
 		// tiny variants in our final tab.
 		// We do also need to wait for other mods to add their own
 		Identifier afterDefaultPhase = TinyFlowers.id("after_default");
-		CreativeModeTabEvents.MODIFY_OUTPUT_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, afterDefaultPhase);
+		ItemGroupEvents.MODIFY_ENTRIES_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, afterDefaultPhase);
 
-		CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register(afterDefaultPhase, (tab, entries) -> {
+		ItemGroupEvents.MODIFY_ENTRIES_ALL.register(afterDefaultPhase, (tab, entries) -> {
 			if (tab.equals(ModCreativeModeTabs.TINY_FLOWERS_TAB.get())) {
 				ModCreativeModeTabs.addCollectedFlowers(entries.getDisplayStacks(), entries::accept);
 				return;

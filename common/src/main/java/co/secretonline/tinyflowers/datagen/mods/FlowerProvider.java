@@ -11,7 +11,6 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
-import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 
 import java.util.List;
@@ -63,7 +62,7 @@ public abstract class FlowerProvider {
 
 		return ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(
 			prefixed,
-			TextureMapping.layer0(new Material(prefixed)),
+			TextureMapping.layer0(prefixed),
 			itemModelOutput));
 	}
 }

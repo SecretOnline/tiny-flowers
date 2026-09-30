@@ -23,8 +23,8 @@ public class FabricTinyFlowersDataGenerator implements DataGeneratorEntrypoint {
 			new TinyFlowersFlowerProvider(),
 			new VanillaFlowerProvider());
 		for (FlowerProvider mod : mods) {
-			pack.addProvider((output,_) -> new FabricModFlowersProvider(mod, output));
-			pack.addProvider((output,_) -> new FabricModModelProvider(mod, output));
+			pack.addProvider((output, providerFuture) -> new FabricModFlowersProvider(mod, output));
+			pack.addProvider((output,providerFuture) -> new FabricModModelProvider(mod, output));
 		}
 	}
 }

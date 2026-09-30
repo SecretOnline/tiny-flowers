@@ -1,6 +1,8 @@
 package co.secretonline.tinyflowers;
 
+import co.secretonline.tinyflowers.block.ModBlocks;
 import co.secretonline.tinyflowers.block.entity.ModBlockEntities;
+import co.secretonline.tinyflowers.renderer.block.TinyFlowersColorProvider;
 import co.secretonline.tinyflowers.renderer.blockentity.TinyFlowerPotBlockEntityRenderer;
 import co.secretonline.tinyflowers.renderer.blockentity.TinyGardenBlockEntityRenderer;
 import co.secretonline.tinyflowers.renderer.item.ModSelectItemModelProperties;
@@ -39,5 +41,11 @@ public class NeoForgeTinyFlowersClient {
 	@SubscribeEvent
 	public static void registerStandaloneModels(ModelEvent.RegisterStandalone event) {
 		NeoForgeTinyFlowersClient.tinyFlowerResourceLoader.registerModels(event);
+	}
+
+	@SubscribeEvent // on the mod event bus only on the physical client
+	public static void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+		event.register(TinyFlowersColorProvider::getAverageBiomeColor, ModBlocks.TINY_GARDEN_BLOCK.get());
+		event.register(TinyFlowersColorProvider::getAverageBiomeColor, ModBlocks.TINY_FLOWER_POT_BLOCK.get());
 	}
 }

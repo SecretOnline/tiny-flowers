@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.Recipe;
@@ -36,7 +36,7 @@ public class FloristsShearsRecipeProvider extends RecipeProvider {
 		for (var entry : this.colorMap.entrySet()) {
 			DyeColor color = entry.getKey();
 			TagKey<Item> tagKey = entry.getValue();
-			ItemStackTemplate stack = new ItemStackTemplate(
+			ItemStack stack = new ItemStack(
 				BuiltInRegistries.ITEM.wrapAsHolder(ModItems.FLORISTS_SHEARS_ITEM.get()),
 				1,
 				DataComponentPatch.builder()
@@ -54,7 +54,5 @@ public class FloristsShearsRecipeProvider extends RecipeProvider {
 				.unlockedBy(getHasName(Items.SHEARS), has(Items.SHEARS))
 				.save(output, recipeKey);
 		}
-
-		dyedItem(ModItems.FLORISTS_SHEARS_ITEM.get(), "florists_shears_dyed");
 	}
 }

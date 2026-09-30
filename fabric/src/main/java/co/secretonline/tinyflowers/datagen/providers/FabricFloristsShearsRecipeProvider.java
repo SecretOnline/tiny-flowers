@@ -1,6 +1,6 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
@@ -33,7 +33,7 @@ public class FabricFloristsShearsRecipeProvider extends FabricRecipeProvider {
 		Map.entry(DyeColor.RED, ConventionalItemTags.RED_DYES),
 		Map.entry(DyeColor.BLACK, ConventionalItemTags.BLACK_DYES));
 
-	public FabricFloristsShearsRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+	public FabricFloristsShearsRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 
