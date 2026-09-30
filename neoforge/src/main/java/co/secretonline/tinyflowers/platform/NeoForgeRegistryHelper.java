@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -63,11 +63,11 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 	}
 
 	private static boolean registryEquals(Registry<?> a, Registry<?> b) {
-		return a.key().registry().equals(b.key().registry()) && a.key().identifier().equals(b.key().identifier());
+		return a.key().registry().equals(b.key().registry()) && a.key().location().equals(b.key().location());
 	}
 
 	@Override
-	public <T, U extends T> DeferredRegistryObject<U> register(Registry<T> objRegistry, Identifier id, Supplier<U> objSupplier) {
+	public <T, U extends T> DeferredRegistryObject<U> register(Registry<T> objRegistry, ResourceLocation id, Supplier<U> objSupplier) {
 		DeferredRegister<T> registry = deferredRegisterFor(objRegistry);
 		return new NeoForgeDeferredRegistryObject<>(registry.register(id.getPath(), objSupplier));
 	}

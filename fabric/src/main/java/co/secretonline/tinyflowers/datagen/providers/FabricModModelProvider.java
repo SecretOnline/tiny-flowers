@@ -1,11 +1,10 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
 import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
-import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.data.models.BlockModelGenerators;
-import net.minecraft.client.data.models.ItemModelGenerators;
-import org.jspecify.annotations.NonNull;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.data.models.BlockModelGenerators;
+import net.minecraft.data.models.ItemModelGenerators;
 
 public class FabricModModelProvider extends FabricModelProvider implements PartialModelProvider {
 	private final FlowerProvider modData;
@@ -23,11 +22,11 @@ public class FabricModModelProvider extends FabricModelProvider implements Parti
 
 	@Override
 	public void generateItemModels(ItemModelGenerators itemModelGenerators) {
-		this.modData.generateItemModels(itemModelGenerators.itemModelOutput, itemModelGenerators.modelOutput);
+		this.modData.generateItemModels(itemModelGenerators.output);
 	}
 
 	@Override
-	public @NonNull String getName() {
+	public String getName() {
 		return "Mod models provider [" + this.modData.getModId() + "]";
 	}
 

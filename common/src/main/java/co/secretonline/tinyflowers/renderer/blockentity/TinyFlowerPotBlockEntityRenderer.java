@@ -1,5 +1,6 @@
 package co.secretonline.tinyflowers.renderer.blockentity;
 
+import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.TinyFlowersClientState;
 import co.secretonline.tinyflowers.block.entity.TinyFlowerPotBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
@@ -7,49 +8,46 @@ import co.secretonline.tinyflowers.helper.RenderHelper;
 import co.secretonline.tinyflowers.platform.ClientServiceLoader;
 import co.secretonline.tinyflowers.renderer.block.TinyFlowersColorProvider;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockAndTintGetter;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Optional;
 
 public class TinyFlowerPotBlockEntityRenderer
-	implements BlockEntityRenderer<TinyFlowerPotBlockEntity, TinyFlowerPotBlockEntityRenderState> {
+	implements BlockEntityRenderer<TinyFlowerPotBlockEntity> {
+
+	private static final ModelResourceLocation FLOWER_POT_MODEL = new ModelResourceLocation(TinyFlowers.id("tiny_flower_pot"), "");
+
+	BlockEntityRendererProvider.Context context;
 
 	public TinyFlowerPotBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.context = context;
 	}
 
-	@Override
-	public @NonNull TinyFlowerPotBlockEntityRenderState createRenderState() {
+	public TinyFlowerPotBlockEntityRenderState createRenderState() {
 		return new TinyFlowerPotBlockEntityRenderState();
 	}
 
-	@Override
-	public void extractRenderState(@NonNull TinyFlowerPotBlockEntity blockEntity,
-	                               @NonNull TinyFlowerPotBlockEntityRenderState state, float tickProgress, @NonNull Vec3 cameraPos,
-	                               @Nullable CrumblingOverlay crumblingOverlay) {
-		BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+	public void extractRenderState(TinyFlowerPotBlockEntity blockEntity,
+																 TinyFlowerPotBlockEntityRenderState state, float tickProgress,
+																 int lightCoords, int overlay) {
+		state.extractRenderState(blockEntity, tickProgress, lightCoords, overlay);
 
 		state.setFlower(blockEntity.getFlower());
 	}
 
-	@Override
-	public void submit(@NonNull TinyFlowerPotBlockEntityRenderState blockEntityRenderState, @NonNull PoseStack poseStack,
-										 @NonNull SubmitNodeCollector submitNodeCollector, @NonNull CameraRenderState cameraRenderState) {
-		Identifier id = blockEntityRenderState.getFlower();
+	public void submit(TinyFlowerPotBlockEntityRenderState blockEntityRenderState, PoseStack poseStack,
+										 VertexConsumer consumer) {
+		ResourceLocation id = blockEntityRenderState.getFlower();
 		if (id == null) {
 			return;
 		}
@@ -61,57 +59,76 @@ public class TinyFlowerPotBlockEntityRenderer
 
 		poseStack.pushPose();
 
-		Optional<Identifier> modelPotted = resources.modelPotted();
+		Optional<ResourceLocation> modelPotted = resources.modelPotted();
 		if (modelPotted.isPresent()) {
 			// Render model on top of flower pot
-			submitPartId(blockEntityRenderState, poseStack, modelPotted.get(), submitNodeCollector);
+			submitPartId(blockEntityRenderState, poseStack, modelPotted.get(), consumer);
 		} else {
 			// Fallback for if there's no specific model for this Tiny Flower type
 			poseStack.translate(0.25, 0.25, 0.25);
-			submitPartId(blockEntityRenderState, poseStack, resources.model1(), submitNodeCollector);
+			submitPartId(blockEntityRenderState, poseStack, resources.model1(), consumer);
 		}
 
 		poseStack.popPose();
 	}
 
 	private void submitPartId(TinyFlowerPotBlockEntityRenderState state, PoseStack poseStack,
-														Identifier partId,
-														SubmitNodeCollector submitNodeCollector) {
+														ResourceLocation partId,
+														VertexConsumer consumer) {
 		Minecraft minecraft = Minecraft.getInstance();
-		BlockStateModel model = ClientServiceLoader.FLOWER_MODELS.getModel(minecraft, partId);
+		BakedModel model = ClientServiceLoader.FLOWER_MODELS.getModel(minecraft, partId);
 		if (model == null) {
 			return;
 		}
 
 		// We can only supply one tint index at a time, so just take the first one that's in the model.
-		int tintIndex = 0;
-		List<BlockModelPart> parts = model.collectParts(TinyFlowersClientState.RANDOM);
-		for (BlockModelPart blockModelPart : parts) {
-			List<BakedQuad> quads = blockModelPart.getQuads(null);
-
-			for (BakedQuad bakedQuad : quads) {
-				if (bakedQuad.isTinted()) {
-					tintIndex = bakedQuad.tintIndex();
-					break;
-				}
-			}
-
-			if (tintIndex != 0) {
-				break;
-			}
-		}
+		// In 1.21.1 we only have the normal grass tint.
+		int tintIndex = 1;
 
 		int tintInt = TinyFlowersColorProvider.getAverageBiomeColor(
-			state.blockState,
+			state.blockEntity.getBlockState(),
 			minecraft.level,
-			state.blockPos,
+			state.blockEntity.getBlockPos(),
 			tintIndex
 		);
 		float[] tint = RenderHelper.unpackColorInt(tintInt);
 
-		submitNodeCollector.submitBlockModel(poseStack, RenderTypes.cutoutMovingBlock(), model,
-			tint[0], tint[1], tint[2],
-			state.lightCoords, 0, 0);
+		context.getBlockRenderDispatcher()
+			.getModelRenderer()
+			.renderModel(
+				poseStack.last(), consumer,
+				state.blockEntity.getBlockState(), model,
+				tint[0], tint[1], tint[2],
+				state.lightCoords, state.overlay);
+	}
+
+	private void submitFlowerPot(TinyFlowerPotBlockEntityRenderState state, PoseStack poseStack,
+															 VertexConsumer consumer) {
+		Minecraft minecraft = Minecraft.getInstance();
+		BakedModel model = minecraft.getModelManager().getModel(FLOWER_POT_MODEL);
+
+		BlockAndTintGetter level = state.blockEntity.getLevel();
+		if (level == null) {
+			return;
+		}
+
+		context.getBlockRenderDispatcher()
+			.getModelRenderer()
+			.tesselateWithoutAO(level, model,
+				state.blockEntity.getBlockState(), state.blockEntity.getBlockPos(),
+				poseStack, consumer, false,
+				TinyFlowersClientState.RANDOM, -1, state.overlay);
+	}
+
+	@Override
+	public void render(@NotNull TinyFlowerPotBlockEntity blockEntity, float tickProgress, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int lightCoords, int overlay) {
+		TinyFlowerPotBlockEntityRenderState renderState = createRenderState();
+		extractRenderState(blockEntity, renderState, tickProgress, lightCoords, overlay);
+
+		// In 1.21.1 we do need to render the base flowerpot ourselves.
+		submitFlowerPot(renderState, poseStack, multiBufferSource.getBuffer(RenderType.solid()));
+
+		submit(renderState, poseStack, multiBufferSource.getBuffer(RenderType.cutout()));
 	}
 
 	@Override

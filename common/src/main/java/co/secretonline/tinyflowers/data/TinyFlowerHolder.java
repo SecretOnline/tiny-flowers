@@ -1,15 +1,13 @@
 package co.secretonline.tinyflowers.data;
 
-import net.minecraft.resources.Identifier;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.resources.ResourceLocation;
 
 public interface TinyFlowerHolder {
 	int getSize();
 
-	@Nullable
-	Identifier getFlower(int index);
+	ResourceLocation getFlower(int index);
 
-	void setFlower(int index, @Nullable Identifier id);
+	void setFlower(int index, ResourceLocation id);
 
 	default boolean isFull() {
 		int size = getSize();

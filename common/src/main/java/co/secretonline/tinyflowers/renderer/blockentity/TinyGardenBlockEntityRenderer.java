@@ -8,42 +8,37 @@ import co.secretonline.tinyflowers.platform.ClientServiceLoader;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import co.secretonline.tinyflowers.renderer.block.TinyFlowersColorProvider;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Optional;
 
 public class TinyGardenBlockEntityRenderer
-	implements BlockEntityRenderer<TinyGardenBlockEntity, TinyGardenBlockEntityRenderState> {
+	implements BlockEntityRenderer<TinyGardenBlockEntity> {
+
+	BlockEntityRendererProvider.Context context;
 
 	public TinyGardenBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.context = context;
 	}
 
-	@Override
-	public @NonNull TinyGardenBlockEntityRenderState createRenderState() {
+	public TinyGardenBlockEntityRenderState createRenderState() {
 		return new TinyGardenBlockEntityRenderState();
 	}
 
-	@Override
-	public void extractRenderState(@NonNull TinyGardenBlockEntity blockEntity,
-																 @NonNull TinyGardenBlockEntityRenderState state, float tickProgress, @NonNull Vec3 cameraPos,
-																 @Nullable CrumblingOverlay crumblingOverlay) {
-		BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+	public void extractRenderState(TinyGardenBlockEntity blockEntity,
+																 TinyGardenBlockEntityRenderState state, float tickProgress,
+																 int lightCoords, int overlay) {
+		state.extractRenderState(blockEntity, tickProgress, lightCoords, overlay);
 
 		Optional<Direction> facingDirection = blockEntity.getBlockState().getOptionalValue(TinyGardenBlock.FACING);
 		facingDirection.ifPresent(state::setDirection);
@@ -52,27 +47,26 @@ public class TinyGardenBlockEntityRenderer
 			blockEntity.getFlower(2), blockEntity.getFlower(3));
 	}
 
-	@Override
 	public void submit(TinyGardenBlockEntityRenderState blockEntityRenderState, PoseStack poseStack,
-										 @NonNull SubmitNodeCollector submitNodeCollector, @NonNull CameraRenderState cameraRenderState) {
+										 VertexConsumer consumer) {
 		poseStack.pushPose();
 
 		poseStack.translate(0.5, 0, 0.5);
-		float rotationDegrees = Direction.getYRot(blockEntityRenderState.getDirection());
+		float rotationDegrees = blockEntityRenderState.getDirection().toYRot();
 		poseStack.mulPose(Axis.YP.rotationDegrees(180 - rotationDegrees));
 		poseStack.translate(-0.5, 0, -0.5);
 
-		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 0);
-		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 1);
-		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 2);
-		submitPartForFlowerIndex(blockEntityRenderState, poseStack, submitNodeCollector, 3);
+		submitPartForFlowerIndex(blockEntityRenderState, poseStack, consumer, 0);
+		submitPartForFlowerIndex(blockEntityRenderState, poseStack, consumer, 1);
+		submitPartForFlowerIndex(blockEntityRenderState, poseStack, consumer, 2);
+		submitPartForFlowerIndex(blockEntityRenderState, poseStack, consumer, 3);
 
 		poseStack.popPose();
 	}
 
 	private void submitPartForFlowerIndex(TinyGardenBlockEntityRenderState state, PoseStack poseStack,
-																				SubmitNodeCollector submitNodeCollector, int index) {
-		Identifier id = switch (index) {
+																				VertexConsumer consumer, int index) {
+		ResourceLocation id = switch (index) {
 			case 0 -> state.getFlower1();
 			case 1 -> state.getFlower2();
 			case 2 -> state.getFlower3();
@@ -88,7 +82,7 @@ public class TinyGardenBlockEntityRenderer
 			return;
 		}
 
-		Identifier partId = switch (index) {
+		ResourceLocation partId = switch (index) {
 			case 0 -> resources.model1();
 			case 1 -> resources.model2();
 			case 2 -> resources.model3();
@@ -100,40 +94,38 @@ public class TinyGardenBlockEntityRenderer
 		}
 
 		Minecraft minecraft = Minecraft.getInstance();
-		BlockStateModel model = ClientServiceLoader.FLOWER_MODELS.getModel(minecraft, partId);
+		BakedModel model = ClientServiceLoader.FLOWER_MODELS.getModel(minecraft, partId);
 		if (model == null) {
 			return;
 		}
 
+
 		// We can only supply one tint index at a time, so just take the first one that's in the model.
-		int tintIndex = 0;
-		List<BlockModelPart> parts = model.collectParts(TinyFlowersClientState.RANDOM);
-		for (BlockModelPart blockModelPart : parts) {
-			List<BakedQuad> quads = blockModelPart.getQuads(null);
-
-			for (BakedQuad bakedQuad : quads) {
-				if (bakedQuad.isTinted()) {
-					tintIndex = bakedQuad.tintIndex();
-					break;
-				}
-			}
-
-			if (tintIndex != 0) {
-				break;
-			}
-		}
+		// In 1.21.1 we only have the normal grass tint.
+		int tintIndex = 1;
 
 		int tintInt = TinyFlowersColorProvider.getAverageBiomeColor(
-			state.blockState,
+			state.blockEntity.getBlockState(),
 			minecraft.level,
-			state.blockPos,
+			state.blockEntity.getBlockPos(),
 			tintIndex
 		);
 		float[] tint = RenderHelper.unpackColorInt(tintInt);
 
-		submitNodeCollector.submitBlockModel(poseStack, RenderTypes.cutoutMovingBlock(), model,
-			tint[0], tint[1], tint[2],
-			state.lightCoords, 0, 0);
+		context.getBlockRenderDispatcher()
+			.getModelRenderer()
+			.renderModel(
+				poseStack.last(), consumer,
+				state.blockEntity.getBlockState(), model,
+				tint[0], tint[1], tint[2],
+				state.lightCoords, state.overlay);
+	}
+
+	@Override
+	public void render(@NotNull TinyGardenBlockEntity blockEntity, float tickProgress, @NotNull PoseStack poseStack, MultiBufferSource multiBufferSource, int lightCoords, int overlay) {
+		TinyGardenBlockEntityRenderState renderState = createRenderState();
+		extractRenderState(blockEntity, renderState, tickProgress, lightCoords, overlay);
+		submit(renderState, poseStack, multiBufferSource.getBuffer(RenderType.cutout()));
 	}
 
 	@Override

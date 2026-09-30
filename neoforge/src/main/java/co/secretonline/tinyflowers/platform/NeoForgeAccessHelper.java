@@ -11,6 +11,7 @@ import java.util.function.BiFunction;
 public class NeoForgeAccessHelper implements AccessHelper {
 	@Override
 	public <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> entityFactory, Block... blocks) {
-		return new BlockEntityType<>(entityFactory::apply, blocks);
+		return BlockEntityType.Builder.of(entityFactory::apply, blocks)
+			.build(null);
 	}
 }

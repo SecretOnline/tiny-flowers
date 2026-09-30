@@ -1,22 +1,19 @@
 package co.secretonline.tinyflowers.data.behavior;
 
-import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerHolder;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -35,9 +32,9 @@ import java.util.Optional;
  *                        referred to as the short switch sound by
  *                        Minecraft.
  */
-public record TransformWeatherBehavior(When when, Identifier turnsInto, Integer particleColor,
-																			 Optional<Identifier> soundEventLong,
-																			 Optional<Identifier> soundEventShort) implements Behavior {
+public record TransformWeatherBehavior(When when, ResourceLocation turnsInto, Integer particleColor,
+																			 Optional<ResourceLocation> soundEventLong,
+																			 Optional<ResourceLocation> soundEventShort) implements Behavior {
 
 	@Override
 	public boolean shouldActivate(TinyFlowerHolder flowerHolder, int index, BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -58,18 +55,7 @@ public record TransformWeatherBehavior(When when, Identifier turnsInto, Integer 
 
 	@Override
 	public void doWorldEffect(ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource, boolean isRandomTick) {
-		if (this.particleColor != 0) {
-			Vec3 center = Vec3.atCenterOf(blockPos);
-			double scale = 0.5 + randomSource.nextDouble();
-			Vec3 random = new Vec3(randomSource.nextDouble() - 0.5, randomSource.nextDouble() + 1.0,
-				randomSource.nextDouble() - 0.5);
-			Vec3 position = center.add(random.scale(scale));
-			TrailParticleOption trailParticleOption = new TrailParticleOption(position, this.particleColor,
-				(int) (20.0 * scale));
-			serverLevel.sendParticles(trailParticleOption, center.x, center.y, center.z, 1, 0.0, 0.0, 0.0, 0.0);
-		}
-
-		Optional<Identifier> soundEventId = isRandomTick ? this.soundEventLong : this.soundEventShort;
+		Optional<ResourceLocation> soundEventId = isRandomTick ? this.soundEventLong : this.soundEventShort;
 		soundEventId.flatMap(BuiltInRegistries.SOUND_EVENT::getOptional)
 			.ifPresent(event -> serverLevel.playSound(null, blockPos, event, SoundSource.BLOCKS, 1.0F, 1.0F));
 	}
@@ -78,11 +64,11 @@ public record TransformWeatherBehavior(When when, Identifier turnsInto, Integer 
 		.mapCodec(instance -> instance
 			.group(
 				When.CODEC.fieldOf("when").forGetter(TransformWeatherBehavior::when),
-				Identifier.CODEC.fieldOf("turns_into").forGetter(TransformWeatherBehavior::turnsInto),
+				ResourceLocation.CODEC.fieldOf("turns_into").forGetter(TransformWeatherBehavior::turnsInto),
 				Codec.INT.optionalFieldOf("particle_color", 0).forGetter(TransformWeatherBehavior::particleColor),
-				Identifier.CODEC.optionalFieldOf("sound_event_long")
+				ResourceLocation.CODEC.optionalFieldOf("sound_event_long")
 					.forGetter(TransformWeatherBehavior::soundEventLong),
-				Identifier.CODEC.optionalFieldOf("sound_event_short")
+				ResourceLocation.CODEC.optionalFieldOf("sound_event_short")
 					.forGetter(TransformWeatherBehavior::soundEventShort))
 			.apply(instance, TransformWeatherBehavior::new));
 
@@ -104,15 +90,11 @@ public record TransformWeatherBehavior(When when, Identifier turnsInto, Integer 
 		}
 
 		@Override
-		public @NonNull String getSerializedName() {
+		public @NotNull String getSerializedName() {
 			return this.name;
 		}
 
 		public boolean shouldChange(ServerLevel level, BlockPos pos) {
-			if (!level.canHaveWeather()) {
-				return false;
-			}
-
 			if (this.equals(ALWAYS)) {
 				return true;
 			}
@@ -122,7 +104,8 @@ public record TransformWeatherBehavior(When when, Identifier turnsInto, Integer 
 				return true;
 			}
 
-			Biome.Precipitation weatherAtPos = level.precipitationAt(pos);
+			Biome biomeAt = level.getBiome(pos).value();
+			Biome.Precipitation weatherAtPos = biomeAt.getPrecipitationAt(pos);
 			return (this.equals(RAINING_ON) && weatherAtPos.equals(Biome.Precipitation.RAIN)) ||
 				(this.equals(SNOWING_ON) && weatherAtPos.equals(Biome.Precipitation.SNOW));
 		}

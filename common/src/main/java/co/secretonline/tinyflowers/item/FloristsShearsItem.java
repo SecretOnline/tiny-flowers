@@ -8,21 +8,23 @@ import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SegmentableBlock;
+import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEvent.Context;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class FloristsShearsItem extends ShearsItem {
 	private final static Direction[] DIRECTIONS = new Direction[] {
@@ -34,7 +36,7 @@ public class FloristsShearsItem extends ShearsItem {
 	}
 
 	@Override
-	public @NonNull InteractionResult useOn(UseOnContext ctx) {
+	public @NotNull InteractionResult useOn(UseOnContext ctx) {
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		BlockState prevBockState = level.getBlockState(pos);
@@ -66,10 +68,11 @@ public class FloristsShearsItem extends ShearsItem {
 			gardenBlockEntity.setFromPreviousBlockState(level.registryAccess(), prevBockState);
 
 			// If the block we converted from is not segmentable, then we're done here.
-			if (!(prevBlock instanceof SegmentableBlock)) {
+			if (!(prevBlock instanceof PinkPetalsBlock)) {
 				if (ctx.getPlayer() != null) {
 					Player player = ctx.getPlayer();
-					ctx.getItemInHand().hurtAndBreak(1, player, ctx.getHand());
+					ctx.getItemInHand().hurtAndBreak(1, player,
+						ctx.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 
 					level.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP,
 							SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -107,10 +110,10 @@ public class FloristsShearsItem extends ShearsItem {
 					index;
 			index = (index + 4) % 4;
 
-			Identifier idAtIndex = gardenBlockEntity.getFlower(index);
+			ResourceLocation idAtIndex = gardenBlockEntity.getFlower(index);
 			if (idAtIndex == null) {
 				// This spot has no flower.
-				return InteractionResult.TRY_WITH_EMPTY_HAND;
+				return InteractionResult.PASS;
 			}
 			TinyFlowerData flowerData = TinyFlowerData.findById(level.registryAccess(), idAtIndex);
 			// This condition fails if the garden has an identifier in this spot, but it is
@@ -122,7 +125,8 @@ public class FloristsShearsItem extends ShearsItem {
 
 			if (ctx.getPlayer() != null) {
 				Player player = ctx.getPlayer();
-				ctx.getItemInHand().hurtAndBreak(1, player, ctx.getHand());
+				ctx.getItemInHand().hurtAndBreak(1, player,
+					ctx.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 
 				level.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP,
 						SoundSource.BLOCKS, 1.0F, 1.0F);

@@ -22,22 +22,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class TinyFlowerStewRecipe extends CustomRecipe {
-	public static final RecipeSerializer<TinyFlowerStewRecipe> SERIALIZER = new CustomRecipe.Serializer<>(TinyFlowerStewRecipe::new);
+	public static final RecipeSerializer<TinyFlowerStewRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(TinyFlowerStewRecipe::new);
 
 	public TinyFlowerStewRecipe(CraftingBookCategory category) {
 		super(category);
 	}
 
 	@Override
-	public boolean matches(CraftingInput recipeInput, @NonNull Level level) {
+	public boolean matches(CraftingInput recipeInput, @NotNull Level level) {
 		// Quick size check, since the recipe needs a bowl, the two shrooms, and at
 		// least one tiny flower.
 		if (recipeInput.ingredientCount() < 4) {
@@ -92,7 +89,7 @@ public class TinyFlowerStewRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public @NonNull ItemStack assemble(CraftingInput recipeInput, Provider provider) {
+	public @NotNull ItemStack assemble(CraftingInput recipeInput, Provider provider) {
 		RegistryLookup<TinyFlowerData> registry = provider.lookupOrThrow(ModRegistries.TINY_FLOWER);
 		Map<Holder<MobEffect>, Integer> effectMap = new HashMap<>();
 
@@ -133,7 +130,12 @@ public class TinyFlowerStewRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public @NonNull RecipeSerializer<TinyFlowerStewRecipe> getSerializer() {
+	public boolean canCraftInDimensions(int i, int i1) {
+		return true;
+	}
+
+	@Override
+	public @NotNull RecipeSerializer<TinyFlowerStewRecipe> getSerializer() {
 		return ModRecipeSerializers.TINY_FLOWER_STEW.get();
 	}
 }

@@ -1,20 +1,16 @@
 package co.secretonline.tinyflowers.data;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
 import co.secretonline.tinyflowers.tags.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -23,12 +19,11 @@ import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.behavior.Behavior;
 import co.secretonline.tinyflowers.item.ModItems;
-import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
@@ -38,6 +33,7 @@ import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SuspiciousEffectHolder;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Data for a tiny flower variant.
@@ -48,7 +44,7 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
  * @param originalId            The original plant block that is used to create the
  *                              tiny flowers.
  * @param isSegmentable         Whether an entry is for a block that implements
- *                              {@link net.minecraft.world.level.block.SegmentableBlock
+ *                              {@link net.minecraft.world.level.block.PinkPetalsBlock
  *                              SegmentableBlock}. This flag affects the behaviour of
  *                              the
  *                              mod in the following ways:
@@ -69,10 +65,10 @@ import net.minecraft.world.level.block.SuspiciousEffectHolder;
  * @param suspiciousStewEffects A potion effect for Suspicious Stew.
  * @param behaviors       Any special features this flower type might have.
  */
-public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSegmentable, boolean canBePotted,
-														 @NonNull List<TagOrElementLocation> canSurviveOn,
-														 @NonNull List<Entry> suspiciousStewEffects,
-														 @NonNull List<Behavior> behaviors)
+public record TinyFlowerData(ResourceLocation id, ResourceLocation originalId, boolean isSegmentable, boolean canBePotted,
+														 List<TagOrElementLocation> canSurviveOn,
+														 List<Entry> suspiciousStewEffects,
+														 List<Behavior> behaviors)
 	implements SuspiciousEffectHolder, Survivable {
 
 	public boolean canSurviveOn(LevelReader level, BlockPos pos) {
@@ -88,7 +84,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 		Holder<Block> blockHolder = BuiltInRegistries.BLOCK.wrapAsHolder(block);
 
 		for (TagOrElementLocation tagOrElementLocation : canSurviveOn) {
-			Identifier id = tagOrElementLocation.id();
+			ResourceLocation id = tagOrElementLocation.id();
 			if (tagOrElementLocation.tag()) {
 				if (blockHolder.is(TagKey.create(Registries.BLOCK, id))) {
 					return true;
@@ -104,7 +100,7 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 	}
 
 	@Override
-	public @NonNull SuspiciousStewEffects getSuspiciousEffects() {
+	public @NotNull SuspiciousStewEffects getSuspiciousEffects() {
 		if (this.suspiciousStewEffects() == null) {
 			return new SuspiciousStewEffects(List.of());
 		}
@@ -116,15 +112,15 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 		// For existing segmented-like flower types, just pop one of those items
 		// instead.
 		if (isSegmentable()) {
-			Optional<Reference<Item>> item = BuiltInRegistries.ITEM.get(this.originalId);
-			if (item.isEmpty()) {
+			Item item = BuiltInRegistries.ITEM.get(this.originalId);
+			if (item == Items.AIR) {
 				// Since this mod is data driven, it's possible that a garden block or tiny
 				// flower item refers to a flower type that no longer exists (i.e. from a mod
 				// that has been removed). In this case, pop nothing.
 				return ItemStack.EMPTY;
 			}
 
-			return new ItemStack(item.get(), count);
+			return new ItemStack(item, count);
 		}
 
 		return new ItemStack(
@@ -135,7 +131,6 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 				.build());
 	}
 
-	@Nullable
 	private static TinyFlowerData ofPredicate(HolderLookup.Provider provider, Predicate<TinyFlowerData> predicate) {
 		return provider.lookupOrThrow(ModRegistries.TINY_FLOWER)
 			.listElements()
@@ -145,18 +140,15 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 			.orElse(null);
 	}
 
-	@Nullable
 	public static TinyFlowerData findByOriginalBlock(HolderLookup.Provider provider, Block block) {
 		return ofPredicate(provider,
 			flowerData -> flowerData.originalId().equals(BuiltInRegistries.BLOCK.getKey(block)));
 	}
 
-	@Nullable
-	public static TinyFlowerData findById(HolderLookup.Provider provider, Identifier id) {
+	public static TinyFlowerData findById(HolderLookup.Provider provider, ResourceLocation id) {
 		return ofPredicate(provider, flowerData -> flowerData.id().equals(id));
 	}
 
-	@Nullable
 	public static TinyFlowerData findByItemStack(HolderLookup.Provider provider, ItemStack itemStack) {
 		var key = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
 
@@ -179,8 +171,8 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 		});
 	}
 	public static final Codec<TinyFlowerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerData::id),
-			Identifier.CODEC.fieldOf("original_id").forGetter(TinyFlowerData::originalId),
+			ResourceLocation.CODEC.fieldOf("id").forGetter(TinyFlowerData::id),
+			ResourceLocation.CODEC.fieldOf("original_id").forGetter(TinyFlowerData::originalId),
 			Codec.BOOL.optionalFieldOf("is_segmented", false).forGetter(TinyFlowerData::isSegmentable),
 			Codec.BOOL.optionalFieldOf("can_be_potted", true).forGetter(TinyFlowerData::canBePotted),
 			ExtraCodecs.TAG_OR_ELEMENT_ID.listOf()

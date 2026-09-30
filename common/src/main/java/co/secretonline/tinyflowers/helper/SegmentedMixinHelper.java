@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SegmentableBlock;
+import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,7 +34,7 @@ public class SegmentedMixinHelper {
 	public static void shouldAddSegment(BlockState state, BlockPlaceContext context,
 																			IntegerProperty property, CallbackInfoReturnable<Boolean> info) {
 		// Early exit for cases where no additional items should be placed.
-		if (context.isSecondaryUseActive() || state.getValue(property) >= SegmentableBlock.MAX_SEGMENT) {
+		if (context.isSecondaryUseActive() || state.getValue(property) >= PinkPetalsBlock.MAX_FLOWERS) {
 			return;
 		}
 

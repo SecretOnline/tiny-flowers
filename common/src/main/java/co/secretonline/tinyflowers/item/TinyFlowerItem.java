@@ -15,8 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -26,7 +24,7 @@ public class TinyFlowerItem extends BlockItem {
 	}
 
 	@Override
-	protected @Nullable BlockState getPlacementState(@NonNull BlockPlaceContext blockPlaceContext) {
+	protected BlockState getPlacementState(BlockPlaceContext blockPlaceContext) {
 		BlockState newBlockState = super.getPlacementState(blockPlaceContext);
 		if (newBlockState == null || newBlockState.isAir()) {
 			return null;
@@ -62,7 +60,7 @@ public class TinyFlowerItem extends BlockItem {
 	}
 
 	@Override
-	public @NonNull Component getName(ItemStack itemStack) {
+	public Component getName(ItemStack itemStack) {
 		GardenContentsComponent gardenComponent = itemStack.get(ModComponents.GARDEN_CONTENTS.get());
 		if (gardenComponent != null) {
 			return Component.translatable(GardenContentsComponent.GARDEN_TEXT);

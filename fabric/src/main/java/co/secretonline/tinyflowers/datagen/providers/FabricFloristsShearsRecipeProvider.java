@@ -5,11 +5,10 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -33,17 +32,21 @@ public class FabricFloristsShearsRecipeProvider extends FabricRecipeProvider {
 		Map.entry(DyeColor.RED, ConventionalItemTags.RED_DYES),
 		Map.entry(DyeColor.BLACK, ConventionalItemTags.BLACK_DYES));
 
+	private final FloristsShearsRecipeProvider provider;
+
 	public FabricFloristsShearsRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
+
+		provider = new FloristsShearsRecipeProvider(output, registriesFuture, COLOR_TAGS);
 	}
 
 	@Override
-	protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider registryLookup, @NonNull RecipeOutput exporter) {
-		return new FloristsShearsRecipeProvider(registryLookup, exporter, COLOR_TAGS);
+	public void buildRecipes(RecipeOutput exporter) {
+		provider.buildRecipes(exporter);
 	}
 
 	@Override
-	public @NonNull String getName() {
+	public @NotNull String getName() {
 		return "FloristsShearsRecipeProvider";
 	}
 }

@@ -3,36 +3,23 @@ package co.secretonline.tinyflowers.datagen.mods;
 import java.util.List;
 
 import co.secretonline.tinyflowers.TinyFlowers;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class VanillaFlowerProvider extends FlowerProvider {
 	@Override
 	public String getModId() {
-		return Identifier.DEFAULT_NAMESPACE;
+		return ResourceLocation.DEFAULT_NAMESPACE;
 	}
 
 	@Override
 	public List<Flower> getFlowers() {
 		return List.of(
 			Flower.Builder
-				.ofSegmented(Identifier.withDefaultNamespace("pink_petals"))
-				.customModel(Identifier.withDefaultNamespace("flowerbed"))
+				.ofSegmented(ResourceLocation.withDefaultNamespace("pink_petals"))
+				.customModel(ResourceLocation.withDefaultNamespace("flowerbed"))
 				.customPottedModel(TinyFlowers.id("garden_potted"))
-				.stemTexture(Identifier.withDefaultNamespace("pink_petals_stem"))
-				.particleTexture(Identifier.withDefaultNamespace("pink_petals"))
-				.build(),
-			Flower.Builder
-				.ofSegmented(Identifier.withDefaultNamespace("wildflowers"))
-				.customModel(Identifier.withDefaultNamespace("flowerbed"))
-				.customPottedModel(TinyFlowers.id("garden_potted"))
-				.stemTexture(Identifier.withDefaultNamespace("pink_petals_stem"))
-				.particleTexture(Identifier.withDefaultNamespace("wildflowers"))
-				.build(),
-			Flower.Builder
-				.ofSegmented(Identifier.withDefaultNamespace("leaf_litter"))
-				.addSturdyPlacementBehavior()
-				.customModel(TinyFlowers.id("garden_leaf_litter"))
-				.customPottedModel(TinyFlowers.id("garden_leaf_litter_potted"))
+				.stemTexture(ResourceLocation.withDefaultNamespace("pink_petals_stem"))
+				.particleTexture(ResourceLocation.withDefaultNamespace("pink_petals"))
 				.build());
 	}
 }

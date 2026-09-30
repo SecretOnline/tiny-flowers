@@ -1,35 +1,30 @@
 package co.secretonline.tinyflowers.mixin.item;
 
-import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.helper.ItemModelHelper;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.client.renderer.item.ItemModel;
+import co.secretonline.tinyflowers.mixin.client.resources.model.ModelBakeryAccessor;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.profiling.ProfilerFiller;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
+import java.util.Map;
 
 @Mixin(ModelBakery.class)
-public class ModelBakeryMixin {
-	@Unique
-	private final static Identifier TINY_FLOWER_ID = TinyFlowers.id("tiny_flower");
+public abstract class ModelBakeryMixin {
+	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/model/ModelBakery;loadSpecialItemModelAndDependencies(Lnet/minecraft/client/resources/model/ModelResourceLocation;)V"))
+	private void tinyFlowers$injectTinyFlowerItemModels(BlockColors blockColors, ProfilerFiller profilerFiller, Map<ResourceLocation, BlockModel> modelResources, Map<ResourceLocation, List<BlockStateModelLoader.LoadedJson>> blockStateResources, CallbackInfo ci) {
+		List<ModelResourceLocation> tinyFlowerItemModels = ItemModelHelper.allResourceLocations();
 
-	/**
-	 * Intercept item model baking to replace the tiny_flower item model with
-	 * our dynamic select model.
-	 */
-	@WrapOperation(method = "lambda$bakeModels$4",
-			at = @At(value = "INVOKE",
-					target = "Lnet/minecraft/client/renderer/item/ItemModel$Unbaked;bake(Lnet/minecraft/client/renderer/item/ItemModel$BakingContext;)Lnet/minecraft/client/renderer/item/ItemModel;"))
-	private ItemModel tinyFlowers_modifyItemModel(
-		ItemModel.Unbaked instance, ItemModel.BakingContext bakingContext, Operation<ItemModel> original, @Local(argsOnly = true) Identifier itemId) {
-		if (itemId.equals(TINY_FLOWER_ID)) {
-			ItemModel.Unbaked customModel = ItemModelHelper.createTinyFlowerItemModel();
-			return customModel.bake(bakingContext);
+		for (ModelResourceLocation modelResourceLocation : tinyFlowerItemModels) {
+			((ModelBakeryAccessor) this).tinyFlowers$registerModelAndLoadDependencies(modelResourceLocation, ((ModelBakeryAccessor) this).tinyFlowers$getModel(modelResourceLocation.id()));
 		}
-		return original.call(instance, bakingContext);
 	}
 }

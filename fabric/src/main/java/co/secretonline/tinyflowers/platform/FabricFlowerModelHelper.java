@@ -1,31 +1,26 @@
 package co.secretonline.tinyflowers.platform;
 
-import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.resources.Identifier;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FabricFlowerModelHelper implements FlowerModelHelper {
-	private final Map<Identifier, ExtraModelKey<BlockStateModel>> knownModels = new HashMap<>();
+	private final Set<ResourceLocation> knownModels = new HashSet<>();
 
 	@Override
-	public <T> void registerModel(@NonNull Identifier id, @NonNull T context) {
+	public <T> void registerModel(ResourceLocation id, T context) {
 		if (!(context instanceof ModelLoadingPlugin.Context pluginContext)) {
 			throw new IllegalArgumentException("Tried to register flower models with incorrect context");
 		}
 
-		ExtraModelKey<BlockStateModel> extraModelKey = ExtraModelKey.create(id::toString);
-		pluginContext.addModel(extraModelKey, SimpleUnbakedExtraModel.blockStateModel(id));
+		pluginContext.addModels(id);
 
-		knownModels.put(id, extraModelKey);
+		knownModels.add(id);
 	}
 
 	@Override
@@ -34,13 +29,12 @@ public class FabricFlowerModelHelper implements FlowerModelHelper {
 	}
 
 	@Override
-	public @Nullable BlockStateModel getModel(@NonNull Minecraft client, @NonNull Identifier id) {
-		var extraModelKey = knownModels.get(id);
-		if (extraModelKey == null) {
+	public BakedModel getModel(Minecraft client, ResourceLocation id) {
+		if (!knownModels.contains(id)) {
 			return null;
 		}
 
 		FabricBakedModelManager modelManager = client.getModelManager();
-		return modelManager.getModel(extraModelKey);
+		return modelManager.getModel(id);
 	}
 }

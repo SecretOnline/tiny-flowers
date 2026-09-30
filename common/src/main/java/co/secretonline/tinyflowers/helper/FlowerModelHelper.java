@@ -6,7 +6,7 @@ import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 
@@ -15,11 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class FlowerModelHelper {
-	public static Map<Identifier, TinyFlowerResources> readResourceFiles(ResourceManager resourceManager) {
-		Map<Identifier, TinyFlowerResources> map = new HashMap<>();
+	public static Map<ResourceLocation, TinyFlowerResources> readResourceFiles(ResourceManager resourceManager) {
+		Map<ResourceLocation, TinyFlowerResources> map = new HashMap<>();
 
 		var allVariantJsonFiles = resourceManager.listResources(
-				ModRegistries.TINY_FLOWER.identifier()
+				ModRegistries.TINY_FLOWER.location()
 						.withPrefix(TinyFlowers.MOD_ID + "/")
 						.getPath(),
 				identifier -> identifier.getPath().endsWith(".json"));

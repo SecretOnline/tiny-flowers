@@ -22,6 +22,12 @@ The versioning scheme is listed in the README.
   - Upgrading an existing world will cause all Tiny Flowers items and blocks to disappear from your world.
   - For more information, check the changelog entry for v2.0.0.
 - Only one type of tint can exist per flower model part. If a model part declares multiple `tintindex` values in its definition, the first one will be used.
+- (1.21.1) The dry foliage tint type is not available (as it's not in the game yet).
+  - Any flower types using this will instead be tinted using the normal grass color.
+- (1.21.1) Flower type transformations do not emit particles.
+  - These particles use the same type as Eyeblossoms, which do not exist in this version.
+- (1.21.1) Force picking (ctrl + middle click) a Tiny Garden in the world where the first flower is Pink Petals results in a Pink Petals item with extra data.
+  - Placing this item only places one Pink Petal, not the full garden.
 
 ### Added
 
