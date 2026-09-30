@@ -4,7 +4,7 @@ import co.secretonline.tinyflowers.item.ModCreativeModeTabs;
 import co.secretonline.tinyflowers.item.ModItems;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 
 public class FabricCreativeTabHandler {
@@ -23,7 +23,7 @@ public class FabricCreativeTabHandler {
 		// of the original flowers in order, which we can then use to make all of the
 		// tiny variants in our final tab.
 		// We do also need to wait for other mods to add their own
-		Identifier afterDefaultPhase = TinyFlowers.id("after_default");
+		ResourceLocation afterDefaultPhase = TinyFlowers.id("after_default");
 		ItemGroupEvents.MODIFY_ENTRIES_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, afterDefaultPhase);
 
 		ItemGroupEvents.MODIFY_ENTRIES_ALL.register(afterDefaultPhase, (tab, entries) -> {

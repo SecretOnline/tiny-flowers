@@ -10,25 +10,24 @@ import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.data.Survivable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.Util;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.Util;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.LevelReader;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
-public record GardenContentsComponent(Identifier flower1, Identifier flower2, Identifier flower3, Identifier flower4)
+public record GardenContentsComponent(ResourceLocation flower1, ResourceLocation flower2, ResourceLocation flower3, ResourceLocation flower4)
 		implements TooltipProvider, Survivable {
 	public static final String GARDEN_TEXT = "block.tiny_flowers.tiny_garden";
 	public static final String EMPTY_TEXT = "block.tiny_flowers.tiny_garden.empty";
 
 	@Override
 	public boolean canSurviveOn(LevelReader level, BlockPos pos) {
-		for (Identifier identifier : new Identifier[] { flower1, flower2, flower3, flower4 }) {
+		for (ResourceLocation identifier : new ResourceLocation[] { flower1, flower2, flower3, flower4 }) {
 			if (identifier == null) {
 				continue;
 			}
@@ -47,10 +46,8 @@ public record GardenContentsComponent(Identifier flower1, Identifier flower2, Id
 	}
 
 	@Override
-	public void addToTooltip(@NonNull TooltipContext tooltipContext, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag tooltipFlag,
-													 @NonNull DataComponentGetter dataComponentGetter) {
-
-		for (Identifier id : new Identifier[] { flower1, flower2, flower3, flower4 }) {
+	public void addToTooltip(@NotNull TooltipContext tooltipContext, @NotNull Consumer<Component> consumer, @NotNull TooltipFlag tooltipFlag) {
+		for (ResourceLocation id : new ResourceLocation[] { flower1, flower2, flower3, flower4 }) {
 			if (id == null) {
 				MutableComponent empty = Component.translatable(EMPTY_TEXT);
 				empty.withStyle(ChatFormatting.GRAY);
@@ -64,10 +61,10 @@ public record GardenContentsComponent(Identifier flower1, Identifier flower2, Id
 	}
 
 	public static final Codec<GardenContentsComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-			Identifier.CODEC.optionalFieldOf("flower_1").forGetter((value) -> Optional.ofNullable(value.flower1())),
-			Identifier.CODEC.optionalFieldOf("flower_2").forGetter((value) -> Optional.ofNullable(value.flower2())),
-			Identifier.CODEC.optionalFieldOf("flower_3").forGetter((value) -> Optional.ofNullable(value.flower3())),
-			Identifier.CODEC.optionalFieldOf("flower_4").forGetter((value) -> Optional.ofNullable(value.flower4())))
+			ResourceLocation.CODEC.optionalFieldOf("flower_1").forGetter((value) -> Optional.ofNullable(value.flower1())),
+			ResourceLocation.CODEC.optionalFieldOf("flower_2").forGetter((value) -> Optional.ofNullable(value.flower2())),
+			ResourceLocation.CODEC.optionalFieldOf("flower_3").forGetter((value) -> Optional.ofNullable(value.flower3())),
+			ResourceLocation.CODEC.optionalFieldOf("flower_4").forGetter((value) -> Optional.ofNullable(value.flower4())))
 			.apply(builder,
 					(optional1, optional2, optional3, optional4) -> new GardenContentsComponent(
 							optional1.orElse(null), optional2.orElse(null), optional3.orElse(null), optional4.orElse(null))));

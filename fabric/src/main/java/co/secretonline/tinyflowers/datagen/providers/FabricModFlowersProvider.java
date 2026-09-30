@@ -1,17 +1,16 @@
 package co.secretonline.tinyflowers.datagen.providers;
 
-import co.secretonline.tinyflowers.data.ModRegistries;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
 import co.secretonline.tinyflowers.datagen.mods.Flower;
 import co.secretonline.tinyflowers.data.TinyFlowerResources;
+import co.secretonline.tinyflowers.helper.DataHelper;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.Identifier;
-import org.jspecify.annotations.NonNull;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,23 +25,24 @@ public class FabricModFlowersProvider implements DataProvider {
 	public FabricModFlowersProvider(FlowerProvider modData,
 																	FabricDataOutput packOutput) {
 
-		this.tinyFlowersData = packOutput.createRegistryElementsPathProvider(ModRegistries.TINY_FLOWER);
+		this.tinyFlowersData = packOutput.createPathProvider(PackOutput.Target.DATA_PACK,
+			"tiny_flowers/tiny_flower");
 		this.tinyFlowersResources = packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK,
-			Registries.elementsDirPath(ModRegistries.TINY_FLOWER));
+			"tiny_flowers/tiny_flower");
 
 		this.modData = modData;
 	}
 
 	@Override
-	public @NonNull String getName() {
+	public @NotNull String getName() {
 		return "Mod flowers provider [" + this.modData.getModId() + "]";
 	}
 
 	@Override
-	public @NonNull CompletableFuture<?> run(@NonNull CachedOutput cachedOutput) {
+	public @NotNull CompletableFuture<?> run(CachedOutput cachedOutput) {
 
-		Map<Identifier, TinyFlowerData> flowerVariantData = new HashMap<>();
-		Map<Identifier, TinyFlowerResources> flowerVariantResources = new HashMap<>();
+		Map<ResourceLocation, TinyFlowerData> flowerVariantData = new HashMap<>();
+		Map<ResourceLocation, TinyFlowerResources> flowerVariantResources = new HashMap<>();
 
 		for (Flower tuple : this.modData.getFlowers()) {
 			TinyFlowerData data = tuple.data();
@@ -53,8 +53,9 @@ public class FabricModFlowersProvider implements DataProvider {
 		}
 
 		return CompletableFuture.allOf(
-			DataProvider.saveAll(cachedOutput, TinyFlowerData.CODEC, this.tinyFlowersData, flowerVariantData),
-			DataProvider.saveAll(cachedOutput, TinyFlowerResources.CODEC, this.tinyFlowersResources,
+			DataHelper.saveAll(cachedOutput, TinyFlowerData.CODEC, this.tinyFlowersData, flowerVariantData),
+			DataHelper.saveAll(cachedOutput, TinyFlowerResources.CODEC, this.tinyFlowersResources,
 				flowerVariantResources));
 	}
+
 }

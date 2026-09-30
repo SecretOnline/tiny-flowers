@@ -1,22 +1,16 @@
 package co.secretonline.tinyflowers.renderer.blockentity;
 
-import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
-public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
+public class TinyGardenBlockEntityRenderState extends BaseBlockEntityRenderState<TinyGardenBlockEntity> {
 	private Direction direction = Direction.NORTH;
 
-	@Nullable
-	private Identifier flower1 = null;
-	@Nullable
-	private Identifier flower2 = null;
-	@Nullable
-	private Identifier flower3 = null;
-	@Nullable
-	private Identifier flower4 = null;
+	private ResourceLocation flower1 = null;
+	private ResourceLocation flower2 = null;
+	private ResourceLocation flower3 = null;
+	private ResourceLocation flower4 = null;
 
 	private int[] tintStack = new int[0];
 
@@ -28,19 +22,19 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 		return tintStack;
 	}
 
-	public @Nullable Identifier getFlower1() {
+	public ResourceLocation getFlower1() {
 		return flower1;
 	}
 
-	public @Nullable Identifier getFlower2() {
+	public ResourceLocation getFlower2() {
 		return flower2;
 	}
 
-	public @Nullable Identifier getFlower3() {
+	public ResourceLocation getFlower3() {
 		return flower3;
 	}
 
-	public @Nullable Identifier getFlower4() {
+	public ResourceLocation getFlower4() {
 		return flower4;
 	}
 
@@ -48,7 +42,7 @@ public class TinyGardenBlockEntityRenderState extends BlockEntityRenderState {
 		this.direction = direction;
 	}
 
-	public void setFlowers(Identifier flower1, Identifier flower2, Identifier flower3, Identifier flower4) {
+	public void setFlowers(ResourceLocation flower1, ResourceLocation flower2, ResourceLocation flower3, ResourceLocation flower4) {
 		this.flower1 = flower1;
 		this.flower2 = flower2;
 		this.flower3 = flower3;

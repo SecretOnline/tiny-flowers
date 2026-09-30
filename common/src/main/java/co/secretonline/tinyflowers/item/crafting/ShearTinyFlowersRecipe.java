@@ -1,8 +1,8 @@
 package co.secretonline.tinyflowers.item.crafting;
 
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import org.jspecify.annotations.NonNull;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.*;
 
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.item.ModItems;
@@ -10,20 +10,19 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 public class ShearTinyFlowersRecipe extends CustomRecipe {
-	public static final RecipeSerializer<ShearTinyFlowersRecipe> SERIALIZER = new CustomRecipe.Serializer<>(ShearTinyFlowersRecipe::new);
+	public static final RecipeSerializer<ShearTinyFlowersRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(ShearTinyFlowersRecipe::new);
 
 	public ShearTinyFlowersRecipe(CraftingBookCategory category) {
 		super(category);
 	}
 
 	@Override
-	public boolean matches(CraftingInput recipeInput, @NonNull Level level) {
+	public boolean matches(CraftingInput recipeInput, Level level) {
 		// Quick size check. The recipe only supports florists' shears and a single
 		// flower type.
 		if (recipeInput.ingredientCount() != 2) {
@@ -73,7 +72,7 @@ public class ShearTinyFlowersRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public @NonNull ItemStack assemble(CraftingInput recipeInput, @NonNull Provider provider) {
+	public ItemStack assemble(CraftingInput recipeInput, Provider provider) {
 
 		for (ItemStack itemStack : recipeInput.items()) {
 			if (itemStack.getItem() instanceof BlockItem blockItem) {
@@ -91,7 +90,12 @@ public class ShearTinyFlowersRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public @NonNull NonNullList<ItemStack> getRemainingItems(CraftingInput craftingInput) {
+	public boolean canCraftInDimensions(int i, int i1) {
+		return true;
+	}
+
+	@Override
+	public @NotNull NonNullList<ItemStack> getRemainingItems(CraftingInput craftingInput) {
 		NonNullList<ItemStack> nonNullList = NonNullList.withSize(craftingInput.size(), ItemStack.EMPTY);
 
 		for (int i = 0; i < nonNullList.size(); i++) {
@@ -109,9 +113,15 @@ public class ShearTinyFlowersRecipe extends CustomRecipe {
 					nonNullList.set(i, ItemStack.EMPTY);
 				}
 			} else {
-				ItemStack remainder = itemStack.getItem().getCraftingRemainder();
-				if (!remainder.isEmpty()) {
-					nonNullList.set(i, remainder);
+				if (itemStack.getItem().hasCraftingRemainingItem()) {
+					Item remainder = itemStack.getItem().getCraftingRemainingItem();
+					if (remainder != null && remainder != Items.AIR) {
+						nonNullList.set(i, new ItemStack(remainder));
+					} else {
+						nonNullList.set(i, ItemStack.EMPTY);
+					}
+				} else {
+					nonNullList.set(i, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -120,7 +130,7 @@ public class ShearTinyFlowersRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public @NonNull RecipeSerializer<ShearTinyFlowersRecipe> getSerializer() {
+	public RecipeSerializer<ShearTinyFlowersRecipe> getSerializer() {
 		return ModRecipeSerializers.SHEAR_TINY_FLOWERS.get();
 	}
 }

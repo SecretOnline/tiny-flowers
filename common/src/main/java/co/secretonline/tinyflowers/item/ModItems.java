@@ -5,7 +5,7 @@ import co.secretonline.tinyflowers.platform.ServerServiceLoader;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -16,29 +16,26 @@ import java.util.function.Supplier;
 
 public class ModItems {
 
-	public static final Identifier FLORISTS_SHEARS_ID = TinyFlowers.id("florists_shears");
+	public static final ResourceLocation FLORISTS_SHEARS_ID = TinyFlowers.id("florists_shears");
 	public static final ResourceKey<Item> FLORISTS_SHEARS_KEY = ResourceKey.create(Registries.ITEM, FLORISTS_SHEARS_ID);
 	public static final Supplier<Item> FLORISTS_SHEARS_ITEM = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.ITEM,
 		FLORISTS_SHEARS_ID,
 		() -> new FloristsShearsItem(
 			new Item.Properties()
-				.setId(FLORISTS_SHEARS_KEY)
 				.stacksTo(1)
 				.durability(238)
 				.component(DataComponents.TOOL, ShearsItem.createToolProperties())
 				.component(DataComponents.DYED_COLOR,
-					new DyedItemColor(DyeColor.RED.getTextureDiffuseColor()))));
+					new DyedItemColor(DyeColor.RED.getTextureDiffuseColor(), true))));
 
-	public static final Identifier TINY_FLOWER_ID = TinyFlowers.id("tiny_flower");
+	public static final ResourceLocation TINY_FLOWER_ID = TinyFlowers.id("tiny_flower");
 	public static final ResourceKey<Item> TINY_FLOWER_KEY = ResourceKey.create(Registries.ITEM, TINY_FLOWER_ID);
 	public static final Supplier<Item> TINY_FLOWER_ITEM = ServerServiceLoader.REGISTRY.register(
 		BuiltInRegistries.ITEM,
 		TINY_FLOWER_ID,
 		() -> new TinyFlowerItem(
-			new Item.Properties()
-				.setId(TINY_FLOWER_KEY)
-				.useBlockDescriptionPrefix()));
+			new Item.Properties()));
 
 	public static void initialize() {
 	}

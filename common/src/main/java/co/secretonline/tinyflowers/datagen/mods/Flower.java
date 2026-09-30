@@ -10,59 +10,57 @@ import co.secretonline.tinyflowers.data.behavior.TransformWeatherBehavior;
 import co.secretonline.tinyflowers.tags.ModBlockTags;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.client.data.models.model.ModelInstance;
-import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs.TagOrElementLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.component.SuspiciousStewEffects.Entry;
 import net.minecraft.world.level.block.Block;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public class Flower {
 	private static final String MOD_ID_PREFIX = TinyFlowers.MOD_ID + "/";
 	private static final String BLOCK_MOD_PREFIX = "block/" + MOD_ID_PREFIX;
 
-	@NonNull
-	private final Identifier id;
-	@NonNull
-	private final Identifier itemTexture;
-	@NonNull
-	private final Identifier originalBlockId;
+	@NotNull
+	private final ResourceLocation id;
+	@NotNull
+	private final ResourceLocation itemTexture;
+	@NotNull
+	private final ResourceLocation originalBlockId;
 	private final boolean isSegmentable;
 	private final boolean canBePotted;
 
-	@NonNull
+	@NotNull
 	private final List<Entry> suspiciousStewEffects;
-	@NonNull
+	@NotNull
 	private final List<TagOrElementLocation> canSurviveOn;
-	@NonNull
+	@NotNull
 	private final List<Behavior> behaviors;
 
-	@NonNull
+	@NotNull
 	private final ModelPart modelPart1;
-	@NonNull
+	@NotNull
 	private final ModelPart modelPart2;
-	@NonNull
+	@NotNull
 	private final ModelPart modelPart3;
-	@NonNull
+	@NotNull
 	private final ModelPart modelPart4;
-	@Nullable
 	private final ModelPart modelPartPotted;
 
-	private Flower(@NonNull Identifier id, @NonNull Identifier itemTexture, @NonNull Identifier originalBlockId, boolean isSegmentable, boolean canBePotted,
-								 @NonNull List<Entry> suspiciousStewEffects, @NonNull List<TagOrElementLocation> canSurviveOn, @NonNull List<Behavior> behaviors,
-								 @NonNull ModelPart modelPart1, @NonNull ModelPart modelPart2, @NonNull ModelPart modelPart3, @NonNull ModelPart modelPart4, @Nullable ModelPart modelPartPotted) {
+	private Flower(@NotNull ResourceLocation id, @NotNull ResourceLocation itemTexture, @NotNull ResourceLocation originalBlockId, boolean isSegmentable, boolean canBePotted,
+								 @NotNull List<Entry> suspiciousStewEffects, @NotNull List<TagOrElementLocation> canSurviveOn, @NotNull List<Behavior> behaviors,
+								 @NotNull ModelPart modelPart1, @NotNull ModelPart modelPart2, @NotNull ModelPart modelPart3, @NotNull ModelPart modelPart4, ModelPart modelPartPotted) {
 		this.id = id;
 		this.itemTexture = itemTexture;
 		this.originalBlockId = originalBlockId;
@@ -108,7 +106,7 @@ public class Flower {
 			modelPartPotted);
 	}
 
-	public record ModelPart(Identifier id, Identifier parent, Map<String, Identifier> textures) {
+	public record ModelPart(ResourceLocation id, ResourceLocation parent, Map<String, ResourceLocation> textures) {
 
 		public JsonElement toJsonElement() {
 			JsonObject jsonObject = new JsonObject();
@@ -122,14 +120,14 @@ public class Flower {
 			return jsonObject;
 		}
 
-		public void outputModel(BiConsumer<Identifier, ModelInstance> consumer) {
+		public void outputModel(BiConsumer<ResourceLocation, Supplier<JsonElement>> consumer) {
 			consumer.accept(id.withPrefix(BLOCK_MOD_PREFIX), this::toJsonElement);
 		}
 	}
 
-	public record ModelParts(@NonNull ModelPart part1, @NonNull ModelPart part2,
-													 @NonNull ModelPart part3, @NonNull ModelPart part4,
-													 @Nullable ModelPart partPotted) {
+	public record ModelParts(ModelPart part1, ModelPart part2,
+													 ModelPart part3, ModelPart part4,
+													 ModelPart partPotted) {
 	}
 
 	public static class Builder {
@@ -137,35 +135,35 @@ public class Flower {
 		private static final String FLOWERBED_UPPER = ("flowerbed_upper");
 
 		@Nullable
-		private Identifier id;
+		private ResourceLocation id;
 		@Nullable
-		private Identifier itemTexture;
+		private ResourceLocation itemTexture;
 		@Nullable
-		private Identifier originalBlockId;
+		private ResourceLocation originalBlockId;
 		private boolean isSegmentable = false;
 		private boolean canBePotted = true;
-		@NonNull
+		@NotNull
 		private final List<Entry> suspiciousStewEffects = new ArrayList<>();
-		@NonNull
+		@NotNull
 		private List<TagOrElementLocation> canSurviveOn = new ArrayList<>(
 			List.of(new TagOrElementLocation(ModBlockTags.SUPPORTS_VEGETATION.location(), true)));
-		@NonNull
+		@NotNull
 		private final List<Behavior> behaviors = new ArrayList<>();
 
 		private int layers = 0;
 		private boolean untintedStem = false;
 		@Nullable
-		private Identifier stemTexture = null;
+		private ResourceLocation stemTexture = null;
 		@Nullable
-		private Identifier particleTexture = null;
-		@NonNull
-		private final Map<String, Identifier> textureMap = new HashMap<>();
+		private ResourceLocation particleTexture = null;
+		@NotNull
+		private final Map<String, ResourceLocation> textureMap = new HashMap<>();
 		@Nullable
-		private Identifier customModel = null;
+		private ResourceLocation customModel = null;
 		@Nullable
-		private Identifier customModelPotted = null;
+		private ResourceLocation customModelPotted = null;
 
-		public static Builder ofCustom(Identifier id, Identifier originalBlockId) {
+		public static Builder ofCustom(ResourceLocation id, ResourceLocation originalBlockId) {
 			return new Builder()
 				.id(id)
 				.itemTexture(id)
@@ -173,7 +171,7 @@ public class Flower {
 				.layers(id);
 		}
 
-		public static Builder ofSegmented(Identifier originalBlockId) {
+		public static Builder ofSegmented(ResourceLocation originalBlockId) {
 			return new Builder()
 				.id(originalBlockId)
 				.itemTexture(originalBlockId)
@@ -182,8 +180,8 @@ public class Flower {
 				.layers(originalBlockId);
 		}
 
-		public static Builder ofStandard(Identifier originalBlockId) {
-			Identifier id = originalBlockId.withPrefix("tiny_");
+		public static Builder ofStandard(ResourceLocation originalBlockId) {
+			ResourceLocation id = originalBlockId.withPrefix("tiny_");
 
 			return new Builder()
 				.id(id)
@@ -192,12 +190,12 @@ public class Flower {
 				.layers(id);
 		}
 
-		public Builder id(Identifier id) {
+		public Builder id(ResourceLocation id) {
 			this.id = id;
 			return this;
 		}
 
-		public Builder originalBlockId(Identifier originalBlockId) {
+		public Builder originalBlockId(ResourceLocation originalBlockId) {
 			this.originalBlockId = originalBlockId;
 			return this;
 		}
@@ -247,19 +245,19 @@ public class Flower {
 			return this;
 		}
 
-		public Builder itemTexture(Identifier itemTexture) {
+		public Builder itemTexture(ResourceLocation itemTexture) {
 			this.itemTexture = itemTexture.withPrefix("item/");
 			return this;
 		}
 
-		public Builder layers(Identifier flowerbedTexture) {
+		public Builder layers(ResourceLocation flowerbedTexture) {
 			layers = 1;
 			textureMap.put(TextureSlot.FLOWERBED.getId(), flowerbedTexture.withPrefix("block/"));
 
 			return this;
 		}
 
-		public Builder layers(Identifier lowerTexture, Identifier upperTexture) {
+		public Builder layers(ResourceLocation lowerTexture, ResourceLocation upperTexture) {
 			layers = 2;
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_UPPER, upperTexture.withPrefix("block/"));
@@ -267,7 +265,7 @@ public class Flower {
 			return this;
 		}
 
-		public Builder layers(Identifier lowerTexture, Identifier middleTexture, Identifier upperTexture) {
+		public Builder layers(ResourceLocation lowerTexture, ResourceLocation middleTexture, ResourceLocation upperTexture) {
 			layers = 3;
 			textureMap.put(TextureSlot.FLOWERBED.getId(), lowerTexture.withPrefix("block/"));
 			textureMap.put(FLOWERBED_MIDDLE, middleTexture.withPrefix("block/"));
@@ -281,36 +279,36 @@ public class Flower {
 			return this;
 		}
 
-		public Builder stemTexture(Identifier stemTexture) {
+		public Builder stemTexture(ResourceLocation stemTexture) {
 			this.stemTexture = stemTexture.withPrefix("block/");
 			return this;
 		}
 
-		public Builder particleTexture(Identifier particleTexture) {
+		public Builder particleTexture(ResourceLocation particleTexture) {
 			this.particleTexture = particleTexture.withPrefix("block/");
 			return this;
 		}
 
-		public Builder customModel(Identifier model) {
+		public Builder customModel(ResourceLocation model) {
 			this.customModel = model.withPrefix("block/");
 			return this;
 		}
 
-		public Builder customPottedModel(Identifier modelPotted) {
+		public Builder customPottedModel(ResourceLocation modelPotted) {
 			this.customModelPotted = modelPotted.withPrefix("block/");
 			return this;
 		}
 
-		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, Identifier turnsInto) {
+		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, ResourceLocation turnsInto) {
 			return this.addTransformDayNightBehavior(when, turnsInto, 0, null, null);
 		}
 
-		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, Identifier turnsInto,
-																								int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
-			Optional<Identifier> longOptional = (soundEventLong == null ? Optional.empty()
-				: Optional.of(soundEventLong.location()));
-			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
-				: Optional.of(soundEventShort.location()));
+		public Builder addTransformDayNightBehavior(TransformDayNightBehavior.When when, ResourceLocation turnsInto,
+																								int particleColor, SoundEvent soundEventLong, SoundEvent soundEventShort) {
+			Optional<ResourceLocation> longOptional = (soundEventLong == null ? Optional.empty()
+				: Optional.of(soundEventLong.getLocation()));
+			Optional<ResourceLocation> shortOptional = (soundEventShort == null ? Optional.empty()
+				: Optional.of(soundEventShort.getLocation()));
 
 			this.behaviors.add(new TransformDayNightBehavior(when, turnsInto, particleColor,
 				longOptional, shortOptional));
@@ -318,16 +316,16 @@ public class Flower {
 			return this;
 		}
 
-		public Builder addTransformWeatherBehavior(TransformWeatherBehavior.When when, Identifier turnsInto) {
+		public Builder addTransformWeatherBehavior(TransformWeatherBehavior.When when, ResourceLocation turnsInto) {
 			return this.addTransformWeatherBehavior(when, turnsInto, 0, null, null);
 		}
 
-		public Builder addTransformWeatherBehavior(TransformWeatherBehavior.When when, Identifier turnsInto,
-																							 int particleColor, @Nullable SoundEvent soundEventLong, @Nullable SoundEvent soundEventShort) {
-			Optional<Identifier> longOptional = (soundEventLong == null ? Optional.empty()
-				: Optional.of(soundEventLong.location()));
-			Optional<Identifier> shortOptional = (soundEventShort == null ? Optional.empty()
-				: Optional.of(soundEventShort.location()));
+		public Builder addTransformWeatherBehavior(TransformWeatherBehavior.When when, ResourceLocation turnsInto,
+																							 int particleColor, SoundEvent soundEventLong, SoundEvent soundEventShort) {
+			Optional<ResourceLocation> longOptional = (soundEventLong == null ? Optional.empty()
+				: Optional.of(soundEventLong.getLocation()));
+			Optional<ResourceLocation> shortOptional = (soundEventShort == null ? Optional.empty()
+				: Optional.of(soundEventShort.getLocation()));
 
 			this.behaviors.add(new TransformWeatherBehavior(when, turnsInto, particleColor,
 				longOptional, shortOptional));
@@ -356,7 +354,7 @@ public class Flower {
 				throw new Error(errorPrefix + "TinyFlowerResources.Builder: originalBlockId is null");
 			}
 
-			Identifier parentId = null;
+			ResourceLocation parentId = null;
 			if (customModel != null) {
 				parentId = customModel;
 			} else if (layers == 1) {

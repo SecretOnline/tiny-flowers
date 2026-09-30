@@ -8,12 +8,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class NeoForgeFloristsShearsRecipeProvider extends RecipeProvider.Runner {
+public class NeoForgeFloristsShearsRecipeProvider extends RecipeProvider {
 	private static final Map<DyeColor, TagKey<Item>> COLOR_TAGS = Map.ofEntries(
 		Map.entry(DyeColor.WHITE, Tags.Items.DYES_WHITE),
 		Map.entry(DyeColor.ORANGE, Tags.Items.DYES_ORANGE),
@@ -32,17 +32,16 @@ public class NeoForgeFloristsShearsRecipeProvider extends RecipeProvider.Runner 
 		Map.entry(DyeColor.RED, Tags.Items.DYES_RED),
 		Map.entry(DyeColor.BLACK, Tags.Items.DYES_BLACK));
 
+	private final FloristsShearsRecipeProvider provider;
+
 	public NeoForgeFloristsShearsRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
+
+		provider = new FloristsShearsRecipeProvider(output, registriesFuture, COLOR_TAGS);
 	}
 
 	@Override
-	protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider registryLookup, @NonNull RecipeOutput exporter) {
-		return new FloristsShearsRecipeProvider(registryLookup, exporter, COLOR_TAGS);
-	}
-
-	@Override
-	public @NonNull String getName() {
-		return "FloristsShearsRecipeProvider";
+	protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
+		provider.buildRecipes(recipeOutput);
 	}
 }

@@ -8,19 +8,17 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -32,9 +30,9 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,31 +40,31 @@ import java.util.Map;
 
 public class TinyFlowerPotBlock extends BaseEntityBlock {
 	public static final MapCodec<TinyFlowerPotBlock> CODEC = simpleCodec(TinyFlowerPotBlock::new);
-	private static final VoxelShape SHAPE = Block.column(6.0, 0.0, 6.0);
+	private static final VoxelShape SHAPE = Shapes.box(0.3125, 0, 0.3125, 0.6875, 0.375, 0.6875);
 
 	protected TinyFlowerPotBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public @Nullable BlockEntity newBlockEntity(@NonNull BlockPos blockPos, @NonNull BlockState blockState) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
 		return new TinyFlowerPotBlockEntity(blockPos, blockState);
 	}
 
 	@Override
-	protected @NonNull VoxelShape getShape(final @NonNull BlockState state, final @NonNull BlockGetter level, final @NonNull BlockPos pos, final @NonNull CollisionContext context) {
+	protected @NotNull VoxelShape getShape(final @NotNull BlockState state, final @NotNull BlockGetter level, final @NotNull BlockPos pos, final @NotNull CollisionContext context) {
 		return SHAPE;
 	}
 
 	@Override
-	protected @NonNull InteractionResult useItemOn(
+	protected @NotNull ItemInteractionResult useItemOn(
 		final ItemStack itemStack,
-		final @NonNull BlockState state,
-		final @NonNull Level level,
-		final @NonNull BlockPos pos,
-		final @NonNull Player player,
-		final @NonNull InteractionHand hand,
-		final @NonNull BlockHitResult hitResult
+		final @NotNull BlockState state,
+		final @NotNull Level level,
+		final @NotNull BlockPos pos,
+		final @NotNull Player player,
+		final @NotNull InteractionHand hand,
+		final @NotNull BlockHitResult hitResult
 	) {
 		// This needs to handle replacement with a normal item transforming back into a real flower pot, as well
 		// as Tiny Flowers which will swap it out.
@@ -84,27 +82,27 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 			TinyFlowerData flowerData = TinyFlowerData.findByItemStack(level.registryAccess(), itemStack);
 			if (flowerData == null || !flowerData.canBePotted()) {
 				// No match for tiny flowers either, do vanilla's fallback.
-				return InteractionResult.TRY_WITH_EMPTY_HAND;
+				return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 			}
 
 			if (!(level.getBlockEntity(pos) instanceof TinyFlowerPotBlockEntity potBlockEntity)) {
-				return InteractionResult.CONSUME;
+				return ItemInteractionResult.CONSUME;
 			}
 
 			if (potBlockEntity.getFlower() != null) {
 				// Pot already has a flower, so do nothing
-				return InteractionResult.CONSUME;
+				return ItemInteractionResult.CONSUME;
 			}
 
 			potBlockEntity.setFlower(flowerData.id());
 		} else {
 			if (!(level.getBlockEntity(pos) instanceof TinyFlowerPotBlockEntity potBlockEntity)) {
-				return InteractionResult.CONSUME;
+				return ItemInteractionResult.CONSUME;
 			}
 
 			if (potBlockEntity.getFlower() != null) {
 				// Pot already has a flower, so do nothing
-				return InteractionResult.CONSUME;
+				return ItemInteractionResult.CONSUME;
 			}
 
 			// Matched an actual potted plant type, ensu
@@ -114,18 +112,18 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 		level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 		player.awardStat(Stats.POT_FLOWER);
 		itemStack.consume(1, player);
-		return InteractionResult.SUCCESS;
+		return ItemInteractionResult.SUCCESS;
 	}
 
 	@Override
-	protected @NonNull InteractionResult useWithoutItem(
-		final @NonNull BlockState state, final @NonNull Level level, final @NonNull BlockPos pos, final @NonNull Player player, final @NonNull BlockHitResult hitResult
+	protected @NotNull InteractionResult useWithoutItem(
+		final @NotNull BlockState state, final Level level, final @NotNull BlockPos pos, final @NotNull Player player, final @NotNull BlockHitResult hitResult
 	) {
 		if (!(level.getBlockEntity(pos) instanceof TinyFlowerPotBlockEntity potBlockEntity)) {
 			return InteractionResult.CONSUME;
 		}
 
-		Identifier flowerId = potBlockEntity.getFlower();
+		ResourceLocation flowerId = potBlockEntity.getFlower();
 		if (flowerId == null) {
 			// No flower in pot, so do nothing
 			return InteractionResult.CONSUME;
@@ -149,12 +147,12 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected @NonNull ItemStack getCloneItemStack(final @NonNull LevelReader level, final @NonNull BlockPos pos, final @NonNull BlockState state, final boolean includeData) {
+	public @NotNull ItemStack getCloneItemStack(LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state) {
 		if (!(level.getBlockEntity(pos) instanceof TinyFlowerPotBlockEntity potBlockEntity)) {
 			return new ItemStack(Blocks.FLOWER_POT);
 		}
 
-		Identifier flowerId = potBlockEntity.getFlower();
+		ResourceLocation flowerId = potBlockEntity.getFlower();
 		if (flowerId == null) {
 			return new ItemStack(Blocks.FLOWER_POT);
 		}
@@ -168,42 +166,33 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected @NonNull BlockState updateShape(
-		final @NonNull BlockState state,
-		final @NonNull LevelReader level,
-		final @NonNull ScheduledTickAccess ticks,
-		final @NonNull BlockPos pos,
-		final @NonNull Direction directionToNeighbour,
-		final @NonNull BlockPos neighbourPos,
-		final @NonNull BlockState neighbourState,
-		final @NonNull RandomSource random
-	) {
-		return directionToNeighbour == Direction.DOWN && !state.canSurvive(level, pos)
+	protected @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+		return direction == Direction.DOWN && !state.canSurvive(level, pos)
 			? Blocks.AIR.defaultBlockState()
-			: super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
+			: super.updateShape(state, direction, neighborState, level, pos, neighborPos);
 	}
 
 	@Override
-	protected boolean isPathfindable(final @NonNull BlockState state, final @NonNull PathComputationType type) {
+	protected boolean isPathfindable(final @NotNull BlockState state, final @NotNull PathComputationType type) {
 		return false;
 	}
 
 	@Override
-	protected void randomTick(final @NonNull BlockState state, final @NonNull ServerLevel level, final @NonNull BlockPos pos, final @NonNull RandomSource random) {
+	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		TransformHelper.doTransformTick(state, level, pos, random, true, false);
 
 		super.randomTick(state, level, pos, random);
 	}
 
 	@Override
-	protected @NonNull List<ItemStack> getDrops(@NonNull BlockState blockState, LootParams.Builder builder) {
+	protected @NotNull List<ItemStack> getDrops(@NotNull BlockState blockState, LootParams.Builder builder) {
 		BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 		if (!(blockEntity instanceof TinyFlowerPotBlockEntity potBlockEntity)) {
 			// If there's no block entity, fall back to default (probably nothing)
 			return super.getDrops(blockState, builder);
 		}
 
-		Identifier flowerId = potBlockEntity.getFlower();
+		ResourceLocation flowerId = potBlockEntity.getFlower();
 		RegistryAccess registryAccess = builder.getLevel().registryAccess();
 
 		List<ItemStack> itemStacks = new ArrayList<>();
@@ -217,7 +206,7 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected @NonNull MapCodec<? extends BaseEntityBlock> codec() {
+	protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
 	}
 

@@ -1,15 +1,13 @@
 package co.secretonline.tinyflowers.platform;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.resources.Identifier;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
 
 public interface FlowerModelHelper {
-	<T> void registerModel(@NonNull Identifier id, @NonNull T context);
+	<T> void registerModel(ResourceLocation id, T context);
 
 	void clear();
 
-	@Nullable BlockStateModel getModel(@NonNull Minecraft client, @NonNull Identifier id);
+	BakedModel getModel(Minecraft client, ResourceLocation id);
 }

@@ -5,16 +5,15 @@ import co.secretonline.tinyflowers.data.TinyFlowerResources;
 import co.secretonline.tinyflowers.platform.ClientServiceLoader;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
-import net.minecraft.resources.Identifier;
-import org.jspecify.annotations.NonNull;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
 public class FabricFlowerModelLoadingPlugin
-	implements PreparableModelLoadingPlugin<Map<Identifier, co.secretonline.tinyflowers.data.TinyFlowerResources>> {
+	implements PreparableModelLoadingPlugin<Map<ResourceLocation, co.secretonline.tinyflowers.data.TinyFlowerResources>> {
 
 	@Override
-	public void initialize(Map<Identifier, co.secretonline.tinyflowers.data.TinyFlowerResources> data, @NonNull Context pluginContext) {
+	public void onInitializeModelLoader(Map<ResourceLocation, co.secretonline.tinyflowers.data.TinyFlowerResources> data, Context pluginContext) {
 		TinyFlowersClientState.RESOURCE_INSTANCES = data;
 
 		for (var entry : data.entrySet()) {

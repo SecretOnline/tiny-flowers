@@ -5,35 +5,31 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import co.secretonline.tinyflowers.block.entity.TinyGardenBlockEntity;
+import co.secretonline.tinyflowers.helper.TransformHelper;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.jetbrains.annotations.Nullable;
 
 import co.secretonline.tinyflowers.TinyFlowers;
 import co.secretonline.tinyflowers.item.component.GardenContentsComponent;
 import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
-import co.secretonline.tinyflowers.helper.TransformHelper;
 import co.secretonline.tinyflowers.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -46,7 +42,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBlock {
 	public static final MapCodec<TinyGardenBlock> CODEC = simpleCodec(TinyGardenBlock::new);
@@ -83,7 +80,7 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	@Override
-	protected boolean canSurvive(@NonNull BlockState blockState, LevelReader levelReader, @NonNull BlockPos blockPos) {
+	protected boolean canSurvive(@NotNull BlockState blockState, LevelReader levelReader, @NotNull BlockPos blockPos) {
 		if (!(levelReader.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 			// If there's no block entity at this position, that means we're in the middle
 			// of placing a block here. Let it pass for now, there will be another check
@@ -96,34 +93,25 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	@Override
-	protected @NonNull BlockState updateShape(
-		BlockState blockState,
-		@NonNull LevelReader levelReader,
-		@NonNull ScheduledTickAccess scheduledTickAccess,
-		@NonNull BlockPos blockPos,
-		@NonNull Direction direction,
-		@NonNull BlockPos blockPos2,
-		@NonNull BlockState blockState2,
-		@NonNull RandomSource randomSource) {
-		return !blockState.canSurvive(levelReader, blockPos)
-				? Blocks.AIR.defaultBlockState()
-				: super.updateShape(blockState, levelReader, scheduledTickAccess, blockPos, direction, blockPos2, blockState2,
-						randomSource);
+	protected @NotNull BlockState updateShape(BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+		return !state.canSurvive(level, pos)
+			? Blocks.AIR.defaultBlockState()
+			: super.updateShape(state, direction, neighborState, level, pos, neighborPos);
 	}
 
 	@Override
-	protected @NonNull List<ItemStack> getDrops(@NonNull BlockState blockState, Builder builder) {
+	protected @NotNull List<ItemStack> getDrops(@NotNull BlockState blockState, Builder builder) {
 		BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 		if (!(blockEntity instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 			// If there's no block entity, fall back to default (probably nothing)
 			return super.getDrops(blockState, builder);
 		}
 
-		List<Identifier> flowerIds = gardenBlockEntity.getFlowers();
+		List<ResourceLocation> flowerIds = gardenBlockEntity.getFlowers();
 		RegistryAccess registryAccess = builder.getLevel().registryAccess();
 
 		List<ItemStack> itemStacks = new ArrayList<>();
-		for (Identifier flowerId : flowerIds) {
+		for (ResourceLocation flowerId : flowerIds) {
 			TinyFlowerData flowerData = TinyFlowerData.findById(registryAccess, flowerId);
 			if (flowerData != null) {
 				itemStacks.add(flowerData.getItemStack(1));
@@ -134,30 +122,30 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	@Override
-	public @NonNull BlockState rotate(BlockState state, Rotation rotation) {
+	public @NotNull BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public @NonNull BlockState mirror(BlockState state, Mirror mirror) {
+	public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public boolean canBeReplaced(@NonNull BlockState state, BlockPlaceContext context) {
+	public boolean canBeReplaced(@NotNull BlockState state, BlockPlaceContext context) {
 		return !context.isSecondaryUseActive()
 			&& (TinyFlowerData.findByItemStack(context.getLevel().registryAccess(), context.getItemInHand()) != null)
 			&& hasFreeSpace(context.getLevel(), context.getClickedPos()) || super.canBeReplaced(state, context);
 	}
 
 	@Override
-	public @NonNull VoxelShape getShape(BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
+	public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return FACING_AND_AMOUNT_TO_SHAPE.apply(state.getValue(FACING),
 				getFlowerBitmap(world, pos));
 	}
 
 	@Override
-	public @org.jspecify.annotations.Nullable BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+	public @Nullable BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
 		Level level = blockPlaceContext.getLevel();
 		RegistryAccess registryAccess = level.registryAccess();
 		BlockPos blockPos = blockPlaceContext.getClickedPos();
@@ -215,12 +203,12 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 		}
 
 		Block currentBlock = blockState.getBlock();
-		if (currentBlock instanceof SegmentableBlock segmentableBlock) {
+		if (currentBlock instanceof PinkPetalsBlock segmentableBlock) {
 			// Placing a tiny flower on a segmented block.
 			// Don't do anything if the segmented block is already full.
-			IntegerProperty amountProperty = segmentableBlock.getSegmentAmountProperty();
+			IntegerProperty amountProperty = PinkPetalsBlock.AMOUNT;
 			int currentAmount = blockState.getValue(amountProperty);
-			if (currentAmount >= SegmentableBlock.MAX_SEGMENT) {
+			if (currentAmount >= PinkPetalsBlock.MAX_FLOWERS) {
 				return blockState;
 			}
 
@@ -270,14 +258,14 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	@Override
-	protected void randomTick(@NonNull BlockState state, @NonNull ServerLevel world, @NonNull BlockPos pos, @NonNull RandomSource random) {
+	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		TransformHelper.doTransformTick(state, world, pos, random, true, true);
 
 		super.randomTick(state, world, pos, random);
 	}
 
 	@Override
-	protected void tick(@NonNull BlockState state, @NonNull ServerLevel world, @NonNull BlockPos pos, @NonNull RandomSource random) {
+	protected void tick(@NotNull BlockState state, @NotNull ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		TransformHelper.doTransformTick(state, world, pos, random, false, true);
 
 		super.tick(state, world, pos, random);
@@ -289,29 +277,29 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, @NonNull RandomSource randomSource, @NonNull BlockPos pos, @NonNull BlockState blockState) {
+	public boolean isBonemealSuccess(Level level, @NotNull RandomSource randomSource, @NotNull BlockPos pos, @NotNull BlockState blockState) {
 		return level.getBlockEntity(pos) instanceof TinyGardenBlockEntity;
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, @NonNull BlockPos pos, @NonNull BlockState blockState) {
+	public boolean isValidBonemealTarget(LevelReader level, @NotNull BlockPos pos, @NotNull BlockState blockState) {
 		return level.getBlockEntity(pos) instanceof TinyGardenBlockEntity;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel serverLevel, @NonNull RandomSource randomSource, @NonNull BlockPos pos,
-															@NonNull BlockState blockState) {
+	public void performBonemeal(ServerLevel serverLevel, @NotNull RandomSource randomSource, @NotNull BlockPos pos,
+															@NotNull BlockState blockState) {
 		if (!(serverLevel.getBlockEntity(pos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 			return;
 		}
 
-		List<Identifier> flowers = gardenBlockEntity.getFlowers();
+		List<ResourceLocation> flowers = gardenBlockEntity.getFlowers();
 		if (flowers.isEmpty()) {
 			TinyFlowers.LOGGER.warn("Tried to grow empty space in garden block");
 			return;
 		}
 
-		Identifier randomId = Util.getRandom(flowers, randomSource);
+		ResourceLocation randomId = Util.getRandom(flowers, randomSource);
 
 		// Try to add flower to garden, otherwise pop an item out.
 		if (!gardenBlockEntity.addFlower(randomId)) {
@@ -332,24 +320,19 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 		return blockState.getFluidState().isEmpty();
 	}
 
-	protected boolean isPathfindable(@NonNull BlockState blockState, @NonNull PathComputationType pathComputationType) {
+	protected boolean isPathfindable(@NotNull BlockState blockState, @NotNull PathComputationType pathComputationType) {
 		return pathComputationType == PathComputationType.AIR && !this.hasCollision || super.isPathfindable(blockState, pathComputationType);
 	}
 
 	@Override
-	protected @NonNull ItemStack getCloneItemStack(@NonNull LevelReader levelReader, @NonNull BlockPos blockPos, @NonNull BlockState blockState,
-																								 boolean includeData) {
-		if (includeData) {
-			return super.getCloneItemStack(levelReader, blockPos, blockState, includeData);
-		}
-
+	public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, @NotNull BlockPos blockPos, @NotNull BlockState blockState) {
 		if (!(levelReader.getBlockEntity(blockPos) instanceof TinyGardenBlockEntity gardenBlockEntity)) {
 			// If there's no block entity, don't pick anything.
 			return ItemStack.EMPTY;
 		}
 
-		List<Identifier> flowers = gardenBlockEntity.getFlowers();
-		for (Identifier id : flowers) {
+		List<ResourceLocation> flowers = gardenBlockEntity.getFlowers();
+		for (ResourceLocation id : flowers) {
 			TinyFlowerData flowerData = TinyFlowerData.findById(levelReader.registryAccess(), id);
 			if (flowerData != null) {
 				return flowerData.getItemStack(1);
@@ -386,14 +369,13 @@ public class TinyGardenBlock extends BaseEntityBlock implements BonemealableBloc
 	}
 
 	@Override
-	protected @NonNull MapCodec<? extends BaseEntityBlock> codec() {
+	protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
 	}
 
 
-	@Nullable
 	@Override
-	public BlockEntity newBlockEntity(@NonNull BlockPos pos, @NonNull BlockState state) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new TinyGardenBlockEntity(pos, state);
 	}
 }

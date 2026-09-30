@@ -5,11 +5,11 @@ import com.mojang.serialization.Codec;
 import co.secretonline.tinyflowers.data.TinyFlowerData;
 import co.secretonline.tinyflowers.data.Survivable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.Util;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.Util;
 import net.minecraft.world.level.LevelReader;
 
-public record TinyFlowerComponent(Identifier id) implements Survivable {
+public record TinyFlowerComponent(ResourceLocation id) implements Survivable {
 	public String getTranslationKey() {
 		return Util.makeDescriptionId("block", this.id());
 	}
@@ -24,6 +24,6 @@ public record TinyFlowerComponent(Identifier id) implements Survivable {
 		return flowerData.canSurviveOn(level, pos);
 	}
 
-	public static final Codec<TinyFlowerComponent> CODEC = Identifier.CODEC.xmap(TinyFlowerComponent::new,
+	public static final Codec<TinyFlowerComponent> CODEC = ResourceLocation.CODEC.xmap(TinyFlowerComponent::new,
 			TinyFlowerComponent::id);
 }

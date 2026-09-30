@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class ModCreativeModeTabs {
-	private static final Identifier TINY_FLOWERS_TAB_ID = TinyFlowers.id("tiny_flowers");
+	private static final ResourceLocation TINY_FLOWERS_TAB_ID = TinyFlowers.id("tiny_flowers");
 	public static final ResourceKey<CreativeModeTab> TINY_FLOWERS_TAB_KEY = ResourceKey
 		.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), TINY_FLOWERS_TAB_ID);
 

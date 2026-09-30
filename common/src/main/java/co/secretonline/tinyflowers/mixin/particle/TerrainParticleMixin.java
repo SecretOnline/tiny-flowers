@@ -4,6 +4,7 @@ import co.secretonline.tinyflowers.helper.ParticleHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.TerrainParticle;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,10 +14,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TerrainParticle.class)
-abstract class TerrainParticleMixin extends SingleQuadParticle {
+abstract class TerrainParticleMixin extends TextureSheetParticle {
 
-	protected TerrainParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
-		super(level, x, y, z, sprite);
+	protected TerrainParticleMixin(ClientLevel level, double x, double y, double z) {
+		super(level, x, y, z);
 		throw new Error("Should not directly instantiate mixin");
 	}
 

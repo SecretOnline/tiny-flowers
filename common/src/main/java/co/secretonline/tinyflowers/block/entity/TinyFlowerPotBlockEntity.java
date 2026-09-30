@@ -5,24 +5,19 @@ import co.secretonline.tinyflowers.item.component.ModComponents;
 import co.secretonline.tinyflowers.item.component.TinyFlowerComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap.Builder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class TinyFlowerPotBlockEntity extends BlockEntity implements TinyFlowerHolder {
-	@Nullable
-	private Identifier flower;
+	private ResourceLocation flower;
 
 	public TinyFlowerPotBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.TINY_FLOWER_POT_BLOCK_ENTITY.get(), pos, state);
@@ -34,45 +29,49 @@ public class TinyFlowerPotBlockEntity extends BlockEntity implements TinyFlowerH
 	}
 
 	@Override
-	@Nullable
-	public Identifier getFlower(int index) {
+	public ResourceLocation getFlower(int index) {
 		return index == 0 ? flower : null;
 	}
 
 	@Override
-	public void setFlower(int index, @Nullable Identifier id) {
+	public void setFlower(int index, ResourceLocation id) {
 		if (index == 0) {
 			this.setFlower(id);
 		}
 	}
 
-	@Nullable
-	public Identifier getFlower() {
+	public ResourceLocation getFlower() {
 		return flower;
 	}
 
-	public void setFlower(@Nullable Identifier id) {
+	public void setFlower(ResourceLocation id) {
 		flower = id;
 
 		this.markUpdated();
 	}
 
 	@Override
-	protected void saveAdditional(@NonNull ValueOutput writeView) {
-		super.saveAdditional(writeView);
+	protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+		super.saveAdditional(tag, registries);
 
-		writeView.storeNullable("flower", Identifier.CODEC, flower);
+		if (flower != null) {
+			tag.putString("flower", flower.toString());
+		}
 	}
 
 	@Override
-	protected void loadAdditional(@NonNull ValueInput readView) {
-		super.loadAdditional(readView);
+	protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+		super.loadAdditional(tag, registries);
 
-		flower = readView.read("flower", Identifier.CODEC).orElse(null);
+		if (tag.contains("flower")) {
+			flower = ResourceLocation.tryParse(tag.getString("flower"));
+		} else {
+			flower = null;
+		}
 	}
 
 	@Override
-	public @NonNull CompoundTag getUpdateTag(HolderLookup.@NonNull Provider registryLookup) {
+	public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registryLookup) {
 		return saveWithoutMetadata(registryLookup);
 	}
 
@@ -82,25 +81,25 @@ public class TinyFlowerPotBlockEntity extends BlockEntity implements TinyFlowerH
 	}
 
 	@Override
-	protected void applyImplicitComponents(@NonNull DataComponentGetter dataComponentGetter) {
+	protected void applyImplicitComponents(@NotNull DataComponentInput dataComponentGetter) {
 		super.applyImplicitComponents(dataComponentGetter);
 
-			TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER.get());
-			if (itemComponent != null) {
-				flower = itemComponent.id();
-			}
+		TinyFlowerComponent itemComponent = dataComponentGetter.get(ModComponents.TINY_FLOWER.get());
+		if (itemComponent != null) {
+			flower = itemComponent.id();
+		}
 	}
 
 	@Override
-	protected void collectImplicitComponents(@NonNull Builder builder) {
+	protected void collectImplicitComponents(@NotNull Builder builder) {
 		super.collectImplicitComponents(builder);
 
 		builder.set(ModComponents.TINY_FLOWER.get(), new TinyFlowerComponent(flower));
 	}
 
 	@Override
-	public void removeComponentsFromTag(ValueOutput valueOutput) {
-		valueOutput.discard("flower");
+	public void removeComponentsFromTag(CompoundTag tag) {
+		tag.remove("flower");
 	}
 
 	private void markUpdated() {
