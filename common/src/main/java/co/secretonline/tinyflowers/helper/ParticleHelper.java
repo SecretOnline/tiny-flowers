@@ -7,7 +7,7 @@ import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
@@ -51,11 +51,6 @@ public class ParticleHelper {
 			.appendItemLayers(TinyFlowersClientState.ITEM_RENDER_STATE, stack,
 				ItemDisplayContext.GROUND, level, null, 0);
 
-		Material.Baked material = TinyFlowersClientState.ITEM_RENDER_STATE.pickParticleMaterial(TinyFlowersClientState.RANDOM);
-		if (material == null) {
-			return null;
-		}
-
-		return material.sprite();
+		return TinyFlowersClientState.ITEM_RENDER_STATE.pickParticleIcon(TinyFlowersClientState.RANDOM);
 	}
 }
