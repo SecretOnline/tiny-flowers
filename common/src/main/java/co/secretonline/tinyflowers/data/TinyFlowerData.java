@@ -3,12 +3,14 @@ package co.secretonline.tinyflowers.data;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import co.secretonline.tinyflowers.data.behavior.SturdyPlacementBehavior;
 import co.secretonline.tinyflowers.tags.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -176,7 +178,6 @@ public record TinyFlowerData(Identifier id, Identifier originalId, boolean isSeg
 			return component.id().equals(flowerData.id());
 		});
 	}
-
 	public static final Codec<TinyFlowerData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Identifier.CODEC.fieldOf("id").forGetter(TinyFlowerData::id),
 			Identifier.CODEC.fieldOf("original_id").forGetter(TinyFlowerData::originalId),

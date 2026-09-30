@@ -6,7 +6,7 @@ import co.secretonline.tinyflowers.data.TinyFlowerData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +29,7 @@ public class FlowerPotBlockMixin {
 	@Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
 	private void tinyFlowers$useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos,
 																		 Player player, InteractionHand hand, BlockHitResult hitResult,
-																		 CallbackInfoReturnable<InteractionResult> cir) {
+																		 CallbackInfoReturnable<ItemInteractionResult> cir) {
 		// Check vanilla's map first, so that if a mod registers its own segmentable flower as a pottable
 		// flower, it'll use vanilla's implementation which feels better than using this mod's solution to
 		// completely dynamic flower models.
@@ -47,7 +47,7 @@ public class FlowerPotBlockMixin {
 
 		if (!((FlowerPotBlockAccessor)this).tinyFlowers$isEmpty()) {
 			// Flower Pot is already full, so don't do anything
-			cir.setReturnValue(InteractionResult.CONSUME);
+			cir.setReturnValue(ItemInteractionResult.CONSUME);
 			return;
 		}
 
@@ -65,6 +65,6 @@ public class FlowerPotBlockMixin {
 		level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 		player.awardStat(Stats.POT_FLOWER);
 		itemStack.consume(1, player);
-		cir.setReturnValue(InteractionResult.SUCCESS);
+		cir.setReturnValue(ItemInteractionResult.SUCCESS);
 	}
 }

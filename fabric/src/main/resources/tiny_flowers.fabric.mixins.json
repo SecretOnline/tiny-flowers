@@ -3,8 +3,7 @@
   "package": "co.secretonline.tinyflowers.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "item.ModelBakeryMixin",
-    "particle.NeoForgeTerrainParticleMixin"
+    "item.ModelBakeryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
