@@ -1,5 +1,6 @@
 {
   "values": [
-    "#minecraft:supports_vegetation"
+    "#minecraft:dirt",
+    "minecraft:grass_block"
   ]
 }
