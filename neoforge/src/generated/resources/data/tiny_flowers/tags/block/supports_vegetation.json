@@ -1,5 +1,9 @@
 {
   "values": [
-    "#minecraft:supports_vegetation"
+    {
+      "id": "#minecraft:dirt",
+      "required": false
+    },
+    "minecraft:grass_block"
   ]
 }

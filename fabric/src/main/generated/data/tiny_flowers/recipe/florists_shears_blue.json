@@ -3,13 +3,20 @@
   "category": "equipment",
   "group": "florists_shears",
   "ingredients": [
-    "minecraft:shears",
-    "#c:dyes/blue"
+    {
+      "item": "minecraft:shears"
+    },
+    {
+      "tag": "c:dyes/blue"
+    }
   ],
   "result": {
     "components": {
-      "minecraft:dyed_color": -12827478
+      "minecraft:dyed_color": {
+        "rgb": -12827478
+      }
     },
+    "count": 1,
     "id": "tiny_flowers:florists_shears"
   }
 }
