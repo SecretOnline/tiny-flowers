@@ -72,7 +72,7 @@ public class TinyFlowerPotBlock extends BaseEntityBlock {
 		BlockState newContents;
 
 		// Try normal flower pot contents first, with the map that Vanilla builds during block registration.
-		Map<Block,Block> pottedByContent = FlowerPotBlockAccessor.getPottedByContent();
+		Map<Block,Block> pottedByContent = FlowerPotBlockAccessor.tinyFlowers$getPottedByContent();
 		newContents = (itemStack.getItem() instanceof BlockItem blockItem
 			? pottedByContent.getOrDefault(blockItem.getBlock(), Blocks.AIR)
 			: Blocks.AIR)

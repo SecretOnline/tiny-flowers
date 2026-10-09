@@ -33,7 +33,7 @@ public class FlowerPotBlockMixin {
 		// Check vanilla's map first, so that if a mod registers its own segmentable flower as a pottable
 		// flower, it'll use vanilla's implementation which feels better than using this mod's solution to
 		// completely dynamic flower models.
-		Map<Block, Block> pottedByContent = FlowerPotBlockAccessor.getPottedByContent();
+		Map<Block, Block> pottedByContent = FlowerPotBlockAccessor.tinyFlowers$getPottedByContent();
 		if (itemStack.getItem() instanceof BlockItem blockItem && pottedByContent.containsKey(blockItem.getBlock())) {
 			// Default to vanilla's behaviour
 			return;

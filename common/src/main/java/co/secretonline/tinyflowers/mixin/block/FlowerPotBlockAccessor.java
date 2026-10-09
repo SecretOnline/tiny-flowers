@@ -14,7 +14,7 @@ public interface FlowerPotBlockAccessor {
 	boolean tinyFlowers$isEmpty();
 
 	@Accessor("POTTED_BY_CONTENT")
-	static Map<Block, Block> getPottedByContent()
+	static Map<Block, Block> tinyFlowers$getPottedByContent()
 	{
 		throw new AssertionError("Untransformed @Accessor");
 	}
