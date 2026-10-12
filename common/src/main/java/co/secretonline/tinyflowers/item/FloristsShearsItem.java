@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SegmentableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEvent.Context;
 import net.minecraft.world.phys.Vec3;
@@ -53,7 +54,7 @@ public class FloristsShearsItem extends ShearsItem {
 			}
 
 			BlockState newBlockState = ModBlocks.TINY_GARDEN_BLOCK.get().defaultBlockState()
-					.setValue(TinyGardenBlock.FACING, ctx.getHorizontalDirection().getOpposite());
+					.setValue(TinyGardenBlock.FACING, prevBockState.getValueOrElse(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
 
 			level.setBlockAndUpdate(pos, newBlockState);
 

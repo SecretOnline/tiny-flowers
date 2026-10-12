@@ -28,6 +28,10 @@ The versioning scheme is listed in the README.
 
 - Tiny Poppies' height has been knocked down a pixel or two.
 
+### Fixed
+
+- Using Florists Shears on vanilla tiny flowers in the world no longer rotates the block to your facing direction.
+
 ## v2.0.3 - 2026-09-19
 
 ### Updated
