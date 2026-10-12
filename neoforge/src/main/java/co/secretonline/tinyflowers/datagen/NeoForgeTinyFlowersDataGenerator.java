@@ -4,12 +4,12 @@ import co.secretonline.tinyflowers.datagen.mods.FlowerProvider;
 import co.secretonline.tinyflowers.datagen.mods.TinyFlowersFlowerProvider;
 import co.secretonline.tinyflowers.datagen.mods.VanillaFlowerProvider;
 import co.secretonline.tinyflowers.datagen.providers.*;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 
 import java.util.List;
 
@@ -22,8 +22,6 @@ public class NeoForgeTinyFlowersDataGenerator {
 		event.createProvider(NeoForgeItemTagProvider::new);
 		event.createProvider(NeoForgeDefaultModelProvider::new);
 
-		event.createReloadableRegistryObjects(new RegistrySetBuilder().add(RecipeProvider.asBootstrap(NeoForgeFloristsShearsRecipeProvider::new)));
-
 		List<FlowerProvider> mods = List.of(
 			new VanillaFlowerProvider(),
 			new TinyFlowersFlowerProvider());
@@ -32,5 +30,10 @@ public class NeoForgeTinyFlowersDataGenerator {
 			event.createProvider((output, registryLookup) -> new NeoForgeModFlowerResourcesProvider(mod, output, registryLookup));
 			event.createProvider((output) -> new NeoForgeModModelProvider(mod, output));
 		}
+	}
+
+	@SubscribeEvent
+	public static void gatherRegistryData(GatherDataRegistryEntriesEvent event) {
+		event.add(RecipeProvider.asBootstrap(NeoForgeFloristsShearsRecipeProvider::new));
 	}
 }
