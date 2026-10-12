@@ -32,7 +32,7 @@ public class VanillaFlowerProvider extends FlowerProvider {
 				.ofSegmented(Identifier.withDefaultNamespace("leaf_litter"))
 				.addSturdyPlacementBehavior()
 				.customModel(TinyFlowers.id("garden_leaf_litter"))
-				.customPottedModel(TinyFlowers.id("garden_leaf_litter_potted"))
+				.noFlowerPot()
 				.build());
 	}
 }
