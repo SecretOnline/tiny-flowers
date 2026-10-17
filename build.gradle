@@ -91,12 +91,14 @@ publishMods {
 		dryRunWebhookUrl = providers.environmentVariable("DISCORD_WEBHOOK_URL_DRY_RUN")
 		username = providers.gradleProperty("mod_name")
 		avatarUrl = providers.environmentVariable("ICON_URL").getOrNull()
-		content = "${providers.gradleProperty("mod_name").get()} v${providers.gradleProperty("version").get()} has been released!"
+		content = "${providers.gradleProperty("mod_name").get()} v${providers.gradleProperty("version").get()} for Minecraft ${providers.gradleProperty("minecraft_version").get()} has been released!"
 		setPlatforms(publishMods.platforms.modrinthFabric, publishMods.platforms.modrinthNeoforge)
 
 		style {
 			look = "MODERN"
 			link = "BUTTON"
+			thumbnailUrl = "https://cdn.modrinth.com/data/S0Lqneqb/d8bf2d14b499be53ecdd15a9908f5f4fd40c1b1d_96.webp"
+			color = "#44983f"
 		}
 	}
 }
